@@ -1,0 +1,5 @@
+@extends('errors.layouts.base')
+@section('http-request', '404')
+@section('title', 'Page not found')
+@section('message', 'This may not mean anything.')
+@section('detail', "I'm probably working on something that has blown up.")
