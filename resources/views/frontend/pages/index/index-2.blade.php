@@ -56,19 +56,19 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="box_how">
-                                    <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_1.svg" alt="" width="150" height="167" class="lazy"></figure>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_1.svg') }}" alt="" width="150" height="167" class="lazy"></figure>
                                     <h3>Easly Order</h3>
                                     <p>Faucibus ante, in porttitor tellus blandit et. Phasellus tincidunt metus lectus sollicitudin.</p>
                                 </div>
                                 <div class="box_how">
-                                    <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_2.svg" alt="" width="130" height="145" class="lazy"></figure>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_2.svg') }}" alt="" width="130" height="145" class="lazy"></figure>
                                     <h3>Quick Delivery</h3>
                                     <p>Maecenas pulvinar, risus in facilisis dignissim, quam nisi hendrerit nulla, id vestibulum.</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 align-self-center">
                                 <div class="box_how">
-                                    <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_3.svg" alt="" width="150" height="132" class="lazy"></figure>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_3.svg') }}" alt="" width="150" height="132" class="lazy"></figure>
                                     <h3>Enjoy Food</h3>
                                     <p>Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, a feugiat eros.</p>
                                 </div>
@@ -104,7 +104,7 @@
                         <a href="grid-listing-filterscol.html">
                             <figure>
                                 <span>98</span>
-                                <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_pizza.jpg" alt="" class="owl-lazy" width="350" height="450">
+                                <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_pizza.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                                 <div class="info">
                                     <h3>Pizza</h3>
                                     <small>Avg price $40</small>
@@ -116,7 +116,7 @@
                         <a href="grid-listing-filterscol.html">
                             <figure>
                                 <span>87</span>
-                                <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_sushi.jpg" alt="" class="owl-lazy" width="350" height="450">
+                                <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_sushi.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                                 <div class="info">
                                     <h3>Japanese</h3>
                                     <small>Avg price $50</small>
@@ -128,7 +128,7 @@
                         <a href="grid-listing-filterscol.html">
                             <figure>
                                 <span>55</span>
-                                <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_hamburgher.jpg" alt="" class="owl-lazy" width="350" height="450">
+                                <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_hamburgher.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                                 <div class="info">
                                     <h3>Burghers</h3>
                                     <small>Avg price $55</small>
@@ -140,7 +140,7 @@
                         <a href="grid-listing-filterscol.html">
                             <figure>
                                 <span>55</span>
-                                <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_vegetarian.jpg" alt="" class="owl-lazy" width="350" height="450">
+                                <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_vegetarian.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                                 <div class="info">
                                     <h3>Vegetarian</h3>
                                     <small>Avg price $40</small>
@@ -152,7 +152,7 @@
                         <a href="grid-listing-filterscol.html">
                             <figure>
                                 <span>65</span>
-                                <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_bakery.jpg" alt="" class="owl-lazy" width="350" height="450">
+                                <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_bakery.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                                 <div class="info">
                                     <h3>Bakery</h3>
                                     <small>Avg price $60</small>
@@ -164,7 +164,7 @@
                         <a href="grid-listing-filterscol.html">
                             <figure>
                                 <span>25</span>
-                                <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_chinesse.jpg" alt="" class="owl-lazy" width="350" height="450">
+                                <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_chinesse.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                                 <div class="info">
                                     <h3>Chinese</h3>
                                     <small>Avg price $40</small>
@@ -176,7 +176,7 @@
                         <a href="grid-listing-filterscol.html">
                             <figure>
                                 <span>35</span>
-                                <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_mexican.jpg" alt="" class="owl-lazy" width="350" height="450">
+                                <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_mexican.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                                 <div class="info">
                                     <h3>Mexican</h3>
                                     <small>Avg price $35</small>
@@ -198,7 +198,7 @@
                         <div class="col-md-6">
                             <div class="box_info_1 pr-lg-3">
                                 <div class="wrapper_img">
-                                    <figure><img src="img/lazy-placeholder-600-400.png" data-src="img/submit_restaurant_home.jpg" alt="" class="img-fluid lazy"></figure><span></span>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-600-400.png') }}" data-src="{{ asset('frontend/img/submit_restaurant_home.jpg') }}" alt="" class="img-fluid lazy"></figure><span></span>
                                 </div>
                                 <h3>Add Your Restaurant</h3>
                                 <p>Neque sodales ut etiam sit amet nisl purus in. Et leo duis ut diam. Tristique senectus et netus et malesuada. Est ultricies integer quis auctor elit.</p>
@@ -208,7 +208,7 @@
                         <div class="col-md-6 ">
                             <div class="box_info_1 pl-lg-3">
                                 <div class="wrapper_img">
-                                    <figure><img src="img/lazy-placeholder-600-400.png" data-src="img/submit_rider_home.jpg" alt="" class="img-fluid lazy"></figure><span></span>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-600-400.png') }}" data-src="{{ asset('frontend/img/submit_rider_home.jpg') }}" alt="" class="img-fluid lazy"></figure><span></span>
                                 </div>
                                 <h3>Become a Rider</h3>
                                 <p>Pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies. Diam maecenas ultricies mi eget mauris pharetra et ultrices neque. Id leo in vitae massa sed duis diam.</p>

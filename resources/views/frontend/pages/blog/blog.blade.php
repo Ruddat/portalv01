@@ -34,7 +34,7 @@
 						<div class="col-md-6">
 							<article class="blog">
 								<figure>
-									<a href="{{ url('/blog-post') }}"><img src="img/blog-1.jpg" alt="">
+									<a href="{{ url('/blog-post') }}"><img src="{{ asset('frontend/img/blog-1.jpg') }}" alt="">
 										<div class="preview"><span>Read more</span></div>
 									</a>
 								</figure>
@@ -44,7 +44,7 @@
 									<p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 									<ul>
 										<li>
-											<div class="thumb"><img src="img/avatar.jpg" alt=""></div> Admin
+											<div class="thumb"><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></div> Admin
 										</li>
 										<li><i class="icon_comment_alt"></i>20</li>
 									</ul>
@@ -56,7 +56,7 @@
 						<div class="col-md-6">
 							<article class="blog">
 								<figure>
-									<a href="{{ url('/blog-post') }}"><img src="img/blog-2.jpg" alt="">
+									<a href="{{ url('/blog-post') }}"><img src="{{ asset('frontend/img/blog-2.jpg') }}" alt="">
 										<div class="preview"><span>Read more</span></div>
 									</a>
 								</figure>
@@ -66,7 +66,7 @@
 									<p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 									<ul>
 										<li>
-											<div class="thumb"><img src="img/avatar.jpg" alt=""></div> Admin
+											<div class="thumb"><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></div> Admin
 										</li>
 										<li><i class="icon_comment_alt"></i>20</li>
 									</ul>
@@ -78,7 +78,7 @@
 						<div class="col-md-6">
 							<article class="blog">
 								<figure>
-									<a href="{{ url('/blog-post') }}"><img src="img/blog-3.jpg" alt="">
+									<a href="{{ url('/blog-post') }}"><img src="{{ asset('frontend/img/blog-3.jpg') }}" alt="">
 										<div class="preview"><span>Read more</span></div>
 									</a>
 								</figure>
@@ -88,7 +88,7 @@
 									<p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 									<ul>
 										<li>
-											<div class="thumb"><img src="img/avatar.jpg" alt=""></div> Admin
+											<div class="thumb"><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></div> Admin
 										</li>
 										<li><i class="icon_comment_alt"></i>20</li>
 									</ul>
@@ -100,7 +100,7 @@
 						<div class="col-md-6">
 							<article class="blog">
 								<figure>
-									<a href="{{ url('/blog-post') }}"><img src="img/blog-4.jpg" alt="">
+									<a href="{{ url('/blog-post') }}"><img src="{{ asset('frontend/img/blog-4.jpg') }}" alt="">
 										<div class="preview"><span>Read more</span></div>
 									</a>
 								</figure>
@@ -110,7 +110,7 @@
 									<p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 									<ul>
 										<li>
-											<div class="thumb"><img src="img/avatar.jpg" alt=""></div> Admin
+											<div class="thumb"><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></div> Admin
 										</li>
 										<li><i class="icon_comment_alt"></i>20</li>
 									</ul>
@@ -122,7 +122,7 @@
 						<div class="col-md-6">
 							<article class="blog">
 								<figure>
-									<a href="{{ url('/blog-post') }}"><img src="img/blog-5.jpg" alt="">
+									<a href="{{ url('/blog-post') }}"><img src="{{ asset('frontend/img/blog-5.jpg') }}" alt="">
 										<div class="preview"><span>Read more</span></div>
 									</a>
 								</figure>
@@ -132,7 +132,7 @@
 									<p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 									<ul>
 										<li>
-											<div class="thumb"><img src="img/avatar.jpg" alt=""></div> Admin
+											<div class="thumb"><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></div> Admin
 										</li>
 										<li><i class="icon_comment_alt"></i>20</li>
 									</ul>
@@ -144,7 +144,7 @@
 						<div class="col-md-6">
 							<article class="blog">
 								<figure>
-									<a href="{{ url('/blog-post') }}"><img src="img/blog-6.jpg" alt="">
+									<a href="{{ url('/blog-post') }}"><img src="{{ asset('frontend/img/blog-6.jpg') }}" alt="">
 										<div class="preview"><span>Read more</span></div>
 									</a>
 								</figure>
@@ -154,7 +154,7 @@
 									<p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 									<ul>
 										<li>
-											<div class="thumb"><img src="img/avatar.jpg" alt=""></div> Admin
+											<div class="thumb"><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></div> Admin
 										</li>
 										<li><i class="icon_comment_alt"></i>20</li>
 									</ul>
@@ -187,21 +187,21 @@
 						<ul class="comments-list">
 							<li>
 								<div class="alignleft">
-									<a href="#0"><img src="img/blog-5.jpg" alt=""></a>
+									<a href="#0"><img src="{{ asset('frontend/img/blog-5.jpg') }}" alt=""></a>
 								</div>
 								<small>Category - 11.08.2016</small>
 								<h3><a href="#" title="">Verear qualisque ex minimum...</a></h3>
 							</li>
 							<li>
 								<div class="alignleft">
-									<a href="#0"><img src="img/blog-6.jpg" alt=""></a>
+									<a href="#0"><img src="{{ asset('frontend/img/blog-6.jpg') }}" alt=""></a>
 								</div>
 								<small>Category - 11.08.2016</small>
 								<h3><a href="#" title="">Verear qualisque ex minimum...</a></h3>
 							</li>
 							<li>
 								<div class="alignleft">
-									<a href="#0"><img src="img/blog-4.jpg" alt=""></a>
+									<a href="#0"><img src="{{ asset('frontend/img/blog-4.jpg') }}" alt=""></a>
 								</div>
 								<small>Category - 11.08.2016</small>
 								<h3><a href="#" title="">Verear qualisque ex minimum...</a></h3>

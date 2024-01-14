@@ -7,21 +7,23 @@
 
     <body>
 
-        @include('frontend.includes.headerblack')
+        @include('frontend.includes.header-clearfix-element-to-stick')
 
-        <div class="hero_single version_1">
-            <div class="opacity-mask">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-7 col-lg-8">
-                            <h1>Delivery or Takeaway Food</h1>
-                            <p>The best restaurants at the best price</p>
-                            <form method="post" action="grid-listing-filterscol.html">
+        <div class="header-video">
+            <div id="hero_video">
+                <div class="shape_element one"></div>
+                <div class="shape_element two"></div>
+                <div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+                    <div class="container">
+                        <div class="row justify-content-center text-center">
+                            <div class="col-xl-7 col-lg-8 col-md-8">
+                                <h1>Delivery or Takeaway Food</h1>
+                                <p>The best restaurants at the best price</p>
+                                <form method="post" action="grid-listing-filterscol.html">
                                 <div class="row g-0 custom-search-input">
                                     <div class="col-lg-10">
                                         <div class="form-group">
-                                            <input class="form-control no_border_r" type="text" id="autocomplete"
-                                                placeholder="Address, neighborhood...">
+                                            <input class="form-control no_border_r" type="text" id="autocomplete" placeholder="Address, neighborhood...">
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
@@ -39,14 +41,15 @@
                                     </ul>
                                 </div>
                             </form>
+                            </div>
                         </div>
                     </div>
-                    <!-- /row -->
                 </div>
             </div>
+            <img src="{{ asset('frontend/img/video_fix.png') }}" alt="" class="header-video--media" data-video-src="video/intro" data-teaser-source="video/intro" data-provider="" data-video-width="1920" data-video-height="960">
             <div class="wave hero"></div>
         </div>
-        <!-- /hero_single -->
+        <!-- /header-video -->
 
         <div class="container margin_30_60">
             <div class="main_title center">
@@ -61,8 +64,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>98</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_pizza.jpg') }}" alt=""
-                                class="owl-lazy" width="350" height="450">
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_pizza.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Pizza</h3>
                                 <small>Avg price $40</small>
@@ -74,8 +76,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>87</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_sushi.jpg') }}" alt=""
-                                class="owl-lazy" width="350" height="450">
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_sushi.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Japanese</h3>
                                 <small>Avg price $50</small>
@@ -87,8 +88,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>55</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_hamburgher.jpg') }}" alt=""
-                                class="owl-lazy" width="350" height="450">
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_hamburgher.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Burghers</h3>
                                 <small>Avg price $55</small>
@@ -100,8 +100,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>55</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_vegetarian.jpg') }}" alt=""
-                                class="owl-lazy" width="350" height="450">
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_vegetarian.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Vegetarian</h3>
                                 <small>Avg price $40</small>
@@ -113,8 +112,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>65</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_bakery.jpg') }}" alt=""
-                                class="owl-lazy" width="350" height="450">
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_bakery.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Bakery</h3>
                                 <small>Avg price $60</small>
@@ -126,8 +124,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>25</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_chinesse.jpg') }}" alt=""
-                                class="owl-lazy" width="350" height="450">
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_chinesse.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Chinese</h3>
                                 <small>Avg price $40</small>
@@ -139,8 +136,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>35</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_mexican.jpg') }}" alt=""
-                                class="owl-lazy" width="350" height="450">
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_mexican.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Mexican</h3>
                                 <small>Avg price $35</small>
@@ -168,8 +164,7 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_1.jpg') }}"
-                                                alt="" class="lazy" width="350" height="233">
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_1.jpg') }}" alt="" class="lazy" width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>9.5</strong></div>
                                         <em>Italian</em>
@@ -184,9 +179,7 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_2.jpg') }}" alt="" class="lazy"
-                                                width="350" height="233">
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_2.jpg') }}" alt="" class="lazy" width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>8.0</strong></div>
                                         <em>Mexican</em>
@@ -201,9 +194,7 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_3.jpg') }}" alt="" class="lazy"
-                                                width="350" height="233">
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_3.jpg') }}" alt="" class="lazy" width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>9.0</strong></div>
                                         <em>Sushi - Japanese</em>
@@ -224,9 +215,7 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_4.jpg') }}" alt="" class="lazy"
-                                                width="350" height="233">
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_4.jpg') }}" alt="" class="lazy" width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>9.5</strong></div>
                                         <em>Vegetarian</em>
@@ -241,9 +230,7 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_5.jpg') }}" alt="" class="lazy"
-                                                width="350" height="233">
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_5.jpg') }}" alt="" class="lazy" width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>8.0</strong></div>
                                         <em>Chinese</em>
@@ -258,9 +245,7 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_6.jpg') }}" alt="" class="lazy"
-                                                width="350" height="233">
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_6.jpg') }}" alt="" class="lazy" width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>8.5</strong></div>
                                         <em>Pizza - Italian</em>
@@ -277,7 +262,7 @@
                     </div>
                 </div>
                 <!-- /row -->
-                <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }}">
+                <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }})">
                     <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
                         <div>
                             <small>FooYes Delivery</small>
@@ -300,32 +285,25 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_1.svg') }}"
-                                            alt="" width="150" height="167" class="lazy"></figure>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_1.svg') }}" alt="" width="150" height="167" class="lazy"></figure>
                                     <h3>Easly Order</h3>
-                                    <p>Faucibus ante, in porttitor tellus blandit et. Phasellus tincidunt metus lectus
-                                        sollicitudin.</p>
+                                    <p>Faucibus ante, in porttitor tellus blandit et. Phasellus tincidunt metus lectus sollicitudin.</p>
                                 </div>
                                 <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_2.svg') }}"
-                                            alt="" width="130" height="145" class="lazy"></figure>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_2.svg') }}" alt="" width="130" height="145" class="lazy"></figure>
                                     <h3>Quick Delivery</h3>
-                                    <p>Maecenas pulvinar, risus in facilisis dignissim, quam nisi hendrerit nulla, id
-                                        vestibulum.</p>
+                                    <p>Maecenas pulvinar, risus in facilisis dignissim, quam nisi hendrerit nulla, id vestibulum.</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 align-self-center">
                                 <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_3.svg') }}"
-                                            alt="" width="150" height="132" class="lazy"></figure>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_3.svg') }}" alt="" width="150" height="132" class="lazy"></figure>
                                     <h3>Enjoy Food</h3>
-                                    <p>Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, a feugiat
-                                        eros.</p>
+                                    <p>Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, a feugiat eros.</p>
                                 </div>
                             </div>
                         </div>
-                        <p class="text-center mt-3 d-block d-lg-none"><a href="#0"
-                                class="btn_1 medium gradient pulse_bt mt-2">Register Now!</a></p>
+                        <p class="text-center mt-3 d-block d-lg-none"><a href="#0" class="btn_1 medium gradient pulse_bt mt-2">Register Now!</a></p>
                     </div>
                     <div class="col-lg-5 offset-lg-1 align-self-center">
                         <div class="intro_txt">
@@ -333,10 +311,8 @@
                                 <span><em></em></span>
                                 <h2>Start Ordering Now</h2>
                             </div>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet libero
-                                id nisi euismod, sed porta est consectetur deserunt.</p>
-                            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                pariatur.</p>
+                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet libero id nisi euismod, sed porta est consectetur deserunt.</p>
+                            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                             <p><a href="#0" class="btn_1 medium gradient pulse_bt mt-2">Register</a></p>
                         </div>
                     </div>
@@ -347,31 +323,43 @@
 
 
         @push('specific-scripts')
-            <!-- Autocomplete -->
-            <script>
-                function initMap() {
-                    var input = document.getElementById('autocomplete');
-                    var autocomplete = new google.maps.places.Autocomplete(input);
+<!-- Video header -->
+<script src="{{ asset('frontend/js/modernizr.min.js') }}"></script>
+<script src="{{ asset('frontend/js/video_header.min.js') }}"></script>
 
-                    autocomplete.addListener('place_changed', function() {
-                        var place = autocomplete.getPlace();
-                        if (!place.geometry) {
-                            window.alert("Autocomplete's returned place contains no geometry");
-                            return;
-                        }
+<script>
+    HeaderVideo.init({
+        container: $('.header-video'),
+        header: $('.header-video--media'),
+        videoTrigger: $("#video-trigger"),
+        autoPlayVideo: true
+    });
+</script>
 
-                        var address = '';
-                        if (place.address_components) {
-                            address = [
-                                (place.address_components[0] && place.address_components[0].short_name || ''),
-                                (place.address_components[1] && place.address_components[1].short_name || ''),
-                                (place.address_components[2] && place.address_components[2].short_name || '')
-                            ].join(' ');
-                        }
-                    });
-                }
-            </script>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap">
-            </script>
+<!-- Autocomplete -->
+<script>
+function initMap() {
+    var input = document.getElementById('autocomplete');
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+    autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+            window.alert("Autocomplete's returned place contains no geometry");
+            return;
+        }
+
+        var address = '';
+        if (place.address_components) {
+            address = [
+                (place.address_components[0] && place.address_components[0].short_name || ''),
+                (place.address_components[1] && place.address_components[1].short_name || ''),
+                (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+        }
+    });
+}
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap"></script>
         @endpush
     @endsection

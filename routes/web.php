@@ -25,6 +25,13 @@ Route::get('/index-2', function () {
     return view('frontend/pages/index.index-2');
 });
 
+Route::get('/index-3', function () {
+    return view('frontend/pages/index.index-3');
+});
+
+Route::get('/index-4', function () {
+    return view('frontend/pages/index.index-4');
+});
 
 Route::get('/blog', function () {
     return view('frontend/pages/blog.blog');

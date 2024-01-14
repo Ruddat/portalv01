@@ -1,8 +1,8 @@
 <header class="header black_nav clearfix element_to_stick">
     <div class="container">
         <div id="logo">
-            <a href="index.html">
-                <img src="img/logo_sticky.svg" width="162" height="35" alt="">
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="162" height="35" alt="">
             </a>
         </div>
         <div class="layer"></div><!-- Opacity Mask Menu Mobile -->
@@ -19,17 +19,17 @@
                 <a href="#0" class="open_close">
                     <i class="icon_close"></i><span>Menu</span>
                 </a>
-                <a href="index.html"><img src="img/logo.svg" width="162" height="35" alt=""></a>
+                <a href="{{ url('/') }}"><img src="{{ asset('frontend/img/logo.svg') }}" width="162" height="35" alt=""></a>
             </div>
             <ul>
                 <li class="submenu">
                     <a href="#0" class="show-submenu">Home</a>
                     <ul>
                         <li><a href="index-13.html">KenBurns Slider <strong>New!</strong></a></li>
-                        <li><a href="index.html">Address Autocomplete</a></li>
+                        <li><a href="{{ url('/index') }}">Address Autocomplete</a></li>
                         <li><a href="{{ url('/index-2') }}">Search by Keyword</a></li>
-                        <li><a href="index-3.html">Home Version 2</a></li>
-                        <li><a href="index-4.html">Video Bg Fallback Mobile</a></li>
+                        <li><a href="{{ url('/index-3') }}">Home Version 2</a></li>
+                        <li><a href="{{ url('/index-4') }}">Video Bg Fallback Mobile</a></li>
                         <li class="third-level"><a href="#0">Sliders - Parallax <strong>New!</strong></a>
                             <ul>
                                 <li><a href="index-6.html">Owl Carousel</a></li>

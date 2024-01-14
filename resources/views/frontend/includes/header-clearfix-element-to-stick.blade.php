@@ -1,8 +1,9 @@
-<header class="header_in clearfix">
+<header class="header clearfix element_to_stick">
     <div class="container">
         <div id="logo">
-            <a href="index.html">
-                <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="140" height="35" alt="">
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('frontend/img/logo.svg') }}" width="162" height="35" alt="" class="logo_normal">
+                <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="162" height="35" alt="" class="logo_sticky">
             </a>
         </div>
         <div class="layer"></div><!-- Opacity Mask Menu Mobile -->
@@ -14,19 +15,19 @@
         <a href="#0" class="open_close">
             <i class="icon_menu"></i><span>Menu</span>
         </a>
-       <nav class="main-menu">
+        <nav class="main-menu">
             <div id="header_menu">
                 <a href="#0" class="open_close">
                     <i class="icon_close"></i><span>Menu</span>
                 </a>
-                <a href="index.html"><img src="{{ asset('frontend/img/logo.svg') }}" width="162" height="35" alt=""></a>
+                <a href="{{ url('/') }}"><img src="{{ asset('frontend/img/logo.svg') }}" width="162" height="35" alt=""></a>
             </div>
             <ul>
                <li class="submenu">
                     <a href="#0" class="show-submenu">Home</a>
                     <ul>
                         <li><a href="index-13.html">KenBurns Slider <strong>New!</strong></a></li>
-                        <li><a href="index.html">Address Autocomplete</a></li>
+                        <li><a href="{{ url('/') }}">Address Autocomplete</a></li>
                         <li><a href="index-2.html">Search by Keyword</a></li>
                         <li><a href="index-3.html">Home Version 2</a></li>
                         <li><a href="index-4.html">Video Bg Fallback Mobile</a></li>
