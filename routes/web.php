@@ -13,9 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend/pages/index.index');
 });
+
+Route::get('/index-2', function () {
+    return view('frontend/pages/index.index-2');
+});
+
+
+Route::get('/blog', function () {
+    return view('frontend/pages/blog.blog');
+});
+
+Route::get('/blog-post', function () {
+    return view('frontend/pages/blog.blog-post');
+});
+
 
 Route::middleware([
     'auth:sanctum',
