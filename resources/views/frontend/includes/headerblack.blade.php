@@ -25,23 +25,23 @@
                 <li class="submenu">
                     <a href="#0" class="show-submenu">Home</a>
                     <ul>
-                        <li><a href="index-13.html">KenBurns Slider <strong>New!</strong></a></li>
+                        <li><a href="{{ url('/index-13') }}">KenBurns Slider <strong>New!</strong></a></li>
                         <li><a href="{{ url('/index') }}">Address Autocomplete</a></li>
                         <li><a href="{{ url('/index-2') }}">Search by Keyword</a></li>
                         <li><a href="{{ url('/index-3') }}">Home Version 2</a></li>
                         <li><a href="{{ url('/index-4') }}">Video Bg Fallback Mobile</a></li>
                         <li class="third-level"><a href="#0">Sliders - Parallax <strong>New!</strong></a>
                             <ul>
-                                <li><a href="index-6.html">Owl Carousel</a></li>
-                                <li><a href="index-7.html">Revolution Slider 1</a></li>
-                                <li><a href="index-8.html">Revolution Slider 2</a></li>
-                                <li><a href="index-9.html">Youtube/Vimeo Parallax</a></li>
-                                <li><a href="index-10.html">MP4 Video Parallax</a></li>
-                                <li><a href="index-11.html">Parallax Image</a></li>
+                                <li><a href="{{ url('/index-6') }}">Owl Carousel</a></li>
+                                <li><a href="{{ url('/index-7') }}">Revolution Slider 1</a></li>
+                                <li><a href="{{ url('/index-8') }}">Revolution Slider 2</a></li>
+                                <li><a href="{{ url('/index-9') }}">Youtube/Vimeo Parallax</a></li>
+                                <li><a href="{{ url('/index-10') }}">MP4 Video Parallax</a></li>
+                                <li><a href="{{ url('/index-11') }}">Parallax Image</a></li>
                             </ul>
                         </li>
-                        <li><a href="index-12.html">Text Rotator <strong>New!</strong></a></li>
-                        <li><a href="index-5.html">GDPR Cookie Bar EU Law</a></li>
+                        <li><a href="{{ url('/index-12') }}">Text Rotator <strong>New!</strong></a></li>
+                        <li><a href="{{ url('/index-5') }}">GDPR Cookie Bar EU Law</a></li>
                         <li><a href="header-user-logged.html">Header User Logged</a></li>
                         <li><a href="header-cart-top.html">Header Cart Top</a></li>
                         <li><a href="modal-advertise.html">Modal 1 Cookie Session</a></li>

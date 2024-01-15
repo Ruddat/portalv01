@@ -33,6 +33,47 @@ Route::get('/index-4', function () {
     return view('frontend/pages/index.index-4');
 });
 
+
+Route::get('/index-5', function () {
+    return view('frontend/pages/index.index-5');
+});
+
+
+Route::get('/index-6', function () {
+    return view('frontend/pages/index.index-6');
+});
+
+
+Route::get('/index-7', function () {
+    return view('frontend/pages/index.index-7');
+});
+
+Route::get('/index-8', function () {
+    return view('frontend/pages/index.index-8');
+});
+
+Route::get('/index-9', function () {
+    return view('frontend/pages/index.index-9');
+});
+
+Route::get('/index-10', function () {
+    return view('frontend/pages/index.index-10');
+});
+
+Route::get('/index-11', function () {
+    return view('frontend/pages/index.index-11');
+});
+
+Route::get('/index-12', function () {
+    return view('frontend/pages/index.index-12');
+});
+
+Route::get('/index-13', function () {
+    return view('frontend/pages/index.index-13');
+});
+
+
+
 Route::get('/blog', function () {
     return view('frontend/pages/blog.blog');
 });
