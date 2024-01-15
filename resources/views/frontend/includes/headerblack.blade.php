@@ -26,7 +26,7 @@
                     <a href="#0" class="show-submenu">Home</a>
                     <ul>
                         <li><a href="{{ url('/index-13') }}">KenBurns Slider <strong>New!</strong></a></li>
-                        <li><a href="{{ url('/index') }}">Address Autocomplete</a></li>
+                        <li><a href="{{ url('/') }}">Address Autocomplete</a></li>
                         <li><a href="{{ url('/index-2') }}">Search by Keyword</a></li>
                         <li><a href="{{ url('/index-3') }}">Home Version 2</a></li>
                         <li><a href="{{ url('/index-4') }}">Video Bg Fallback Mobile</a></li>
@@ -61,10 +61,10 @@
                         </li>
                         <li class="third-level"><a href="#0">Detail pages</a>
                             <ul>
-                                <li><a href="detail-restaurant.html">Detail page 1</a></li>
-                                <li><a href="detail-restaurant-2.html">Detail page 2</a></li>
-                                <li><a href="detail-restaurant-3.html">Detail page 3</a></li>
-                                <li><a href="detail-restaurant-4.html">Detail page 4</a></li>
+                                <li><a href="{{ url('/detail-restaurant') }}">Detail page 1</a></li>
+                                <li><a href="{{ url('/detail-restaurant-2') }}">Detail page 2</a></li>
+                                <li><a href="{{ url('/detail-restaurant-3') }}">Detail page 3</a></li>
+                                <li><a href="{{ url('/detail-restaurant-4') }}">Detail page 4</a></li>
                             </ul>
                         </li>
                         <li class="third-level"><a href="#0">OpenStreetMap</a>

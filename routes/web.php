@@ -72,7 +72,21 @@ Route::get('/index-13', function () {
     return view('frontend/pages/index.index-13');
 });
 
+Route::get('/detail-restaurant', function () {
+    return view('frontend/pages/detailrestaurant.detail-restaurant');
+});
 
+Route::get('/detail-restaurant-2', function () {
+    return view('frontend/pages/detailrestaurant.detail-restaurant-2');
+});
+
+Route::get('/detail-restaurant-3', function () {
+    return view('frontend/pages/detailrestaurant.detail-restaurant-3');
+});
+
+Route::get('/detail-restaurant-4', function () {
+    return view('frontend/pages/detailrestaurant.detail-restaurant-4');
+});
 
 Route::get('/blog', function () {
     return view('frontend/pages/blog.blog');
