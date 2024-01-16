@@ -97,6 +97,60 @@ Route::get('/blog-post', function () {
 });
 
 
+Route::get('/grid-listing-filterscol', function () {
+    return view('frontend/pages/listingrestaurant.grid-listing-filterscol');
+});
+
+Route::get('/grid-listing-filterscol-map', function () {
+    return view('frontend/pages/listingrestaurant.grid-listing-filterscol-map');
+});
+
+
+Route::get('/grid-listing-masonry', function () {
+    return view('frontend/pages/listingrestaurant.grid-listing-masonry');
+});
+
+Route::get('/listing-map', function () {
+    return view('frontend/pages/listingrestaurant.listing-map');
+});
+
+Route::get('/grid-listing-filterscol-openstreetmap', function () {
+    return view('frontend/pages/listingrestaurantopenstreet.grid-listing-filterscol-openstreetmap');
+});
+
+Route::get('/listing-map-openstreetmap', function () {
+    return view('frontend/pages/listingrestaurantopenstreet.listing-map-openstreetmap');
+});
+
+Route::get('/grid-listing-masonry-openstreetmap', function () {
+    return view('frontend/pages/listingrestaurantopenstreet.grid-listing-masonry-openstreetmap');
+});
+
+Route::get('/leave-review', function () {
+    return view('frontend/pages/otherpages/leave-review');
+});
+
+Route::get('/submit-restaurant', function () {
+    return view('frontend/pages/otherpages/submit-restaurant');
+});
+
+Route::get('/register', function () {
+    return view('frontend/pages/otherpages/register');
+});
+
+Route::get('/login', function () {
+    return view('frontend/pages/otherpages/login');
+});
+
+Route::get('/order-details', function () {
+    return view('frontend/pages/cardorder/order-details');
+});
+
+Route::get('/confirm-order', function () {
+    return view('frontend/pages/cardorder/confirm-order');
+});
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

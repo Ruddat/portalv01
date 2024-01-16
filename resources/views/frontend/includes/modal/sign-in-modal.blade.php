@@ -29,7 +29,7 @@
             </div>
             <div class="text-center">
                 <input type="submit" value="Log In" class="btn_1 full-width mb_5">
-                Don’t have an account? <a href="register.html">Sign up</a>
+                Don’t have an account? <a href="{{ url('/register') }}">Sign up</a>
             </div>
             <div id="forgot_pw">
                 <div class="form-group">

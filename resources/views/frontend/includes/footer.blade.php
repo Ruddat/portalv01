@@ -7,10 +7,10 @@
                 <div class="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
                         <li><a href="about.html">About us</a></li>
-                        <li><a href="submit-restaurant.html">Add your restaurant</a></li>
+                        <li><a href="{{ url('/submit-restaurant') }}">Add your restaurant</a></li>
                         <li><a href="help.html">Help</a></li>
                         <li><a href="register.html">My account</a></li>
-                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="{{ url('/blog') }}">Blog</a></li>
                         <li><a href="contacts.html">Contacts</a></li>
                     </ul>
                 </div>
