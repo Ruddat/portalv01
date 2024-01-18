@@ -158,6 +158,11 @@ Route::get('/index-black', function () {
 });
 
 
+Route::get('/index-normal', function () {
+    return view('backend/pages/index/index-normal');
+});
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
