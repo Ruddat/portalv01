@@ -12,7 +12,7 @@
 
 
 
-	    <div class="hero_in detail_page background-image" data-background="url(img/hero_general_2.jpg)">
+	    <div class="hero_in detail_page background-image" data-background="url({{ asset('frontend/img/hero_general_2.jpg') }})">
 	        <div class="wrapper opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
 	            <div class="container">
 	                <div class="main_info">
@@ -27,9 +27,9 @@
 	                        <div class="col-xl-8 col-lg-7 col-md-6 position-relative">
 	                            <div class="buttons clearfix">
 	                                <span class="magnific-gallery">
-	                                    <a href="img/detail_1.jpg" class="btn_hero" title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>View photos</a>
-	                                    <a href="img/detail_2.jpg" title="Photo title" data-effect="mfp-zoom-in"></a>
-	                                    <a href="img/detail_3.jpg" title="Photo title" data-effect="mfp-zoom-in"></a>
+	                                    <a href="{{ asset('frontend/img/detail_1.jpg') }}" class="btn_hero" title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>View photos</a>
+	                                    <a href="{{ asset('frontend/img/detail_2.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"></a>
+	                                    <a href="{{ asset('frontend/img/detail_3.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"></a>
 	                                </span>
 	                                <a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>Wishlist</a>
 	                            </div>
@@ -84,7 +84,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_1.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-1.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-1.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>1. Mexican Enchiladas</h4>
@@ -144,7 +144,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_2.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-2.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-2.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            	</figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>2. Fajitas</h4>
@@ -204,7 +204,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_3.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-3.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_3.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-3.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>3. Royal Fajitas</h4>
@@ -264,7 +264,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_4.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-4.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_4.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-4.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>4. Chicken Enchilada Wrap</h4>
@@ -348,7 +348,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_1.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-5.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-5.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>5. Cheese Quesadilla</h4>
@@ -367,7 +367,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_2.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-6.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-6.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>6. Chorizo & Cheese</h4>
@@ -386,7 +386,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_3.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-7.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_3.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-7.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>7. Beef Taco</h4>
@@ -405,7 +405,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_4.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-8.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_4.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-8.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>8. Minced Beef Double Layer</h4>
@@ -424,7 +424,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_1.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-9.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-9.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>9. Piri Piri Chicken</h4>
@@ -443,7 +443,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_2.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-10.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-10.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>10. Burrito Al Pastor</h4>
@@ -486,7 +486,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                           <figure>
-	                                            	<a href="img/menu_item_large_1.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-17.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-17.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>11. Chocolate Fudge Cake</h4>
@@ -505,7 +505,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_2.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-18.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-18.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>12. Cheesecake</h4>
@@ -524,7 +524,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_3.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-19.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_3.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-19.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>19. Apple Pie & Custard</h4>
@@ -543,7 +543,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_4.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-20.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_4.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-20.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>14. Profiteroles</h4>
@@ -586,7 +586,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_1.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-15.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-15.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>15. Coca Cola</h4>
@@ -605,7 +605,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_2.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-16.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-16.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>16. Beer Corona</h4>
@@ -624,7 +624,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_3.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-17.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_3.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-17.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>17. Red Wine</h4>
@@ -643,7 +643,7 @@
 	                                    <tr>
 	                                        <td class="d-md-flex align-items-center">
 	                                            <figure>
-	                                            	<a href="img/menu_item_large_4.jpg" title="Photo title" data-effect="mfp-zoom-in"><img src="img/menu-thumb-placeholder.jpg" data-src="img/menu-thumb-18.jpg" alt="thumb" class="lazy"></a>
+	                                            	<a href="{{ asset('frontend/img/menu_item_large_4.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-18.jpg') }}" alt="thumb" class="lazy"></a>
 	                                            </figure>
 	                                            <div class="flex-md-column">
 	                                                <h4>18. White Wine</h4>
@@ -859,7 +859,7 @@
 	                        <div class="review_card">
 	                            <div class="row">
 	                                <div class="col-md-2 user_info">
-	                                    <figure><img src="img/avatar4.jpg" alt=""></figure>
+	                                    <figure><img src="{{ asset('frontend/img/avatar4.jpg') }}" alt=""></figure>
 	                                    <h5>Lukas</h5>
 	                                </div>
 	                                <div class="col-md-10 review_content">
@@ -882,7 +882,7 @@
 	                        <div class="review_card">
 	                            <div class="row">
 	                                <div class="col-md-2 user_info">
-	                                    <figure><img src="img/avatar1.jpg" alt=""></figure>
+	                                    <figure><img src="{{ asset('frontend/img/avatar1.jpg') }}" alt=""></figure>
 	                                    <h5>Marika</h5>
 	                                </div>
 	                                <div class="col-md-10 review_content">
@@ -902,7 +902,7 @@
 	                            <!-- /row -->
 	                            <div class="row reply">
 	                                <div class="col-md-2 user_info">
-	                                    <figure><img src="img/avatar.jpg" alt=""></figure>
+	                                    <figure><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></figure>
 	                                </div>
 	                                <div class="col-md-10">
 	                                    <div class="review_content">
@@ -924,7 +924,7 @@
 	        </div>
 	    </div>
 	    <!-- /container -->
-        
+
         <div id="message">Item added to cart</div><!-- Add to cart message -->
 
 <!-- Modal item order -->
