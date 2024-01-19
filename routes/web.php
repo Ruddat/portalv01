@@ -142,6 +142,10 @@ Route::get('/login', function () {
     return view('frontend/pages/otherpages/login');
 });
 
+Route::get('/contacts', function () {
+    return view('frontend/pages/otherpages/contacts');
+});
+
 Route::get('/order-details', function () {
     return view('frontend/pages/cardorder/order-details');
 });
@@ -152,6 +156,7 @@ Route::get('/confirm-order', function () {
 
 
 
+<<<<<<< HEAD
 
 Route::get('/index-black', function () {
     return view('backend/pages/index/index-black');
@@ -163,6 +168,8 @@ Route::get('/index-normal', function () {
 });
 
 
+=======
+>>>>>>> frontendtemplate
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
