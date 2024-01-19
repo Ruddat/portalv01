@@ -62,7 +62,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>98</span>
-                            <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_pizza.jpg" alt=""
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_pizza.jpg') }}" alt=""
                                 class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Pizza</h3>
@@ -75,7 +75,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>87</span>
-                            <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_sushi.jpg" alt=""
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_sushi.jpg') }}" alt=""
                                 class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Japanese</h3>
@@ -88,7 +88,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>55</span>
-                            <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_hamburgher.jpg" alt=""
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_hamburgher.jpg') }}" alt=""
                                 class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Burghers</h3>
@@ -101,7 +101,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>55</span>
-                            <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_vegetarian.jpg" alt=""
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_vegetarian.jpg') }}" alt=""
                                 class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Vegetarian</h3>
@@ -114,7 +114,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>65</span>
-                            <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_bakery.jpg" alt=""
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_bakery.jpg') }}" alt=""
                                 class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Bakery</h3>
@@ -127,7 +127,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>25</span>
-                            <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_chinesse.jpg" alt=""
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_chinesse.jpg') }}" alt=""
                                 class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Chinese</h3>
@@ -140,7 +140,7 @@
                     <a href="grid-listing-filterscol.html">
                         <figure>
                             <span>35</span>
-                            <img src="img/home_cat_placeholder.jpg" data-src="img/home_cat_mexican.jpg" alt=""
+                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_mexican.jpg') }}" alt=""
                                 class="owl-lazy" width="350" height="450">
                             <div class="info">
                                 <h3>Mexican</h3>
@@ -169,7 +169,7 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="img/location_list_placeholder.png" data-src="img/location_list_1.jpg"
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_1.jpg') }}"
                                                 alt="" class="lazy" width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>9.5</strong></div>
@@ -185,8 +185,8 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="img/location_list_placeholder.png"
-                                                data-src="img/location_list_2.jpg" alt="" class="lazy"
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
+                                                data-src="{{ asset('frontend/img/location_list_2.jpg') }}" alt="" class="lazy"
                                                 width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>8.0</strong></div>
@@ -202,8 +202,8 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="img/location_list_placeholder.png"
-                                                data-src="img/location_list_3.jpg" alt="" class="lazy"
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
+                                                data-src="{{ asset('frontend/img/location_list_3.jpg') }}" alt="" class="lazy"
                                                 width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>9.0</strong></div>
@@ -225,8 +225,8 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="img/location_list_placeholder.png"
-                                                data-src="img/location_list_4.jpg" alt="" class="lazy"
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
+                                                data-src="{{ asset('frontend/img/location_list_4.jpg') }}" alt="" class="lazy"
                                                 width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>9.5</strong></div>
@@ -242,8 +242,8 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="img/location_list_placeholder.png"
-                                                data-src="img/location_list_5.jpg" alt="" class="lazy"
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
+                                                data-src="{{ asset('frontend/img/location_list_5.jpg') }}" alt="" class="lazy"
                                                 width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>8.0</strong></div>
@@ -259,8 +259,8 @@
                                 <li>
                                     <a href="detail-restaurant.html">
                                         <figure>
-                                            <img src="img/location_list_placeholder.png"
-                                                data-src="img/location_list_6.jpg" alt="" class="lazy"
+                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
+                                                data-src="{{ asset('frontend/img/location_list_6.jpg') }}" alt="" class="lazy"
                                                 width="350" height="233">
                                         </figure>
                                         <div class="score"><strong>8.5</strong></div>
@@ -278,7 +278,7 @@
                     </div>
                 </div>
                 <!-- /row -->
-                <div class="banner lazy" data-bg="url(img/banner_bg_desktop.jpg)">
+                <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }})">
                     <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
                         <div>
                             <small>FooYes Delivery</small>
@@ -301,14 +301,14 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="box_how">
-                                    <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_1.svg"
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_1.svg') }}"
                                             alt="" width="150" height="167" class="lazy"></figure>
                                     <h3>Easly Order</h3>
                                     <p>Faucibus ante, in porttitor tellus blandit et. Phasellus tincidunt metus lectus
                                         sollicitudin.</p>
                                 </div>
                                 <div class="box_how">
-                                    <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_2.svg"
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_2.svg') }}"
                                             alt="" width="130" height="145" class="lazy"></figure>
                                     <h3>Quick Delivery</h3>
                                     <p>Maecenas pulvinar, risus in facilisis dignissim, quam nisi hendrerit nulla, id
@@ -317,7 +317,7 @@
                             </div>
                             <div class="col-lg-6 align-self-center">
                                 <div class="box_how">
-                                    <figure><img src="img/lazy-placeholder-100-100-white.png" data-src="img/how_3.svg"
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_3.svg') }}"
                                             alt="" width="150" height="132" class="lazy"></figure>
                                     <h3>Enjoy Food</h3>
                                     <p>Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, a feugiat
