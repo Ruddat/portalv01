@@ -142,6 +142,10 @@ Route::get('/login', function () {
     return view('frontend/pages/otherpages/login');
 });
 
+Route::get('/contacts', function () {
+    return view('frontend/pages/otherpages/contacts');
+});
+
 Route::get('/order-details', function () {
     return view('frontend/pages/cardorder/order-details');
 });
@@ -149,6 +153,7 @@ Route::get('/order-details', function () {
 Route::get('/confirm-order', function () {
     return view('frontend/pages/cardorder/confirm-order');
 });
+
 
 
 Route::middleware([

@@ -72,7 +72,7 @@
             <li><a href="help.html">Help and Faq</a></li>
             <li><a href="{{ url('/blog') }}">Blog</a></li>
             <li><a href="{{ url('/leave-review') }}">Leave a review</a></li>
-            <li><a href="contacts.html">Contacts</a></li>
+            <li><a href="{{ url('/contacts') }}">Contacts</a></li>
             <li><a href="coming_soon/index.html">Coming Soon</a></li>
             <li><a href="{{ url('/login') }}">Sign In</a></li>
             <li><a href="{{ url('/register') }}">Sign Up</a></li>
