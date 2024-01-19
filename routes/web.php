@@ -156,7 +156,6 @@ Route::get('/confirm-order', function () {
 
 
 
-<<<<<<< HEAD
 
 Route::get('/index-black', function () {
     return view('backend/pages/index/index-black');
@@ -168,8 +167,6 @@ Route::get('/index-normal', function () {
 });
 
 
-=======
->>>>>>> frontendtemplate
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
