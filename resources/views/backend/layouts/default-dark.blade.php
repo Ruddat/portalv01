@@ -94,7 +94,7 @@
 																	<div class="card mb-0">
 																		<div class="card-body pb-2 pt-3">
 																			<div class="text-center pop-cousin">
-																				<img src="images/popular-img/pic-1.jpg" alt="">
+																				<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 																				<a href= "javascript:void(0);"><h6>Fish Burger</h6></a>
 																			</div>
 																		</div>
@@ -104,7 +104,7 @@
 																	<div class="card mb-0">
 																		<div class="card-body pb-2 pt-3">
 																			<div class="text-center pop-cousin">
-																				<img src="images/popular-img/pic-1.jpg" alt="">
+																				<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 																				<a href= "javascript:void(0);"><h6>Fish Burger</h6></a>
 																			</div>
 																		</div>
@@ -114,7 +114,7 @@
 																	<div class="card mb-0">
 																		<div class="card-body pb-2 pt-3">
 																			<div class="text-center pop-cousin">
-																				<img src="images/popular-img/pic-1.jpg" alt="">
+																				<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 																				<a href="javascript:void(0);"><h6>Fish Burger</h6></a>
 																			</div>
 																		</div>
@@ -124,7 +124,7 @@
 																	<div class="card mb-0">
 																		<div class="card-body pb-2 pt-3">
 																			<div class="text-center pop-cousin">
-																				<img src="images/popular-img/pic-1.jpg" alt="">
+																				<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 																				<a href="javascript:void(0);"><h6>Fish Burger</h6></a>
 																			</div>
 																		</div>
@@ -134,7 +134,7 @@
 																	<div class="card mb-0">
 																		<div class="card-body pb-2 pt-3">
 																			<div class="text-center pop-cousin">
-																				<img src="images/popular-img/pic-1.jpg" alt="">
+																				<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 																				<a href="javascript:void(0);"><h6>Fish Burger</h6></a>
 																			</div>
 																		</div>
@@ -144,7 +144,7 @@
 																	<div class="card mb-0">
 																		<div class="card-body pb-2 pt-3">
 																			<div class="text-center pop-cousin">
-																				<img src="images/popular-img/pic-1.jpg" alt="">
+																				<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 																				<a href="javascript:void(0);"><h6>Fish Burger</h6></a>
 																			</div>
 																		</div>
@@ -170,7 +170,7 @@
 																		<div class="dropdown header-profile2 ">
 										<a class="nav-link " href="javascript:void(0);"  role="button" data-bs-toggle="dropdown">
 											<div class="header-info2 d-flex align-items-center">
-												<img src="images/banner-img/pic-1.png" alt="">
+												<img src="{{ asset('backend/images/banner-img/pic-1.png') }}" alt="">
 												<div class="d-flex align-items-center sidebar-info">
 													<div>
 														<h6 class="font-w500 mb-0 ms-2">Joshua</h6>
@@ -446,6 +446,11 @@ jQuery(document).ready(function(){
 
 
 </script>
+
+@stack('specific-scripts')
+
+@livewireScripts
+
 
 </body>
 </html>
