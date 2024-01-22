@@ -10,6 +10,27 @@
 							<span class="nav-text">Dashboard</span>
 						</a>
                         <ul aria-expanded="false">
+                            <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Module</a>
+                                <ul aria-expanded="false">
+                                    <li><a href="{{ url('/mod-shops') }}">Mod Shops - Kunden</a></li>
+                                    <li><a href="./email-inbox.html">Kontrollcentern</a></li>
+                                    <li><a href="./email-read.html">Rechnungen</a></li>
+                                </ul>
+                            </li>
+							<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Shop</a>
+                                <ul aria-expanded="false">
+                                    <li><a href="./ecom-product-grid.html">Product Grid</a></li>
+									<li><a href="./ecom-product-list.html">Product List</a></li>
+									<li><a href="./ecom-product-detail.html">Product Details</a></li>
+									<li><a href="./ecom-product-order.html">Order</a></li>
+									<li><a href="./ecom-checkout.html">Checkout</a></li>
+									<li><a href="./ecom-invoice.html">Invoice</a></li>
+									<li><a href="./ecom-customers.html">Customers</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul aria-expanded="false">
 							<li><a href="index.html">Dashboard Light</a></li>
 							<li><a href="index-2.html">Dashboard Dark</a></li>
 							<li><a href="food-order.html">Food Order</a></li>
@@ -20,6 +41,8 @@
 							<li><a href="bill.html">Bill</a></li>
 							<li><a href="setting.html">Setting</a></li>
 						</ul>
+
+
 
                     </li>
 					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">

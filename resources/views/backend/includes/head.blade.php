@@ -30,3 +30,10 @@
 
 	<!-- Global Stylesheet -->
 	<link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
+
+
+    @stack('specific-css')
+
+        <!-- Styles -->
+        @livewireStyles
+        

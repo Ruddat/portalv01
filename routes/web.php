@@ -167,6 +167,15 @@ Route::get('/index-normal', function () {
 });
 
 
+//// Ab hier aktiv
+
+
+Route::get('/mod-shops', function () {
+    return view('backend/pages/shops/mod-shops');
+});
+
+
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -176,3 +185,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
