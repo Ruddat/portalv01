@@ -4,7 +4,9 @@ namespace App\Livewire\Backend;
 
 use App\Models\ModShop;
 use Livewire\Component;
+use Illuminate\Http\Request;
 use Livewire\WithPagination;
+use NominatimLaravel\Content\Nominatim;
 
 class ModShops extends Component
 {
@@ -18,8 +20,10 @@ class ModShops extends Component
     public $orderAsc = false;
     public $minSearchChars = 2;
     public $currentPage = 1;
+    public $editingShopId;
     // Variable, um das Formular anzuzeigen oder zu verstecken
     public $showCreateForm = false;
+    public $showEditForm = false;
     // Setze den Status standardmäßig auf "limited"
     public $status = 'limited';
     // Array mit den Eigenschaften des neuen Shops
@@ -69,31 +73,55 @@ class ModShops extends Component
 
     public function createShop()
     {
-        // Setze die Standardwerte für "status" und "published"
-   //     $this->newShop['status'] = $this->status;
-   //     $this->newShop['published'] = $this->published;
- //  dd($this->status, $this->published);
 
-        // Validiere die Eingabe
-        $this->validate([
-            'newShop.shop_nr' => 'required|numeric',
-            'newShop.title' => 'required',
-            'newShop.email' => 'required|email',
-            'newShop.status' => 'required|in:on,off,closed,limited',
-            'newShop.published' => 'required|in:0,1',
-            // Weitere Validierungsregeln für andere Eigenschaften deines Shop-Modells
-        ]);
+    // Validiere die Eingabe
+    $this->validate([
+        'newShop.shop_nr' => 'required',
+        'newShop.title' => 'required',
+        'newShop.email' => 'required|email',
+        'newShop.status' => 'required|in:on,off,closed,limited',
+        'newShop.published' => 'required|in:0,1',
+        'newShop.street' => 'required',
+        'newShop.zip' => 'required',
+        'newShop.city' => 'required',
+    ]);
 
-        // Füge feste Werte hinzu
-   //     $this->newShop['fixed_property'] = 'Wert1';
-   //     $this->newShop['another_fixed_property'] = 'Wert2';
 
-   //dd($this->newShop);
+    // Kombiniere die Teile der Adresse aus dem Livewire-Daten-Array
+    $street = $this->newShop['street'];
+    $zip = $this->newShop['zip'];
+    $city = $this->newShop['city'];
 
-        // Füge hier die Logik zum Erstellen eines neuen Shops hinzu
+    // Baue die vollständige Adresse
+    $userInput = "$street $zip $city";
+    // $userInput = 'Heidkrugsweg 31, Edemissen'; // Die Adresse, die der Benutzer eingibt
+    //dd($userInput);
+
+    $url = "https://nominatim.openstreetmap.org/";
+    $nominatim = new Nominatim($url);
+
+    $search = $nominatim->newSearch();
+    $search->query($userInput);
+
+    $results = $nominatim->find($search);
+
+    if (!empty($results)) {
+        foreach ($results as $result) {
+        $latitude = $result['lat'];
+        $longitude = $result['lon'];
+   //     echo "Latitude: $latitude, Longitude: $longitude<br>";
+    }
+
+        $this->newShop['lat'] = $latitude;
+        $this->newShop['lng'] = $longitude;
+
+        // Jetzt den Shop speichern
         ModShop::create($this->newShop);
 
-
+    } else {
+        // Keine Ergebnisse gefunden
+        echo "Keine Ergebnisse gefunden für die angegebene Adresse";
+    }
 
         // Zurücksetzen des Formulars und Ausblenden des Formulars nach dem Erstellen
         $this->reset('newShop');
@@ -150,7 +178,9 @@ class ModShops extends Component
 
     public function toggleCreateForm()
     {
+        $this->resetValidation(); // Zurücksetzen der Validierungsfehler
         $this->showCreateForm = !$this->showCreateForm;
+        $this->showEditForm = false;
 
 
                 // Setze die Standardwerte für "status" und "published"
@@ -159,9 +189,9 @@ class ModShops extends Component
 
     // Wenn das Formular angezeigt wird, setze die Kundennummer und deaktiviere das Eingabefeld
     if ($this->showCreateForm) {
-        $timestamp = now()->format('YmdHis');
-        $randomNumber = mt_rand(100, 999); // Ändere die Anzahl der Ziffern nach Bedarf
-        $uniqueCustomerNumber = $timestamp . '-' . substr($randomNumber, 0, 2) . '-' . substr($randomNumber, 2);
+        $timestamp = now()->format('ymdHi');
+        $randomNumber = mt_rand(10, 99);
+        $uniqueCustomerNumber = sprintf('%s-%s', $timestamp, $randomNumber);
         $this->newShop['shop_nr'] = $uniqueCustomerNumber;
 
         // Deaktiviere das Eingabefeld
@@ -215,5 +245,52 @@ class ModShops extends Component
         // Zum Beispiel die Seite neu laden
         $this->dispatch('refreshPage');
     }
+
+
+
+    public function editShop($shopId)
+    {
+        $shop = ModShop::find($shopId);
+
+        if ($shop) {
+            // Setze die Werte im Formular auf die Shop-Daten
+            $this->newShop = $shop->toArray();
+            // Setze die Bearbeitungs-ID
+            $this->editingShopId = $shopId;
+            $this->resetValidation();
+            $this->showEditForm = true;
+            $this->showCreateForm = false;
+        }
+    }
+    public function cancelEditForm()
+    {
+        $this->resetValidation();
+        $this->showEditForm = false;
+        // ... Weitere Codezeilen ...
+    }
+
+public function updateShop()
+{
+    // Validiere die Eingabe
+    $this->validate([
+        'newShop.shop_nr' => 'required',
+        'newShop.title' => 'required',
+        'newShop.email' => 'required|email',
+        'newShop.status' => 'required|in:on,off,closed,limited',
+        'newShop.published' => 'required|in:0,1',
+        // Weitere Validierungsregeln für andere Eigenschaften deines Shop-Modells
+    ]);
+
+    // Füge hier die Logik zum Aktualisieren eines vorhandenen Shops hinzu
+    ModShop::find($this->newShop['id'])->update($this->newShop);
+
+    // Zurücksetzen des Formulars und Ausblenden des Formulars nach dem Aktualisieren
+    $this->reset('newShop');
+    $this->showCreateForm = false;
+    $this->showEditForm = false;
+
+    // Aktualisiere die Tabelle oder führe andere notwendige Aktionen durch
+    $this->dispatch('refreshTable');
+}
 
 }

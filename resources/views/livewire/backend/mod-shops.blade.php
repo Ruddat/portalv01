@@ -6,7 +6,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                @if (!$showCreateForm)
+                @if (!$showCreateForm && !$showEditForm)
                 <div class="mb-3">
                     <div class="input-group">
                         <input wire:model.debounce.100ms="search" wire:input="refreshTable" type="text" class="form-control" placeholder="Search...">
@@ -162,7 +162,7 @@
                             </td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
+                                    <a wire:click="editShop({{ $shop->id }})" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
 <!-- Button zum Löschen eines Geschäfts -->
 <a wire:click="ShopDeletion({{ $shop->id }})" class="btn btn-danger shadow btn-xs sharp">
     <i class="fa fa-trash"></i>
@@ -199,7 +199,11 @@
                 <p>Keine Ergebnisse gefunden.</p>
             @endif
 
-            @else
+            @endif
+
+            @if ($showCreateForm)
+
+
 
             <form wire:submit.prevent="createShop">
 
@@ -285,7 +289,90 @@
 
 
 
+
             @endif
+
+
+
+            @if ($showEditForm)
+            <!-- Shop bearbeiten -->
+            <form wire:submit.prevent="updateShop">
+                <!-- ... Formularfelder für die Bearbeitung ... -->
+
+                <div class="mb-3">
+                    <label for="shop_nr" class="form-label">Kundennummer</label>
+                    <input wire:model="newShop.shop_nr" type="text" class="form-control" id="shop_nr" placeholder="Kundennummer" wire:readonly="showCreateForm" onfocus="this.blur()">
+                    @error('newShop.shop_nr') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="title" class="form-label">Shopname</label>
+                    <input wire:model="newShop.title" type="text" class="form-control" id="title" placeholder="Shopname">
+                    @error('newShop.title') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="street" class="form-label">Straße</label>
+                    <input wire:model="newShop.street" type="text" class="form-control" id="street" placeholder="Straße">
+                    @error('newShop.street') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="zip" class="form-label">PLZ</label>
+                    <input wire:model="newShop.zip" type="text" class="form-control" id="zip" placeholder="PLZ">
+                    @error('newShop.zip') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="city" class="form-label">Ort</label>
+                    <input wire:model="newShop.city" type="text" class="form-control" id="city" placeholder="Ort">
+                    @error('newShop.city') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Telefon</label>
+                    <input wire:model="newShop.phone" type="text" class="form-control" id="phone" placeholder="Telefon">
+                    @error('newShop.phone') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-Mail</label>
+                    <input wire:model="newShop.email" type="text" class="form-control" id="email" placeholder="E-Mail">
+                    @error('newShop.email') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select wire:model="newShop.status" class="form-select" id="status">
+                        <option value="on" @if($this->status === 'on') selected @endif>on</option>
+                        <option value="off" @if($this->status === 'off') selected @endif>off</option>
+                        <option value="limited" @if($this->status === 'limited') selected @endif>limited</option>
+                        <option value="closed" @if($this->status === 'closed') selected @endif>closed</option>
+                    </select>
+                    @error('newShop.status') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="published" class="form-label">Online</label>
+                    <select wire:model="newShop.published" class="form-select" id="published">
+                        <option value="1">Ja</option>
+                        <option value="0">Nein</option>
+                    </select>
+                    @error('newShop.published') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Shop</button>
+                <button type="button" class="btn btn-secondary" wire:click="cancelEditForm">Abbrechen</button>
+            </form>
+        @endif
 
 
             </div>
