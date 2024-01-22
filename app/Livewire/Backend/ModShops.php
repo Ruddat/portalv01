@@ -17,36 +17,27 @@ class ModShops extends Component
     public $orderBy = 'created_at';
     public $orderAsc = false;
     public $minSearchChars = 2;
-    public $showCreateForm = true; // Variable, um das Formular anzuzeigen oder zu verstecken
+    public $currentPage = 1;
+    // Variable, um das Formular anzuzeigen oder zu verstecken
+    public $showCreateForm = false;
+    // Setze den Status standardmäßig auf "limited"
+    public $status = 'limited';
+    // Array mit den Eigenschaften des neuen Shops
+    public $published = 0;
+
 
     public $newShop = [
         'title' => '',
+        'shop_nr' => '',
+        'street' => '',
+        'zip' => '',
+        'city' => '',
         'email' => '',
+        'phone' => '',
+        'status' => '',       // Hier sollte 'status' der Standardwert sein
+        'published' => '',    // Hier sollte 'published' der Standardwert sein
         // Weitere Eigenschaften deines Shop-Modells
     ];
-
-    public function showCreateForm()
-    {
-        $this->showCreateForm = true;
-        // Aktualisiere die Tabelle oder führe andere notwendige Aktionen durch
-        $this->render();
-
-    }
-
-    public function createShop()
-    {
-
-        // Füge hier die Logik zum Erstellen eines neuen Shops hinzu
-        ModShop::create($this->newShop);
-
-        // Zurücksetzen des Formulars und Ausblenden des Formulars nach dem Erstellen
-        $this->reset('newShop');
-        $this->showCreateForm = false;
-
-        // Aktualisiere die Tabelle oder führe andere notwendige Aktionen durch
-        $this->dispatch('refreshTable');
-    }
-
 
     public function render()
     {
@@ -68,6 +59,51 @@ class ModShops extends Component
         }
     }
 
+    public function showCreateForm()
+    {
+        $this->showCreateForm = true;
+        // Aktualisiere die Tabelle oder führe andere notwendige Aktionen durch
+        $this->render();
+
+    }
+
+    public function createShop()
+    {
+        // Setze die Standardwerte für "status" und "published"
+   //     $this->newShop['status'] = $this->status;
+   //     $this->newShop['published'] = $this->published;
+ //  dd($this->status, $this->published);
+
+        // Validiere die Eingabe
+        $this->validate([
+            'newShop.shop_nr' => 'required|numeric',
+            'newShop.title' => 'required',
+            'newShop.email' => 'required|email',
+            'newShop.status' => 'required|in:on,off,closed,limited',
+            'newShop.published' => 'required|in:0,1',
+            // Weitere Validierungsregeln für andere Eigenschaften deines Shop-Modells
+        ]);
+
+        // Füge feste Werte hinzu
+   //     $this->newShop['fixed_property'] = 'Wert1';
+   //     $this->newShop['another_fixed_property'] = 'Wert2';
+
+   //dd($this->newShop);
+
+        // Füge hier die Logik zum Erstellen eines neuen Shops hinzu
+        ModShop::create($this->newShop);
+
+
+
+        // Zurücksetzen des Formulars und Ausblenden des Formulars nach dem Erstellen
+        $this->reset('newShop');
+        $this->showCreateForm = false;
+
+        // Aktualisiere die Tabelle oder führe andere notwendige Aktionen durch
+        $this->dispatch('refreshTable');
+    }
+
+
     public function refreshTable()
     {
         $this->render(); // Diese Methode wird die Livewire-Komponente neu rendern und somit die Tabelle aktualisieren.
@@ -76,9 +112,24 @@ class ModShops extends Component
 
     public function updatedSearch($value)
     {
+        // Setzen Sie die aktuelle Seite auf 1, wenn die Suche aktualisiert wird.
+        $this->currentPage = 1;
+
+
         if (strlen($value) >= $this->minSearchChars || $value === '') {
+            // Führen Sie die Suche durch und aktualisieren Sie die Ergebnisse.
+            $this->updateResults($value);
             $this->render(); // Diese Methode wird die Livewire-Komponente neu rendern und somit die Tabelle aktualisieren.
         }
+    }
+
+    private function updateResults($value)
+    {
+        // Führen Sie hier die Logik für die Suche durch und aktualisieren Sie die Ergebnisse.
+        // Dies könnte bedeuten, dass Sie eine Abfrage an die Datenbank senden oder in einem Array filtern, je nachdem, wie Ihre Datenquelle aussieht.
+        // Stellen Sie sicher, dass die aktualisierten Ergebnisse in einer Eigenschaft (z.B., $this->results) gespeichert werden, die von Ihrer Tabelle verwendet wird.
+        $this->results = ModShop::search($value)->paginate($this->perPage);
+
     }
 
 
@@ -101,6 +152,25 @@ class ModShops extends Component
     {
         $this->showCreateForm = !$this->showCreateForm;
 
+
+                // Setze die Standardwerte für "status" und "published"
+        $this->newShop['status'] = $this->status;
+        $this->newShop['published'] = $this->published;
+
+    // Wenn das Formular angezeigt wird, setze die Kundennummer und deaktiviere das Eingabefeld
+    if ($this->showCreateForm) {
+        $timestamp = now()->format('YmdHis');
+        $randomNumber = mt_rand(100, 999); // Ändere die Anzahl der Ziffern nach Bedarf
+        $uniqueCustomerNumber = $timestamp . '-' . substr($randomNumber, 0, 2) . '-' . substr($randomNumber, 2);
+        $this->newShop['shop_nr'] = $uniqueCustomerNumber;
+
+        // Deaktiviere das Eingabefeld
+        $this->attributes['readonly'] = true;
+    } else {
+        // Aktiviere das Eingabefeld, wenn das Formular ausgeblendet wird
+        $this->attributes['readonly'] = false;
+    }
+
     }
 
 
@@ -109,6 +179,7 @@ class ModShops extends Component
     public function cancelCreateForm()
 {
     $this->showCreateForm = false;
+    $this->reset('newShop'); // Zurücksetzen der Eingabefelder
     // Zusätzliche Logik zum Zurücksetzen der Eingabefelder, falls erforderlich
 }
 
