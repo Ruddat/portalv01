@@ -6,7 +6,7 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                @if (!$showCreateForm)
+                @if (!$showCreateForm && !$showEditForm)
                 <div class="mb-3">
                     <div class="input-group">
                         <input wire:model.debounce.100ms="search" wire:input="refreshTable" type="text" class="form-control" placeholder="Search...">
@@ -162,7 +162,7 @@
                             </td>
                             <td>
                                 <div class="d-flex">
-                                    <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
+                                    <a wire:click="editShop({{ $shop->id }})" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
 <!-- Button zum Löschen eines Geschäfts -->
 <a wire:click="ShopDeletion({{ $shop->id }})" class="btn btn-danger shadow btn-xs sharp">
     <i class="fa fa-trash"></i>
@@ -179,6 +179,7 @@
 
 
                 <div class="input-group">
+
                 <p class="mt-3">
                     Showing {{ $modshop->firstItem() }} to {{ $modshop->lastItem() }} of {{ $modshop->total() }} shops
                 </p>
@@ -198,250 +199,89 @@
                 <p>Keine Ergebnisse gefunden.</p>
             @endif
 
-            @else
+            @endif
+
+            @if ($showCreateForm)
+
+
 
             <form wire:submit.prevent="createShop">
-                <!-- Eingabefelder hier mit wire:model binden -->
-                <input type="text" wire:model="newShop.title">
-                <input type="email" wire:model="newShop.email">
-                <!-- Weitere Eingabefelder hier, falls vorhanden -->
 
-
-<div style="text-align: center; padding: 10px;">
-    <h4>Shopdata</h4>
-    <hr>
-</div>
-                <div class="row">
-                    <div class="col-xl-6">
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom01">Username
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Enter a username.." required="">
-                                <div class="invalid-feedback">
-                                    Please enter a username.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom02">Email <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="validationCustom02" placeholder="Your valid email.." required="">
-                                <div class="invalid-feedback">
-                                    Please enter a Email.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom03">Password
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="password" class="form-control" id="validationCustom03" placeholder="Choose a safe one.." required="">
-                                <div class="invalid-feedback">
-                                    Please enter a password.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom04">Suggestions <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <textarea class="form-control h-auto" id="validationCustom04" rows="5" placeholder="What would you like to see?" required=""></textarea>
-                                <div class="invalid-feedback">
-                                    Please enter a Suggestions.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6">
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom05">Best Skill
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <select class="default-select wide form-control ms-0" id="validationCustom05" style="display: none;">
-                                    <option data-display="Select">Please select</option>
-                                    <option value="html">HTML</option>
-                                    <option value="css">CSS</option>
-                                    <option value="javascript">JavaScript</option>
-                                    <option value="angular">Angular</option>
-                                    <option value="angular">React</option>
-                                    <option value="vuejs">Vue.js</option>
-                                    <option value="ruby">Ruby</option>
-                                    <option value="php">PHP</option>
-                                    <option value="asp">ASP.NET</option>
-                                    <option value="python">Python</option>
-                                    <option value="mysql">MySQL</option>
-                                </select><div class="nice-select default-select wide form-control ms-0" tabindex="0"><span class="current">Select</span><ul class="list"><li data-value="Please select" data-display="Select" class="option selected">Please select</li><li data-value="html" class="option">HTML</li><li data-value="css" class="option">CSS</li><li data-value="javascript" class="option">JavaScript</li><li data-value="angular" class="option">Angular</li><li data-value="angular" class="option">React</li><li data-value="vuejs" class="option">Vue.js</li><li data-value="ruby" class="option">Ruby</li><li data-value="php" class="option">PHP</li><li data-value="asp" class="option">ASP.NET</li><li data-value="python" class="option">Python</li><li data-value="mysql" class="option">MySQL</li></ul></div>
-                                <div class="invalid-feedback">
-                                    Please select a one.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom06">Currency
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="validationCustom06" placeholder="$21.60" required="">
-                                <div class="invalid-feedback">
-                                    Please enter a Currency.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom07">Website
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="validationCustom07" placeholder="http://example.com" required="">
-                                <div class="invalid-feedback">
-                                    Please enter a url.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom08">Phone (US)
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="validationCustom08" placeholder="212-999-0000" required="">
-                                <div class="invalid-feedback">
-                                    Please enter a phone no.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom09">Digits <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="validationCustom09" placeholder="5" required="">
-                                <div class="invalid-feedback">
-                                    Please enter a digits.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom10">Number <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="validationCustom10" placeholder="5.0" required="">
-                                <div class="invalid-feedback">
-                                    Please enter a num.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label" for="validationCustom11">Range [1, 5]
-                                <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="validationCustom11" placeholder="4" required="">
-                                <div class="invalid-feedback">
-                                    Please select a range.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <label class="col-lg-4 col-form-label"><a href="javascript:void()">Terms &amp; Conditions</a> <span class="text-danger">*</span>
-                            </label>
-                            <div class="col-lg-8">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="" id="validationCustom12" required="">
-                                  <label class="form-check-label" for="validationCustom12">
-                                    Agree to terms and conditions
-                                  </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 row">
-                            <div class="col-lg-8 ms-auto">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mb-3">
+                    <label for="shop_nr" class="form-label">Kundennummer</label>
+                    <input wire:model="newShop.shop_nr" type="text" class="form-control" id="shop_nr" placeholder="Kundennummer" wire:readonly="showCreateForm" onfocus="this.blur()">
+                    @error('newShop.shop_nr') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
 
+                <div class="mb-3">
+                    <label for="title" class="form-label">Shopname</label>
+                    <input wire:model="newShop.title" type="text" class="form-control" id="title" placeholder="Shopname">
+                    @error('newShop.title') <span class="text-danger">{{ $message }}</span> @enderror
 
-                <div style="text-align: center; padding: 10px;">
-                    <h4>Vertragsdaten</h4>
-                    <hr>
-                </div>
-
-
-                <div style="text-align: center; padding: 10px;">
-                    <h4>Kundendaten</h4>
-                    <hr>
-                </div>
-
-
-                <div style="text-align: center; padding: 10px;">
-                    <h4>Einstellungen</h4>
-                    <hr>
-                </div>
-
-
-
-
-                <div class="col-xl-4 col-xxl-6 col-6">
-                    <div class="form-check custom-checkbox mb-3">
-                        <input type="checkbox" class="form-check-input" id="customCheckBox1" required>
-                        <label class="form-check-label" for="customCheckBox1">Bewertungen</label>
-                    </div>
-                    <label>* optional / hier wird die Übertragungsart eingestellt</label>
-                </div>
-                <div class="col-xl-4 col-xxl-6 col-6">
-                    <div class="form-check custom-checkbox mb-3 checkbox-info">
-                        <input type="checkbox" class="form-check-input" checked id="customCheckBox2" required>
-                        <label class="form-check-label" for="customCheckBox2">Portallogo</label>
-                    </div>
-                    <label>* optional / hier wird die Übertragungsart eingestellt</label>
-                </div>
-                <div class="col-xl-4 col-xxl-6 col-6">
-                    <div class="form-check custom-checkbox mb-3 checkbox-success">
-                        <input type="checkbox" class="form-check-input" checked id="customCheckBox3" required>
-                        <label class="form-check-label" for="customCheckBox3">Shop logo</label>
-
-                    </div>
-                    <label>* optional / hier wird die Übertragungsart eingestellt</label>
                 </div>
 
                 <div class="mb-3">
-                    <select class="default-select form-control wide mb-3 form-control-lg ms-0">
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                    <label for="street" class="form-label">Straße</label>
+                    <input wire:model="newShop.street" type="text" class="form-control" id="street" placeholder="Straße">
+                    @error('newShop.street') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="zip" class="form-label">PLZ</label>
+                    <input wire:model="newShop.zip" type="text" class="form-control" id="zip" placeholder="PLZ">
+                    @error('newShop.zip') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="city" class="form-label">Ort</label>
+                    <input wire:model="newShop.city" type="text" class="form-control" id="city" placeholder="Ort">
+                    @error('newShop.city') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Telefon</label>
+                    <input wire:model="newShop.phone" type="text" class="form-control" id="phone" placeholder="Telefon">
+                    @error('newShop.phone') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-Mail</label>
+                    <input wire:model="newShop.email" type="text" class="form-control" id="email" placeholder="E-Mail">
+                    @error('newShop.email') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select wire:model="newShop.status" class="form-select" id="status">
+                        <option value="on" @if($this->status === 'on') selected @endif>on</option>
+                        <option value="off" @if($this->status === 'off') selected @endif>off</option>
+                        <option value="limited" @if($this->status === 'limited') selected @endif>limited</option>
+                        <option value="closed" @if($this->status === 'closed') selected @endif>closed</option>
                     </select>
-                    <label>* optional / hier wird die Übertragungsart eingestellt</label>
-
-                    </div>
-
-
-                <div style="text-align: center; padding: 10px;">
-                    <h4>Domains</h4>
-                    <hr>
-                </div>
-                <div class="input-group mb-3  input-success">
-                    <span class="input-group-text border-0">https://example.com</span>
-                    <input type="text" class="form-control">
-                </div>
-                <label>* optional / Backlink falls Kunde von seiner eigenen Webseite verlinkt</label>
-
-                <div style="text-align: center; padding: 10px;">
-                    <h4>Andere</h4>
-                    <hr>
+                    @error('newShop.status') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
 
+                <div class="mb-3">
+                    <label for="published" class="form-label">Online</label>
+                    <select wire:model="newShop.published" class="form-select" id="published">
+                        <option value="1">Ja</option>
+                        <option value="0">Nein</option>
+                    </select>
+                    @error('newShop.published') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
 
-<hr>
-                <button type="submit">Speichern</button>
-                <button wire:click="cancelCreateForm">Abbrechen</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
 
-                <button type="button" class="btn btn-secondary" wire:click="cancelCreateForm">Cancel</button>
+
+
+                <button type="button" class="btn btn-secondary" wire:click="cancelCreateForm">Kundenliste</button>
 
             </form>
 
@@ -449,7 +289,90 @@
 
 
 
+
             @endif
+
+
+
+            @if ($showEditForm)
+            <!-- Shop bearbeiten -->
+            <form wire:submit.prevent="updateShop">
+                <!-- ... Formularfelder für die Bearbeitung ... -->
+
+                <div class="mb-3">
+                    <label for="shop_nr" class="form-label">Kundennummer</label>
+                    <input wire:model="newShop.shop_nr" type="text" class="form-control" id="shop_nr" placeholder="Kundennummer" wire:readonly="showCreateForm" onfocus="this.blur()">
+                    @error('newShop.shop_nr') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="title" class="form-label">Shopname</label>
+                    <input wire:model="newShop.title" type="text" class="form-control" id="title" placeholder="Shopname">
+                    @error('newShop.title') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="street" class="form-label">Straße</label>
+                    <input wire:model="newShop.street" type="text" class="form-control" id="street" placeholder="Straße">
+                    @error('newShop.street') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="zip" class="form-label">PLZ</label>
+                    <input wire:model="newShop.zip" type="text" class="form-control" id="zip" placeholder="PLZ">
+                    @error('newShop.zip') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="city" class="form-label">Ort</label>
+                    <input wire:model="newShop.city" type="text" class="form-control" id="city" placeholder="Ort">
+                    @error('newShop.city') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Telefon</label>
+                    <input wire:model="newShop.phone" type="text" class="form-control" id="phone" placeholder="Telefon">
+                    @error('newShop.phone') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-Mail</label>
+                    <input wire:model="newShop.email" type="text" class="form-control" id="email" placeholder="E-Mail">
+                    @error('newShop.email') <span class="text-danger">{{ $message }}</span> @enderror
+
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select wire:model="newShop.status" class="form-select" id="status">
+                        <option value="on" @if($this->status === 'on') selected @endif>on</option>
+                        <option value="off" @if($this->status === 'off') selected @endif>off</option>
+                        <option value="limited" @if($this->status === 'limited') selected @endif>limited</option>
+                        <option value="closed" @if($this->status === 'closed') selected @endif>closed</option>
+                    </select>
+                    @error('newShop.status') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="published" class="form-label">Online</label>
+                    <select wire:model="newShop.published" class="form-select" id="published">
+                        <option value="1">Ja</option>
+                        <option value="0">Nein</option>
+                    </select>
+                    @error('newShop.published') <span class="text-danger">{{ $message }}</span> @enderror
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Shop</button>
+                <button type="button" class="btn btn-secondary" wire:click="cancelEditForm">Abbrechen</button>
+            </form>
+        @endif
 
 
             </div>

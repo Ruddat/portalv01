@@ -25,12 +25,14 @@ class ModShopFactory extends Factory
 
         $lat = $this->faker->latitude($referenceLatitude - 1, $referenceLatitude + 1);
         $lng = $this->faker->longitude($referenceLongitude - 1, $referenceLongitude + 1);
-        
+
         return [
             'parent' => 0,
             'shop_nr' => $this->faker->unique()->numberBetween(1000, 9999),
             'title' => $this->faker->unique()->company,
-            'address' => $this->faker->address,
+            'street' => $this->faker->streetAddress,
+            'zip' => $this->faker->postcode,
+            'city' => $this->faker->city,
             'lat' => $this->faker->latitude,
             'lng' => $this->faker->longitude,
             'phone' => $this->faker->phoneNumber,
@@ -63,16 +65,6 @@ class ModShopFactory extends Factory
             'cash_active' => $this->faker->numberBetween(0, 1),
             'ec_card_active' => $this->faker->numberBetween(0, 1),
             'ec_card_price' => $this->faker->randomFloat(2, 0, 1000),
-            'cab_active' => $this->faker->numberBetween(0, 1),
-            'cab_transaction_url' => $this->faker->url,
-            'cab_key' => $this->faker->word,
-            'cab_seller_id' => $this->faker->word,
-            'cab_password' => $this->faker->password,
-            'ueberweisung_active' => $this->faker->numberBetween(0, 1),
-            'ueberweisung_use_system' => $this->faker->numberBetween(0, 1),
-            'ueberweisung_pass' => $this->faker->password,
-            'ueberweisung_proj' => $this->faker->word,
-            'ueberweisung_user' => $this->faker->userName,
             'paypal_active' => $this->faker->numberBetween(0, 1),
             'paypal_use_system' => $this->faker->numberBetween(0, 1),
             'paypal_api_username' => $this->faker->userName,
@@ -119,7 +111,7 @@ class ModShopFactory extends Factory
             'eshop_discount_valid' => $this->faker->dateTime(),
             'winorder_version' => $this->faker->word,
             'created_at' => $this->faker->dateTime(),
-            'updated_at' => $this->faker->dateTime(),
+       //     'updated_at' => $this->faker->dateTime(),
         ];
     }
 }

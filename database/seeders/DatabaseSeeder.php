@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        \App\Models\ModShop::factory()->times(100)->create();
+        \App\Models\ModShop::factory()->times(5000)->create();
     }
 }
