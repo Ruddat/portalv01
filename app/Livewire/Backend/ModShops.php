@@ -282,7 +282,37 @@ public function updateShop()
     ]);
 
     // Füge hier die Logik zum Aktualisieren eines vorhandenen Shops hinzu
-    ModShop::find($this->newShop['id'])->update($this->newShop);
+    $shop = ModShop::find($this->newShop['id']);
+    $shop->update($this->newShop);
+
+    // Kombiniere die Teile der Adresse aus dem Livewire-Daten-Array
+    $street = $this->newShop['street'];
+    $zip = $this->newShop['zip'];
+    $city = $this->newShop['city'];
+
+    // Baue die vollständige Adresse
+    $userInput = "$street $zip $city";
+
+    $url = "https://nominatim.openstreetmap.org/";
+    $nominatim = new Nominatim($url);
+
+    $search = $nominatim->newSearch();
+    $search->query($userInput);
+
+    $results = $nominatim->find($search);
+
+    // Überprüfe, ob Koordinaten gefunden wurden
+    if (!empty($results)) {
+        // Nutze die Koordinaten des ersten Ergebnisses
+        $latitude = $results[0]['lat'];
+        $longitude = $results[0]['lon'];
+
+        // Aktualisiere die Koordinaten des Shops
+        $shop->update([
+            'lat' => $latitude,
+            'lng' => $longitude,
+        ]);
+    }
 
     // Zurücksetzen des Formulars und Ausblenden des Formulars nach dem Aktualisieren
     $this->reset('newShop');
@@ -291,6 +321,26 @@ public function updateShop()
 
     // Aktualisiere die Tabelle oder führe andere notwendige Aktionen durch
     $this->dispatch('refreshTable');
+}
+
+
+protected function getCoordinatesFromAddress($address)
+{
+    $url = "https://nominatim.openstreetmap.org/";
+    $nominatim = new Nominatim($url);
+
+    $search = $nominatim->newSearch();
+    $search->query($address);
+
+    $results = $nominatim->find($search);
+
+    if (!empty($results)) {
+        $result = reset($results); // Nehme das erste Ergebnis
+
+        return $result->getCoordinates();
+    }
+
+    return null;
 }
 
 }
