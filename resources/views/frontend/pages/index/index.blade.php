@@ -9,44 +9,12 @@
 
         @include('frontend.includes.headerblack')
 
-        <div class="hero_single version_1">
-            <div class="opacity-mask">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-7 col-lg-8">
-                            <h1>Delivery or Takeaway Food</h1>
-                            <p>The best restaurants at the best price</p>
-                            <form method="post" action="grid-listing-filterscol.html">
-                                <div class="row g-0 custom-search-input">
-                                    <div class="col-lg-10">
-                                        <div class="form-group">
-                                            <input class="form-control no_border_r" type="text" id="autocomplete"
-                                                placeholder="Address, neighborhood...">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <button class="btn_1 gradient" type="submit">Search</button>
-                                    </div>
-                                </div>
-                                <!-- /row -->
-                                <div class="search_trends">
-                                    <h5>Trending:</h5>
-                                    <ul>
-                                        <li><a href="#0">Sushi</a></li>
-                                        <li><a href="#0">Burgher</a></li>
-                                        <li><a href="#0">Chinese</a></li>
-                                        <li><a href="#0">Pizza</a></li>
-                                    </ul>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <!-- /row -->
-                </div>
-            </div>
-            <div class="wave hero"></div>
-        </div>
-        <!-- /hero_single -->
+            <!-- Hier wird die Livewire-Komponente eingebunden -->
+
+            <?php $userInput = 'Address, neighborhood...'; ?>
+            @livewire('frontend.shop-search', ['userInput' => $userInput])
+
+
 
         <div class="container margin_30_60">
             <div class="main_title center">
@@ -347,31 +315,6 @@
 
 
         @push('specific-scripts')
-            <!-- Autocomplete -->
-            <script>
-                function initMap() {
-                    var input = document.getElementById('autocomplete');
-                    var autocomplete = new google.maps.places.Autocomplete(input);
 
-                    autocomplete.addListener('place_changed', function() {
-                        var place = autocomplete.getPlace();
-                        if (!place.geometry) {
-                            window.alert("Autocomplete's returned place contains no geometry");
-                            return;
-                        }
-
-                        var address = '';
-                        if (place.address_components) {
-                            address = [
-                                (place.address_components[0] && place.address_components[0].short_name || ''),
-                                (place.address_components[1] && place.address_components[1].short_name || ''),
-                                (place.address_components[2] && place.address_components[2].short_name || '')
-                            ].join(' ');
-                        }
-                    });
-                }
-            </script>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap">
-            </script>
         @endpush
     @endsection

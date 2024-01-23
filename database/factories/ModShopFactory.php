@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ModShop;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ModShopFactory extends Factory
 {
+
+
+    protected $model = ModShop::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,13 +23,16 @@ class ModShopFactory extends Factory
     {
 
 
-        // Generiere zufällige Koordinaten im Umkreis von 100km um eine bestimmte Referenzposition
-        $referenceLatitude = 48.8566; // Beispiel-Latitude (zum Beispiel Paris)
-        $referenceLongitude = 2.3522; // Beispiel-Longitude (zum Beispiel Paris)
-        $distance = 100; // Umkreis in Kilometern
+        // Beispiel-Latitude und Longitude (zum Beispiel Edemissen)
+        $referenceLatitude = 52.392649;
+        $referenceLongitude = 10.352971;
 
-        $lat = $this->faker->latitude($referenceLatitude - 1, $referenceLatitude + 1);
-        $lng = $this->faker->longitude($referenceLongitude - 1, $referenceLongitude + 1);
+        // Radius in Kilometern
+        $radius = 150;
+
+        // Neue Koordinaten generieren
+        [$lat, $lng] = $this->generateRandomCoordinates($referenceLatitude, $referenceLongitude, $radius);
+
 
         return [
             'parent' => 0,
@@ -33,8 +41,8 @@ class ModShopFactory extends Factory
             'street' => $this->faker->streetAddress,
             'zip' => $this->faker->postcode,
             'city' => $this->faker->city,
-            'lat' => $this->faker->latitude,
-            'lng' => $this->faker->longitude,
+            'lat' => $lat,
+            'lng' => $lng,
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
             'categories' => $this->faker->word,
@@ -113,5 +121,30 @@ class ModShopFactory extends Factory
             'created_at' => $this->faker->dateTime(),
        //     'updated_at' => $this->faker->dateTime(),
         ];
+    }
+
+
+        /**
+     * Generiere zufällige Koordinaten im Umkreis von $radius km um eine bestimmte Referenzposition.
+     *
+     * @param float $referenceLatitude
+     * @param float $referenceLongitude
+     * @param float $radius
+     * @return array [latitude, longitude]
+     */
+    private function generateRandomCoordinates($referenceLatitude, $referenceLongitude, $radius)
+    {
+        // Konvertiere Radius in Grad
+        $radiusInDegrees = $radius / 111.32;
+
+        // Zufällige Richtung und Distanz
+        $randDirection = deg2rad(rand(0, 360));
+        $randDistance = $radiusInDegrees * sqrt(random_int(0, 100) / 100);
+
+        // Neue Koordinaten
+        $newLatitude = $referenceLatitude + ($randDistance * cos($randDirection));
+        $newLongitude = $referenceLongitude + ($randDistance * sin($randDirection));
+
+        return [$newLatitude, $newLongitude];
     }
 }

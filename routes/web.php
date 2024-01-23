@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Frontend\ShopSearchResult;
 
 /*
 |--------------------------------------------------------------------------
@@ -173,6 +174,7 @@ Route::get('/index-normal', function () {
 Route::get('/mod-shops', function () {
     return view('backend/pages/shops/mod-shops');
 });
+
 
 
 
