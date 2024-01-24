@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Frontend\ShopSearchResult;
+use App\Livewire\Frontend\ShopSearchResults;
+use App\Http\Controllers\Frontend\ShopCardController;
+use App\Http\Controllers\Frontend\ShopSearchController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +21,9 @@ use App\Livewire\Frontend\ShopSearchResult;
 //    return view('welcome');
 //});
 
-Route::get('/', function () {
-    return view('frontend/pages/index.index');
-});
+//Route::get('/', function () {
+//    return view('frontend/pages/index.index');
+//});
 
 Route::get('/index-2', function () {
     return view('frontend/pages/index.index-2');
@@ -171,11 +174,21 @@ Route::get('/index-normal', function () {
 //// Ab hier aktiv
 
 
+Route::get('/', [ShopSearchController::class, 'index'])->name('index');
+Route::match(['get', 'post'], '/search', [ShopSearchController::class, 'search'])->name('search.index');
+
+
+
+Route::get('/detail-restaurant/{restaurantName}', [ShopCardController::class, 'index'])->name('detail-restaurant.index');
+
+
+
 Route::get('/mod-shops', function () {
     return view('backend/pages/shops/mod-shops');
 });
 
 
+Route::get('/all-your-videos', ShopSearchResults::class)->name('shops.results');
 
 
 Route::middleware([

@@ -9,10 +9,45 @@
 
         @include('frontend.includes.headerblack')
 
-            <!-- Hier wird die Livewire-Komponente eingebunden -->
 
-            <?php $userInput = 'Address, neighborhood...'; ?>
-            @livewire('frontend.shop-search', ['userInput' => $userInput])
+        <div class="hero_single version_1">
+            <div class="opacity-mask">
+                <div class="container">
+                    <div class="row justify-content-lg-start justify-content-md-center">
+                        <div class="col-xl-7 col-lg-8">
+                            <h1>Delivery or Takeaway Food</h1>
+                            <p>All restaurants <span class="element" style="font-weight: 500"></span></p>
+                            <form method="post" action="{{ route('search.index') }}">
+                                @csrf <!-- CSRF token for Laravel form submission -->
+                                <div class="row g-0 custom-search-input">
+                                    <div class="col-lg-10">
+                                        <div class="form-group">
+                                            <input class="form-control no_border_r" type="text" name="query"  id="autocomplete" placeholder="Address, neighborhood...">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button class="btn_1 gradient" type="submit">Search</button>
+                                    </div>
+                                </div>
+                                <!-- /row -->
+                                <div class="search_trends">
+                                    <h5>Trending:</h5>
+                                    <ul>
+                                        <li><a href="#0">Sushi</a></li>
+                                        <li><a href="#0">Burgher</a></li>
+                                        <li><a href="#0">Chinese</a></li>
+                                        <li><a href="#0">Pizza</a></li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /row -->
+                </div>
+            </div>
+            <div class="wave hero"></div>
+        </div>
+        <!-- /hero_single -->
 
 
 
@@ -315,6 +350,50 @@
 
 
         @push('specific-scripts')
+
+        <!-- TYPE EFFECT -->
+<script src="{{ asset('frontend/js/typed.min.js') }}"></script>
+<script>
+    var typed = new Typed('.element', {
+      strings: ["at the best price", "with unique food", "with nice location"],
+      startDelay: 10,
+      loop: true,
+      backDelay: 2000,
+      typeSpeed: 50
+    });
+</script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Typeahead.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+
+<!-- Typeahead.js JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+
+
+<script>
+    // Initialisiere Typeahead.js für das Autocomplete-Input
+    $(document).ready(function() {
+        $('#autocomplete').typeahead({
+            minLength: 3, // Minimale Länge für die Sucheingabe
+            highlight: true,
+            hint: false,
+        }, {
+            name: 'places',
+            source: function(query, syncResults, asyncResults) {
+                // OpenStreetMap Nominatim API für Autocomplete
+                $.get('https://nominatim.openstreetmap.org/search', { q: query, format: 'json' }, function(data) {
+                    asyncResults(data.map(function(place) {
+                        return place.display_name;
+                    }));
+                });
+            },
+            limit: 10, // Anzahl der angezeigten Ergebnisse
+        });
+    });
+</script>
 
         @endpush
     @endsection

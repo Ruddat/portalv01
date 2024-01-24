@@ -5,14 +5,14 @@
                 <div class="col-xl-7 col-lg-8">
                     <h1>Delivery or Takeaway Food</h1>
                     <p>All restaurants <span class="element" style="font-weight: 500"></span></p>
-                    <form wire:submit.prevent="search">>
+                    <form wire:submit.prevent="search">
                         <div class="row g-0 custom-search-input">
                             <div class="col-lg-10">
                                 <div class="form-group position-relative">
                                     <input wire:model="userInput" class="form-control no_border_r" type="text" wire:keyup="autocomplete"
                                         wire:keydown.arrow-up="moveSelection('up')" wire:keydown.arrow-down="moveSelection('down')"
-                                        placeholder="Address, neighborhood..." >
-                                        @if($autocompleteResults)
+                                        placeholder="Address, neighborhood...">
+                                    @if($autocompleteResults)
                                         <ul class="autocomplete-dropdown">
                                             @foreach($autocompleteResults as $key => $autocompleteResult)
                                                 <li wire:click="selectAutocomplete('{{ $autocompleteResult->name }}')"
@@ -41,6 +41,7 @@
                             </ul>
                         </div>
                     </form>
+
                 </div>
             </div>
             <!-- /row -->

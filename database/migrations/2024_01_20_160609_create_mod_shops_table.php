@@ -74,7 +74,8 @@ return new class extends Migration
             $table->double('per_turnover')->default(0);
             $table->text('invoice_payment_account')->nullable();
             $table->integer('payment_usage_amount')->default(0);
-            $table->tinyInteger('no_selbstabholung')->default(0);
+            $table->tinyInteger('no_abholung')->default(0);
+            $table->tinyInteger('no_lieferung')->default(0);
             $table->double('rating')->default(0);
             $table->integer('paid_on_top')->default(0);
             $table->tinyInteger('show_logo')->default(1);

@@ -10,14 +10,12 @@
         @include('frontend.includes.header-in-clearfix')
 
 
-
-
-
 		<div class="page_header element_to_stick">
 		    <div class="container">
 		    	<div class="row">
 		    		<div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-block">
-		        		<h1>145 restaurants in Convent Street 2983</h1>
+                        <h1>{{ count($results) }} Restaurants in der Nähe  {{ $city }} gefunden</h1>
+
 		        		<a href="#0">Change address</a>
 		    		</div>
 		    		<div class="col-xl-4 col-lg-5 col-md-5">
@@ -262,29 +260,12 @@
 					<!-- /promo -->
 
 					<div class="row">
-						<div class="col-12"><h2 class="title_small">Top Rated</h2></div>
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							    	<span class="ribbon off">15% off</span>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Pizza</small>
-							            <div class="item_title">
-							                <h3>Da Alfredo</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							        <li><span class="take yes">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>8.9</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
+
+
+                        @if(count($results) > 0)
+
+                        @foreach($results as $result)
+
 						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
 							<div class="strip">
 							    <figure>
@@ -292,13 +273,16 @@
 							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
 							            <small>Burghers</small>
 							            <div class="item_title">
-							                <h3>Best Burghers</h3>
+							                <h3>    <h3>{{ $result->title ?? '' }}</h3></h3>
 							                <small>27 Old Gloucester St</small>
 							            </div>
 							        </a>
 							    </figure>
 							    <ul>
 							        <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
+                                    <li>
+							        	<div class="score"><strong>{{ number_format($result->distance, 2) ?? '' }} km</strong></div>
+							        </li>
 							        <li>
 							        	<div class="score"><strong>9.5</strong></div>
 							        </li>
@@ -306,227 +290,28 @@
 							</div>
 						</div>
 						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							    	<span class="ribbon off">15% off</span>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_3.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Vegetarian</small>
-							            <div class="item_title">
-							                <h3>Vego Life</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							       <li><span class="take yes">Takeaway</span> <span class="deliv no">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>7.5</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_4.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Japanese</small>
-							            <div class="item_title">
-							                <h3>Sushi Temple</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							         <li><span class="take no">Takeaway</span> <span class="deliv no">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>9.5</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_5.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Pizza</small>
-							            <div class="item_title">
-							                <h3>Auto Pizza</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							         <li><span class="take yes">Takeaway</span> <span class="deliv no">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>7.0</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_6.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Burghers</small>
-							            <div class="item_title">
-							                <h3>Alliance</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							         <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>8.9</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_7.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Chinese</small>
-							            <div class="item_title">
-							                <h3>Alliance</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							        <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>8.9</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_8.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Sushi</small>
-							            <div class="item_title">
-							                <h3>Dragon Tower</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							        <li><span class="take yes">Takeaway</span> <span class="deliv no">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>8.9</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_9.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Mexican</small>
-							            <div class="item_title">
-							                <h3>El Paso Tacos</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							        <li><span class="take yes">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>8.9</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_10.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Bakery</small>
-							            <div class="item_title">
-							                <h3>Monnalisa</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							        <li><span class="take yes">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>8.9</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_11.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Mexican</small>
-							            <div class="item_title">
-							                <h3>Guachamole</h3>
-							                <small>135 Newtownards Road</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							        <li><span class="take yes">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>8.9</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_12.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Chinese</small>
-							            <div class="item_title">
-							                <h3>Pechino Express</h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							        <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-							        <li>
-							        	<div class="score"><strong>8.9</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
+                        @endforeach
+                        @else
+                        <p>Keine Restaurants gefunden.</p>
+                    @endif
+
+
+
+
+
+
 					</div>
 					<!-- /row -->
+
 					<div class="pagination_fg">
-					  <a href="#">&laquo;</a>
-					  <a href="#" class="active">1</a>
-					  <a href="#">2</a>
-					  <a href="#">3</a>
-					  <a href="#">4</a>
-					  <a href="#">5</a>
-					  <a href="#">&raquo;</a>
+
+                        {{ $restaurants->links('pagination::bootstrap-4') }}
+
+                        <div>
+                            <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
+                                Showing {{ $results->firstItem() }} to {{ $results->lastItem() }} of {{ $results->total() }} results
+                            </p>
+                        </div>
 					</div>
 				</div>
 				<!-- /col -->

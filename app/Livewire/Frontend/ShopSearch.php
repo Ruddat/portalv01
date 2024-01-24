@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Frontend;
 
+
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use NominatimLaravel\Content\Nominatim;
@@ -14,6 +15,12 @@ class ShopSearch extends Component
     public $autocompleteResults;
     public $selectedAutocompleteItem = null;
 
+    public function __construct()
+    {
+        $this->results = null; // oder einen geeigneten Startwert
+        $this->userInput = 'Address, neighborhood...';
+    }
+
 
     public function mount($userInput)
     {
@@ -23,7 +30,7 @@ class ShopSearch extends Component
 
     public function render()
     {
-
+      //  dd($this->userInput);
         // Ansonsten zeige das Standard-Suchformular-Blade an
         return view('livewire.frontend.shop-search', ['results' => $this->results]);
     }
@@ -101,6 +108,13 @@ class ShopSearch extends Component
             }
 
             $this->results = $restaurants;
+
+        // For example, you can redirect to another route
+        return redirect()->route('shops.results', [
+            'userInput' => $this->userInput,
+            'results' => $this->results->toArray(),
+        ]);
+
 
         } else {
             // Keine Ergebnisse gefunden
