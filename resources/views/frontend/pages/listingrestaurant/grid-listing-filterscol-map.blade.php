@@ -161,7 +161,7 @@
                                 <div class="collapse" id="filter_3">
                                     <div class="distance">Radius around selected destination <span id="distanceValue">{{ $selectedDistance }}</span> km</div>
                                     <div class="add_bottom_25">
-                                        <input type="range" name="distance" id="distance" min="10" max="50" step="5" value="{{ $selectedDistance }}" data-orientation="horizontal" oninput="updateDistanceValue()">
+                                        <input type="range" name="distance" id="distance" min="5" max="50" step="5" value="{{ $selectedDistance }}" data-orientation="horizontal" oninput="updateDistanceValue()">
                                     </div>
                                 </div>
                             </div>

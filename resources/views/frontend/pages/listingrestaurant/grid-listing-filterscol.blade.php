@@ -14,7 +14,7 @@
 		    <div class="container">
 		    	<div class="row">
 		    		<div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-block">
-                        <h1>{{ count($results) }} Restaurants in der Nähe  {{ $city }} gefunden</h1>
+                        <h1>Es wurden {{ $restaurants->total() }} Restaurants in {{ $restaurants->first()->street ?? 'unbekannter Straße' }} gefunden.</h1>
 
 		        		<a href="#0">Change address</a>
 		    		</div>
@@ -33,6 +33,7 @@
 		<div class="container margin_30_20">
 			<div class="row">
 				<aside class="col-lg-3" id="sidebar_fixed">
+                    <form action="{{ route('search.index') }}" method="get">
 					<div class="type_delivery">
 						<ul class="clearfix">
 						    <li>
@@ -149,13 +150,15 @@
 							</div>
 						</div>
 						<!-- /filter_type -->
-						<div class="filter_type">
-							<h4><a href="#filter_3" data-bs-toggle="collapse" class="closed">Distance</a></h4>
-							<div class="collapse" id="filter_3">
-								<div class="distance">Radius around selected destination <span></span> km</div>
-								<div class="add_bottom_25"><input type="range" min="10" max="50" step="5" value="20" data-orientation="horizontal"></div>
-							</div>
-						</div>
+                        <div class="filter_type">
+                            <h4><a href="#filter_3" data-bs-toggle="collapse" class="closed">Distance</a></h4>
+                            <div class="collapse" id="filter_3">
+                                <div class="distance">Radius around selected destination <span id="distanceValue">{{ $selectedDistance }}</span> km</div>
+                                <div class="add_bottom_25">
+                                    <input type="range" name="distance" id="distance" min="5" max="50" step="5" value="{{ $selectedDistance }}" data-orientation="horizontal" oninput="updateDistanceValue()">
+                                </div>
+                            </div>
+                        </div>
 						<!-- /filter_type -->
 						<div class="filter_type last">
 							<h4><a href="#filter_4" data-bs-toggle="collapse" class="closed">Rating</a></h4>
@@ -189,8 +192,16 @@
 							</div>
 						</div>
 						<!-- /filter_type -->
-						<p><a href="#0" class="btn_1 outline full-width">Filter</a></p>
+                        <p> <button class="btn_1 outline full-width" type="submit">Filter anwenden</button><p>
+                        </form>
 					</div>
+                    <script>
+                        function updateDistanceValue() {
+                            var distanceValue = document.getElementById('distance').value;
+                            document.getElementById('distanceValue').innerText = distanceValue;
+                        }
+                    </script>
+
 				</aside>
 
 				<div class="col-lg-9">
@@ -262,35 +273,39 @@
 					<div class="row">
 
 
-                        @if(count($results) > 0)
+                        @if(count($restaurants) > 0)
 
-                        @foreach($results as $result)
+                        @foreach ($restaurants as $restaurant)
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+                                <div class="strip">
+                                    <figure>
+                                        <span class="ribbon off">15% off</span>
+                                        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
+                                        <a href="{{ route('detail-restaurant.index', ['restaurantName' => $restaurant->title]) }} " class="strip_info">
+                                            <small>Pizza, Burger</small>
 
-						<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
-							<div class="strip">
-							    <figure>
-							        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_2.jpg') }}" class="img-fluid lazy" alt="">
-							        <a href="{{ url('/detail-restaurant') }}" class="strip_info">
-							            <small>Burghers</small>
-							            <div class="item_title">
-							                <h3>    <h3>{{ $result->title ?? '' }}</h3></h3>
-							                <small>27 Old Gloucester St</small>
-							            </div>
-							        </a>
-							    </figure>
-							    <ul>
-							        <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                                    <li>
-							        	<div class="score"><strong>{{ number_format($result->distance, 2) ?? '' }} km</strong></div>
-							        </li>
-							        <li>
-							        	<div class="score"><strong>9.5</strong></div>
-							        </li>
-							    </ul>
-							</div>
-						</div>
-						<!-- /strip grid -->
-                        @endforeach
+                                            <div class="item_title">
+                                                <h3> {{ $restaurant->title }}</h3>
+                                                <small>{{ $restaurant->street }} --- {{ number_format($restaurant->distance, 2) }} km</small>
+
+                                            </div>
+                                        </a>
+                                    </figure>
+                                    <ul>
+                                        <li>
+                                            <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}">Takeaway</span>
+                                            <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}">Delivery</span>
+                                        </li>
+                                        <li>
+                                            <div class="score"><strong>8.9</strong></div><div><strong>{{ number_format($restaurant->distance, 2) }} km</strong></div>
+                                        </li>
+
+
+                                    </ul>
+                                </div>
+                            </div>
+                            @endforeach
+                            <!-- /strip grid -->
                         @else
                         <p>Keine Restaurants gefunden.</p>
                     @endif
@@ -309,7 +324,7 @@
 
                         <div>
                             <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
-                                Showing {{ $results->firstItem() }} to {{ $results->lastItem() }} of {{ $results->total() }} results
+                                Showing {{ $restaurants->firstItem() }} to {{ $restaurants->lastItem() }} of {{ $restaurants->total() }} results
                             </p>
                         </div>
 					</div>
@@ -339,6 +354,8 @@
             <!-- SPECIFIC SCRIPTS -->
     <script src="{{ asset('frontend/js/sticky_sidebar.min.js') }}"></script>
     <script src="{{ asset('frontend/js/specific_listing.js') }}"></script>
+
+
 
         @endpush
     @endsection

@@ -6,6 +6,7 @@ use App\Models\ModShop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use NominatimLaravel\Content\Nominatim;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -59,6 +60,18 @@ public function search(Request $request)
             }
         }
 
+
+
+        $cacheKey = 'search_' . md5($query . $selectedDistance);
+        if (Cache::has($cacheKey)) {
+            $restaurants = Cache::get($cacheKey);
+        } else {
+            // Wenn nicht, führe die Suche durch und speichere die Ergebnisse im Cache
+            $restaurants = $this->performRestaurantSearch($userLatitude, $userLongitude, $selectedDistance);
+            Cache::put($cacheKey, $restaurants, now()->addMinutes(10)); // Cache für 10 Minuten speichern (kann angepasst werden)
+        }
+
+
         // Versuche die Werte aus der Session zu erhalten
         $userLatitude = $request->session()->get('userLatitude', null);
         $userLongitude = $request->session()->get('userLongitude', null);
@@ -86,7 +99,7 @@ public function search(Request $request)
                 ->paginate(12);
         }
 
-        return view('frontend.pages.listingrestaurantopenstreet.grid-listing-filterscol-openstreetmap', [
+        return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => $restaurants,
             'userLatitude' => $userLatitude,
             'userLongitude' => $userLongitude,
@@ -103,8 +116,21 @@ public function search(Request $request)
 
 
 
-
-
+private function performRestaurantSearch($userLatitude, $userLongitude, $selectedDistance)
+{
+    return ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
+        ->selectRaw(
+            '( 6371 * acos( cos( radians(?) ) *
+            cos( radians( lat ) ) *
+            cos( radians( lng ) - radians(?) ) +
+            sin( radians(?) ) *
+            sin( radians( lat ) ) ) ) AS distance',
+            [$userLatitude, $userLongitude, $userLatitude]
+        )
+        ->having('distance', '<', $selectedDistance)
+        ->orderBy('distance')
+        ->paginate(12);
+}
 
 
 
