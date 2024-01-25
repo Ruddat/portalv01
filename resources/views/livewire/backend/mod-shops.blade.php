@@ -19,24 +19,6 @@
                 </div>
                 <div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <table class="table table-responsive-md">
                     @if ($modshop->count())
                     <thead>
@@ -285,14 +267,7 @@
 
             </form>
 
-
-
-
-
-
             @endif
-
-
 
             @if ($showEditForm)
             <!-- Shop bearbeiten -->

@@ -188,8 +188,16 @@ Route::get('/detail-restaurant/{restaurantName}', [ShopCardController::class, 'i
 
 
 
+/// -- Backend
+
 Route::get('/mod-shops', function () {
     return view('backend/pages/shops/mod-shops');
+});
+
+/// -- Backend -> Liefergebite
+
+Route::get('/mod-liefergebiet', function () {
+    return view('backend/pages/shops/mod-liefergebiet');
 });
 
 
