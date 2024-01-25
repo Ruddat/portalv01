@@ -3,31 +3,31 @@
     <div class="container margin_60_40 fix_mobile">
         <div class="row">
             <div class="col-lg-3 col-md-6">
-                <h3 data-bs-target="#collapse_1">Quick Links</h3>
+                <h3 data-bs-target="#collapse_1">{{ app(\App\Services\TranslationService::class)->trans('Quick Links', app()->getLocale()) }}</h3>
                 <div class="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
-                        <li><a href="about.html">About us</a></li>
-                        <li><a href="{{ url('/submit-restaurant') }}">Add your restaurant</a></li>
-                        <li><a href="help.html">Help</a></li>
-                        <li><a href="register.html">My account</a></li>
-                        <li><a href="{{ url('/blog') }}">Blog</a></li>
-                        <li><a href="contacts.html">Contacts</a></li>
+                        <li><a href="about.html">{{ app(\App\Services\TranslationService::class)->trans('About us', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ url('/submit-restaurant') }}">{{ app(\App\Services\TranslationService::class)->trans('Add your restaurant', app()->getLocale()) }}</a></li>
+                        <li><a href="help.html">{{ app(\App\Services\TranslationService::class)->trans('Help', app()->getLocale()) }}</a></li>
+                        <li><a href="register.html">{{ app(\App\Services\TranslationService::class)->trans('My account', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ url('/blog') }}">{{ app(\App\Services\TranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
+                        <li><a href="contacts.html">{{ app(\App\Services\TranslationService::class)->trans('Contacts', app()->getLocale()) }}</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                <h3 data-bs-target="#collapse_2">Categories</h3>
+                <h3 data-bs-target="#collapse_2">{{ app(\App\Services\TranslationService::class)->trans('Categories', app()->getLocale()) }}</h3>
                 <div class="collapse dont-collapse-sm links" id="collapse_2">
                     <ul>
-                        <li><a href="grid-listing-filterscol.html">Top Categories</a></li>
-                        <li><a href="grid-listing-filterscol-full-masonry.html">Best Rated</a></li>
-                        <li><a href="grid-listing-filterscol-full-width.html">Best Price</a></li>
-                        <li><a href="grid-listing-filterscol-full-masonry.html">Latest Submissions</a></li>
+                        <li><a href="grid-listing-filterscol.html">{{ app(\App\Services\TranslationService::class)->trans('Top Categories', app()->getLocale()) }}</a></li>
+                        <li><a href="grid-listing-filterscol-full-masonry.html">{{ app(\App\Services\TranslationService::class)->trans('Best Rated', app()->getLocale()) }}</a></li>
+                        <li><a href="grid-listing-filterscol-full-width.html">{{ app(\App\Services\TranslationService::class)->trans('Best Price', app()->getLocale()) }}</a></li>
+                        <li><a href="grid-listing-filterscol-full-masonry.html">{{ app(\App\Services\TranslationService::class)->trans('Latest Submissions', app()->getLocale()) }}</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                    <h3 data-bs-target="#collapse_3">Contacts</h3>
+                    <h3 data-bs-target="#collapse_3">{{ app(\App\Services\TranslationService::class)->trans('Contacts', app()->getLocale()) }}</h3>
                 <div class="collapse dont-collapse-sm contacts" id="collapse_3">
                     <ul>
                         <li><i class="icon_house_alt"></i>97845 Baker st. 567<br>Los Angeles - US</li>
@@ -37,19 +37,19 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                    <h3 data-bs-target="#collapse_4">Keep in touch</h3>
+                    <h3 data-bs-target="#collapse_4">{{ app(\App\Services\TranslationService::class)->trans('Keep in touch', app()->getLocale()) }}</h3>
                 <div class="collapse dont-collapse-sm" id="collapse_4">
                     <div id="newsletter">
                         <div id="message-newsletter"></div>
                         <form method="post" action="assets/newsletter.php" name="newsletter_form" id="newsletter_form">
                             <div class="form-group">
-                                <input type="email" name="email_newsletter" id="email_newsletter" class="form-control" placeholder="Your email">
+                                <input type="email" name="email_newsletter" id="email_newsletter" class="form-control" placeholder="{{ app(\App\Services\TranslationService::class)->trans('Your email', app()->getLocale()) }}">
                                 <button type="submit" id="submit-newsletter"><i class="arrow_carrot-right"></i></button>
                             </div>
                         </form>
                     </div>
                     <div class="follow_us">
-                        <h5>Follow Us</h5>
+                        <h5>{{ app(\App\Services\TranslationService::class)->trans('Follow Us', app()->getLocale()) }}</h5>
                         <ul>
                             <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/twitter_icon.svg') }}" alt="" class="lazy"></a></li>
                             <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/facebook_icon.svg') }}" alt="" class="lazy"></a></li>
@@ -90,8 +90,9 @@
             </div>
             <div class="col-lg-6">
                 <ul class="additional_links">
-                    <li><a href="#0">Terms and conditions</a></li>
-                    <li><a href="#0">Privacy</a></li>
+                    <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Impressum', app()->getLocale()) }}</a></li>
+                    <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Terms and conditions', app()->getLocale()) }}</a></li>
+                    <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Privacy', app()->getLocale()) }}</a></li>
                     <li><span>© FooYes</span></li>
                 </ul>
             </div>
