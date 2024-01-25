@@ -86,7 +86,7 @@ public function search(Request $request)
                 ->paginate(12);
         }
 
-        return view('frontend.pages.listingrestaurant.grid-listing-filterscol-map', [
+        return view('frontend.pages.listingrestaurantopenstreet.grid-listing-filterscol-openstreetmap', [
             'restaurants' => $restaurants,
             'userLatitude' => $userLatitude,
             'userLongitude' => $userLongitude,
@@ -95,7 +95,7 @@ public function search(Request $request)
 
     } catch (\Exception $e) {
         // Handle die Ausnahme, z.B. gib eine Fehlermeldung aus oder logge den Fehler.
-        return view('frontend.pages.listingrestaurant.grid-listing-filterscol-map', [
+        return view('frontend.pages.listingrestaurantopenstreet.grid-listing-filterscol-openstreetmap', [
             'restaurants' => [],
         ]);
     }

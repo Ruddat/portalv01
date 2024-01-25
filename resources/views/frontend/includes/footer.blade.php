@@ -67,11 +67,13 @@
                 <ul class="footer-selector clearfix">
                     <li>
                         <div class="styled-select lang-selector">
-                            <select>
-                                <option value="English" selected>English</option>
-                                <option value="French">French</option>
-                                <option value="Spanish">Spanish</option>
-                                <option value="Russian">Russian</option>
+                            <select class="change_lang">
+                                <option value="de" {{ session('locale') == 'de' ? 'selected' : '' }}>Deutsch</option>
+                                <option value="nl" {{ session('locale') == 'nl' ? 'selected' : '' }}>Niederlande</option>
+                                <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
+                                <option value="fr" {{ session('locale') == 'fr' ? 'selected' : '' }}>French</option>
+                                <option value="es" {{ session('locale') == 'es' ? 'selected' : '' }}>Spanish</option>
+                                <option value="ru" {{ session('locale') == 'ru' ? 'selected' : '' }}>Russian</option>
                             </select>
                         </div>
                     </li>

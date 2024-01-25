@@ -15,23 +15,23 @@
                 <div class="container">
                     <div class="row justify-content-lg-start justify-content-md-center">
                         <div class="col-xl-7 col-lg-8">
-                            <h1>Delivery or Takeaway Food</h1>
-                            <p>All restaurants <span class="element" style="font-weight: 500"></span></p>
+                            <h1>{{ app(\App\Services\TranslationService::class)->trans('Delivery or Takeaway Food', app()->getLocale()) }}</h1>
+                            <p>{{ app(\App\Services\TranslationService::class)->trans('All restaurants', app()->getLocale()) }} <span class="element" style="font-weight: 500"></span></p>
                             <form method="post" action="{{ route('search.index') }}">
                                 @csrf <!-- CSRF token for Laravel form submission -->
                                 <div class="row g-0 custom-search-input">
                                     <div class="col-lg-10">
                                         <div class="form-group">
-                                            <input class="form-control no_border_r" type="text" name="query"  id="autocomplete" placeholder="Address, neighborhood...">
+                                            <input class="form-control no_border_r" type="text" name="query"  id="autocomplete" placeholder="{{ app(\App\Services\TranslationService::class)->trans('Strasse oder Ort...', app()->getLocale()) }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
-                                        <button class="btn_1 gradient" type="submit">Search</button>
+                                        <button class="btn_1 gradient" type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
                                     </div>
                                 </div>
                                 <!-- /row -->
                                 <div class="search_trends">
-                                    <h5>Trending:</h5>
+                                    <h5>{{ app(\App\Services\TranslationService::class)->trans('Trending:', app()->getLocale()) }} </h5>
                                     <ul>
                                         <li><a href="#0">Sushi</a></li>
                                         <li><a href="#0">Burgher</a></li>
@@ -54,7 +54,7 @@
         <div class="container margin_30_60">
             <div class="main_title center">
                 <span><em></em></span>
-                <h2>Popular Categories</h2>
+                <h2>{{ app(\App\Services\TranslationService::class)->trans('Popular Categories', app()->getLocale()) }}</h2>
                 <p>Cum doctus civibus efficiantur in imperdiet deterruisset</p>
             </div>
             <!-- /main_title -->
@@ -355,7 +355,9 @@
 <script src="{{ asset('frontend/js/typed.min.js') }}"></script>
 <script>
     var typed = new Typed('.element', {
-      strings: ["at the best price", "with unique food", "with nice location"],
+      strings: ["{{ app(\App\Services\TranslationService::class)->trans('at the best price', app()->getLocale()) }}",
+                "{{ app(\App\Services\TranslationService::class)->trans('with unique food', app()->getLocale()) }}",
+                "{{ app(\App\Services\TranslationService::class)->trans('with nice location', app()->getLocale()) }}"],
       startDelay: 10,
       loop: true,
       backDelay: 2000,
