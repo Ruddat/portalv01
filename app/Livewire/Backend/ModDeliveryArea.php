@@ -115,12 +115,12 @@ private function calculateColor($distance)
 {
     // Hier könntest du deine eigene Logik für die Farbberechnung implementieren
     // Beispiel: je weiter die Entfernung, desto "kälter" die Farbe
-    if ($distance < 5) {
-        return '#FF0000'; // Rot
-    } elseif ($distance < 10) {
-        return '#00FF00'; // Grün
+    if ($distance <= 1) {
+        return 'green';
+    } elseif ($distance <= 5) {
+        return 'yellow';
     } else {
-        return '#0000FF'; // Blau
+        return 'red';
     }
 }
 
