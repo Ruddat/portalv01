@@ -198,8 +198,7 @@
                                 </div>
                             </div>
                             <!-- /filter_type -->
-                            <p><a href="#0" class="btn_1 outline full-width">Filter</a></p>
-                            <button type="submit">Filter anwenden</button>
+                            <p> <button class="btn_1 outline full-width" type="submit">Filter anwenden</button><p>
                         </form>
                         </div>
 

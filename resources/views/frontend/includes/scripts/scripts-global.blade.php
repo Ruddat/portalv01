@@ -6,3 +6,10 @@
 @stack('specific-scripts')
 
 @livewireScripts
+
+<script type="text/javascript">
+    var url = "{{ route('change.lang') }}";
+    $(".change_lang").change(function() {
+        window.location.href = url + "?lang=" + $(this).val();
+    });
+</script>

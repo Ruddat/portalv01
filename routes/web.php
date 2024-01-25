@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Frontend\ShopSearchResults;
+use App\Http\Controllers\GoogleTranslateController;
 use App\Http\Controllers\Frontend\ShopCardController;
 use App\Http\Controllers\Frontend\ShopSearchController;
 
@@ -172,6 +173,10 @@ Route::get('/index-normal', function () {
 
 
 //// Ab hier aktiv
+
+/// -- sprache wechseln --> google translate
+Route::get('lang/change', [GoogleTranslateController::class, 'change'])->name('change.lang');
+
 
 
 Route::get('/', [ShopSearchController::class, 'index'])->name('index');
