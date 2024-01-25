@@ -19,16 +19,18 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Liefergebiet eingeben</h4>
-                <div class="card-body d-flex justify-content-end">
-                    <button type="button" class="btn btn-info" onclick="reloadPage()">
+
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-info me-2" onclick="reloadPage()">
                         <span class="btn-icon-start text-info"><i class="fa fa-refresh color-info"></i></span>
-                        Karte anzeigen
+                        Karte
                     </button>
                     <button type="button" class="btn btn-primary" wire:click="toggleCreateForm">
                         <span class="btn-icon-start text-info"><i class="fa fa-plus color-info"></i></span>
-                        Hinzufuegen
+                        Erstellen
                     </button>
                 </div>
+
             </div>
 
 
