@@ -21,12 +21,12 @@
                 <h4 class="card-title">Liefergebiet eingeben</h4>
 
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-info me-2" onclick="reloadPage()">
-                        <span class="btn-icon-start text-info"><i class="fa fa-refresh color-info"></i></span>
+                    <button type="button" class="btn btn-info me-2 btn-sm" onclick="reloadPage()">
+                        <span class="btn-icon-start text-info fs-6"><i class="fa fa-refresh color-info"></i></span>
                         Karte
                     </button>
-                    <button type="button" class="btn btn-primary" wire:click="toggleCreateForm">
-                        <span class="btn-icon-start text-info"><i class="fa fa-plus color-info"></i></span>
+                    <button type="button" class="btn btn-primary btn-sm" wire:click="toggleCreateForm">
+                        <span class="btn-icon-start text-info fs-6"><i class="fa fa-plus color-info"></i></span>
                         Erstellen
                     </button>
                 </div>
