@@ -30,6 +30,10 @@ public function index(Request $request)
 public function search(Request $request)
 {
     try {
+
+
+
+
         $query = $request->input('query', ''); // Setze leere Zeichenkette als Standardwert, wenn kein Wert übergeben wird
         $userLatitude = null;
         $userLongitude = null;
@@ -58,17 +62,6 @@ public function search(Request $request)
                     $request->session()->put('userLongitude', $userLongitude);
                 }
             }
-        }
-
-
-
-        $cacheKey = 'search_' . md5($query . $selectedDistance);
-        if (Cache::has($cacheKey)) {
-            $restaurants = Cache::get($cacheKey);
-        } else {
-            // Wenn nicht, führe die Suche durch und speichere die Ergebnisse im Cache
-            $restaurants = $this->performRestaurantSearch($userLatitude, $userLongitude, $selectedDistance);
-            Cache::put($cacheKey, $restaurants, now()->addMinutes(10)); // Cache für 10 Minuten speichern (kann angepasst werden)
         }
 
 
@@ -108,7 +101,9 @@ public function search(Request $request)
 
     } catch (\Exception $e) {
         // Handle die Ausnahme, z.B. gib eine Fehlermeldung aus oder logge den Fehler.
-        return view('frontend.pages.listingrestaurantopenstreet.grid-listing-filterscol-openstreetmap', [
+
+
+        return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => [],
         ]);
     }
@@ -132,6 +127,14 @@ private function performRestaurantSearch($userLatitude, $userLongitude, $selecte
         ->paginate(12);
 }
 
+private function paginateResults($results, $perPage)
+{
+    $page = LengthAwarePaginator::resolveCurrentPage();
+    $items = collect($results);
+    $paginator = new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page);
+
+    return $paginator;
+}
 
 
 }
