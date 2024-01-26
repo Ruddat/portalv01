@@ -44,6 +44,8 @@
                                 <th scope="col">Entfernung in Km</th>
                                 <th scope="col">Anfahrtskosten</th>
                                 <th scope="col">Anfahr frei ab</th>
+                                <th scope="col">Mindestbestellwert</th>
+                                <th scope="col">Farbe</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -54,13 +56,13 @@
                                     <td>{{ $deliveryArea->distance_km }} km</td>
                                     <td>{{ $deliveryArea->delivery_cost }} €</td>
                                     <td>{{ $deliveryArea->free_delivery_threshold }} €</td>
+                                    <td>{{ $deliveryArea->delivery_charge }} €</td>
                                     <td>
                                         <div style="width: 20px; height: 20px; background-color: {{ $deliveryArea->color }};"></div>
                                     </td>
-                                    <td>{{ $deliveryArea->delivery_charge }} €</td>
+
                                     <td>
                                         <div class="d-flex">
-                                            <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
                                             <a href="#" class="btn btn-danger shadow btn-xs sharp" wire:click="deleteDeliveryArea({{ $deliveryArea->id }})"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
@@ -127,7 +129,7 @@
                 L.circle([{{ $shop->lat }}, {{ $shop->lng  }}], {
                     color: '{{ $deliveryArea->color }}',
                     fillColor: '#f03',
-                    fillOpacity: 0.2,
+                    fillOpacity: 0.1,
                     radius: {{ $deliveryArea->radius }}
                 }).addTo(map);
             @endforeach
