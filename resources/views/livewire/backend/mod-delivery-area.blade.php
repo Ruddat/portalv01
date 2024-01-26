@@ -44,7 +44,6 @@
                                 <th scope="col">Entfernung in Km</th>
                                 <th scope="col">Anfahrtskosten</th>
                                 <th scope="col">Anfahr frei ab</th>
-                                <th scope="col">Farbe</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -58,6 +57,7 @@
                                     <td>
                                         <div style="width: 20px; height: 20px; background-color: {{ $deliveryArea->color }};"></div>
                                     </td>
+                                    <td>{{ $deliveryArea->delivery_charge }} €</td>
                                     <td>
                                         <div class="d-flex">
                                             <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
@@ -91,6 +91,12 @@
                         <label for="free_delivery_threshold" class="form-label">Anfahrt frei ab</label>
                         <input type="text" class="form-control" wire:model="free_delivery_threshold">
                         @error('free_delivery_threshold') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="delivery_charge" class="form-label">Mindesbestellwert</label>
+                        <input type="text" class="form-control" wire:model="delivery_charge">
+                        @error('delivery_charge') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
 
                     <button type="submit" class="btn btn-primary">Liefergebiet hinzufügen</button>
