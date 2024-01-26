@@ -179,7 +179,10 @@ Route::get('lang/change', [GoogleTranslateController::class, 'change'])->name('c
 
 
 Route::get('/', [ShopSearchController::class, 'index'])->name('index');
+
 Route::match(['get', 'post'], '/search', [ShopSearchController::class, 'search'])->name('search.index');
+
+Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])->name('speichere-standort');
 
 
 Route::get('/detail-restaurant/{restaurantName}', [ShopCardController::class, 'index'])->name('detail-restaurant.index');
@@ -227,7 +230,7 @@ Route::get('/mod-liefergebiet', function () {
 
 Route::get('/all-your-videos', ShopSearchResults::class)->name('shops.results');
 
-Route::post('/speichere-standort', 'StandortController@speichereStandort');
+
 
 Route::middleware([
     'auth:sanctum',

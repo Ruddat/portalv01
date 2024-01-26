@@ -3,6 +3,43 @@
     <!-- seitenabhengig css -->
     @push('specific-css')
         <link href="{{ asset('frontend/css/home.css') }}" rel="stylesheet">
+
+<style>
+.button-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+}
+
+.btn_1 {
+    /* Stile für den ersten Button (Search) */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    /* Weitere Stilisierungen nach Bedarf */
+}
+
+.btn_2 {
+    /* Stile für den zweiten Button (Standort abrufen) */
+    padding: 10px 20px;
+    background-color: #f3723b;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    /* Weitere Stilisierungen nach Bedarf */
+}
+
+.icon_pin {
+    background: url('{{ asset('frontend/img/location_7508941.png') }}') no-repeat;
+    width: 24px; /* Passe die Breite nach Bedarf an */
+    height: 24px; /* Passe die Höhe nach Bedarf an */
+    display: inline-block;
+    vertical-align: middle; /* Zentriere das Icon vertikal im Button */
+    /* Weitere Stilisierungen nach Bedarf */
+}
+
+</style>
     @endpush
 
     <body>
@@ -17,17 +54,18 @@
                         <div class="col-xl-7 col-lg-8">
                             <h1>{{ app(\App\Services\TranslationService::class)->trans('Delivery or Takeaway Food', app()->getLocale()) }}</h1>
                             <p>{{ app(\App\Services\TranslationService::class)->trans('All restaurants', app()->getLocale()) }} <span class="element" style="font-weight: 500"></span></p>
-                            <button class="btn_1 medium gradient pulse_bt mt-2" onclick="getLocation()">Standort abrufen</button>
-                            <form method="post" action="{{ route('search.index') }}">
+
+                            <form method="post" action="{{ route('search.index') }}" id="searchForm">
                                 @csrf <!-- CSRF token for Laravel form submission -->
                                 <div class="row g-0 custom-search-input">
-                                    <div class="col-lg-10">
+                                    <div class="col-lg-9">
                                         <div class="form-group">
-                                            <input class="form-control no_border_r" type="text" name="query"  id="autocomplete" placeholder="{{ app(\App\Services\TranslationService::class)->trans('Strasse oder Ort...', app()->getLocale()) }}">
+                                            <input class="form-control no_border_r" type="text" name="query" id="autocomplete" placeholder="{{ app(\App\Services\TranslationService::class)->trans('Strasse oder Ort...', app()->getLocale()) }}" value="{{ session('selectedLocation') }}">
                                         </div>
                                     </div>
-                                    <div class="col-lg-2">
-                                        <button class="btn_1 gradient" type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
+                                    <div class="col-lg-3 button-container">
+                                        <button class="btn_1 icon_pin" onclick="getLocation()"></button>
+                                        <button class="btn_2 gradient" type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
                                     </div>
                                 </div>
                                 <!-- /row -->
@@ -352,39 +390,50 @@
 
 
         <script>
-            function getLocation() {
-              if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-              } else {
-                alert("Geolocation wird nicht unterstützt");
-              }
-            }
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
 
-            function showPosition(position) {
-              var latitude = position.coords.latitude;
-              var longitude = position.coords.longitude;
+                // CSRF-Token aus dem Meta-Tag der Seite abrufen
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-              // Hier kannst du den Standort verarbeiten, z.B. an einen Laravel-Controller senden
-              console.log("Latitude: " + latitude);
-              console.log("Longitude: " + longitude);
+                // Beispiel: Ajax-Anfrage an Laravel-Route
+                $.ajax({
+                    url: '/speichere-standort',
+                    method: 'POST',
+                    data: {
+                        latitude: latitude,
+                        longitude: longitude
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function(response) {
+                        // Keine Rückmeldung an den Benutzer erforderlich
+                    },
+                    error: function(error) {
+                        console.error(error);
+                    }
+                });
+            },
+            function(error) {
+                // Fehlerbehandlung hier, wenn gewünscht
+            },
+            {
+                enableHighAccuracy: false,
+                timeout: 5000,
+                maximumAge: 0
             }
+        );
+    } else {
+        alert("Geolocation wird nicht unterstützt");
+    }
+}
 
-            function showError(error) {
-              switch (error.code) {
-                case error.PERMISSION_DENIED:
-                  alert("Zugriff auf Geolocation verweigert");
-                  break;
-                case error.POSITION_UNAVAILABLE:
-                  alert("Standortinformation ist nicht verfügbar");
-                  break;
-                case error.TIMEOUT:
-                  alert("Timeout bei der Abfrage des Standorts");
-                  break;
-                case error.UNKNOWN_ERROR:
-                  alert("Unbekannter Fehler bei der Geolokalisierung");
-                  break;
-              }
-            }
+
           </script>
 
 
