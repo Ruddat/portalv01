@@ -174,7 +174,7 @@ public function speichereStandort(Request $request)
     }
 
     // Führe die Suche basierend auf der geografischen Entfernung durch
-    $selectedDistance = 10; // Beispiel: Entfernungsintervall von 10 Kilometern
+    $selectedDistance = 20; // Beispiel: Entfernungsintervall von 10 Kilometern
 
     if ($latitude !== null && $longitude !== null) {
         $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
