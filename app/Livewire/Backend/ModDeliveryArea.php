@@ -123,9 +123,21 @@ private function calculateColor($distance)
     if ($distance <= 1) {
         return 'green';
     } elseif ($distance <= 5) {
-        return 'yellow';
+        // Linear interpolation between green and yellow
+        $progress = ($distance - 1) / (8 - 1);
+        $red = 255;
+        $green = round(255 - $progress * (255 - 255));
+        $blue = 0;
+
+        return "rgb($red, $green, $blue)";
     } else {
-        return 'red';
+        // Linear interpolation between yellow and red
+        $progress = ($distance - 5) / (15 - 1);
+        $red = 255;
+        $green = round(255 - $progress * 255);
+        $blue = 0;
+
+        return "rgb($red, $green, $blue)";
     }
 }
 

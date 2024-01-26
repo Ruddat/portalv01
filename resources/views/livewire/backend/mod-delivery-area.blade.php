@@ -20,12 +20,13 @@
             <div class="card-header">
                 <h4 class="card-title">Liefergebiet eingeben</h4>
 
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-info me-2 btn-sm" onclick="reloadPage()">
+                <div class="d-flex flex-wrap justify-content-end">
+                    <button type="button" class="btn btn-info me-2 mb-2 btn-sm" onclick="reloadPage()">
                         <span class="btn-icon-start text-info fs-6"><i class="fa fa-refresh color-info"></i></span>
                         Karte
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm" wire:click="toggleCreateForm">
+
+                    <button type="button" class="btn btn-primary me-2 mb-2 btn-sm" wire:click="toggleCreateForm">
                         <span class="btn-icon-start text-info fs-6"><i class="fa fa-plus color-info"></i></span>
                         Erstellen
                     </button>
@@ -105,9 +106,6 @@
                 </form>
             @endif
 
-
-
-
             </div>
         </div>
     </div>
@@ -132,6 +130,7 @@
                     fillOpacity: 0.1,
                     radius: {{ $deliveryArea->radius }}
                 }).addTo(map);
+
             @endforeach
 
             const marker = L.marker([{{ $shop->lat }}, {{ $shop->lng }}]).addTo(map);
