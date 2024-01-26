@@ -102,6 +102,12 @@
                             <td><strong>#{{ $shop->shop_nr }}</strong></td>
                             <td><div class="d-flex align-items-center"><img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt=""> <span class="w-space-no">{{ $shop->title }}</span></div></td>
                             <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt="">
+                                    <a href="{{ url('/shops/'.$shop->id) }}" class="w-space-no">{{ $shop->title }}</a>
+                                </div>
+                            </td>
+                            <td>
                                 <div class="progress" style="background: rgba(127, 99, 244, .1)">
                                     <div class="progress-bar bg-primary" style="width: 70%;" role="progressbar"><span class="sr-only">70% Complete</span>
                                     </div>

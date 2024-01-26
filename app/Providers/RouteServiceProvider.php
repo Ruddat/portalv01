@@ -28,6 +28,9 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        \Route::pattern('domain', '[a-z0-9.\-]+');
+        parent::boot();
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')

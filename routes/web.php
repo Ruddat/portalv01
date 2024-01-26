@@ -178,13 +178,37 @@ Route::get('/index-normal', function () {
 Route::get('lang/change', [GoogleTranslateController::class, 'change'])->name('change.lang');
 
 
-
 Route::get('/', [ShopSearchController::class, 'index'])->name('index');
 Route::match(['get', 'post'], '/search', [ShopSearchController::class, 'search'])->name('search.index');
 
 
-
 Route::get('/detail-restaurant/{restaurantName}', [ShopCardController::class, 'index'])->name('detail-restaurant.index');
+
+
+
+// Match my own domain
+Route::group(['domain' => config('app.domain_url')], function() {
+    Route::any('/', function()
+      {
+          return 'My own domain';
+      });
+  });
+
+  // Match a subdomain of my domain
+  Route::group(['domain' => '{subdomain}.'.config('app.domain_url')], function() {
+    Route::any('/', function()
+      {
+          return 'My own sub domain';
+      });
+  });
+
+  // Match any other domains
+  Route::group(['domain' => '{domain}'], function() {
+    Route::any('/', function()
+      {
+          return 'other domain';
+      });
+  });
 
 
 
