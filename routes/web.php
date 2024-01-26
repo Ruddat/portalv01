@@ -227,6 +227,7 @@ Route::get('/mod-liefergebiet', function () {
 
 Route::get('/all-your-videos', ShopSearchResults::class)->name('shops.results');
 
+Route::post('/speichere-standort', 'StandortController@speichereStandort');
 
 Route::middleware([
     'auth:sanctum',
