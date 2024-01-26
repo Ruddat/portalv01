@@ -17,6 +17,7 @@
                         <div class="col-xl-7 col-lg-8">
                             <h1>{{ app(\App\Services\TranslationService::class)->trans('Delivery or Takeaway Food', app()->getLocale()) }}</h1>
                             <p>{{ app(\App\Services\TranslationService::class)->trans('All restaurants', app()->getLocale()) }} <span class="element" style="font-weight: 500"></span></p>
+                            <button class="btn_1 medium gradient pulse_bt mt-2" onclick="getLocation()">Standort abrufen</button>
                             <form method="post" action="{{ route('search.index') }}">
                                 @csrf <!-- CSRF token for Laravel form submission -->
                                 <div class="row g-0 custom-search-input">
@@ -349,6 +350,44 @@
         <!-- /shape_element_2 -->
 
 
+
+        <script>
+            function getLocation() {
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+              } else {
+                alert("Geolocation wird nicht unterstützt");
+              }
+            }
+
+            function showPosition(position) {
+              var latitude = position.coords.latitude;
+              var longitude = position.coords.longitude;
+
+              // Hier kannst du den Standort verarbeiten, z.B. an einen Laravel-Controller senden
+              console.log("Latitude: " + latitude);
+              console.log("Longitude: " + longitude);
+            }
+
+            function showError(error) {
+              switch (error.code) {
+                case error.PERMISSION_DENIED:
+                  alert("Zugriff auf Geolocation verweigert");
+                  break;
+                case error.POSITION_UNAVAILABLE:
+                  alert("Standortinformation ist nicht verfügbar");
+                  break;
+                case error.TIMEOUT:
+                  alert("Timeout bei der Abfrage des Standorts");
+                  break;
+                case error.UNKNOWN_ERROR:
+                  alert("Unbekannter Fehler bei der Geolokalisierung");
+                  break;
+              }
+            }
+          </script>
+
+
         @push('specific-scripts')
 
         <!-- TYPE EFFECT -->
@@ -396,6 +435,9 @@
         });
     });
 </script>
+
+
+
 
         @endpush
     @endsection
