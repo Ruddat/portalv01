@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('distance_km', 8, 2);
             $table->decimal('delivery_cost', 8, 2);
             $table->decimal('free_delivery_threshold', 8, 2);
+            $table->decimal('delivery_charge', 8, 2);
             $table->decimal('latitude', 8, 5)->nullable();
             $table->decimal('longitude', 8, 5)->nullable();
             $table->decimal('radius', 10, 2)->nullable();

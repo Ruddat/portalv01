@@ -13,13 +13,16 @@ class ModDeliveryArea extends Component
     public $createFormVisible = false;
     public $distance_km;
     public $delivery_cost;
+    public $delivery_charge;
     public $free_delivery_threshold;
+    public $min_delivery_threshold;
 
 
     protected $rules = [
         'distance_km' => 'required|numeric',
         'delivery_cost' => 'required|numeric',
         'free_delivery_threshold' => 'required|numeric',
+        'delivery_charge' => 'required|numeric',
     ];
 
 
@@ -62,6 +65,7 @@ class ModDeliveryArea extends Component
             'distance_km' => $this->distance_km,
             'delivery_cost' => $this->delivery_cost,
             'free_delivery_threshold' => $this->free_delivery_threshold,
+            'delivery_charge' => $this->delivery_charge,
             'latitude' => $coordinates['latitude'],
             'longitude' => $coordinates['longitude'],
             'radius' => $radius,
@@ -78,6 +82,7 @@ class ModDeliveryArea extends Component
         $this->distance_km = '';
         $this->delivery_cost = '';
         $this->free_delivery_threshold = '';
+        $this->delivery_charge = '';
     }
 
 

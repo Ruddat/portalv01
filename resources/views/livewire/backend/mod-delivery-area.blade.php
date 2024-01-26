@@ -39,6 +39,7 @@
                                 <th scope="col">Entfernung in Km</th>
                                 <th scope="col">Anfahrtskosten</th>
                                 <th scope="col">Anfahr frei ab</th>
+                                <th scope="col">Mindestbestellwert</th>
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
@@ -49,6 +50,7 @@
                                     <td>{{ $deliveryArea->distance_km }} km</td>
                                     <td>{{ $deliveryArea->delivery_cost }} €</td>
                                     <td>{{ $deliveryArea->free_delivery_threshold }} €</td>
+                                    <td>{{ $deliveryArea->delivery_charge }} €</td>
                                     <td>
                                         <div class="d-flex">
                                             <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
@@ -83,6 +85,12 @@
                         @error('free_delivery_threshold') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="delivery_charge" class="form-label">Mindesbestellwert</label>
+                        <input type="text" class="form-control" wire:model="delivery_charge">
+                        @error('delivery_charge') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Liefergebiet hinzufügen</button>
                 </form>
             @endif
@@ -111,7 +119,7 @@
                 L.circle([{{ $shop->lat }}, {{ $shop->lng  }}], {
                     color: '{{ $deliveryArea->color }}',
                     fillColor: '#f03',
-                    fillOpacity: 0.5,
+                    fillOpacity: 0.1,
                     radius: {{ $deliveryArea->radius }}
                 }).addTo(map);
             @endforeach
