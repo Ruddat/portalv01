@@ -234,6 +234,12 @@ Route::get('/mod-workingtimes', function () {
 });
 
 
+/// -- Backend -> Öffnugszeiten
+
+Route::get('/roles-permissons', function () {
+    return view('backend/pages/roles/roles-and-permissons');
+});
+
 
 Route::get('/all-your-videos', ShopSearchResults::class)->name('shops.results');
 
