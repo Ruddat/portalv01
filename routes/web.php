@@ -227,6 +227,13 @@ Route::get('/mod-liefergebiet', function () {
     return view('backend/pages/shops/mod-liefergebiet');
 });
 
+/// -- Backend -> Öffnugszeiten
+
+Route::get('/mod-workingtimes', function () {
+    return view('backend/pages/shops/mod-workingtimes');
+});
+
+
 
 Route::get('/all-your-videos', ShopSearchResults::class)->name('shops.results');
 

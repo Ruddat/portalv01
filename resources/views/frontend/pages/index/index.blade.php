@@ -199,7 +199,7 @@
             <div class="container margin_60_40">
                 <div class="main_title">
                     <span><em></em></span>
-                    <h2>Top Rated Restaurants</h2>
+                    <h2>{{ app(\App\Services\TranslationService::class)->trans('Top Rated Restaurants', app()->getLocale()) }}</h2>
                     <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
                     <a href="#0">View All &rarr;</a>
                 </div>
@@ -322,10 +322,10 @@
                 <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }}">
                     <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
                         <div>
-                            <small>FooYes Delivery</small>
-                            <h3>We Deliver to your Office</h3>
-                            <p>Enjoy a tasty food in minutes!</p>
-                            <a href="grid-listing-filterscol.html" class="btn_1 gradient">Start Now!</a>
+                            <small>{{ app(\App\Services\TranslationService::class)->trans('FooYes Delivery', app()->getLocale()) }}</small>
+                            <h3>{{ app(\App\Services\TranslationService::class)->trans('We Deliver to your Office', app()->getLocale()) }}</h3>
+                            <p>{{ app(\App\Services\TranslationService::class)->trans('Enjoy a tasty food in minutes!', app()->getLocale()) }}</p>
+                            <a href="grid-listing-filterscol.html" class="btn_1 gradient">{{ app(\App\Services\TranslationService::class)->trans('Start Now!', app()->getLocale()) }}</a>
                         </div>
                     </div>
                     <!-- /wrapper -->
@@ -344,14 +344,14 @@
                                 <div class="box_how">
                                     <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_1.svg') }}"
                                             alt="" width="150" height="167" class="lazy"></figure>
-                                    <h3>Easly Order</h3>
+                                    <h3>{{ app(\App\Services\TranslationService::class)->trans('Easly Order', app()->getLocale()) }}</h3>
                                     <p>Faucibus ante, in porttitor tellus blandit et. Phasellus tincidunt metus lectus
                                         sollicitudin.</p>
                                 </div>
                                 <div class="box_how">
                                     <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_2.svg') }}"
                                             alt="" width="130" height="145" class="lazy"></figure>
-                                    <h3>Quick Delivery</h3>
+                                    <h3>{{ app(\App\Services\TranslationService::class)->trans('Quick Delivery', app()->getLocale()) }}</h3>
                                     <p>Maecenas pulvinar, risus in facilisis dignissim, quam nisi hendrerit nulla, id
                                         vestibulum.</p>
                                 </div>
@@ -360,26 +360,26 @@
                                 <div class="box_how">
                                     <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_3.svg') }}"
                                             alt="" width="150" height="132" class="lazy"></figure>
-                                    <h3>Enjoy Food</h3>
+                                    <h3>{{ app(\App\Services\TranslationService::class)->trans('Enjoy Food', app()->getLocale()) }}</h3>
                                     <p>Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, a feugiat
                                         eros.</p>
                                 </div>
                             </div>
                         </div>
                         <p class="text-center mt-3 d-block d-lg-none"><a href="#0"
-                                class="btn_1 medium gradient pulse_bt mt-2">Register Now!</a></p>
+                                class="btn_1 medium gradient pulse_bt mt-2">{{ app(\App\Services\TranslationService::class)->trans('Register Now!', app()->getLocale()) }}</a></p>
                     </div>
                     <div class="col-lg-5 offset-lg-1 align-self-center">
                         <div class="intro_txt">
                             <div class="main_title">
                                 <span><em></em></span>
-                                <h2>Start Ordering Now</h2>
+                                <h2>{{ app(\App\Services\TranslationService::class)->trans('Start Ordering Now', app()->getLocale()) }}</h2>
                             </div>
                             <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet libero
                                 id nisi euismod, sed porta est consectetur deserunt.</p>
                             <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
                                 pariatur.</p>
-                            <p><a href="#0" class="btn_1 medium gradient pulse_bt mt-2">Register</a></p>
+                            <p><a href="#0" class="btn_1 medium gradient pulse_bt mt-2">{{ app(\App\Services\TranslationService::class)->trans('Register', app()->getLocale()) }}</a></p>
                         </div>
                     </div>
                 </div>

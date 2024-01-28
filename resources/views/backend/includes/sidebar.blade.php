@@ -12,7 +12,7 @@
                         <ul aria-expanded="false">
                             <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Module</a>
                                 <ul aria-expanded="false">
-                                    <li><a href="{{ url('/mod-shops') }}">Mod Shops - Kunden</a></li>
+                                    <li><a href="{{ url('/mod-shops') }}">{{ app(\App\Services\TranslationService::class)->trans('Kundenliste', app()->getLocale()) }}</a></li>
                                     <li><a href="./email-inbox.html">Kontrollcentern</a></li>
                                     <li><a href="./email-read.html">Rechnungen</a></li>
                                 </ul>
@@ -20,7 +20,7 @@
 							<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Shop</a>
                                 <ul aria-expanded="false">
                                     <li><a href="{{ url('/mod-liefergebiet') }}">{{ app(\App\Services\TranslationService::class)->trans('Liefergebiet', app()->getLocale()) }}</a></li>
-									<li><a href="./ecom-product-list.html">Product List</a></li>
+									<li><a href="{{ url('/mod-workingtimes') }}">{{ app(\App\Services\TranslationService::class)->trans('Opening Hours', app()->getLocale()) }}</a></li>
 									<li><a href="./ecom-product-detail.html">Product Details</a></li>
 									<li><a href="./ecom-product-order.html">Order</a></li>
 									<li><a href="./ecom-checkout.html">Checkout</a></li>

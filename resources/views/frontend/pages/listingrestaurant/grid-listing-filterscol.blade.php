@@ -319,13 +319,10 @@
 					<!-- /row -->
 
 					<div class="pagination_fg">
+                            {{ $restaurants->links('pagination::bootstrap-5') }}
 
-                        {{ $restaurants->links('pagination::bootstrap-4') }}
 
-                        <div>
-                            <p class="text-sm text-gray-700 leading-5 dark:text-gray-400">
-                                Showing {{ $restaurants->firstItem() }} to {{ $restaurants->lastItem() }} of {{ $restaurants->total() }} results
-                            </p>
+
                         </div>
 					</div>
 				</div>

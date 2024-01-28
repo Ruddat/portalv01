@@ -15,9 +15,9 @@
 				<div class="container">
 					<div class="row justify-content-center">
 						<div class="col-lg-10">
-							<h1>Attract New Customers</h1>
-							<p>More bookings from diners around the corner</p>
-							<a href="#submit" class="btn_1 gradient btn_scroll">Submit Now</a>
+							<h1>{{ app(\App\Services\TranslationService::class)->trans('Kunden gewinnen leicht gemacht!', app()->getLocale()) }}</h1>
+							<p>{{ app(\App\Services\TranslationService::class)->trans('Attraktive Strategien für neue Kunden.', app()->getLocale()) }}</p>
+							<a href="#submit" class="btn_1 gradient btn_scroll">{{ app(\App\Services\TranslationService::class)->trans('Einfach! Sofort online', app()->getLocale()) }}</a>
 						</div>
 					</div>
 					<!-- /row -->
@@ -30,14 +30,14 @@
 			<div class="container margin_30_20">
 			<div class="main_title center">
 				<span><em></em></span>
-				<h2>Why Submit to FooYes</h2>
-				<p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
+				<h2>{{ app(\App\Services\TranslationService::class)->trans('Warum du dein Restaurant bei FoodieBlitz präsentieren solltest!', app()->getLocale()) }}</h2>
+				<p>{{ app(\App\Services\TranslationService::class)->trans('Transparent, sofort online, mühelose Handhabung für mehr Genuss.', app()->getLocale()) }}</p>
 			</div>
 
 			<div class="row justify-content-center align-items-center add_bottom_15">
 					<div class="col-lg-6">
 						<div class="box_about">
-							<h3>Boost your Bookings</h3>
+							<h3>{{ app(\App\Services\TranslationService::class)->trans('Boost your Orders', app()->getLocale()) }}</h3>
 							<p class="lead">Est falli invenire interpretaris id, magna libris sensibus mel id.</p>
 							<p>Per eu nostrud feugiat. Et quo molestiae persecuti neglegentur. At zril definitionem mei, vel ei choro volumus. An tota nulla soluta has, ei nec essent audiam, te nisl dignissim vel. Ex velit audire perfecto pro, ei mei doming vivendo legendos. Cu sit magna zril, an odio delectus constituto vis. Vis ludus omnesque ne, est veri quaeque ad.</p>
 							<img src="{{ asset('frontend/img/arrow_about.png') }}" alt="" class="arrow_1">
@@ -54,7 +54,7 @@
 					</div>
 					<div class="col-lg-6">
 						<div class="box_about">
-							<h3>Manage Easly</h3>
+							<h3>{{ app(\App\Services\TranslationService::class)->trans('Manage Easly', app()->getLocale()) }}</h3>
 							<p class="lead">Est falli invenire interpretaris id, magna libris sensibus mel id.</p>
 							<p>Per eu nostrud feugiat. Et quo molestiae persecuti neglegentur. At zril definitionem mei, vel ei choro volumus. An tota nulla soluta has, ei nec essent audiam, te nisl dignissim vel. Ex velit audire perfecto pro, ei mei doming vivendo legendos. Cu sit magna zril, an odio delectus constituto vis. Vis ludus omnesque ne, est veri quaeque ad.</p>
 							<img src="{{ asset('frontend/img/arrow_about.png') }}" alt="" class="arrow_2">
@@ -65,7 +65,7 @@
 				<div class="row justify-content-center align-items-center">
 					<div class="col-lg-6">
 						<div class="box_about">
-							<h3>Reach New Customers</h3>
+							<h3>{{ app(\App\Services\TranslationService::class)->trans('Reach New Customers', app()->getLocale()) }}</h3>
 							<p class="lead">Est falli invenire interpretaris id, magna libris sensibus mel id.</p>
 							<p>Per eu nostrud feugiat. Et quo molestiae persecuti neglegentur. At zril definitionem mei, vel ei choro volumus. An tota nulla soluta has, ei nec essent audiam, te nisl dignissim vel. Ex velit audire perfecto pro, ei mei doming vivendo legendos. Cu sit magna zril, an odio delectus constituto vis. Vis ludus omnesque ne, est veri quaeque ad.</p>
 						</div>
@@ -79,68 +79,13 @@
 			</div>
 			<!-- /container -->
 
-	<div class="bg_gray">
-		<div class="container margin_60_40">
-			<div class="main_title center">
-				<span><em></em></span>
-				<h2>Our Pricing Plans</h2>
-				<p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
-			</div>
-				 <div class="row plans">
-                <div class="plan col-md-4">
-                	<div class="plan-title">
-	                    <h3>1 Month</h3>
-	                    <p>Free of charge one standard listing</p>
-                	</div>
-                    <p class="plan-price">Free</p>
-                    <ul class="plan-features">
-                        <li><strong>Check and go</strong> included</li>
-                        <li><strong>1 month</strong> valid</li>
-                        <li><strong>Unsubscribe</strong> anytime</li>
-                    </ul>
-                    <a href="#submit" class="btn_1 gray btn_scroll">Submit</a>
-                </div> <!-- End col-md-4 -->
 
-                <div class="plan plan-tall col-md-4">
-                	<div class="plan-title">
-	                    <h3>6 Months</h3>
-	                    <p>One time fee for one listing, highlighted in search results</p>
-                	</div>
-                    <p class="plan-price">$199</p>
-                    <ul class="plan-features">
-                    	<li><strong>Premium</strong> support</li>
-                        <li><strong>Check and go</strong> included</li>
-                         <li><strong>APP</strong> included</li>
-                        <li><strong>6 months</strong> valid</li>
-                        <li><strong>Unsubscribe</strong> anytime</li>
-                    </ul>
-                    <a href="#submit" class="btn_1 gradient btn_scroll">Submit</a>
-                </div><!-- End col-md-4 -->
-
-                <div class="plan col-md-4">
-                   <div class="plan-title">
-	                    <h3>12 Months</h3>
-	                    <p>Monthly subscription for unlimited listings</p>
-                	</div>
-                    <p class="plan-price">$299</p>
-                    <ul class="plan-features">
-                    	<li><strong>Premium</strong> support</li>
-                        <li><strong>Check and go</strong> included</li>
-                        <li><strong>12 months</strong> valid</li>
-                        <li><strong>Unsubscribe</strong> anytime</li>
-                    </ul>
-                    <a href="#submit" class="btn_1 gray btn_scroll">Submit</a>
-                </div><!-- End col-md-4 -->
-            </div><!-- End row plans-->
-		</div>
-		<!-- /container -->
-	</div>
 
 			<div class="container margin_60_20" id="submit">
 				<div class="row justify-content-center">
 					<div class="col-lg-5">
 						<div class="text-center add_bottom_15">
-							<h4>Please fill the form below</h4>
+							<h4>{{ app(\App\Services\TranslationService::class)->trans('Simply fill out the form below', app()->getLocale()) }}</h4>
 							<p>Id persius indoctum sed, audiam verear his in, te eum quot comprehensam. Sed impetus vocibus repudiare et.</p>
 						</div>
 						<div id="message-register"></div>
@@ -162,11 +107,11 @@
 									</div>
 								</div>
 								<!-- /row -->
-								<h6>Restaurant data</h6>
+								<h6>{{ app(\App\Services\TranslationService::class)->trans('Restaurant data', app()->getLocale()) }}</h6>
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
-											<input type="text" class="form-control" placeholder="Restaurant Name" name="restaurantname_register" id="restaurantname_register">
+											<input type="text" class="form-control" placeholder="{{ app(\App\Services\TranslationService::class)->trans('Restaurant Name', app()->getLocale()) }}" name="restaurantname_register" id="restaurantname_register">
 										</div>
 									</div>
 								</div>
@@ -174,22 +119,35 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
-											<input type="text" class="form-control" placeholder="Address" name="address_register" id="address_register">
+											<input type="text" class="form-control" placeholder="Address and Number" name="address_register" id="address_register">
 										</div>
 									</div>
 								</div>
-								<!-- /row -->
+
+
 								<div class="row add_bottom_15">
 									<div class="col-md-6">
 										<div class="form-group">
 											<input type="text" class="form-control" placeholder="City" name="city_register" id="city_register">
 										</div>
 									</div>
-									<div class="col-md-6">
+                                    <div class="col-md-6">
+										<div class="form-group">
+											<input type="text" class="form-control" placeholder="Zip" name="zip_register" id="zip_register">
+										</div>
+									</div>
+								</div>
+
+
+
+								<!-- /row -->
+								<div class="row add_bottom_15">
+
+									<div class="col-lg-12">
 										<div class="form-group">
 											<div class="custom_select submit">
 											<select name="country_register" id="country_register" class="form-control wide">
-												<option value="">Country</option>
+												<option value="">{{ app(\App\Services\TranslationService::class)->trans('Country', app()->getLocale()) }}</option>
 												<option value="Europe">Europe</option>
 												<option value="Asia">Asia</option>
 												<option value="Unated States">Unated States</option>
@@ -200,7 +158,7 @@
 									</div>
 								</div>
 								<!-- /row -->
-								<h6>I am not a robot</h6>
+								<h6>{{ app(\App\Services\TranslationService::class)->trans('I am not a robot', app()->getLocale()) }}</h6>
 								<div class="row add_bottom_25">
 									<div class="col-lg-12">
 										<div class="form-group">
@@ -209,7 +167,7 @@
 									</div>
 								</div>
 								<!-- /row -->
-								<div class="form-group text-center"><input type="submit" class="btn_1 gradient" value="Submit" id="submit-register"></div>
+								<div class="form-group text-center"><input type="submit" class="btn_1 gradient" value="{{ app(\App\Services\TranslationService::class)->trans('Restaurant Anmelden', app()->getLocale()) }}" id="submit-register"></div>
 							</form>
 					</div>
 				</div>

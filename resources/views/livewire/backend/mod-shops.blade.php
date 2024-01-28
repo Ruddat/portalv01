@@ -1,7 +1,7 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Restaurant Partner</h4>
+            <h4 class="card-title"> {{ app(\App\Services\TranslationService::class)->trans('Restaurant Partner - Kunden', app()->getLocale()) }}</h4>
         </div>
 
         <div class="card-body">
@@ -12,7 +12,7 @@
                         <input wire:model.debounce.100ms="search" wire:input="refreshTable" type="text" class="form-control" placeholder="Search...">
                         <button type="button" class="btn btn-primary" wire:click="toggleCreateForm">
                             <span class="btn-icon-start text-info"><i class="fa fa-plus color-info"></i></span>
-                            Create New Shop
+                            {{ app(\App\Services\TranslationService::class)->trans('Create New Shop', app()->getLocale()) }}
                         </button>
 
                     </div>
@@ -100,7 +100,6 @@
                         <tr>
 
                             <td><strong>#{{ $shop->shop_nr }}</strong></td>
-                            <td><div class="d-flex align-items-center"><img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt=""> <span class="w-space-no">{{ $shop->title }}</span></div></td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt="">
@@ -163,14 +162,12 @@
 
 
                 </table>
-                {!! $modshop->links() !!}
+                {!! $modshop->links('pagination::bootstrap-5') !!}
 
 
                 <div class="input-group">
 
-                <p class="mt-3">
-                    Showing {{ $modshop->firstItem() }} to {{ $modshop->lastItem() }} of {{ $modshop->total() }} shops
-                </p>
+
                 <div class="mb-3">
                     <label for="perPageSelect" class="form-label">Anzahl pro Seite:</label>
                     <select wire:model="perPage" wire:change="refreshTable" class="form-select" id="perPageSelect">
