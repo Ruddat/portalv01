@@ -20,6 +20,9 @@ class Seller extends Authenticatable
     use TwoFactorAuthenticatable;
     use HasRoles;
 
+    protected $guard = 'seller';
+    
+
     /**
      * The attributes that are mass assignable.
      *
