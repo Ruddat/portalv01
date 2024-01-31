@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\ModShop::factory()->times(350)->create();
         $this->call(RolesAndPermissionsSeeder::class);
+
+        $this->call(AdminSeeder::class);
     }
 
 
