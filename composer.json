@@ -32,7 +32,12 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+
+        "files":[
+            "app/helpers/helpers.php",
+            "app/helpers/constans.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
