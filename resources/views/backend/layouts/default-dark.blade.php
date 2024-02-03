@@ -254,6 +254,7 @@
 
         <!-- All init script -->
         <script src="{{ asset('backend/js/plugins-init/toastr-init.js') }}"></script>
+        @stack('specific-scripts')
 
         <script>
             window.addEventListener('showToastr', function(event){
@@ -438,10 +439,10 @@ jQuery(document).ready(function(){
 
 </script>
 
-
-@stack('specific-scripts')
-
 @livewireScripts
+
+
+
 
 
 </body>

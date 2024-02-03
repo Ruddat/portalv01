@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Backend;
 
+use App\Models\Admin;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+
 
 class AdminProfileTabs extends Component
 {
@@ -12,6 +14,7 @@ class AdminProfileTabs extends Component
     public $tabname = 'personal_details';
     protected $querystring = ['tab'];
     public $name, $email, $username, $admin_id;
+    public $toastrMessage;
 
 
     public function selectTab($tab){
@@ -31,22 +34,40 @@ class AdminProfileTabs extends Component
     }
 
     public function updateAdminPersonalDetails(){
+
         $this->validate([
-            'name' => 'required|min:3|max:45',
-            'email' => 'required|email',
-            'username' => 'required|min:3|max:45',
+            'name' => 'required|min:5|max:45',
+            'email' => 'required|email|unique:admins,email,'.$this->admin_id,
+            'username' => 'required|min:5|unique:admins,username,'.$this->admin_id,
         ]);
 
-        $admin = Auth::guard('admin')->user();
-        $admin->name = $this->name;
-        $admin->email = $this->email;
-        $admin->username = $this->username;
-        $admin->save();
 
-        $toastrMessage = 'Profile updated successfully';
+        Admin::find($this->admin_id)
+        ->update([
+            'name' => $this->name,
+            'email' => $this->email,
+            'username' => $this->username,
+        ]);
+
+        $this->dispatch('updateAdminSellerHeaderInfo');
+        $this->dispatch('updateAdminInfo', [
+            'adminName' => $this->name,
+            'adminEmail' => $this->email,
+        ]);
+
+        $this->showToastr('success', 'Your Personal details have been updated successfully');
+
+    }
 
 
-     //   session()->flash('success', 'Profile updated successfully');
+
+    public function showToastr($type, $message)
+    {
+        return $this->dispatch('showToastr',[
+            'type' => $type,
+            'message' => $message
+        ]);
+
     }
 
     public function render()
