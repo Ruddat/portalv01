@@ -19,6 +19,9 @@
 	<!-- FAVICONS ICON -->
 	<link rel="shortcut icon" type="image/png" href="{{ asset('backend/images/favicon.png') }}" />
 
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">
+
 	<!-- Stylesheet -->
 	<link href="{{ asset('backend/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
 	<link href="{{ asset('backend/vendor/swiper/css/swiper-bundle.min.css') }}" rel="stylesheet">

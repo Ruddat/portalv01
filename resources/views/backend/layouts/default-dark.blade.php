@@ -248,17 +248,29 @@
     <!-- Extra Assets -->
     <script src="{{ asset('extra-assets/ijabo/ijabo.min.js') }}"></script>
     <script src="{{ asset('extra-assets/ijabo/jquery.ijaboViewer.min.js') }}"></script>
-<script>
-    window.addEventlistener('showToastr',function(event){
-        toastr.remove();
-        if(event.detail.type === 'info'){toastr.show(event.detail.message); }
-        else if(event.detail.type === 'success'){toastr.success(event.detail.message); }
-        else if(event.detail.type === 'warning'){toastr.warning(event.detail.message); }
-        else if(event.detail.type === 'error'){toastr.error(event.detail.message); }
-        else { reurn = false;}
 
-    });
-</script>
+        <!-- Toastr -->
+        <script src="{{ asset('backend/vendor/toastr/js/toastr.min.js') }}"></script>
+
+        <!-- All init script -->
+        <script src="{{ asset('backend/js/plugins-init/toastr-init.js') }}"></script>
+
+        <script>
+            window.addEventListener('showToastr', function(event){
+                toastr.remove();
+                if(event.detail.type === 'info') {
+                    toastr.show(event.detail.message);
+                } else if(event.detail.type === 'success') {
+                    toastr.success(event.detail.message);
+                } else if(event.detail.type === 'warning') {
+                    toastr.warning(event.detail.message);
+                } else if(event.detail.type === 'error') {
+                    toastr.error(event.detail.message);
+                } else {
+                    return false;
+                }
+            });
+        </script>
 
     <script type="text/javascript">
         var url = "{{ route('change.lang') }}";
