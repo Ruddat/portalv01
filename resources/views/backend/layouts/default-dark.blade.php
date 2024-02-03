@@ -190,7 +190,7 @@
 								</li>
 								<li>
 
-																		<div class="dropdown header-profile2 ">
+										<div class="dropdown header-profile2 ">
 										<a class="nav-link " href="javascript:void(0);"  role="button" data-bs-toggle="dropdown">
 											<div class="header-info2 d-flex align-items-center">
 												<img src="{{ asset('backend/images/banner-img/pic-1.png') }}" alt="">
@@ -204,7 +204,7 @@
 											</div>
 										</a>
 										<div class="dropdown-menu dropdown-menu-end">
-											<a href="./app-profile.html" class="dropdown-item ai-icon ">
+											<a href="{{ route('admin.profile') }}" class="dropdown-item ai-icon ">
 												<svg  xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
 												<span class="ms-2">Profile</span>
 											</a>
@@ -408,6 +408,8 @@
         else if(event.detail.type === 'success'){toastr.success(event.detail.message); }
         else if(event.detail.type === 'warning'){toastr.warning(event.detail.message); }
         else if(event.detail.type === 'error'){toastr.error(event.detail.message); }
+        else { reurn = false;}
+
     });
 </script>
 

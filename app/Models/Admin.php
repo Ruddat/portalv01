@@ -21,7 +21,7 @@ class Admin extends Authenticatable
     use HasRoles;
 
     protected $guard_name = 'admin';
-    
+
 
     /**
      * The attributes that are mass assignable.
@@ -65,4 +65,14 @@ class Admin extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getPictureAttribute($value)
+    {
+        if ($value ) {
+            return asset('/images/users/admins/' . $value);
+        } else {
+            return asset('/images/users/default-avatar.png');
+        }
+     //   return $value ? asset('storage/' . $value) : asset('storage/images/default.png');
+    }
 }
