@@ -398,7 +398,18 @@
 	<script src="{{ asset('backend/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
 	<script src="{{ asset('backend/js/dlabnav-init.js') }}"></script>
     <script src="{{ asset('backend/js/custom.js') }}"></script>
-
+    <!-- Extra Assets -->
+    <script src="{{ asset('extra-assets/ijabo/ijabo.min.js') }}"></script>
+    <script src="{{ asset('extra-assets/ijabo/jquery.ijaboViewer.min.js') }}"></script>
+<script>
+    window.addEventlistener('showToastr',function(event){
+        toastr.remove();
+        if(event.detail.type === 'info'){toastr.show(event.detail.message); }
+        else if(event.detail.type === 'success'){toastr.success(event.detail.message); }
+        else if(event.detail.type === 'warning'){toastr.warning(event.detail.message); }
+        else if(event.detail.type === 'error'){toastr.error(event.detail.message); }
+    });
+</script>
 
     <script type="text/javascript">
         var url = "{{ route('change.lang') }}";
