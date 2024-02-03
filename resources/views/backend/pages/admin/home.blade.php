@@ -24,17 +24,17 @@
 									  <div class="swiper-wrapper">
 										<div class="swiper-slide">
 											<div class="banner-bx">
-												<img src="images/banner-img/pic-1.jpg" alt="">
+												<img src="{{ asset('backend/images/banner-img/pic-1.jpg') }}" alt="">
 											</div>
 										</div>
 										<div class="swiper-slide">
 											<div class="banner-bx">
-												<img src="images/banner-img/pic-3.jpg" alt="">
+												<img src="{{ asset('backend/images/banner-img/pic-3.jpg') }}" alt="">
 											</div>
 										</div>
 										<div class="swiper-slide">
 											<div class="banner-bx">
-												<img src="images/banner-img/pic-4.jpg" alt="">
+												<img src="{{ asset('backend/images/banner-img/pic-4.jpg') }}" alt="">
 											</div>
 										</div>
 									  </div>
@@ -267,7 +267,7 @@
 													<i class="fa-solid fa-heart ms-auto c-heart c-pointer"></i>
 												</div>
 												<div class="card-body p-0 text-center">
-													<img src="images/popular-img/pic-1.jpg" alt="">
+													<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 												</div>
 												<div class="card-footer border-0 px-3">
 													<ul class="d-flex align-items-center mb-2">
@@ -313,7 +313,7 @@
 													<i class="fa-solid fa-heart ms-auto c-heart c-pointer"></i>
 												</div>
 												<div class="card-body p-0 text-center text-center">
-													<img src="images/popular-img/pic-2.jpg" alt="">
+													<img src="{{ asset('backend/images/popular-img/pic-2.jpg') }}" alt="">
 												</div>
 												<div class="card-footer border-0 px-3">
 													<ul class="d-flex align-items-center mb-2">
@@ -359,7 +359,7 @@
 													<i class="fa-solid fa-heart ms-auto c-heart c-pointer"></i>
 												</div>
 												<div class="card-body p-0 text-center">
-													<img src="images/popular-img/pic-3.jpg" alt="">
+													<img src="{{ asset('backend/images/popular-img/pic-3.jpg') }}" alt="">
 												</div>
 												<div class="card-footer border-0 px-3">
 													<ul class="d-flex align-items-center mb-2">
@@ -405,7 +405,7 @@
 													<i class="fa-solid fa-heart ms-auto c-heart c-pointer"></i>
 												</div>
 												<div class="card-body p-0 text-center">
-													<img src="images/popular-img/pic-1.jpg" alt="">
+													<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 												</div>
 												<div class="card-footer border-0 px-3">
 													<ul class="d-flex align-items-center mb-2">
@@ -451,7 +451,7 @@
 													<i class="fa-solid fa-heart ms-auto c-heart c-pointer"></i>
 												</div>
 												<div class="card-body p-0 text-center">
-													<img src="images/popular-img/pic-1.jpg" alt="">
+													<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 												</div>
 												<div class="card-footer border-0 px-3">
 													<ul class="d-flex align-items-center mb-2">
@@ -497,7 +497,7 @@
 													<i class="fa-solid fa-heart ms-auto c-heart c-pointer style-1"></i>
 												</div>
 												<div class="card-body p-0 text-center">
-													<img src="images/popular-img/pic-1.jpg" alt="">
+													<img src="{{ asset('backend/images/popular-img/pic-1.jpg') }}" alt="">
 												</div>
 												<div class="card-footer border-0 px-3">
 													<ul class="d-flex align-items-center mb-2">
@@ -551,7 +551,7 @@
 											<div class="swiper-slide">
 												<div class="card dishe-bx b-hover review style-1">
 													<div class="card-body text-center py-3 d-flex justify-content-center">
-														<img src="images/popular-img/review-img/pic-1.jpg" alt="">
+														<img src="{{ asset('backend/images/popular-img/review-img/pic-1.jpg') }}" alt="">
 														<i class="fa-solid fa-heart c-heart c-pointer style-1"></i>
 													</div>
 													<div class="card-footer pt-0 border-0 text-center">
@@ -577,7 +577,7 @@
 														<i class="fa-solid fa-heart c-heart c-pointer style-1"></i>
 													</div>
 													<div class="card-body text-center py-3">
-														<img src="images/popular-img/review-img/pic-2.jpg" alt="">
+														<img src="{{ asset('backend/images/popular-img/review-img/pic-2.jpg') }}" alt="">
 													</div>
 													<div class="card-footer pt-0 border-0 text-center">
 														<div>
@@ -602,7 +602,7 @@
 														<i class="fa-solid fa-heart c-heart c-pointer style-1"></i>
 													</div>
 													<div class="card-body text-center py-3">
-														<img src="images/popular-img/review-img/pic-3.jpg" alt="">
+														<img src="{{ asset('backend/images/popular-img/review-img/pic-3.jpg') }}" alt="">
 													</div>
 													<div class="card-footer pt-0 border-0 text-center">
 														<div>
@@ -627,7 +627,7 @@
 														<i class="fa-solid fa-heart ms-auto c-heart c-pointer style-1"></i>
 													</div>
 													<div class="card-body text-center py-3">
-														<img src="images/popular-img/review-img/pic-1.jpg" alt="">
+														<img src="{{ asset('backend/images/popular-img/review-img/pic-1.jpg') }}" alt="">
 													</div>
 													<div class="card-footer pt-0 border-0 text-center">
 														<div>
@@ -652,7 +652,7 @@
 														<i class="fa-solid fa-heart ms-auto c-heart c-pointer style-1"></i>
 													</div>
 													<div class="card-body text-center py-3">
-														<img src="images/popular-img/review-img/pic-1.jpg" alt="">
+														<img src="{{ asset('backend/images/popular-img/review-img/pic-1.jpg') }}" alt="">
 													</div>
 													<div class="card-footer pt-0 border-0 text-center">
 														<div>
@@ -836,7 +836,7 @@
 										</div>
 										<div class="order-check d-flex align-items-center my-3">
 											<div class="dlab-media">
-												<img src="images/popular-img/review-img/pic-1.jpg" alt="">
+												<img src="{{ asset('backend/images/popular-img/review-img/pic-1.jpg') }}" alt="">
 											</div>
 											<div class="dlab-info">
 												<div class="d-flex align-items-center justify-content-between">
@@ -855,7 +855,7 @@
 										</div>
 										<div class="order-check d-flex align-items-center my-3">
 											<div class="dlab-media">
-												<img src="images/popular-img/review-img/pic-2.jpg" alt="">
+												<img src="{{ asset('backend/images/popular-img/review-img/pic-2.jpg') }}" alt="">
 											</div>
 											<div class="dlab-info">
 												<div class="d-flex align-items-center justify-content-between">
@@ -874,7 +874,7 @@
 										</div>
 										<div class="order-check d-flex align-items-center my-3">
 											<div class="dlab-media">
-												<img src="images/popular-img/review-img/pic-2.jpg" alt="">
+												<img src="{{ asset('backend/images/popular-img/review-img/pic-2.jpg') }}" alt="">
 											</div>
 											<div class="dlab-info">
 												<div class="d-flex align-items-center justify-content-between">
@@ -893,7 +893,7 @@
 										</div>
 										<div class="order-check d-flex align-items-center my-3">
 											<div class="dlab-media">
-												<img src="images/popular-img/review-img/pic-3.jpg" alt="">
+												<img src="{{ asset('backend/images/popular-img/review-img/pic-3.jpg') }}" alt="">
 											</div>
 											<div class="dlab-info">
 												<div class="d-flex align-items-center justify-content-between">
@@ -934,7 +934,7 @@
 												<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
 											</div>
 											<div class="dlab-img">
-												<img src="images/banner-img/pic-2.jpg" alt="">
+												<img src="{{ asset('backend/images/banner-img/pic-2.jpg') }}" alt="">
 											</div>
 										</div>
 									</div>
@@ -951,7 +951,7 @@
         <!--**********************************
             Content body end
         ***********************************-->
-		
+
 
 
 
