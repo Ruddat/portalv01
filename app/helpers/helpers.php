@@ -22,8 +22,7 @@ if( !function_exists('send_mail')){
     $mail->SMTPSecure = env('EMAIL_ENCRYPTION');         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
     $mail->Port       = env('EMAIL_PORT');                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
     $mail->setFrom($mailConfig['mail_from_email'], $mailConfig['mail_from_name']);
-    $mail->addAddress($mailConfig['mail_recipient_email'], $mailConfig['mail_recipiemt_name']);     // Add a recipient
-
+    $mail->addAddress($mailConfig['mail_recipient_email'], $mailConfig['mail_recipient_name']); // Add a recipient
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = $mailConfig['mail_subject'];
     $mail->Body    = $mailConfig['mail_body'];

@@ -39,6 +39,16 @@
                                     </div>
                                         @endif
 
+                                        @if (Session::get('success'))
+                                        <div class="alert alert-danger">
+                                            {{ Session::get('success') }}
+
+                                        <button type="button" class="close" data-dismiss="alert">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                    @endif
+
 										<div class="mb-3">
 											<label class="mb-1"><strong>Email Address</strong></label>
 											<input type="text" class="form-control" name='login_id' value="{{ old('login_id') }}" placeholder="Email/Username">
@@ -68,7 +78,7 @@
 												</div>
 											</div>
 											<div class="mb-3">
-												<a href="page-forgot-password.html">Forgot Password?</a>
+												<a href="{{ route('admin.forgot-password') }}">Forgot Password?</a>
 											</div>
 										</div>
 										<div class="text-center">
