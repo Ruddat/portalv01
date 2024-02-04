@@ -14,7 +14,8 @@ class AdminProfileTabs extends Component
     public $tabname = 'personal_details';
     protected $querystring = ['tab'];
     public $name, $email, $username, $admin_id;
-    public $toastrMessage;
+   // public $toastrMessage;
+    public $toastrMessage = ['status' => null, 'msg' => ''];
 
 
     public function selectTab($tab){
@@ -55,8 +56,8 @@ class AdminProfileTabs extends Component
             'adminEmail' => $this->email,
         ]);
 
-        $this->showToastr('success', 'Your Personal details have been updated successfully');
-
+        //$this->showToastr('success', 'Your Personal details have been updated successfully');
+        $this->toastrMessage = ['status' => 'success', 'msg' => 'Your Personal details have been updated successfully'];
     }
 
 

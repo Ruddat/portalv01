@@ -16,7 +16,7 @@
 				<div class="row page-titles">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item active"><a href="{{ route('admin.home') }}">Home</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0)">Profile</a></li>
+						<li class="breadcrumb-item"><a href="#">Profile</a></li>
 					</ol>
                 </div>
                 <!-- row -->
@@ -28,9 +28,11 @@
                                     <div class="cover-photo rounded"></div>
                                 </div>
                                 <div class="profile-info">
-									<div class="profile-photo">
-										<img src="{{ $admin->picture }}" class="img-fluid rounded-circle" alt="" id="adminProfilePicture">
-									</div>
+                                    <div class="profile-photo">
+                                        <a href="javascript:;" onclick="event.preventDefault();document.getElementById('adminProfilePictureFile').click();" class="edit-avatar"><i class="fa fa-pencil"></i></a>
+                                        <img src="{{ $admin->picture }}" class="img-fluid rounded-circle" alt="" id="adminProfilePicture">
+                                        <input type="file" name="adminProfilePictureFile" id="adminProfilePictureFile" class="d-none" style="opacity:0">
+                                    </div>
 									<div class="profile-details">
 										<div class="profile-name px-3 pt-2">
 											<h4 class="text-primary mb-0" id="adminProfileName">{{ $admin->name }}</h4>
@@ -75,8 +77,8 @@
 													</div>
 												</div>
 												<div class="mt-4">
-													<a href="javascript:void(0);" class="btn btn-primary mb-1 me-1">Follow</a>
-													<a href="javascript:void(0);" class="btn btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#sendMessageModal">Send Message</a>
+													<a href="" class="btn btn-primary mb-1 me-1">Follow</a>
+													<a href="" class="btn btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#sendMessageModal">Send Message</a>
 												</div>
 											</div>
 											<!-- Modal -->
@@ -140,7 +142,7 @@
 									<div class="card-body">
 										<div class="profile-interest">
 											<h5 class="text-primary d-inline">Interest</h5>
-											<div class="row mt-4 sp4" id="lightgallery">
+											<div class="row mt-4 sp4" id=";lk;lk;htgallery">
 												<a href="{{ asset('backend/images/profile/2.jpg') }}" data-exthumbimage="{{ asset('backend/images/profile/2.jpg') }}" data-src="{{ asset('backend/images/profile/2.jpg') }}" class="mb-1 col-lg-4 col-xl-4 col-sm-4 col-6">
 													<img src="{{ asset('backend/images/profile/2.jpg') }}" alt="" class="img-fluid rounded">
 												</a>
@@ -200,6 +202,8 @@
                         <div class="card h-auto">
 
                     @livewire('backend.admin-profile-tabs')
+
+
 
                 </div>
                </div>

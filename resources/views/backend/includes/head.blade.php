@@ -27,8 +27,11 @@
 	<link href="{{ asset('backend/vendor/swiper/css/swiper-bundle.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('backend/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('backend/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
+
     <!-- extra Stylesheet -->
-	<link href="{{ asset('extra-assets/ijabo/ijabo.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('extra-assets/ijabo/ijabo.min.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('extra-assets/ijabo/ijaboCropTool.min.css') }}" rel="stylesheet">
     <!-- Style css -->
 	<link href="{{ asset('backend/vendor/swiper/css/swiper-bundle.min.css') }}" rel="stylesheet">
 

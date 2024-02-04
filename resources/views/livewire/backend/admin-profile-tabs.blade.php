@@ -113,12 +113,60 @@
 
 </div>
 
+@if($toastrMessage['status'] && $toastrMessage['msg'])
+    <script>
+        window.addEventListener('showToastr', function(event){
+            toastr.remove();
+            if(event.detail.type === 'info') {
+                toastr.show(event.detail.message);
+            } else if(event.detail.type === 'success') {
+                toastr.success(event.detail.message);
+            } else if(event.detail.type === 'warning') {
+                toastr.warning(event.detail.message);
+            } else if(event.detail.type === 'error') {
+                toastr.error(event.detail.message);
+            } else {
+                return false;
+            }
+        });
+        window.dispatchEvent(new CustomEvent('showToastr', {
+            detail: {
+                type: '{{ $toastrMessage['status'] }}',
+                message: '{{ $toastrMessage['msg'] }}'
+            }
+        }));
+    </script>
+@endif
+
 @push('specific-scripts')
+
+
+
 <script>
     window.addEventListener('updateAdminInfo', function (event){
         $('#adminProfileName').html(event.detail.adminName);
         $('#adminProfileEmail').html(event.detail.adminEmail);
     });
+
+    $('input[type="file"][name="adminProfilePictureFile"][id="adminProfilePictureFile"]').ijaboCropTool({
+          preview : '#adminProfilePicture',
+          setRatio:1,
+          allowedExtensions: ['jpg', 'jpeg','png'],
+          buttonsText:['CROP','QUIT'],
+          buttonsColor:['#30bf7d','#ee5155', -15],
+          processUrl:'{{ route("admin.change-profile-picture") }}',
+          withCSRF:['_token','{{ csrf_token() }}'],
+          onSuccess:function(message, element, status){
+            Livewire.dispatch('updateAdminSellerHeaderInfo');
+             toastr.success(message);
+          },
+          onError:function(message, element, status){
+            toastr.error(message);
+          }
+       });
+
 </script>
+
+
 
 @endpush
