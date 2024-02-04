@@ -8,6 +8,9 @@
 </head>
 <body>
 
+
+
+
     @include('backend.includes.preloader')
 
 
@@ -259,14 +262,14 @@
 <script src="{{ asset('extra-assets/ijabo/jquery.ijaboViewer.min.js') }}"></script>
 <script src="{{ asset('extra-assets/ijabo/ijaboCropTool.min.js') }}"></script>
 
+
+
 @include('backend.includes.scripts')
 
 
 @stack('specific-scripts')
 
 @livewireScripts
-
-
 
 
 

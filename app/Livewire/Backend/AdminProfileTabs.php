@@ -4,6 +4,7 @@ namespace App\Livewire\Backend;
 
 use App\Models\Admin;
 use Livewire\Component;
+use Masmerise\Toaster\Toaster;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -57,9 +58,10 @@ class AdminProfileTabs extends Component
             'adminName' => $this->name,
             'adminEmail' => $this->email,
         ]);
+        return $this->dispatch('toast', message: 'Your Personal details have been updated successfully', notify:'success' );
 
         //$this->showToastr('success', 'Your Personal details have been updated successfully');
-        $this->toastrMessage = ['status' => 'success', 'msg' => 'Your Personal details have been updated successfully'];
+       // $this->toastrMessage = ['status' => 'success', 'msg' => 'Your Personal details have been updated successfully'];
     }
 
 
@@ -86,13 +88,23 @@ class AdminProfileTabs extends Component
 
        if ($query) {
         $this->current_password = $this->new_password = $this->new_password_confirmation = 'null';
-        $this->dispatch('show-toast', 'New Post has been successfully created!', 'success');
-        $this->showToastr('success', 'Your Password has been updated successfully');
-        $this->toastrMessage = ['status' => 'success', 'msg' => 'Your Password has been updated successfully'];
+      //  return $this->dispatch('toast', message: 'Your Password has been updated successfully', notify:'success' );
+
+
+
+        $this->dispatchBrowserEvent('toast', [
+            'type' => 'success',
+            'message' => 'Your Password has been updated successfully',
+        ]);
+
+     //   $this->dispatch('show-toast', 'New Post has been successfully created!', 'success');
+     //   $this->showToastr('success', 'Your Password has been updated successfully');
+    //    $this->toastrMessage = ['status' => 'success', 'msg' => 'Your Password has been updated successfully'];
        } else {
         $this->dispatch('show-toast', 'New Post has been successfully created!', 'success');
         $this->showToastr('error', 'Your old password is incorrect');
         $this->toastrMessage = ['status' => 'error', 'msg' => 'Your old password is incorrect'];
+        return $this->dispatch('toast', message: 'Your old password is incorrect', notify:'error' );
        }
 
     }

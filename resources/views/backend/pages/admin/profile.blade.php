@@ -29,7 +29,9 @@
                                 </div>
                                 <div class="profile-info">
                                     <div class="profile-photo">
-                                        <a href="javascript:;" onclick="event.preventDefault();document.getElementById('adminProfilePictureFile').click();" class="edit-avatar"><i class="fa fa-pencil"></i></a>
+                                        <a href="javascript:;" onclick="event.preventDefault();document.getElementById('adminProfilePictureFile').click();" class="edit-avatar">
+                                            <i class="fa fa-pencil" style="position: absolute; top: -15px; right: -15px; font-size: 24px; color: white; background-color: #3490dc; padding: 8px; border-radius: 50%;"></i>
+                                        </a>
                                         <img src="{{ $admin->picture }}" class="img-fluid rounded-circle" alt="" id="adminProfilePicture">
                                         <input type="file" name="adminProfilePictureFile" id="adminProfilePictureFile" class="d-none" style="opacity:0">
                                     </div>

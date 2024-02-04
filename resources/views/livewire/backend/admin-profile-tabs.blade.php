@@ -96,30 +96,17 @@
 
 </div>
 
-@if($toastrMessage['status'] && $toastrMessage['msg'])
-    <script>
-        window.addEventListener('showToastr', function(event){
-            toastr.remove();
-            if(event.detail.type === 'info') {
-                toastr.show(event.detail.message);
-            } else if(event.detail.type === 'success') {
-                toastr.success(event.detail.message);
-            } else if(event.detail.type === 'warning') {
-                toastr.warning(event.detail.message);
-            } else if(event.detail.type === 'error') {
-                toastr.error(event.detail.message);
-            } else {
-                return false;
-            }
+
+
+<script>
+    document.addEventListener("livewire:init", () => {
+        Livewire.on("toast", (event) => {
+            toastr[event.notify](event.message);
         });
-        window.dispatchEvent(new CustomEvent('showToastr', {
-            detail: {
-                type: '{{ $toastrMessage['status'] }}',
-                message: '{{ $toastrMessage['msg'] }}'
-            }
-        }));
-    </script>
-@endif
+    });
+</script>
+
+
 
 @push('specific-scripts')
 
