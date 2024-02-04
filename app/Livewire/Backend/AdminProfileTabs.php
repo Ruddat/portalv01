@@ -5,6 +5,7 @@ namespace App\Livewire\Backend;
 use App\Models\Admin;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 
 class AdminProfileTabs extends Component
@@ -16,6 +17,7 @@ class AdminProfileTabs extends Component
     public $name, $email, $username, $admin_id;
    // public $toastrMessage;
     public $toastrMessage = ['status' => null, 'msg' => ''];
+    public $current_password, $new_password, $new_password_confirmation;
 
 
     public function selectTab($tab){
@@ -62,9 +64,42 @@ class AdminProfileTabs extends Component
 
 
 
+    public function updatePassword(){
+
+        $this->validate([
+            'current_password' =>[
+                'required', function($attribute, $value, $fail){
+                    if (!Hash::check($value, Admin::find(auth('admin')->id())->password)){
+                        return $fail(trans('The current password is incorrect'));
+                    }
+                }
+            ],
+            'new_password' => 'required|min:5|max:8|confirmed',
+        ]);
+
+       // dd('ok. validatet');
+
+
+       $query = Admin::findOrfail(auth('admin')->id())->update([
+        'password' =>Hash::make($this->new_password)
+       ]);
+
+       if ($query) {
+        $this->current_password = $this->new_password = $this->new_password_confirmation = 'null';
+        $this->dispatch('show-toast', 'New Post has been successfully created!', 'success');
+        $this->showToastr('success', 'Your Password has been updated successfully');
+        $this->toastrMessage = ['status' => 'success', 'msg' => 'Your Password has been updated successfully'];
+       } else {
+        $this->dispatch('show-toast', 'New Post has been successfully created!', 'success');
+        $this->showToastr('error', 'Your old password is incorrect');
+        $this->toastrMessage = ['status' => 'error', 'msg' => 'Your old password is incorrect'];
+       }
+
+    }
+
     public function showToastr($type, $message)
     {
-        return $this->dispatch('showToastr',[
+        return $this->dispatchBrowserevent('showToastr',[
             'type' => $type,
             'message' => $message
         ]);

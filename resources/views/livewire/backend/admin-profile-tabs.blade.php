@@ -46,59 +46,42 @@
                                 </form>
                             </div>
                         </div>
+
                     </div>
                     <div id="update_password" class="tab-pane fade {{ $tab == 'update_password' ? 'show active' : '' }}">
-                        ------ update password --------------------------------
+
+
+
 
                         <div class="pt-3">
                             <div class="settings-form">
-                                <h4 class="text-primary">Account Setting</h4>
-                                <form>
+                                <h4 class="text-primary">Update Password</h4>
+                                <form wire:submit.prevent='updatePassword()'>
                                     <div class="row">
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" placeholder="Email" class="form-control">
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">Password</label>
-                                            <input type="password" placeholder="Password" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Address</label>
-                                        <input type="text" placeholder="1234 Main St" class="form-control">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Address 2</label>
-                                        <input type="text" placeholder="Apartment, studio, or floor" class="form-control">
-                                    </div>
-                                    <div class="row">
-                                        <div class="mb-3 col-md-6">
-                                            <label class="form-label">City</label>
-                                            <input type="text" class="form-control">
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label">Current password</label>
+                                            <input type="password" placeholder="Enter current password" class="form-control" wire:model.defer='current_password'>
+                                            @error('current_password')
+                                             <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="mb-3 col-md-4">
-                                            <label class="form-label">State</label>
-                                            <select class="form-select" aria-label="Default select example">
-                                              <option selected="">Chooose...</option>
-                                              <option value="1">One</option>
-                                              <option value="2">Two</option>
-                                              <option value="3">Three</option>
-                                            </select>
+                                            <label class="form-label">New password</label>
+                                            <input type="password" placeholder="Enter new password" class="form-control" wire:model.defer='new_password'>
+                                            @error('new_password')
+                                             <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
-                                        <div class="mb-3 col-md-2">
-                                            <label class="form-label">Zip</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="form-check custom-checkbox">
-                                            <input type="checkbox" class="form-check-input" id="gridCheck">
-                                            <label class="form-check-label form-label" for="gridCheck"> Check me out</label>
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label">Confirm new password</label>
+                                            <input type="password" placeholder="Retype new password" class="form-control" wire:model.defer='new_password_confirmation'>
+                                            @error('new_password_confirmation')
+                                             <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary" type="submit">Sign
-                                        in</button>
+
+                                    <button class="btn btn-primary" type="submit">Update password</button>
                                 </form>
                             </div>
                         </div>
