@@ -87,15 +87,33 @@ class AdminProfileTabs extends Component
        ]);
 
        if ($query) {
+        // Send notification to the admin
+        $_admin = Admin::findOrfail($this->admin_id);
+        $data = array(
+            'admin'=>$_admin,
+            'new_password' =>$this->new_password
+        );
+
+        $mail_body = view('email-templates.admin-reset-email-template', $data)->render();
+
+        $mailConfig = array(
+            'mail_from_email'=>env('MAIL_FROM_ADDRESS'),
+            'mail_from_name'=>env('MAIL_FROM_NAME'),
+            'mail_recipient_email'=>$_admin->email,
+            'mail_recipient_name'=>$_admin->name,
+            'mail_subject'=>'Your password has been changed',
+            'mail_body'=>$mail_body
+
+        );
+
+        sendEmail($mailConfig);
+
         $this->current_password = $this->new_password = $this->new_password_confirmation = 'null';
-      //  return $this->dispatch('toast', message: 'Your Password has been updated successfully', notify:'success' );
+        return $this->dispatch('toast', message: 'Your Password has been updated successfully', notify:'success' );
 
 
 
-        $this->dispatchBrowserEvent('toast', [
-            'type' => 'success',
-            'message' => 'Your Password has been updated successfully',
-        ]);
+
 
      //   $this->dispatch('show-toast', 'New Post has been successfully created!', 'success');
      //   $this->showToastr('success', 'Your Password has been updated successfully');
