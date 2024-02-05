@@ -24,7 +24,7 @@
                 <div class="dropdown-menu dropdown-menu-end">
                     <a href="{{ route('admin.profile') }}" class="dropdown-item ai-icon ">
                         <svg  xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                        <span class="ms-2">Profile</span>
+                        <span class="ms-2">{{ app(\App\Services\TranslationService::class)->trans('Edit Profile', app()->getLocale()) }}</span>
                     </a>
                     <a href="./email-inbox.html" class="dropdown-item ai-icon">
                         <svg  xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -53,7 +53,7 @@
                     </svg>
                     <span class="ms-2">Notification </span>
                 </a>
-                <a href="./setting.html" class="dropdown-item ai-icon ">
+                <a href="{{ route('admin.settings') }}" class="dropdown-item ai-icon ">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                             <rect x="0" y="0" width="24" height="24"/>
@@ -61,7 +61,7 @@
                             <path d="M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="var(--primary)"/>
                         </g>
                     </svg>
-                    <span class="ms-2">Settings </span>
+                    <span class="ms-2">{{ app(\App\Services\TranslationService::class)->trans('Settings', app()->getLocale()) }} </span>
                 </a>
                     <a href="{{  route('admin.logout_handler') }}" class="dropdown-item ai-icon ms-1"
                         onclick="event.preventDefault(); document.getElementById('adminLogoutForm').submit();">
