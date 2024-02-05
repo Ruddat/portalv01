@@ -6,8 +6,6 @@
 @endpush
 
 
-
-
         <!--**********************************
             Content body start
         ***********************************-->
@@ -16,7 +14,7 @@
 				<div class="row page-titles">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item active"><a href="{{ route('admin.home') }}">Home</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0)">Settings</a></li>
+                        <li class="breadcrumb-item {{ Request::is('admin/settings*') ? 'active' : '' }}"><a href="{{ route('admin.settings') }}">Settings</a></li>
 					</ol>
                 </div>
                 <div class="row">
@@ -32,6 +30,7 @@
 
 
                                 @livewire('backend.admin-settings')
+
 
 
                             </div>

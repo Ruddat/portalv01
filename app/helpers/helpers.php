@@ -2,6 +2,8 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use App\Models\GeneralSettings;
+
 
 /** SEND EMAIL FUNCTION USING PHPMAILER LIBRARY */
 if( !function_exists('send_mail')){
@@ -33,6 +35,31 @@ if( !function_exists('send_mail')){
     }
 
 
+    }
+
+}
+
+/** GET GENERAL SETTINGS */
+
+if( !function_exists('get_settings')){
+
+    function get_settings(){
+        $results = null;
+        $settings = new GeneralSettings();
+        $settings_data = $settings->first();
+
+        if($settings_data){
+            $results = $settings_data;
+        }else{
+            $settings->insert([
+                'site_name' => 'PizzaPortal Dev',
+                'site_email' => 'info@pizzaportal.com',
+            ]);
+            $new_settings_data = $settings->first();
+            $results = $new_settings_data;
+        }
+
+        return $results;
     }
 
 }

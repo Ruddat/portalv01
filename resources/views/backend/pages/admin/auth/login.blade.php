@@ -23,7 +23,7 @@
 							<div class="col-xl-4 col-md-6 pe-0">
 								<div class="sign-in-your">
 									<div class="text-center mb-3">
-										<img src="images/logo-full.png" class="mb-3" alt="">
+										<img src="{{ asset('backend/images/logo-full.png') }}" class="mb-3" alt="">
 										<h4 class="fs-20 font-w800 text-black">Create an Account</h4>
 										<span class="dlab-sign-up">Sign Up</span>
 									</div>

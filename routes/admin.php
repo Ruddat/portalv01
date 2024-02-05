@@ -22,6 +22,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/profile', [AdminController::class, 'profileView'])->name('profile');
         Route::post('/change-profile-picture', [AdminController::class, 'changeProfilePicture'])->name('change-profile-picture');
         Route::view('/settings', 'backend.pages.admin.settings')->name('settings');
+        Route::post('/update-general-settings', [AdminSettings::class, 'updateGeneralSettings'])->name('update-general-settings');
+
+
     });
 
 });

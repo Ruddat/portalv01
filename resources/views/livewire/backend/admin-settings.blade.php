@@ -17,9 +17,10 @@
 
 
         <div class="tab-content">
-            <div id="general_settings" class="tab-pane fade {{ $tab == 'general_settings' ? 'active show' : '' }}" role="tabpanel" wire:ignore>
+            <div id="general_settings" class="tab-pane fade {{ $tab == 'general_settings' ? 'show active' : '' }}" role="tabpanel">
                 <div class="pt-4">
-                    <form wire:submit.prevent='updateGeneralSettings()'>
+                    <form wire:submit.prevent='updateGeneralSettings' action="{{ route('admin.update-general-settings') }}" method="post">
+
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label class="form-label">Site name</label>
@@ -46,7 +47,7 @@
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label class="form-label">Site phone</label>
-                                <input type="text" placeholder="Enter site phone" class="form-control" wire:model.defer='site_name'>
+                                <input type="text" placeholder="Enter site phone" class="form-control" wire:model.defer='site_phone'>
                                 @error('site_phone')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -78,7 +79,7 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade {{ $tab == 'logo_favicon' ? 'active' : '' }}" id="logo_favicon" role="tabpanel" wire:ignore>
+            <div class="tab-pane fade {{ $tab == 'logo_favicon' ? 'show active' : '' }}" id="logo_favicon" role="tabpanel"  >
                 <div class="pt-4">
                     <h4>This is profile title</h4>
                     <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
@@ -87,7 +88,7 @@
                     </p>
                 </div>
             </div>
-            <div class="tab-pane fade {{ $tab == 'social_networks' ? 'active' : '' }}" id="social_networks" role="tabpanel" wire:ignore>
+            <div class="tab-pane fade {{ $tab == 'social_networks' ? 'show active' : '' }}" id="social_networks" role="tabpanel" >
                 <div class="pt-4">
                     <h4>This is contact title</h4>
                     <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
@@ -96,7 +97,7 @@
                     </p>
                 </div>
             </div>
-            <div class="tab-pane fade {{ $tab == 'payment_methods' ? 'active' : '' }}" id="payment_methods" role="tabpanel" wire:ignore>
+            <div class="tab-pane fade {{ $tab == 'payment_methods' ? 'show active' : '' }}" id="payment_methods" role="tabpanel" >
                 <div class="pt-4">
                     <h4>This is message title</h4>
                     <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
@@ -109,3 +110,10 @@
 
     </div>
 </div>
+
+
+<script>
+    Livewire.on('refreshComponent', function () {
+        window.location.reload(); // Lade die Seite neu
+    });
+</script>
