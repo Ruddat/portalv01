@@ -2,7 +2,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="keywords" content="" />
-	<meta name="author" content="DexignLab" />
+	<meta name="author" content="Ingo Ruddat" />
 	<meta name="robots" content="" />
 	<meta name="description" content="FoodDesk - Online Food Delivery Admin Dashboard"/>
 	<meta property="og:title" content="FoodDesk - Online Food Delivery Admin Dashboard" />
@@ -19,13 +19,20 @@
 	<!-- FAVICONS ICON -->
 	<link rel="shortcut icon" type="image/png" href="{{ asset('backend/images/favicon.png') }}" />
 
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">
+
 	<!-- Stylesheet -->
 	<link href="{{ asset('backend/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
 	<link href="{{ asset('backend/vendor/swiper/css/swiper-bundle.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('backend/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('backend/vendor/bootstrap-select/dist/css/bootstrap-select.min.css') }}" rel="stylesheet">
 
-	<!-- Style css -->
+    <!-- extra Stylesheet -->
+    <link href="{{ asset('extra-assets/ijabo/ijabo.min.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('extra-assets/ijabo/ijaboCropTool.min.css') }}" rel="stylesheet">
+    <!-- Style css -->
 	<link href="{{ asset('backend/vendor/swiper/css/swiper-bundle.min.css') }}" rel="stylesheet">
 
 	<!-- Global Stylesheet -->
@@ -36,4 +43,4 @@
 
         <!-- Styles -->
         @livewireStyles
-        
+

@@ -79,8 +79,9 @@
 							<span class="nav-text">Apps</span>
 						</a>
                         <ul aria-expanded="false">
-                            <li><a href="./app-profile.html">Profile</a></li>
-							<li><a href="./post-details.html">Post Details</a></li>
+                            <li><a href="{{ route('admin.profile') }}">{{ app(\App\Services\TranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('admin.settings') }}">{{ app(\App\Services\TranslationService::class)->trans('Settings', app()->getLocale()) }}</a></li>
+                            <li><a href="./post-details.html">Post Details</a></li>
                             <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Email</a>
                                 <ul aria-expanded="false">
                                     <li><a href="./email-compose.html">Compose</a></li>

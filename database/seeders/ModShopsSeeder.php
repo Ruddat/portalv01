@@ -14,7 +14,7 @@ class ModShopsSeeder extends Seeder
     public function run(): void
     {
         //
-       ModShop::factory()->count(500)->create();
+       ModShop::factory()->count(150)->create();
 
       //  $referenceLatitude = 52.392649; // Beispiel-Latitude (zum Beispiel Paris)
       //  $referenceLongitude = 10.352971; // Beispiel-Longitude (zum Beispiel Paris)

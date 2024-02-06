@@ -149,6 +149,9 @@ public function speichereStandort(Request $request)
     $latitude = $request->input('latitude');
     $longitude = $request->input('longitude');
 
+
+  //  dd($latitude, $longitude);
+
     // Speichere die Werte in der Session
     $request->session()->put('userLatitude', $latitude);
     $request->session()->put('userLongitude', $longitude);
@@ -194,6 +197,8 @@ public function speichereStandort(Request $request)
         $request->session()->put('selectedDistance', $selectedDistance);
 
         // Zeige die Ergebnisse mit der Blade-Ansicht an
+      // dd($request->session()->get('selectedLocation'));
+
         return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => $restaurants,
             'userLatitude' => $latitude,
