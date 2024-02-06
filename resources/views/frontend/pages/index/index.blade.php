@@ -89,6 +89,7 @@
                                     </ul>
                                 </div>
                             </form>
+<br><br>
 
 
                         </div>
@@ -445,7 +446,7 @@ function getLocation() {
                 console.error('Geolocation-Fehler:', error.message);
             },
             {
-                enableHighAccuracy: false,
+                enableHighAccuracy: true,
                 timeout: 5000,
                 maximumAge: 0
             }

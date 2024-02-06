@@ -33,49 +33,41 @@ public function index(Request $request)
 public function search(Request $request)
 {
     try {
+        // Abfrageparameter erhalten
+        $query = $request->input('query', '');
+        $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
 
-
-
-
-        $query = $request->input('query', ''); // Setze leere Zeichenkette als Standardwert, wenn kein Wert übergeben wird
-        $userLatitude = null;
-        $userLongitude = null;
-
-        $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20));
-
-        // Überprüfe, ob die Nominatim-Anfrage durchgeführt werden soll
-        if ($request->isMethod('post') && $query !== '') {
+        // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten, wenn eine Abfrage vorhanden ist
+        if (!empty($query)) {
             $url = "http://nominatim.openstreetmap.org/";
             $nominatim = new Nominatim($url);
+            $search = $nominatim->newSearch()->query($query);
+            $results = $nominatim->find($search);
 
-            $search = $nominatim->newSearch();
-
-            // Führe die Nominatim-Anfrage nur durch, wenn $query nicht null ist
-            if ($query !== null) {
-                $search->query($query);
-                $results = $nominatim->find($search);
-
-                // Überprüfe, ob Ergebnisse vorhanden sind und setze $userLatitude und $userLongitude
-                if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
-                    $userLatitude = $results[0]['lat'];
-                    $userLongitude = $results[0]['lon'];
-
-                    // Speichere die Werte in der Session
-                    $request->session()->put('userLatitude', $userLatitude);
-                    $request->session()->put('userLongitude', $userLongitude);
-
-                    // Speichere den ausgewählten Ort in der Session
-                    $request->session()->put('selectedLocation', $query);
-                }
+            // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern, falls vorhanden
+            if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+                $userLatitude = $results[0]['lat'];
+                $userLongitude = $results[0]['lon'];
+                $request->session()->put('userLatitude', $userLatitude);
+                $request->session()->put('userLongitude', $userLongitude);
+                $request->session()->put('selectedLocation', $query);
             }
         }
 
-
-        // Versuche die Werte aus der Session zu erhalten
+        // Session-Werte abrufen
         $userLatitude = $request->session()->get('userLatitude', null);
         $userLongitude = $request->session()->get('userLongitude', null);
 
-        // Überprüfe, ob $userLatitude und $userLongitude vorhanden sind
+        // Wenn der Filterwert für den Umkreis im Request vorhanden ist, speichern wir ihn in der Session
+        if ($request->filled('distance')) {
+            $selectedDistance = $request->input('distance');
+            $request->session()->put('selectedDistance', $selectedDistance);
+        } else {
+            // Wenn der Filterwert nicht im Request vorhanden ist, verwenden wir den Wert aus der Session
+            $selectedDistance = Session::get('selectedDistance', 20);
+        }
+
+        // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
         if ($userLatitude !== null && $userLongitude !== null) {
             $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
                 ->selectRaw(
@@ -86,17 +78,23 @@ public function search(Request $request)
                     sin( radians( lat ) ) ) ) AS distance',
                     [$userLatitude, $userLongitude, $userLatitude]
                 )
+                ->where('published', true)
                 ->having('distance', '<', $selectedDistance)
                 ->orderBy('distance')
                 ->paginate(12);
 
-                // Speichere die ausgewählte Entfernung in der Session
-        Session::put('selectedDistance', $selectedDistance);
+            // Entfernung in der Session speichern, wenn eine neue Suche durchgeführt wurde
+            if (!empty($query)) {
+                $request->session()->put('selectedDistance', $selectedDistance);
+            }
         } else {
-            // Führe eine einfache Datenbankabfrage ohne Entfernungs- und Sortierlogik durch
+            // Wenn keine Geokoordinaten vorhanden sind, eine einfache Datenbankabfrage durchführen
             $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
                 ->paginate(12);
         }
+
+        // Die aktuellen Abfrageparameter für die Pagination beibehalten
+        $restaurants->appends($request->only(['query', 'distance']));
 
         return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => $restaurants,
@@ -106,14 +104,19 @@ public function search(Request $request)
         ]);
 
     } catch (\Exception $e) {
-        // Handle die Ausnahme, z.B. gib eine Fehlermeldung aus oder logge den Fehler.
-
-
+        // Fehlerbehandlung
         return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => [],
         ]);
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -128,6 +131,7 @@ private function performRestaurantSearch($userLatitude, $userLongitude, $selecte
             sin( radians( lat ) ) ) ) AS distance',
             [$userLatitude, $userLongitude, $userLatitude]
         )
+        ->where('published', true) // Nur aktive Geschäfte berücksichtigen
         ->having('distance', '<', $selectedDistance)
         ->orderBy('distance')
         ->paginate(12);
@@ -145,71 +149,58 @@ private function paginateResults($results, $perPage)
 
 public function speichereStandort(Request $request)
 {
-    // Verarbeite den Standort hier
+    // Geokoordinaten aus dem Request erhalten
     $latitude = $request->input('latitude');
     $longitude = $request->input('longitude');
 
+    // Fehlerbehandlung für fehlende Koordinaten
+    if (!$latitude || !$longitude) {
+        return response()->json(['error' => 'Fehlende Geokoordinaten im Request'], 400);
+    }
 
-  //  dd($latitude, $longitude);
-
-    // Speichere die Werte in der Session
+    // Standort in der Session speichern
     $request->session()->put('userLatitude', $latitude);
     $request->session()->put('userLongitude', $longitude);
 
-    // Überprüfe, ob die Nominatim-Anfrage durchgeführt werden soll
-    if ($request->isMethod('post')) {
-        $query = ''; // Setze den Ort hier entsprechend deiner Logik
-        $url = "http://nominatim.openstreetmap.org/";
-        $nominatim = new Nominatim($url);
+    // Nominatim-Anfrage durchführen, um den ausgewählten Ort zu erhalten
+    $url = "http://nominatim.openstreetmap.org/";
+    $nominatim = new Nominatim($url);
+    $reverse = $nominatim->newReverse()->latlon($latitude, $longitude);
+    $result = $nominatim->find($reverse);
 
-       // $search = $nominatim->newSearch();
-       $reverse = $nominatim->newReverse()
-       ->latlon($latitude, $longitude);
-       $result = $nominatim->find($reverse);
-
-        // Überprüfe, ob Ergebnisse vorhanden sind und setze $selectedLocation
-        if (!empty($result) && isset($result[0]['display_name'])) {
-            $selectedLocation = $result[0]['display_name'];
-
-            // Speichere den ausgewählten Ort in der Session
-            $request->session()->put('selectedLocation', $selectedLocation);
-        }
+    // Überprüfen, ob Ergebnisse vorhanden sind und den ausgewählten Ort speichern
+    $selectedLocation = null;
+    if (!empty($result) && isset($result[0]['display_name'])) {
+        $selectedLocation = $result[0]['display_name'];
+        $request->session()->put('selectedLocation', $selectedLocation);
     }
 
-    // Führe die Suche basierend auf der geografischen Entfernung durch
-    $selectedDistance = 20; // Beispiel: Entfernungsintervall von 10 Kilometern
+    // Geografische Entfernung für die Restaurantsuche festlegen
+    $selectedDistance = 20; // Beispiel: Entfernungsintervall von 20 Kilometern
 
-    if ($latitude !== null && $longitude !== null) {
-        $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
-            ->selectRaw(
-                '( 6371 * acos( cos( radians(?) ) *
-                cos( radians( lat ) ) *
-                cos( radians( lng ) - radians(?) ) +
-                sin( radians(?) ) *
-                sin( radians( lat ) ) ) ) AS distance',
-                [$latitude, $longitude, $latitude]
-            )
-            ->having('distance', '<', $selectedDistance)
-            ->orderBy('distance')
-            ->paginate(12);
+    // Restaurants basierend auf der Entfernung suchen
+    $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
+        ->selectRaw(
+            '( 6371 * acos( cos( radians(?) ) *
+            cos( radians( lat ) ) *
+            cos( radians( lng ) - radians(?) ) +
+            sin( radians(?) ) *
+            sin( radians( lat ) ) ) ) AS distance',
+            [$latitude, $longitude, $latitude]
+        )
+        ->where('published', true) // Nur aktive Geschäfte berücksichtigen
+        ->having('distance', '<', $selectedDistance)
+        ->orderBy('distance')
+        ->paginate(12);
 
-        // Speichere die ausgewählte Entfernung in der Session
-        $request->session()->put('selectedDistance', $selectedDistance);
-
-        // Zeige die Ergebnisse mit der Blade-Ansicht an
-      // dd($request->session()->get('selectedLocation'));
-
-        return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
-            'restaurants' => $restaurants,
-            'userLatitude' => $latitude,
-            'userLongitude' => $longitude,
-            'selectedDistance' => $selectedDistance,
-        ]);
-    }
-
-    // Fehlerbehandlung, falls die Koordinaten nicht verfügbar sind
-    dd('Fehler beim Abrufen der Standortkoordinaten');
-    return response()->json(['error' => 'Fehler beim Abrufen der Standortkoordinaten'], 400);
+    // Standortinformationen an die Blade-Ansicht übergeben
+    return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
+        'restaurants' => $restaurants,
+        'userLatitude' => $latitude,
+        'userLongitude' => $longitude,
+        'selectedDistance' => $selectedDistance,
+        'selectedLocation' => $selectedLocation, // Zusätzliche Information für die Ansicht
+    ]);
 }
 
 
