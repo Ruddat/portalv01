@@ -10,7 +10,8 @@ class AdminSettings extends Component
     public $tab = null;
     public $default_tab = 'general_settings';
     protected $querystring = ['tab'];
-    public $site_name, $site_email, $site_phone, $site_meta_keywords, $site_meta_description;
+    public $site_name, $site_email, $site_phone, $site_meta_keywords, $site_meta_description, $site_logo,
+    $site_favicon;
 
     public function selectTab($tab){
     $this->tab = $tab;
@@ -26,6 +27,9 @@ class AdminSettings extends Component
         $this->site_phone = get_settings()->site_phone;
         $this->site_meta_keywords = get_settings()->site_meta_keywords;
         $this->site_meta_description = get_settings()->site_meta_description;
+        $this->site_logo = get_settings()->site_logo;
+        $this->site_favicon = get_settings()->site_favicon;
+        
 
     }
 

@@ -39,6 +39,14 @@
     /* Weitere Stilisierungen nach Bedarf */
 }
 
+.custom-button {
+        width: 32px; /* Passe die Breite entsprechend deinem Bild an */
+        height: 32px; /* Passe die Höhe entsprechend deinem Bild an */
+        background: url('{{ asset('frontend/img/location_7508941.png') }}') no-repeat center center; /* Passe den Pfad zu deinem Bild an */
+        border: none;
+        cursor: pointer;
+    }
+
 </style>
     @endpush
 
@@ -64,7 +72,9 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 button-container">
-                                        <button class="btn_1 icon_pin" onclick="getLocation()"></button>
+
+                                        <button class="custom-button" onclick="getLocation()" aria-label="Custom Button"></button>
+
                                         <button class="btn_2 gradient" type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
                                     </div>
                                 </div>
@@ -79,6 +89,8 @@
                                     </ul>
                                 </div>
                             </form>
+
+
                         </div>
                     </div>
                     <!-- /row -->
@@ -386,7 +398,7 @@
             </div>
         </div>
         <!-- /shape_element_2 -->
-
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 
         <script>
@@ -400,27 +412,37 @@ function getLocation() {
                 // CSRF-Token aus dem Meta-Tag der Seite abrufen
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-                // Beispiel: Ajax-Anfrage an Laravel-Route
-                $.ajax({
-                    url: '/speichere-standort',
-                    method: 'POST',
-                    data: {
-                        latitude: latitude,
-                        longitude: longitude
-                    },
+                // Beispiel: Ajax-Anfrage an Laravel-Route mit Axios
+                axios.post('/speichere-standort', {
+                    latitude: latitude,
+                    longitude: longitude
+                }, {
                     headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    success: function(response) {
-                        // Keine Rückmeldung an den Benutzer erforderlich
-                    },
-                    error: function(error) {
-                        console.error(error);
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(function(response) {
+                    // Erfolgreiche Anfrage
+                    console.log(response.data);
+                })
+                .catch(function(error) {
+                    // Fehlerbehandlung
+                    if (error.response) {
+                        // Server hat die Anfrage mit einem Statuscode außerhalb des 2xx-Bereichs beantwortet
+                        console.error('Server-Fehler:', error.response.data);
+                    } else if (error.request) {
+                        // Die Anfrage wurde gemacht, aber es wurde keine Antwort empfangen
+                        console.error('Keine Antwort vom Server');
+                    } else {
+                        // Etwas ist während der Anfrage-Einrichtung schief gelaufen
+                        console.error('Fehler während der Anfrage-Einrichtung', error.message);
                     }
                 });
             },
             function(error) {
                 // Fehlerbehandlung hier, wenn gewünscht
+                console.error('Geolocation-Fehler:', error.message);
             },
             {
                 enableHighAccuracy: false,
@@ -432,6 +454,7 @@ function getLocation() {
         alert("Geolocation wird nicht unterstützt");
     }
 }
+
 
 
           </script>

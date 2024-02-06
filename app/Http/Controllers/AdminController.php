@@ -12,6 +12,7 @@ use constDefaults;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
+use App\Models\GeneralSettings;
 
 
 class AdminController extends Controller
@@ -263,6 +264,43 @@ class AdminController extends Controller
         }
     }
 
+    public function changeLogo(Request $request)
+    {
+
+    //    dd('on site');
+
+        // Überprüfen, ob eine Datei hochgeladen wurde
+        if ($request->hasFile('site_logo')) {
+            $path = 'images/site/';
+            $file = $request->file('site_logo');
+
+            // Eindeutigen Dateinamen generieren
+            $filename = 'LOGO_IMG_' . uniqid() . '.' .$file->getClientOriginalExtension();
+
+            // Datei verschieben und Überprüfen, ob der Vorgang erfolgreich war
+            if ($file->move(public_path($path), $filename)) {
+                // Wenn die Datei erfolgreich verschoben wurde, alte Datei löschen
+                $settings = GeneralSettings::first();
+                $old_logo = $settings->site_logo;
+                if ($old_logo != null && File::exists(public_path($path . $old_logo))) {
+                    File::delete(public_path($path . $old_logo));
+                }
+
+                // Datenbank aktualisieren
+                $settings->site_logo = $filename;
+                $settings->save();
+
+                // Erfolgreiche Antwort zurückgeben
+                return response()->json(['status' => 1, 'msg' => 'Your logo has been successfully updated.']);
+            } else {
+                // Fehlermeldung, wenn Datei nicht verschoben werden konnte
+                return response()->json(['status' => 0, 'msg' => 'Failed to upload file.']);
+            }
+        } else {
+            // Fehlermeldung, wenn keine Datei hochgeladen wurde
+            return response()->json(['status' => 0, 'msg' => 'No file uploaded.']);
+        }
+    }
 
 
 }

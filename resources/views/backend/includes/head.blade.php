@@ -2,7 +2,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="keywords" content="" />
-	<meta name="author" content="DexignLab" />
+	<meta name="author" content="Ingo Ruddat" />
 	<meta name="robots" content="" />
 	<meta name="description" content="FoodDesk - Online Food Delivery Admin Dashboard"/>
 	<meta property="og:title" content="FoodDesk - Online Food Delivery Admin Dashboard" />

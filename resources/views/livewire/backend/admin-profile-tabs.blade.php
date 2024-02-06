@@ -72,6 +72,8 @@
                                              <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
+
+
                                         <div class="mb-3 col-md-4">
                                             <label class="form-label">Confirm new password</label>
                                             <input type="password" placeholder="Retype new password" class="form-control" wire:model.defer='new_password_confirmation'>
@@ -79,6 +81,9 @@
                                              <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
+
+
+
                                     </div>
 
                                     <button class="btn btn-primary" type="submit">Update password</button>

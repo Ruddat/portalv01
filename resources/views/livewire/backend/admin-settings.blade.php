@@ -5,13 +5,13 @@
                 <a wire:click.prevent='selectTab("general_settings")' class="nav-link {{ $tab == 'general_settings' ? 'active' : '' }}" data-bs-toggle="tab" href="#general_settings"><i class="la la-home me-2"></i> General Settings</a>
             </li>
             <li class="nav-item">
-                <a wire:click.prevent='selectTab("logo_favicon")' class="nav-link {{ $tab == 'logo_favicon' ? 'active' : '' }}" data-bs-toggle="tab" href="#logo_favicon"><i class="la la-user me-2"></i> Logo & Favicon</a>
+                <a wire:click.prevent='selectTab("logo_favicon")' class="nav-link {{ $tab == 'logo_favicon' ? 'active' : '' }}" data-bs-toggle="tab" href="#logo_favicon"><i class="lab la-jenkins me-2"></i> Logo & Favicon</a>
             </li>
             <li class="nav-item">
-                <a wire:click.prevent='selectTab("social_networks")' class="nav-link {{ $tab == 'social_networks' ? 'active' : '' }}" data-bs-toggle="tab" href="#social_networks"><i class="la la-phone me-2"></i> Social networks</a>
+                <a wire:click.prevent='selectTab("social_networks")' class="nav-link {{ $tab == 'social_networks' ? 'active' : '' }}" data-bs-toggle="tab" href="#social_networks"><i class="las la-users me-2"></i> Social networks</a>
             </li>
             <li class="nav-item">
-                <a wire:click.prevent='selectTab("payment_methods")' class="nav-link {{ $tab == 'payment_methods' ? 'active' : '' }}" data-bs-toggle="tab" href="#payment_methods"><i class="la la-envelope me-2"></i> Payment methods</a>
+                <a wire:click.prevent='selectTab("payment_methods")' class="nav-link {{ $tab == 'payment_methods' ? 'active' : '' }}" data-bs-toggle="tab" href="#payment_methods"><i class="las la-cash-register me-2"></i> Payment methods</a>
             </li>
         </ul>
 
@@ -79,15 +79,32 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade {{ $tab == 'logo_favicon' ? 'show active' : '' }}" id="logo_favicon" role="tabpanel"  >
+            <div class="tab-pane fade {{ $tab == 'logo_favicon' ? 'show active' : '' }}" id="logo_favicon" role="tabpanel">
                 <div class="pt-4">
-                    <h4>This is profile title</h4>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                    </p>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                    </p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Site logo</h5>
+
+                            <div class="mb-2 mt-1" style="max-width: 200px;">
+                            <img wire:ignore src="" class="img-thumbnail" data-ijabo-default-img="/images/site/{{ $site_logo }}" id="site_logo_image_preview">                            </div>
+                            <form action="{{ route('admin.change-logo') }}" method="POST" enctype="multipart/form-data" id="change_site_logo_form">
+                                @csrf
+                                <div class="mb-2">
+                                    <input type="file" name="site_logo" id="site_logo" class="form-control">
+                                    <span class="text-danger error-text site_logo_error"></span>
+                                </div>
+                                <button type="submit" class="btn btn-primary" >Change logo</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
+
+
+
+
             <div class="tab-pane fade {{ $tab == 'social_networks' ? 'show active' : '' }}" id="social_networks" role="tabpanel" >
                 <div class="pt-4">
                     <h4>This is contact title</h4>
@@ -112,8 +129,85 @@
 </div>
 
 
+
+@push('specific-scripts')
+
 <script>
-    Livewire.on('refreshComponent', function () {
-        window.location.reload(); // Lade die Seite neu
+    document.addEventListener("livewire:init", () => {
+        Livewire.on("toast", (event) => {
+            toastr[event.notify](event.message);
+        });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('updateAdminInfo', function (event) {
+            $('#adminProfileName').html(event.detail.adminName);
+            $('#adminProfileEmail').html(event.detail.adminEmail);
+        });
+
+        $('input[type="file"][name="site_logo"][id="site_logo"]').ijaboViewer({
+            preview: '#site_logo_image_preview',
+            imageShape: 'rectangular', // set square image shape
+            allowedExtensions: ['jpg', 'jpeg', 'png', 'svg'],
+            onErrorShape: function(message, element) {
+                alert(message);
+            },
+            onInvalidType: function(message, element) {
+                alert(message);
+            },
+            onSuccess: function(message, element) {
+                // Code nach erfolgreichem Hochladen
+            }
+        });
+    });
+
+    // Admin-Info-Update-Handler
+    window.addEventListener('updateAdminInfo', function (event) {
+        $('#adminProfileName').html(event.detail.adminName);
+        $('#adminProfileEmail').html(event.detail.adminEmail);
+    });
+
+    $('#change_site_logo_form').on('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        var formdata = new FormData(form)
+        var inputFileVal = $(form).find('input[type="file"][name="site_logo"]').val();
+
+        if (inputFileVal.length > 0) {
+            $.ajax({
+                url: $(form).attr('action'),
+                method: $(form).attr('method') || 'POST', // Verwende POST als Standardmethode, wenn die Methode nicht definiert ist
+                data: formdata,
+                processData: false,
+                dataType: 'json',
+                contentType: false,
+                beforeSend: function() {
+                toastr.remove(); // Hier wird die vorhandene Toast-Nachricht entfernt
+                $(form).find('span.error-text').text('');
+                },
+
+                success: function(response) {
+                    if (response.status == 1) {
+                        toastr.success(response.msg);
+                        $(form)[0].reset();
+                    } else {
+                        toastr.error(response.msg);
+                    }
+                }
+            });
+        }else{
+
+            $(form).find('span.error-text').text('Please, select logo image file. PNG file type is recommended.')
+        }
+
+    });
+</script>
+
+
+
+@endpush
+
+
+

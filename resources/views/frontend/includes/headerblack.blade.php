@@ -2,7 +2,7 @@
     <div class="container">
         <div id="logo">
             <a href="{{ url('/') }}">
-                <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="162" height="35" alt="">
+                <img src="/images/site/{{ get_settings()->site_logo }}" width="162" height="35" alt="">
             </a>
         </div>
         <div class="layer"></div><!-- Opacity Mask Menu Mobile -->
