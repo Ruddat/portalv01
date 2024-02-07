@@ -82,6 +82,8 @@
             <div class="tab-pane fade {{ $tab == 'logo_favicon' ? 'show active' : '' }}" id="logo_favicon" role="tabpanel">
                 <div class="pt-4">
                     <div class="row">
+
+
                         <div class="col-md-6">
                             <h5>Site logo</h5>
 
@@ -96,6 +98,26 @@
                                 <button type="submit" class="btn btn-primary" >Change logo</button>
                             </form>
                         </div>
+
+                    <div class="col-md-6">
+                        <h5>Site favicon</h5>
+                        <div class="mb-2 mt-1" style="max-width: 200px;">
+                            <img wire:ignore src="" class="img-thumbnail"
+                            id="site_favicon_image_preview" data-ijabo-default-img="/images/site/{{ $site_favicon }}">
+                        </div>
+
+                        <form action="{{ route('admin.change-favicon') }}" method="POST" enctype="multipart/form-data" id="change_site_favicon_form">
+                            @csrf
+                            <div class="mb-2">
+                                <input type="file" name="site_favicon" id="site_favicon" class="form-control">
+                                <span class="text-danger error-text site_favicon_error"></span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Change favicon</button>
+                        </form>
+
+
+
                     </div>
                 </div>
             </div>
@@ -203,6 +225,85 @@
         }
 
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $('input[type="file"][name="site_favicon"][id="site_favicon"]').ijaboViewer({
+        preview: '#site_favicon_image_preview',
+        imageShape: 'square', // set square image shape
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'svg', 'ico'],
+        onErrorShape: function(message, element) {
+            alert(message);
+        },
+        onInvalidType: function(message, element) {
+            alert(message);
+        },
+        onSuccess: function(message, element) {
+            // Code nach erfolgreichem Hochladen
+        }
+    });
+
+    // Admin-Info-Update-Handler
+    window.addEventListener('updateAdminInfo', function (event) {
+        $('#adminProfileName').html(event.detail.adminName);
+        $('#adminProfileEmail').html(event.detail.adminEmail);
+    });
+
+    $('#change_site_favicon_form').on('submit', function(e) {
+        e.preventDefault();
+        var form = this;
+        var formdata = new FormData(form)
+        var inputFileVal = $(form).find('input[type="file"][name="site_favicon"][id="site_favicon"]').val();
+
+        if (inputFileVal.length > 0) {
+            $.ajax({
+                url: $(form).attr('action'),
+                method: $(form).attr('method') || 'POST', // Verwende POST als Standardmethode, wenn die Methode nicht definiert ist
+                data: formdata,
+                processData: false,
+                dataType: 'json',
+                contentType: false,
+                beforeSend: function() {
+                toastr.remove(); // Hier wird die vorhandene Toast-Nachricht entfernt
+                $(form).find('span.error-text').text('');
+                },
+
+                success: function(response) {
+                    if (response.status == 1) {
+                        toastr.success(response.msg);
+                        $(form)[0].reset();
+                    } else {
+                        toastr.error(response.msg);
+                    }
+                }
+            });
+        }else{
+
+            $(form).find('span.error-text').text('Please, select logo image file. PNG file type is recommended.')
+        }
+
+    });
+
+
+
 </script>
 
 

@@ -302,5 +302,39 @@ class AdminController extends Controller
         }
     }
 
+    public function changeFavicon(Request $request)
+    {
+        // Überprüfen, ob eine Datei hochgeladen wurde
+        if ($request->hasFile('site_favicon')) {
+            $path = 'images/site/';
+            $file = $request->file('site_favicon');
+
+            // Eindeutigen Dateinamen generieren
+            $filename = 'FAVICON_IMG_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Datei verschieben und Überprüfen, ob der Vorgang erfolgreich war
+            if ($file->move(public_path($path), $filename)) {
+                // Wenn die Datei erfolgreich verschoben wurde, alte Datei löschen
+                $settings = GeneralSettings::first();
+                $old_favicon = $settings->site_favicon;
+                if ($old_favicon != null && File::exists(public_path($path . $old_favicon))) {
+                    File::delete(public_path($path . $old_favicon));
+                }
+
+                // Datenbank aktualisieren
+                $settings->site_favicon = $filename;
+                $settings->save();
+
+                // Erfolgreiche Antwort zurückgeben
+                return response()->json(['status' => 1, 'msg' => 'Your favicon has been successfully updated.']);
+            } else {
+                // Fehlermeldung, wenn Datei nicht verschoben werden konnte
+                return response()->json(['status' => 0, 'msg' => 'Failed to upload file.']);
+            }
+        } else {
+            // Fehlermeldung, wenn keine Datei hochgeladen wurde
+            return response()->json(['status' => 0, 'msg' => 'No file uploaded.']);
+        }
+    }
 
 }

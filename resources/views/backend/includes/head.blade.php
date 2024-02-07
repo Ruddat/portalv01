@@ -19,7 +19,7 @@
 	<title>FoodDesk - Online Food Delivery Admin Dashboard</title>
 
 	<!-- FAVICONS ICON -->
-	<link rel="shortcut icon" type="image/png" href="{{ asset('backend/images/favicon.png') }}" />
+	<link rel="shortcut icon" type="image/png" href="/images/site/{{ get_settings()->site_favicon }}" />
 
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">

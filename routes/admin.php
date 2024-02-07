@@ -25,6 +25,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::view('/settings', 'backend.pages.admin.settings')->name('settings');
         Route::post('/update-general-settings', [AdminSettings::class, 'updateGeneralSettings'])->name('update-general-settings');
         Route::post('/change-logo', [AdminController::class, 'changeLogo'])->name('change-logo');
+        Route::post('/change-favicon', [AdminController::class, 'changeFavicon'])->name('change-favicon');
 
     });
 
