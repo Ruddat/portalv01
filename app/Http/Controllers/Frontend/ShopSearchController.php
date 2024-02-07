@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\ModShop;
-use Illuminate\Support\Facades\View;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use NominatimLaravel\Content\Nominatim;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 
@@ -32,6 +33,10 @@ public function index(Request $request)
 
 public function search(Request $request)
 {
+
+
+
+
     try {
         // Abfrageparameter erhalten
         $query = $request->input('query', '');
@@ -53,6 +58,7 @@ public function search(Request $request)
                 $request->session()->put('selectedLocation', $query);
             }
         }
+//dd($request);
 
         // Session-Werte abrufen
         $userLatitude = $request->session()->get('userLatitude', null);
@@ -114,12 +120,6 @@ public function search(Request $request)
 
 
 
-
-
-
-
-
-
 private function performRestaurantSearch($userLatitude, $userLongitude, $selectedDistance)
 {
     return ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
@@ -135,7 +135,10 @@ private function performRestaurantSearch($userLatitude, $userLongitude, $selecte
         ->having('distance', '<', $selectedDistance)
         ->orderBy('distance')
         ->paginate(12);
-}
+
+dd($restaurants);
+
+    }
 
 private function paginateResults($results, $perPage)
 {
@@ -176,7 +179,7 @@ public function speichereStandort(Request $request)
     }
 
     // Geografische Entfernung für die Restaurantsuche festlegen
-    $selectedDistance = 20; // Beispiel: Entfernungsintervall von 20 Kilometern
+    $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
 
     // Restaurants basierend auf der Entfernung suchen
     $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
@@ -194,14 +197,14 @@ public function speichereStandort(Request $request)
         ->paginate(12);
 
     // Standortinformationen an die Blade-Ansicht übergeben
-    return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
-        'restaurants' => $restaurants,
-        'userLatitude' => $latitude,
-        'userLongitude' => $longitude,
-        'selectedDistance' => $selectedDistance,
-        'selectedLocation' => $selectedLocation, // Zusätzliche Information für die Ansicht
-    ]);
+    // Hier wird die Erfolgsmeldung für die Koordinaten zurückgegeben
+    return response()->json(['success' => true, 'message' => 'Geokoordinaten erfolgreich gespeichert'], 200);
 }
+
+
+
+
+
 
 
 

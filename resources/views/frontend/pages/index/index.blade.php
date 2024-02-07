@@ -40,12 +40,13 @@
 }
 
 .custom-button {
-        width: 32px; /* Passe die Breite entsprechend deinem Bild an */
-        height: 32px; /* Passe die Höhe entsprechend deinem Bild an */
-        background: url('{{ asset('frontend/img/location_7508941.png') }}') no-repeat center center; /* Passe den Pfad zu deinem Bild an */
-        border: none;
-        cursor: pointer;
-    }
+    width: 32px; /* Breite des Symbols */
+    height: 32px; /* Höhe des Symbols */
+    background: url('{{ asset('frontend/img/location_7508941.png') }}') no-repeat center center; /* Hintergrundbild für das Symbol */
+    border: none; /* Kein Rahmen */
+    cursor: pointer; /* Zeige den Mauszeiger als Zeiger an */
+    padding: 0; /* Kein Innenabstand */
+}
 
 </style>
     @endpush
@@ -69,12 +70,12 @@
                                     <div class="col-lg-9">
                                         <div class="form-group">
                                             <input class="form-control no_border_r" type="text" name="query" id="autocomplete" placeholder="{{ app(\App\Services\TranslationService::class)->trans('Strasse oder Ort...', app()->getLocale()) }}" value="{{ session('selectedLocation') }}">
+                                            @error('query')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-3 button-container">
-
-                                        <button class="custom-button" onclick="getLocation()" aria-label="Custom Button"></button>
-
                                         <button class="btn_2 gradient" type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
                                     </div>
                                 </div>
@@ -91,8 +92,9 @@
                             </form>
 <br><br>
 
-
-                        </div>
+<button class="custom-button" type="loc_button" onclick="getLocation()" aria-label="Custom Button"></button>
+<button class="custom-button" type="loc_button" onclick="getLocation(event)" aria-label="Custom Button"></button>
+</div>
                     </div>
                     <!-- /row -->
                 </div>
@@ -410,6 +412,13 @@ function getLocation() {
                 var latitude = position.coords.latitude;
                 var longitude = position.coords.longitude;
 
+                // Leere das Eingabefeld für die Suchabfrage
+                $('#autocomplete').val('');
+
+                // Lösche die alten Koordinaten aus der Session
+                sessionStorage.removeItem('userLatitude');
+                sessionStorage.removeItem('userLongitude');
+
                 // CSRF-Token aus dem Meta-Tag der Seite abrufen
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -426,6 +435,14 @@ function getLocation() {
                 .then(function(response) {
                     // Erfolgreiche Anfrage
                     console.log(response.data);
+                    // Überprüfe, ob die Koordinaten erfolgreich gespeichert wurden
+                    if (response.data.success) {
+                        // Validierung erfolgreich, das Suchformular automatisch senden
+                        $('#searchForm').submit();
+                    } else {
+                        // Fehlermeldung anzeigen
+                        alert(response.data.message);
+                    }
                 })
                 .catch(function(error) {
                     // Fehlerbehandlung
@@ -446,7 +463,7 @@ function getLocation() {
                 console.error('Geolocation-Fehler:', error.message);
             },
             {
-                enableHighAccuracy: true,
+                enableHighAccuracy: false,
                 timeout: 5000,
                 maximumAge: 0
             }
@@ -457,8 +474,8 @@ function getLocation() {
 }
 
 
+            </script>
 
-          </script>
 
 
         @push('specific-scripts')
@@ -492,8 +509,8 @@ function getLocation() {
     $(document).ready(function() {
         $('#autocomplete').typeahead({
             minLength: 3, // Minimale Länge für die Sucheingabe
-            highlight: true,
-            hint: false,
+            highlight: false,
+            hint: true,
         }, {
             name: 'places',
             source: function(query, syncResults, asyncResults) {

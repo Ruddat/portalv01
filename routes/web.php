@@ -185,6 +185,8 @@ Route::match(['get', 'post'], '/search', [ShopSearchController::class, 'search']
 Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])->name('speichere-standort');
 
 
+
+
 Route::get('/detail-restaurant/{restaurantName}', [ShopCardController::class, 'index'])->name('detail-restaurant.index');
 
 
