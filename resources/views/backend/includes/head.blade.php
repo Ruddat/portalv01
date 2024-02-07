@@ -10,6 +10,8 @@
 	<meta property="og:image" content="https://fooddesk.dexignlab.com/xhtml/social-image.png" />
 	<meta name="format-detection" content="telephone=no">
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 	<!-- Mobile Specific -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
