@@ -5,39 +5,7 @@
         <link href="{{ asset('frontend/css/home.css') }}" rel="stylesheet">
 
 <style>
-.button-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
 
-}
-
-.btn_1 {
-    /* Stile für den ersten Button (Search) */
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    /* Weitere Stilisierungen nach Bedarf */
-}
-
-.btn_2 {
-    /* Stile für den zweiten Button (Standort abrufen) */
-    padding: 10px 20px;
-    background-color: #f3723b;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    /* Weitere Stilisierungen nach Bedarf */
-}
-
-.icon_pin {
-    background: url('{{ asset('frontend/img/location_7508941.png') }}') no-repeat;
-    width: 24px; /* Passe die Breite nach Bedarf an */
-    height: 24px; /* Passe die Höhe nach Bedarf an */
-    display: inline-block;
-    vertical-align: middle; /* Zentriere das Icon vertikal im Button */
-    /* Weitere Stilisierungen nach Bedarf */
-}
 
 .custom-button {
     width: 32px; /* Breite des Symbols */
@@ -76,7 +44,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 button-container">
-                                        <button class="btn_2 gradient" type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
+                                        <button class="btn_1 gradient" type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
                                     </div>
                                 </div>
                                 <!-- /row -->
@@ -92,8 +60,7 @@
                             </form>
 <br><br>
 
-<button class="custom-button" type="loc_button" onclick="getLocation()" aria-label="Custom Button"></button>
-<button class="custom-button" type="loc_button" onclick="getLocation(event)" aria-label="Custom Button"></button>
+
 </div>
                     </div>
                     <!-- /row -->
