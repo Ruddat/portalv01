@@ -30,9 +30,21 @@
                     <h3 data-bs-target="#collapse_3">{{ app(\App\Services\TranslationService::class)->trans('Contacts', app()->getLocale()) }}</h3>
                 <div class="collapse dont-collapse-sm contacts" id="collapse_3">
                     <ul>
-                        <li><i class="icon_house_alt"></i>97845 Baker st. 567<br>Los Angeles - US</li>
-                        <li><i class="icon_mobile"></i>+94 423-23-221</li>
-                        <li><i class="icon_mail_alt"></i><a href="#0">info@domain.com</a></li>
+                        @if(get_settings()->site_address)
+                        <li>
+                            <i class="icon_house_alt"></i>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ get_settings()->site_address }}" target="_blank">
+                            {!! str_replace(',', '<br>', get_settings()->site_address) !!}
+                            </a>
+                        </li>
+                      @endif
+                    @if(get_settings()->site_phone || get_settings()->site_email)
+                        <li><i class="icon_mobile"></i>{{ get_settings()->site_phone }}</li>
+
+                        @if(get_settings()->site_email)
+                        <li><i class="icon_mail_alt"></i><a href="mailto:{{ get_settings()->site_email }}">{{ get_settings()->site_email }}</a></li>
+                        @endif
+                    @endif
                     </ul>
                 </div>
             </div>
@@ -48,16 +60,43 @@
                             </div>
                         </form>
                     </div>
+
+                    <?php
+                    // Soziale Netzwerke und ihre zugehörigen Spalten in der Datenbank
+                    $socialNetworks = [
+                        'Facebook' => 'facebook_url',
+                        'Twitter' => 'twitter_url',
+                        'Instagram' => 'instagram_url',
+                        'LinkedIn' => 'linkedin_url',
+                        'Printerest' => 'printerest_url',
+                        'YouTube' => 'youtube_url',
+                        'TikTok' => 'tiktok_url',
+                        'WhatsApp' => 'whatsapp_number',
+                        'Github' => 'github_url',
+                        'Telegram' => 'telegram_url',
+                        'Snapchat' => 'snapchat_url',
+                        'Twitch' => 'twitch_url',
+                    ];
+
+                    // Abfragen der Links aus der Datenbank
+                    $socialLinks = \App\Models\SocialNetwork::first();
+                    if ($socialLinks !== null) {
+                    ?>
                     <div class="follow_us">
                         <h5>{{ app(\App\Services\TranslationService::class)->trans('Follow Us', app()->getLocale()) }}</h5>
                         <ul>
-                            <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/twitter_icon.svg') }}" alt="" class="lazy"></a></li>
-                            <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/facebook_icon.svg') }}" alt="" class="lazy"></a></li>
-                            <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/instagram_icon.svg') }}" alt="" class="lazy"></a></li>
-                            <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/youtube_icon.svg') }}" alt="" class="lazy"></a></li>
+                            @foreach($socialNetworks as $networkName => $columnName)
+                                @if(!empty($socialLinks->$columnName))
+                                    <li><a href="{{ $socialLinks->$columnName }}"><img src="{{ asset('frontend/img/social_icons/' . strtolower($networkName) . '_icon.svg') }}" alt="{{ $networkName }}" class="lazy"></a></li>
+                                @endif
+                            @endforeach
                         </ul>
                     </div>
-                </div>
+                    <?php
+                    }
+                    ?>
+
+            </div>
             </div>
         </div>
         <!-- /row-->
