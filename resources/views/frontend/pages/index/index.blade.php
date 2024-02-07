@@ -60,13 +60,14 @@
                             </form>
 <br><br>
 
-
+<button class="custom-button" type="loc_button" onclick="getLocation()" aria-label="Custom Button"></button>
+<button class="custom-button" type="loc_button" onclick="getLocation(event)" aria-label="Custom Button"></button>
 </div>
                     </div>
                     <!-- /row -->
                 </div>
             </div>
-            <div class="wave hero"></div>
+          
         </div>
         <!-- /hero_single -->
 
