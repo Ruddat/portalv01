@@ -4,6 +4,7 @@ namespace App\Livewire\Backend;
 
 use Livewire\Component;
 use App\Models\SocialNetwork;
+use App\Models\GeneralSettings;
 
 class AdminSettings extends Component
 {
@@ -12,7 +13,7 @@ class AdminSettings extends Component
     public $default_tab = 'general_settings';
     protected $querystring = ['tab'];
     public $site_name, $site_email, $site_phone, $site_meta_keywords, $site_meta_description, $site_logo,
-    $site_favicon;
+    $site_favicon, $site_address;
 
     public $facebook_url, $twitter_url, $instagram_url, $linkedin_url, $printerest_url, $youtube_url, $tiktok_url,
     $whatsapp_number, $github_url, $telegram_url, $snapchat_url, $twitch_url;
@@ -34,6 +35,7 @@ class AdminSettings extends Component
         $this->site_meta_description = get_settings()->site_meta_description;
         $this->site_logo = get_settings()->site_logo;
         $this->site_favicon = get_settings()->site_favicon;
+        $this->site_address = get_settings()->site_address;
 
         // populate social network settings
         $this->facebook_url = get_social_network()->facebook_url;
@@ -63,14 +65,15 @@ class AdminSettings extends Component
             'site_meta_description' => 'required|min:5',
         ]);
 
-        $settings = new GeneralSetting();
+        $settings = new GeneralSettings();
         $settings = $settings->first();
         $settings->site_name = $this->site_name;
         $settings->site_email = $this->site_email;
         $settings->site_phone = $this->site_phone;
         $settings->site_meta_keywords = $this->site_meta_keywords;
         $settings->site_meta_description = $this->site_meta_description;
-        $settings->save();
+        $settings->site_address = $this->site_address;
+        $update = $settings->save();
 
         if ($update) {
 

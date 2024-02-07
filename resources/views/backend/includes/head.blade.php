@@ -1,10 +1,10 @@
 	<!-- All Meta -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="keywords" content="" />
+    <meta name="keywords" content="{{ get_settings()->site_meta_keywords }}" />
 	<meta name="author" content="Ingo Ruddat" />
 	<meta name="robots" content="" />
-	<meta name="description" content="FoodDesk - Online Food Delivery Admin Dashboard"/>
+	<meta name="description" content="{{ get_settings()->site_meta_description }}"/>
 	<meta property="og:title" content="FoodDesk - Online Food Delivery Admin Dashboard" />
 	<meta property="og:description" content="FoodDesk - Online Food Delivery Admin Dashboard" />
 	<meta property="og:image" content="https://fooddesk.dexignlab.com/xhtml/social-image.png" />
