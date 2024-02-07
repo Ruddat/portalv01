@@ -99,6 +99,7 @@
                             </form>
                         </div>
 
+
                     <div class="col-md-6">
                         <h5>Site favicon</h5>
                         <div class="mb-2 mt-1" style="max-width: 200px;">
@@ -115,8 +116,7 @@
 
                             <button type="submit" class="btn btn-primary">Change favicon</button>
                         </form>
-
-
+                    </div>
 
                     </div>
                 </div>
@@ -124,26 +124,139 @@
 
 
 
-
-
-
             <div class="tab-pane fade {{ $tab == 'social_networks' ? 'show active' : '' }}" id="social_networks" role="tabpanel" >
                 <div class="pt-4">
-                    <h4>This is contact title</h4>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
-                    </p>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
-                    </p>
+
+              <form wire:submit.prevent='updateSocialNetworks' action="{{ route('admin.update-social-networks') }}" method="post">
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Facebook URL</label>
+                            <input type="text" class="form-control" wire:model.defer='facebook_url'
+                             placeholder="Enter Facebook URL">
+                                @error('facebook_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Twitter URL</label>
+                            <input type="text" class="form-control" wire:model.defer='twitter_url'
+                             placeholder="Enter Twitter URL">
+                                @error('twitter_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Instagramm URL</label>
+                            <input type="text" class="form-control" wire:model.defer='instagramm_url'
+                             placeholder="Enter Instagramm URL">
+                                @error('instagramm_url') {{ $message }} @enderror
+                        </div>
+                    </div>
                 </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Linkedin URL</label>
+                            <input type="text" class="form-control" wire:model.defer='linkedin_url'
+                             placeholder="Enter Linkedin URL">
+                                @error('linkedin_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Printerest URL</label>
+                            <input type="text" class="form-control" wire:model.defer='printerest_url'
+                             placeholder="Enter Printerest URL">
+                                @error('printerest_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Youtube URL</label>
+                            <input type="text" class="form-control" wire:model.defer='youtube_url'
+                             placeholder="Enter YouTube URL">
+                                @error('youtube_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">TikTok URL</label>
+                            <input type="text" class="form-control" wire:model.defer='tiktok_url'
+                             placeholder="Enter Tik Tok Facebook URL">
+                                @error('tiktok_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">WhatsApp Number</label>
+                            <input type="text" class="form-control" wire:model.defer='whatsapp_number'
+                             placeholder="Enter WhatsApp Number">
+                                @error('whatsapp_number') {{ $message }} @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Github URL</label>
+                            <input type="text" class="form-control" wire:model.defer='github_url'
+                             placeholder="Enter GitHub URL">
+                                @error('github_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Telegram URL</label>
+                            <input type="text" class="form-control" wire:model.defer='telegramm_url'
+                             placeholder="Enter Telegramm URL">
+                                @error('telegram_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">SnapChat URL</label>
+                            <input type="text" class="form-control" wire:model.defer='snapchat_url'
+                             placeholder="Enter SnapChat URL">
+                                @error('snapchat_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-3 col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Twitch URL</label>
+                            <input type="text" class="form-control" wire:model.defer='twitch_url'
+                             placeholder="Enter Twitch URL">
+                                @error('twitch_url') {{ $message }} @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+
+                </form>
             </div>
+
             <div class="tab-pane fade {{ $tab == 'payment_methods' ? 'show active' : '' }}" id="payment_methods" role="tabpanel" >
                 <div class="pt-4">
-                    <h4>This is message title</h4>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                    </p>
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                    </p>
+                ------------------- Payment Methods --------------------------------
                 </div>
+
             </div>
         </div>
 

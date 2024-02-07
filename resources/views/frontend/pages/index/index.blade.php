@@ -40,12 +40,17 @@
 }
 
 .custom-button {
-    width: 32px; /* Breite des Symbols */
-    height: 32px; /* Höhe des Symbols */
-    background: url('{{ asset('frontend/img/location_7508941.png') }}') no-repeat center center; /* Hintergrundbild für das Symbol */
+    width: 38px; /* Breite des Symbols */
+    height: 38px; /* Höhe des Symbols */
+    background: url('{{ asset('frontend/img/Location-user-01.svg') }}') no-repeat center center; /* Hintergrundbild für das Symbol */
     border: none; /* Kein Rahmen */
     cursor: pointer; /* Zeige den Mauszeiger als Zeiger an */
     padding: 0; /* Kein Innenabstand */
+    transition: background-color 0.3s; /* Übergangseffekt für flüssigen Farbwechsel */
+}
+
+.custom-button:hover {
+    transform: scale(1.2); /* Skaliere den Button beim Überfahren mit der Maus */
 }
 
 </style>
@@ -79,6 +84,7 @@
                                         <button class="btn_2 gradient" type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
                                     </div>
                                 </div>
+                            </form>
                                 <!-- /row -->
                                 <div class="search_trends">
                                     <h5>{{ app(\App\Services\TranslationService::class)->trans('Trending:', app()->getLocale()) }} </h5>
@@ -89,10 +95,7 @@
                                         <li><a href="#0">Pizza</a></li>
                                     </ul>
                                 </div>
-                            </form>
-<br><br>
 
-<button class="custom-button" type="loc_button" onclick="getLocation()" aria-label="Custom Button"></button>
 <button class="custom-button" type="loc_button" onclick="getLocation(event)" aria-label="Custom Button"></button>
 </div>
                     </div>

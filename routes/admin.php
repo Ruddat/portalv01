@@ -26,6 +26,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::post('/update-general-settings', [AdminSettings::class, 'updateGeneralSettings'])->name('update-general-settings');
         Route::post('/change-logo', [AdminController::class, 'changeLogo'])->name('change-logo');
         Route::post('/change-favicon', [AdminController::class, 'changeFavicon'])->name('change-favicon');
+        Route::post('/update-social-networks', [AdminSettings::class, 'updateSocialNetworks'])->name('update-social-networks');
 
     });
 

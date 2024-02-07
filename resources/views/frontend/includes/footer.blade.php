@@ -48,16 +48,43 @@
                             </div>
                         </form>
                     </div>
+
+                    <?php
+                    // Soziale Netzwerke und ihre zugehörigen Spalten in der Datenbank
+                    $socialNetworks = [
+                        'Facebook' => 'facebook_url',
+                        'Twitter' => 'twitter_url',
+                        'Instagram' => 'instagram_url',
+                        'LinkedIn' => 'linkedin_url',
+                        'Printerest' => 'printerest_url',
+                        'YouTube' => 'youtube_url',
+                        'TikTok' => 'tiktok_url',
+                        'WhatsApp' => 'whatsapp_number',
+                        'Github' => 'github_url',
+                        'Telegram' => 'telegram_url',
+                        'Snapchat' => 'snapchat_url',
+                        'Twitch' => 'twitch_url',
+                    ];
+
+                    // Abfragen der Links aus der Datenbank
+                    $socialLinks = \App\Models\SocialNetwork::first();
+                    if ($socialLinks !== null) {
+                    ?>
                     <div class="follow_us">
                         <h5>{{ app(\App\Services\TranslationService::class)->trans('Follow Us', app()->getLocale()) }}</h5>
                         <ul>
-                            <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/twitter_icon.svg') }}" alt="" class="lazy"></a></li>
-                            <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/facebook_icon.svg') }}" alt="" class="lazy"></a></li>
-                            <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/instagram_icon.svg') }}" alt="" class="lazy"></a></li>
-                            <li><a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('frontend/img/youtube_icon.svg') }}" alt="" class="lazy"></a></li>
+                            @foreach($socialNetworks as $networkName => $columnName)
+                                @if(!empty($socialLinks->$columnName))
+                                    <li><a href="{{ $socialLinks->$columnName }}"><img src="{{ asset('frontend/img/social_icons/' . strtolower($networkName) . '_icon.svg') }}" alt="{{ $networkName }}" class="lazy"></a></li>
+                                @endif
+                            @endforeach
                         </ul>
                     </div>
-                </div>
+                    <?php
+                    }
+                    ?>
+
+            </div>
             </div>
         </div>
         <!-- /row-->

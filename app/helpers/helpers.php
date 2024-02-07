@@ -1,8 +1,9 @@
 <?php
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+use App\Models\SocialNetwork;
 use App\Models\GeneralSettings;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 
 /** SEND EMAIL FUNCTION USING PHPMAILER LIBRARY */
@@ -62,4 +63,38 @@ if( !function_exists('get_settings')){
         return $results;
     }
 
+    /** get social networks */
+
+    if(!function_exists('get_social_network')) {
+        function get_social_network(){
+            $results = null;
+            $social_network = new SocialNetwork();
+            $social_network_data = $social_network->first();
+
+            if($social_network_data){
+                $results = $social_network_data;
+
+            }else{
+                $social_network->insert([
+                    'facebook_url' => null,
+                    'twitter_url' => null,
+                    'instagram_url' => null,
+                    'linkedin_url' => null,
+                    'tiktok_url' => null,
+                    'youtube_url' => null,
+                    'whatsapp_number' => null,
+                    'printerest_url' => null,
+                    'github_url' => null,
+                    'telegram_url' => null,
+                    'snapchat_url' => null,
+                    'twitch_url' => null,
+                ]);
+                $new_social_network_data = $social_network->first();
+                $results = $new_social_network_data;
+            }
+
+            return $results;
+        }
+
+    }
 }
