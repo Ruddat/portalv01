@@ -112,7 +112,7 @@
                                     </ul>
                                 </div>
 
-                                <button class="custom-button" id="getLocationButton" type="loc_button" onclick="getLocation()" aria-label="Custom Button" ontouchstart=""></button>
+                                <button class="custom-button" id="btn1" type="loc_button" onclick="getLocation()" aria-label="Custom Button" ontouchstart=""></button>
 
 </div>
                     </div>
@@ -122,6 +122,36 @@
 
         </div>
         <!-- /hero_single -->
+
+
+        <div id="showgeo"></div>
+
+<script>
+function showPosition(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const altitude = (position.coords.altitude) ? position.coords.altitude : 'Keine Höhenangaben vorhanden';
+    const accuracy = position.coords.accuracy;
+
+    const showgeo = document.getElementById('showgeo');
+    showgeo.innerHTML = `Latitude: ${latitude} <br>
+                         Longitude: ${longitude} <br>
+                         Wie hoch über 0?: ${altitude} <br>
+                         Mehr oder weniger auf ${accuracy} Meter Genauigkeit.`;
+}
+
+function getLocation() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        const showgeo = document.getElementById('showgeo');
+        showgeo.innerHTML = "Geolokalisierung wird nicht unterstützt.";
+    }
+}
+
+// Die Funktion getLocation wird aufgerufen, wenn die Seite geladen wird
+document.addEventListener("DOMContentLoaded", getLocation);
+</script>
 
 
 
@@ -487,39 +517,27 @@ function showToast(message) {
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-<!-- JavaScript-Code -->
 <script>
-    // Funktion zum Abfragen des Standorts
-    function getLocationAndSearch() {
-        if ("geolocation" in navigator) {
-            // Berechtigung zur Standortfreigabe anfordern
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    // Erfolgreich, Position erhalten
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
+function getLocation() {
+      // Trigger haptic feedback
+  if ("vibrate" in navigator) {
+    navigator.vibrate(100); // Vibrate for 100 milliseconds
+  }
+if (navigator.geolocation) {
+navigator.geolocation.getCurrentPosition(
+    function(position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
 
-                    // Logge die Koordinaten in der Konsole (zum Testen)
-                    console.log("Latitude: " + latitude + " Longitude: " + longitude);
+        // Leere das Eingabefeld für die Suchabfrage
+        $('#autocomplete').val('');
 
-                    // Hier können wir die erhaltenen Koordinaten an den Server senden und die Suche auslösen
-                    searchWithCoordinates(latitude, longitude);
-                },
-                function(error) {
-                    // Fehler beim Abrufen der Position
-                    console.error("Fehler bei der Geolokalisierung:", error.message);
-                }
-            );
-        } else {
-            // Geolokalisierung wird nicht unterstützt
-            console.error("Geolokalisierung wird nicht unterstützt");
-        }
-    }
+        // Lösche die alten Koordinaten aus der Session
+        sessionStorage.removeItem('userLatitude');
+        sessionStorage.removeItem('userLongitude');
 
-    // Funktion zum Auslösen der Suche mit den erhaltenen Koordinaten
-    function searchWithCoordinates(latitude, longitude) {
         // CSRF-Token aus dem Meta-Tag der Seite abrufen
-        var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
         // Beispiel: Ajax-Anfrage an Laravel-Route mit Axios
         axios.post('/speichere-standort', {
@@ -537,7 +555,7 @@ function showToast(message) {
             // Überprüfe, ob die Koordinaten erfolgreich gespeichert wurden
             if (response.data.success) {
                 // Validierung erfolgreich, das Suchformular automatisch senden
-                document.getElementById('searchForm').submit();
+                $('#searchForm').submit();
             } else {
                 // Fehlermeldung anzeigen
                 alert(response.data.message);
@@ -556,10 +574,23 @@ function showToast(message) {
                 console.error('Fehler während der Anfrage-Einrichtung', error.message);
             }
         });
+    },
+    function(error) {
+        // Fehlerbehandlung hier, wenn gewünscht
+        console.error('Geolocation-Fehler:', error.message);
+    },
+    {
+        enableHighAccuracy: false,
+        timeout: 5000,
+        maximumAge: 0
     }
+);
+} else {
+alert("Geolocation wird nicht unterstützt");
+}
+}
 
-    // Event Listener für den Klick auf den Button hinzufügen
-    document.getElementById("getLocationButton").addEventListener("click", getLocationAndSearch);
+
     </script>
 
 
