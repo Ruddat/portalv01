@@ -105,7 +105,7 @@
                     <!-- /row -->
                 </div>
             </div>
-            <div class="wave hero"></div>
+
         </div>
         <!-- /hero_single -->
 
@@ -413,26 +413,38 @@
 
         @push('specific-scripts')
 
+<!-- Typeahead.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+
+<!-- Typeahead.js JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 
 
+<script>
+    // Initialisiere Typeahead.js für das Autocomplete-Input
+    $(document).ready(function() {
+        $('#autocomplete').typeahead({
+            minLength: 3, // Minimale Länge für die Sucheingabe
+            highlight: false,
+            hint: true,
+        }, {
+            name: 'places',
+            source: function(query, syncResults, asyncResults) {
+                // OpenStreetMap Nominatim API für Autocomplete
+                $.get('https://nominatim.openstreetmap.org/search', { q: query, format: 'json' }, function(data) {
+                    asyncResults(data.map(function(place) {
+                        return place.display_name;
+                    }));
+                });
+            },
+            limit: 10, // Anzahl der angezeigten Ergebnisse
+        });
+    });
+</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- Axios JavaScript -->
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
 
 <script>
 function getLocation() {
@@ -509,8 +521,6 @@ alert("Geolocation wird nicht unterstützt");
 
 
     </script>
-
-
 
 
 

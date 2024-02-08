@@ -1,5 +1,5 @@
 <footer>
-    <div class="wave footer"></div>
+  
     <div class="container margin_60_40 fix_mobile">
         <div class="row">
             <div class="col-lg-3 col-md-6">
