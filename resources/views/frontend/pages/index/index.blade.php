@@ -124,34 +124,6 @@
         <!-- /hero_single -->
 
 
-        <div id="showgeo"></div>
-
-<script>
-function showPosition(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    const altitude = (position.coords.altitude) ? position.coords.altitude : 'Keine Höhenangaben vorhanden';
-    const accuracy = position.coords.accuracy;
-
-    const showgeo = document.getElementById('showgeo');
-    showgeo.innerHTML = `Latitude: ${latitude} <br>
-                         Longitude: ${longitude} <br>
-                         Wie hoch über 0?: ${altitude} <br>
-                         Mehr oder weniger auf ${accuracy} Meter Genauigkeit.`;
-}
-
-function getLocation() {
-    if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        const showgeo = document.getElementById('showgeo');
-        showgeo.innerHTML = "Geolokalisierung wird nicht unterstützt.";
-    }
-}
-
-// Die Funktion getLocation wird aufgerufen, wenn die Seite geladen wird
-document.addEventListener("DOMContentLoaded", getLocation);
-</script>
 
 
 
