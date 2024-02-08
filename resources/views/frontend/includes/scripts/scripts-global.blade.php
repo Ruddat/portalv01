@@ -1,3 +1,4 @@
+
 <!-- COMMON SCRIPTS -->
 <script src="{{ asset('frontend/js/common_scripts.min.js') }}"></script>
 <script src="{{ asset('frontend/js/common_func.js') }}"></script>
@@ -13,3 +14,6 @@
         window.location.href = url + "?lang=" + $(this).val();
     });
 </script>
+
+
+

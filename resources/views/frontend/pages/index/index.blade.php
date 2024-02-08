@@ -46,11 +46,12 @@
     border: none; /* Kein Rahmen */
     cursor: pointer; /* Zeige den Mauszeiger als Zeiger an */
     padding: 0; /* Kein Innenabstand */
-    transition: background-color 0.3s; /* Übergangseffekt für flüssigen Farbwechsel */
+    transition: transform 0.3s, background-color 0.3s; /* Übergangseffekt für flüssige Größenänderung und Farbwechsel */
 }
 
 .custom-button:hover {
     transform: scale(1.2); /* Skaliere den Button beim Überfahren mit der Maus */
+    background-color: #f0f0f0; /* Ändere die Hintergrundfarbe des Symbols */
 }
 
 </style>
@@ -67,7 +68,8 @@
                     <div class="row justify-content-lg-start justify-content-md-center">
                         <div class="col-xl-7 col-lg-8">
                             <h1>{{ app(\App\Services\TranslationService::class)->trans('Delivery or Takeaway Food', app()->getLocale()) }}</h1>
-                            <p>{{ app(\App\Services\TranslationService::class)->trans('All restaurants', app()->getLocale()) }} <span class="element" style="font-weight: 500"></span></p>
+                            <p>{{ app(\App\Services\TranslationService::class)->trans('The best restaurants at the best price
+                                ', app()->getLocale()) }} <span class="element" style="font-weight: 500"></span></p>
 
                             <form method="post" action="{{ route('search.index') }}" id="searchForm">
                                 @csrf <!-- CSRF token for Laravel form submission -->
@@ -90,7 +92,7 @@
                                     <h5>{{ app(\App\Services\TranslationService::class)->trans('Trending:', app()->getLocale()) }} </h5>
                                     <ul>
                                         <li><a href="#0">Sushi</a></li>
-                       ass="custom                 <li><a href="#0">Burgher</a></li>
+                                        <li><a href="#0">Burgher</a></li>
                                         <li><a href="#0">Chinese</a></li>
                                         <li><a href="#0">Pizza</a></li>
                                     </ul>
@@ -103,7 +105,7 @@
                     <!-- /row -->
                 </div>
             </div>
-         <!--   <div class="wave hero_single"></div> -->
+            <div class="wave hero"></div>
         </div>
         <!-- /hero_single -->
 
@@ -405,88 +407,14 @@
             </div>
         </div>
         <!-- /shape_element_2 -->
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-
-        <script>
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
-
-                // Leere das Eingabefeld für die Suchabfrage
-                $('#autocomplete').val('');
-
-                // Lösche die alten Koordinaten aus der Session
-                sessionStorage.removeItem('userLatitude');
-                sessionStorage.removeItem('userLongitude');
-
-                // CSRF-Token aus dem Meta-Tag der Seite abrufen
-                var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                // Beispiel: Ajax-Anfrage an Laravel-Route mit Axios
-                axios.post('/speichere-standort', {
-                    latitude: latitude,
-                    longitude: longitude
-                }, {
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(function(response) {
-                    // Erfolgreiche Anfrage
-                    console.log(response.data);
-                    // Überprüfe, ob die Koordinaten erfolgreich gespeichert wurden
-                    if (response.data.success) {
-                        // Validierung erfolgreich, das Suchformular automatisch senden
-                        $('#searchForm').submit();
-                    } else {
-                        // Fehlermeldung anzeigen
-                        alert(response.data.message);
-                    }
-                })
-                .catch(function(error) {
-                    // Fehlerbehandlung
-                    if (error.response) {
-                        // Server hat die Anfrage mit einem Statuscode außerhalb des 2xx-Bereichs beantwortet
-                        console.error('Server-Fehler:', error.response.data);
-                    } else if (error.request) {
-                        // Die Anfrage wurde gemacht, aber es wurde keine Antwort empfangen
-                        console.error('Keine Antwort vom Server');
-                    } else {
-                        // Etwas ist während der Anfrage-Einrichtung schief gelaufen
-                        console.error('Fehler während der Anfrage-Einrichtung', error.message);
-                    }
-                });
-            },
-            function(error) {
-                // Fehlerbehandlung hier, wenn gewünscht
-                console.error('Geolocation-Fehler:', error.message);
-            },
-            {
-                enableHighAccuracy: false,
-                timeout: 5000,
-                maximumAge: 0
-            }
-        );
-    } else {
-        alert("Geolocation wird nicht unterstützt");
-    }
-}
-
-
-            </script>
 
 
 
         @push('specific-scripts')
 
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <!-- Typeahead.js CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
@@ -516,6 +444,101 @@ function getLocation() {
         });
     });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script>
+function getLocation() {
+      // Trigger haptic feedback
+  if ("vibrate" in navigator) {
+    navigator.vibrate(100); // Vibrate for 100 milliseconds
+  }
+if (navigator.geolocation) {
+navigator.geolocation.getCurrentPosition(
+    function(position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+
+        // Leere das Eingabefeld für die Suchabfrage
+        $('#autocomplete').val('');
+
+        // Lösche die alten Koordinaten aus der Session
+        sessionStorage.removeItem('userLatitude');
+        sessionStorage.removeItem('userLongitude');
+
+        // CSRF-Token aus dem Meta-Tag der Seite abrufen
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        // Beispiel: Ajax-Anfrage an Laravel-Route mit Axios
+        axios.post('/speichere-standort', {
+            latitude: latitude,
+            longitude: longitude
+        }, {
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function(response) {
+            // Erfolgreiche Anfrage
+            console.log(response.data);
+            // Überprüfe, ob die Koordinaten erfolgreich gespeichert wurden
+            if (response.data.success) {
+                // Validierung erfolgreich, das Suchformular automatisch senden
+                $('#searchForm').submit();
+            } else {
+                // Fehlermeldung anzeigen
+                alert(response.data.message);
+            }
+        })
+        .catch(function(error) {
+            // Fehlerbehandlung
+            if (error.response) {
+                // Server hat die Anfrage mit einem Statuscode außerhalb des 2xx-Bereichs beantwortet
+                console.error('Server-Fehler:', error.response.data);
+            } else if (error.request) {
+                // Die Anfrage wurde gemacht, aber es wurde keine Antwort empfangen
+                console.error('Keine Antwort vom Server');
+            } else {
+                // Etwas ist während der Anfrage-Einrichtung schief gelaufen
+                console.error('Fehler während der Anfrage-Einrichtung', error.message);
+            }
+        });
+    },
+    function(error) {
+        // Fehlerbehandlung hier, wenn gewünscht
+        console.error('Geolocation-Fehler:', error.message);
+    },
+    {
+        enableHighAccuracy: false,
+        timeout: 5000,
+        maximumAge: 0
+    }
+);
+} else {
+alert("Geolocation wird nicht unterstützt");
+}
+}
+
+
+    </script>
+
 
 
 
