@@ -490,80 +490,83 @@ function showToast(message) {
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <script>
-function getLocation() {
-      // Trigger haptic feedback
-  if ("vibrate" in navigator) {
-    navigator.vibrate(100); // Vibrate for 100 milliseconds
-  }
-if (navigator.geolocation) {
-navigator.geolocation.getCurrentPosition(
-    function(position) {
-        var latitude = position.coords.latitude;
-        var longitude = position.coords.longitude;
+    function getLocation() {
+        // Trigger haptic feedback
+        if ("vibrate" in navigator) {
+            navigator.vibrate(100); // Vibrate for 100 milliseconds
+        }
 
-        // Leere das Eingabefeld für die Suchabfrage
-        $('#autocomplete').val('');
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
 
-        // Lösche die alten Koordinaten aus der Session
-        sessionStorage.removeItem('userLatitude');
-        sessionStorage.removeItem('userLongitude');
+                    // Leere das Eingabefeld für die Suchabfrage
+                    $('#autocomplete').val('');
 
-        // CSRF-Token aus dem Meta-Tag der Seite abrufen
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    // Lösche die alten Koordinaten aus der Session
+                    sessionStorage.removeItem('userLatitude');
+                    sessionStorage.removeItem('userLongitude');
 
-        // Beispiel: Ajax-Anfrage an Laravel-Route mit Axios
-        axios.post('/speichere-standort', {
-            latitude: latitude,
-            longitude: longitude
-        }, {
-            headers: {
-                'X-CSRF-TOKEN': csrfToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(function(response) {
-            // Erfolgreiche Anfrage
-            console.log(response.data);
-            // Überprüfe, ob die Koordinaten erfolgreich gespeichert wurden
-            if (response.data.success) {
-                // Validierung erfolgreich, das Suchformular automatisch senden
-                $('#searchForm').submit();
-            } else {
-                // Fehlermeldung anzeigen
-                alert(response.data.message);
-            }
-        })
-        .catch(function(error) {
-            // Fehlerbehandlung
-            if (error.response) {
-                // Server hat die Anfrage mit einem Statuscode außerhalb des 2xx-Bereichs beantwortet
-                console.error('Server-Fehler:', error.response.data);
-            } else if (error.request) {
-                // Die Anfrage wurde gemacht, aber es wurde keine Antwort empfangen
-                console.error('Keine Antwort vom Server');
-            } else {
-                // Etwas ist während der Anfrage-Einrichtung schief gelaufen
-                console.error('Fehler während der Anfrage-Einrichtung', error.message);
-            }
-        });
-    },
-    function(error) {
-        // Fehlerbehandlung hier, wenn gewünscht
-        console.error('Geolocation-Fehler:', error.message);
-    },
-    {
-        enableHighAccuracy: false,
-        timeout: 5000,
-        maximumAge: 0
+                    // CSRF-Token aus dem Meta-Tag der Seite abrufen
+                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+                    // Beispiel: Ajax-Anfrage an Laravel-Route mit Axios
+                    axios.post('/speichere-standort', {
+                        latitude: latitude,
+                        longitude: longitude
+                    }, {
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(function(response) {
+                        // Erfolgreiche Anfrage
+                        console.log(response.data);
+                        // Überprüfe, ob die Koordinaten erfolgreich gespeichert wurden
+                        if (response.data.success) {
+                            // Validierung erfolgreich, das Suchformular automatisch senden
+                            $('#searchForm').submit();
+                        } else {
+                            // Fehlermeldung anzeigen
+                            alert(response.data.message);
+                        }
+                    })
+                    .catch(function(error) {
+                        // Fehlerbehandlung
+                        if (error.response) {
+                            // Server hat die Anfrage mit einem Statuscode außerhalb des 2xx-Bereichs beantwortet
+                            console.error('Server-Fehler:', error.response.data);
+                        } else if (error.request) {
+                            // Die Anfrage wurde gemacht, aber es wurde keine Antwort empfangen
+                            console.error('Keine Antwort vom Server');
+                        } else {
+                            // Etwas ist während der Anfrage-Einrichtung schief gelaufen
+                            console.error('Fehler während der Anfrage-Einrichtung', error.message);
+                        }
+                    });
+                },
+                function(error) {
+                    // Fehlerbehandlung hier, wenn gewünscht
+                    console.error('Geolocation-Fehler:', error.message);
+                },
+                {
+                    enableHighAccuracy: false,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+            );
+        } else {
+            alert("Geolocation wird nicht unterstützt");
+        }
     }
-);
-} else {
-alert("Geolocation wird nicht unterstützt");
-}
-}
 
-
+    // Event Listener für den Klick auf den Button hinzufügen
+    document.getElementById("getLocationButton").addEventListener("click", getLocation);
     </script>
+
 
 
 
