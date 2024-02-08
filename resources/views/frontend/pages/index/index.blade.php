@@ -427,7 +427,7 @@
 window.addEventListener("load", function() {
     let schaltflaeche1 = document.getElementById("btn1");
     schaltflaeche1.addEventListener("click", function() {
-        showToast("Die besten Restaurants im Umkreis"); // Aufruf der showToast-Funktion mit der Meldung
+        showToast("Die Umkreissuche wurde gestartet. Bitte warten Sie einen Moment, während wir die Ergebnisse für Sie sammeln."); // Aufruf der showToast-Funktion mit der Meldung
     }, false);
 });
 
