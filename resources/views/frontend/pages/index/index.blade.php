@@ -90,13 +90,14 @@
                                     <h5>{{ app(\App\Services\TranslationService::class)->trans('Trending:', app()->getLocale()) }} </h5>
                                     <ul>
                                         <li><a href="#0">Sushi</a></li>
-                                        <li><a href="#0">Burgher</a></li>
+                       ass="custom                 <li><a href="#0">Burgher</a></li>
                                         <li><a href="#0">Chinese</a></li>
                                         <li><a href="#0">Pizza</a></li>
                                     </ul>
                                 </div>
 
-<button class="custom-button" type="loc_button" onclick="getLocation(event)" aria-label="Custom Button"></button>
+                                <button class="custom-button" type="loc_button" onclick="getLocation()" aria-label="Custom Button" ontouchstart=""></button>
+
 </div>
                     </div>
                     <!-- /row -->
@@ -483,19 +484,6 @@ function getLocation() {
 
         @push('specific-scripts')
 
-        <!-- TYPE EFFECT -->
-<script src="{{ asset('frontend/js/typed.min.js') }}"></script>
-<script>
-    var typed = new Typed('.element', {
-      strings: ["{{ app(\App\Services\TranslationService::class)->trans('at the best price', app()->getLocale()) }}",
-                "{{ app(\App\Services\TranslationService::class)->trans('with unique food', app()->getLocale()) }}",
-                "{{ app(\App\Services\TranslationService::class)->trans('with nice location', app()->getLocale()) }}"],
-      startDelay: 10,
-      loop: true,
-      backDelay: 2000,
-      typeSpeed: 50
-    });
-</script>
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

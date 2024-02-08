@@ -135,6 +135,8 @@ class ModShops extends Component
     public function refreshTable()
     {
         $this->render(); // Diese Methode wird die Livewire-Komponente neu rendern und somit die Tabelle aktualisieren.
+        $this->gotoPage(1); // Springe zur Seite 1
+
     }
 
 
@@ -342,5 +344,8 @@ protected function getCoordinatesFromAddress($address)
 
     return null;
 }
+
+
+
 
 }

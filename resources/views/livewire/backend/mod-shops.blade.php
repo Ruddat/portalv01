@@ -162,12 +162,10 @@
 
 
                 </table>
-                {!! $modshop->links('pagination::bootstrap-5') !!}
+                {!! $modshop->links() !!}
 
 
                 <div class="input-group">
-
-
                 <div class="mb-3">
                     <label for="perPageSelect" class="form-label">Anzahl pro Seite:</label>
                     <select wire:model="perPage" wire:change="refreshTable" class="form-select" id="perPageSelect">
@@ -190,7 +188,7 @@
 
 
 
-            <form wire:submit.prevent="createShop">
+            <form wire:submit.prevent="createShop" method="post">
 
                 <div class="mb-3">
                     <label for="shop_nr" class="form-label">Kundennummer</label>
