@@ -57,7 +57,7 @@
 /* Stil für den Toast-Container */
 .toast-container {
     position: fixed;
-    top: 20px; /* Ändere die Position des Toasts oben */
+    top: 40px; /* Ändere die Position des Toasts oben */
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.7);
