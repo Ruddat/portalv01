@@ -54,6 +54,20 @@
     background-color: #f0f0f0; /* Ändere die Hintergrundfarbe des Symbols */
 }
 
+/* Stil für den Toast-Container */
+.toast-container {
+    position: fixed;
+    top: 20px; /* Ändere die Position des Toasts oben */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: none;
+}
+
+
 </style>
     @endpush
 
@@ -98,7 +112,7 @@
                                     </ul>
                                 </div>
 
-                                <button class="custom-button" type="loc_button" onclick="getLocation()" aria-label="Custom Button" ontouchstart=""></button>
+                                <button class="custom-button" id="btn1" type="loc_button" onclick="getLocation()" aria-label="Custom Button" ontouchstart=""></button>
 
 </div>
                     </div>
@@ -409,7 +423,34 @@
         <!-- /shape_element_2 -->
 
 
+        <script>
+window.addEventListener("load", function() {
+    let schaltflaeche1 = document.getElementById("btn1");
+    schaltflaeche1.addEventListener("click", function() {
+        showToast("Die besten Restaurants im Umkreis"); // Aufruf der showToast-Funktion mit der Meldung
+    }, false);
+});
 
+function showToast(message) {
+    // Erstellen Sie ein neues Element für den Toast
+    var toast = document.createElement("div");
+    toast.classList.add("toast-container");
+    toast.innerText = message;
+
+    // Fügen Sie den Toast dem Dokument hinzu
+    document.body.appendChild(toast);
+
+    // Zeigen Sie den Toast an
+    toast.style.display = "block";
+
+    // Verzögern Sie das Ausblenden des Toasts nach 3 Sekunden
+    setTimeout(function(){
+        toast.style.display = "none";
+        document.body.removeChild(toast); // Entfernen Sie den Toast aus dem Dokument
+    }, 3000);
+}
+
+            </script>
 
         @push('specific-scripts')
 
