@@ -1,4 +1,5 @@
 @extends('backend.layouts.default-dark')
+@section('pageTitle', isset($pageTitle) ? app(\App\Services\TranslationService::class)->trans($pageTitle, app()->getLocale()) : app(\App\Services\TranslationService::class)->trans('Page title here....', app()->getLocale()))
 @section('content')
 
 @push('specific-css')
@@ -13,7 +14,7 @@
 				<div class="row page-titles">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item active"><a href="{{ route('admin.home') }}">Home</a></li>
-                        <li class="breadcrumb-item {{ Request::is('admin/settings*') ? 'active' : '' }}"><a href="{{ route('admin.settings') }}">Settings</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">@yield('pageTitle')</a></li>
 					</ol>
                 </div>
                 <div class="row">

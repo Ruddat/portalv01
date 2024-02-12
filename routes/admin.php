@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Backend\AdminSettings;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Backend\Admin\BottlesController;
 
 
 Route::prefix('admin')->name('admin.')->group(function(){
@@ -28,8 +29,17 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::post('/change-favicon', [AdminController::class, 'changeFavicon'])->name('change-favicon');
         Route::post('/update-social-networks', [AdminSettings::class, 'updateSocialNetworks'])->name('update-social-networks');
 
+
+
+
+
+
+    });
+
+    Route::middleware(['auth:admin', 'PreventBackHistory'])->group(function () {
+        Route::get('/bottles-list', [BottlesController::class, 'BottlesList'])->name('bottles-list');
+        Route::get('/additives-list', [BottlesController::class, 'AdditivesList'])->name('additives-list');
+        Route::get('/allergens-list', [BottlesController::class, 'AllergensList'])->name('allergens-list');
     });
 
 });
-
-

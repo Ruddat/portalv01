@@ -16,7 +16,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!-- PAGE TITLE HERE -->
-	<title>FoodDesk - Online Food Delivery Admin Dashboard</title>
+	<title>@yield('pageTitle')</title>
 
 	<!-- FAVICONS ICON -->
 	<link rel="shortcut icon" type="image/png" href="/images/site/{{ get_settings()->site_favicon }}" />
