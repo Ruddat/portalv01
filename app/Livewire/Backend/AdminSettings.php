@@ -8,7 +8,7 @@ use App\Models\GeneralSettings;
 
 class AdminSettings extends Component
 {
-    public $pageTitle;
+
     public $tab = null;
     public $default_tab = 'general_settings';
     protected $querystring = ['tab'];
@@ -24,8 +24,6 @@ class AdminSettings extends Component
     }
 
     public function mount() {
-
-        $this->pageTitle = 'Einstellungen';
 
         $this->tab = request()->tab ? request()->tab : $this->default_tab;
 
@@ -141,7 +139,6 @@ class AdminSettings extends Component
 
     public function render()
     {
-
         return view('livewire.backend.admin-settings');
     }
 }
