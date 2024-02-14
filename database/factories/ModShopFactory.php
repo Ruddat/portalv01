@@ -106,7 +106,7 @@ class ModShopFactory extends Factory
             'fax_activation_error_code' => $this->faker->word,
             'fax_activation_jobID' => $this->faker->word,
             'fax_activation_status' => $this->faker->randomNumber(),
-            'fax_activation_started_time' => $this->faker->dateTime(),
+            'fax_activation_started_time' => $this->faker->date(),
             'stickers_from' => $this->faker->randomFloat(2, 0, 1000),
             'auto_payment' => $this->faker->numberBetween(0, 1),
             'new_products_layout' => $this->faker->numberBetween(0, 1),

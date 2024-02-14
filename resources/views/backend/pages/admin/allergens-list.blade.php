@@ -4,14 +4,9 @@
 @section('content')
 
 
+@livewire('backend.admin.admin-allergens-list')
 
-@livewire('backend.admin.admin-bottles-list')
-
-
-
-
-
-        @push('specific-css')
+    @push('specific-css')
         <!-- Datatable -->
         <link href="{{ asset('backend/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     @endpush
@@ -22,7 +17,6 @@
         <script src="{{ asset('backend/js/plugins-init/datatables.init.js') }}"></script>
     @endpush
 
-
-        @endsection
+@endsection
 
 

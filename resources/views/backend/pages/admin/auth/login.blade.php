@@ -23,31 +23,14 @@
 							<div class="col-xl-4 col-md-6 pe-0">
 								<div class="sign-in-your">
 									<div class="text-center mb-3">
-										<img src="{{ asset('backend/images/logo-full.png') }}" class="mb-3" alt="">
+										<img src="/images/site/{{ get_settings()->site_logo }}" class="mb-3" alt="">
 										<h4 class="fs-20 font-w800 text-black">Create an Account</h4>
 										<span class="dlab-sign-up">Sign Up</span>
 									</div>
 									<form action="{{ route('admin.login_handler') }}" method="POST">
                                         @csrf
-                                        @if (Session::get('fail'))
-                                            <div class="alert alert-danger">
-                                                {{ Session::get('fail') }}
 
-                                            <button type="button" class="close" data-dismiss="alert">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                        @endif
-
-                                        @if (Session::get('success'))
-                                        <div class="alert alert-danger">
-                                            {{ Session::get('success') }}
-
-                                        <button type="button" class="close" data-dismiss="alert">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                    @endif
+                                        @include('backend.includes.errorflash')
 
 										<div class="mb-3">
 											<label class="mb-1"><strong>Email Address</strong></label>

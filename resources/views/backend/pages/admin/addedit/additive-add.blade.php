@@ -20,11 +20,6 @@
 
                 <div class="row">
 
-
-
-
-
-
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-header">
@@ -47,11 +42,17 @@
                                         <form action="{{ route('admin.save-additive') }}" method="POST" enctype="multipart/form-data" class="mt-3">
                                             @csrf
                                             @if (Session::get('success'))
-                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                                    <strong>Success!</strong> {!! Session::get('success') !!}
-                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                                </div>
+                                            <div class="alert alert-success solid alert-dismissible fade show">
+                                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                                                <strong>Success!</strong> {!! Session::get('success') !!}
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                                    <span>
+                                                        <i class="fa-solid fa-xmark"></i>
+                                                    </span>
+                                                </button>
+                                            </div>
                                             @endif
+
                                             @if (Session::get('fail'))
                                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                                     <strong>Fail!</strong> {!! Session::get('fail') !!}
@@ -79,7 +80,7 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                            
+
                                             <div class="mb-3 col-md-5">
                                                 <div class="form-group">
                                                     <label class="form-label">Auf der Speisekarte:</label>
@@ -101,15 +102,20 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="row">
+                                            <div class="mb-3 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="">Additives Image:</label>
-                                                    <h5>Site logo</h5>
-                                                    <input type="file" name="additive_image" class="form-control">
+                                                    <h5>Additives Image:</h5>
+                                                    <input type="file" name="additive_image" id="additive_image" class="form-control"> <!-- ID hinzugefügt -->
                                                     @error('additive_image')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
+                                            </div>
+                                            <div class="avatar mb-3 col-md-6">
+                                                <h5>Preview:</h5>
+                                                <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-circle" alt="Default Image" width="50" height="50" id="additive_image_preview">
+                                            </div>
                                             </div>
 
                                             <br/>
@@ -148,57 +154,35 @@
         <!--**********************************
             Content body end
         ***********************************-->
-        @push('specific-css')
-        <!-- Datatable -->
-        <link href="{{ asset('backend/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    @push('specific-css')
+
     @endpush
 
     @push('specific-scripts')
-        <!-- Datatable -->
-        <script src="{{ asset('backend/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('backend/js/plugins-init/datatables.init.js') }}"></script>
-
-
 
         <script>
-                        $('#change_site_logo_form').on('submit', function(e) {
-                e.preventDefault();
-                var form = this;
-                var formdata = new FormData(form)
-                var inputFileVal = $(form).find('input[type="file"][name="site_logo"]').val();
+    $('input[type="file"][name="additive_image"][id="additive_image"]').ijaboViewer({
+          preview : '#additive_image_preview',
+          setRatio:1,
+          allowedExtensions: ['jpg', 'jpeg','png'],
+                onErrorShape:function(e){
+                    toastr.error('The image must be square', 'Error');
+                },
+                onInvalidType:function(e){
+                    toastr.error('The file type is not allowed', 'Error');
+                },
+                onFileSizeError:function(e){
+                    toastr.error('The file size is too big', 'Error');
+                },
+                onSuccess:function(e){
 
-                if (inputFileVal.length > 0) {
-                    $.ajax({
-                        url: $(form).attr('action'),
-                        method: $(form).attr('method') ||
-                        'POST', // Verwende POST als Standardmethode, wenn die Methode nicht definiert ist
-                        data: formdata,
-                        processData: false,
-                        dataType: 'json',
-                        contentType: false,
-                        beforeSend: function() {
-                            toastr.remove(); // Hier wird die vorhandene Toast-Nachricht entfernt
-                            $(form).find('span.error-text').text('');
-                        },
-
-                        success: function(response) {
-                            if (response.status == 1) {
-                                toastr.success(response.msg);
-                                $(form)[0].reset();
-                            } else {
-                                toastr.error(response.msg);
-                            }
-                        }
-                    });
-                } else {
-
-                    $(form).find('span.error-text').text(
-                        'Please, select logo image file. PNG file type is recommended.')
+                    // Überprüfen Sie, ob e.imageURL korrekt ist, und setzen Sie den Pfad entsprechend
+                    $('#additive_image_preview').attr('src', e.imageURL);
+                    $('#additive_image_preview').show(); // Zeigen Sie das Bild an, nachdem es hochgeladen wurde
                 }
-
             });
-
         </script>
+
     @endpush
 
 

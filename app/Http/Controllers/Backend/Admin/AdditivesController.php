@@ -32,7 +32,7 @@ class AdditivesController extends Controller
             'pageTitle' => 'Add Additive'
         ];
 
-        return view('backend.pages.admin.addedit.additive-add', $data);
+        return view('backend.pages.admin.additives-form', $data);
     }
 
     public function saveAdditive(Request $request)
@@ -41,21 +41,22 @@ class AdditivesController extends Controller
 
         // Validates
         $request->validate([
-            'additive_nr' => 'required|min:1',
+            'additive_nr' => 'required|min:1|max:10',
             'additive_art' => 'required|min:5',
             'additive_title' => 'required|min:5',
             'additive_description' => 'required|min:10',
             'additive_image' => 'required|image|mimes:png,jpg,jpeg,svg', // Korrigierte Validierung für das Bild
         ], [
             'additive_nr.required' => 'Bitte geben Sie die Nummer des Zusatzstoffs ein',
+            'additive_nr.min' => 'Die Nummer des Zusatzstoffs muss mindestens 1 Zeichen lang sein',
+            'additive_nr.max' => 'Die Nummer des Zusatzstoffs darf maximal 10 Zeichen lang sein',
             'additive_art.required' => 'Bitte geben Sie die Art des Zusatzstoffs ein',
             'additive_art.min' => 'Die Art des Zusatzstoffs muss mindestens 5 Zeichen lang sein',
-          //  'additive_art.unique' => 'Die Art des Zusatzstoffs existiert bereits',
             'additive_title.required' => 'Bitte geben Sie den Titel des Zusatzstoffs ein',
+            'additive_title.min' => 'Der Titel des Zusatzstoffs muss mindestens 5 Zeichen lang sein',
             'additive_description.required' => 'Bitte geben Sie die Beschreibung des Zusatzstoffs ein',
-            'additive_image.required' => 'Bitte laden Sie das Bild des Zusatzstoffs hoch',
-           // 'additive_image.image' => 'Das Bild des Zusatzstoffs muss eine Bilddatei sein',
-          //  'additive_image.mimes' => 'Das Bild des Zusatzstoffs muss eine Bilddatei im Format png, jpg, jpeg oder svg sein'
+            'additive_image.required' => 'Bitte laden Sie ein Bild des Zusatzstoffs hoch',
+
         ]);
 
      //   dd($request->all());
@@ -105,6 +106,113 @@ class AdditivesController extends Controller
 
 
       //  return redirect()->route('admin.additives-list'); // Weiterleitung zur Liste der Zusatzstoffe
+    }
+
+    public function editAdditive($id)
+    {
+        $additive = ModAdditives::findOrFail($id);
+        $data = [
+            'pageTitle' => 'Edit Additive',
+            'additive' => $additive
+        ];
+
+        return view('backend.pages.admin.additives-form', $data);
+    }
+
+    public function updateAdditive(Request $request, $id)
+    {
+        // Validates
+        $request->validate([
+            'additive_nr' => 'required|min:1',
+            'additive_art' => 'required|min:5',
+            'additive_title' => 'required|min:5',
+            'additive_description' => 'required|min:10',
+            'additive_image' => 'nullable|image|mimes:png,jpg,jpeg,svg', // Falls ein neues Bild hochgeladen wird
+        ], [
+            'additive_nr.required' => 'Bitte geben Sie die Nummer des Zusatzstoffs ein',
+            'additive_art.required' => 'Bitte geben Sie die Art des Zusatzstoffs ein',
+            'additive_art.min' => 'Die Art des Zusatzstoffs muss mindestens 5 Zeichen lang sein',
+            'additive_title.required' => 'Bitte geben Sie den Titel des Zusatzstoffs ein',
+            'additive_description.required' => 'Bitte geben Sie die Beschreibung des Zusatzstoffs ein',
+        ]);
+
+        $additive = ModAdditives::findOrFail($id);
+
+        // Bild aktualisieren, wenn ein neues Bild hochgeladen wird
+        if ($request->hasFile('additive_image')) {
+            $path = 'uploads/images/additives';
+            $file = $request->file('additive_image');
+            $file_name = 'additive_' . time() . '.' . $file->getClientOriginalExtension();
+            $upload = $file->move(public_path($path), $file_name);
+
+            if ($upload) {
+                // Löschung des alten Bildes
+                if (File::exists(public_path($additive->additive_image))) {
+                    File::delete(public_path($additive->additive_image));
+                }
+
+                // Bildpfad aktualisieren
+                $additive->additive_image = $path . '/' . $file_name;
+            }
+        }
+
+        $additive->additive_nr = $request->additive_nr;
+        $additive->additive_art = $request->additive_art;
+        $additive->additive_title = $request->additive_title;
+        $additive->additive_description = $request->additive_description;
+
+        $saved = $additive->save();
+
+        if ($saved) {
+            return redirect()->route('admin.additives-list')->with('success', 'Additiv erfolgreich aktualisiert');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Fehler beim Aktualisieren des Additivs');
+        }
+    }
+
+
+    public function deleteAdditive(Request $request)
+    {
+        $additive = ModAdditives::findOrFail($request->id); // Finden Sie das Additiv anhand der ID
+
+        // delete the image
+        if (File::exists(public_path($additive->additive_image))) {
+            File::delete(public_path($additive->additive_image));
+        }
+
+        $deleted = $additive->delete(); // Löschen Sie das Additiv
+
+        if ($deleted){
+            $request->session()->flash('success', 'Additiv erfolgreich gelöscht');
+            return redirect()->back();
+        }else{
+            $request->session()->flash('error', 'Additiv konnte nicht gelöscht werden');
+            return redirect()->back();
+        }
+    }
+
+    public function toggleAdditiveStatus(Request $request)
+    {
+        // Überprüfen Sie zunächst, ob die Anfrage gültig ist
+
+        $request->validate([
+            'id' => 'required|exists:mod_additives,id'
+        ]);
+
+        // Finden Sie den Zusatzstoff in der Datenbank
+        $additive = ModAdditives::findOrFail($request->id);
+
+        // Aktualisieren Sie den Status des Zusatzstoffs
+        $additive->published = !$additive->published; // Invertieren Sie den aktuellen Status
+
+        // Speichern Sie die Änderungen in der Datenbank
+        $additive->save();
+
+        // Geben Sie eine JSON-Antwort zurück
+        return response()->json([
+            'success' => true,
+            'published' => $additive->published
+        ]);
     }
 
 }
