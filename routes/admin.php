@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Backend\AdminSettings;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\Backend\Admin\BottlesController; // Importiere den BottlesController
 
 Route::prefix('admin')->name('admin.')->group(function(){
 
@@ -30,6 +30,23 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
     });
 
+    // Bottles Routes
+    Route::prefix('bottles')->group(function() {
+        Route::get('/list', [BottlesController::class, 'BottlesList'])->name('bottles-list');
+        Route::get('/add', [BottlesController::class, 'addBottle'])->name('add-bottle');
+        Route::get('/edit/{id}', [BottlesController::class, 'editBottle'])->name('edit-bottle');
+        Route::post('/save', [BottlesController::class, 'saveBottle'])->name('save-bottle');
+    });
+
+    // Additives Routes
+    Route::prefix('additives')->group(function() {
+        Route::get('/list', [BottlesController::class, 'AdditivesList'])->name('additives-list');
+        Route::get('/add', [BottlesController::class, 'addAdditive'])->name('add-additive');
+        Route::get('/edit/{id}', [BottlesController::class, 'editAdditive'])->name('edit-additive');
+        Route::post('/save', [BottlesController::class, 'saveAdditive'])->name('save-additive');
+    });
+
+    // Allergens Routes
+    Route::get('/allergens-list', [BottlesController::class, 'AllergensList'])->name('allergens-list');
+
 });
-
-
