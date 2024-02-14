@@ -70,7 +70,6 @@
                     </a>
                     <form id="adminLogoutForm" action="{{ route('admin.logout_handler') }}" method="POST" class="d-none">
                         @csrf
-                    </form>
                 </div>
 
 

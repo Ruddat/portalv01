@@ -20,7 +20,7 @@ class Admin extends Authenticatable
     use TwoFactorAuthenticatable;
     use HasRoles;
 
-    protected $guard_name = 'admin';
+    protected $guard = 'admin';
 
 
     /**

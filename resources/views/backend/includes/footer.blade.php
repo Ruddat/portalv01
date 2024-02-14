@@ -3,7 +3,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright border-top">
-                <p>&copy; Designed by Ingo Ruddat - Version {{ config('app.version', '1.0') }} - {{ \Carbon\Carbon::createFromDate(2023, 1, 12)->format('Y') }} bis {{ now()->format('Y') }}</p>
+                <p>Copyright © Designed   by <a href="https://themeforest.net/user/dexignlabs" target="_blank">DexignLab</a> 2022</p>
             </div>
         </div>
         <!--**********************************
