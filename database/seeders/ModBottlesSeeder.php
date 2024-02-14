@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ModBottlesSeeder extends Seeder
 {
@@ -14,46 +15,46 @@ class ModBottlesSeeder extends Seeder
     {
         DB::table('mod_bottles')->insert([
             [
-                'botles_title' => 'Einwegflaschen (Glas und PET)',
-                'botles_value' => 0.25,
-                'botles_ordering' => 1,
-                'botles_date' => now(),
+                'bottles_title' => 'Einwegflaschen (Glas und PET)',
+                'bottles_value' => 0.25,
+                'bottles_ordering' => 1,
+                'bottles_date' => now(),
             ],
             [
-                'botles_title' => 'Einwegdosen',
-                'botles_value' => 0.25,
-                'botles_ordering' => 2,
-                'botles_date' => now(),
+                'bottles_title' => 'Einwegdosen',
+                'bottles_value' => 0.25,
+                'bottles_ordering' => 2,
+                'bottles_date' => now(),
             ],
             [
-                'botles_title' => 'Mehrwegbierflasche (Glas)',
-                'botles_value' => 0.08,
-                'botles_ordering' => 3,
-                'botles_date' => now(),
+                'bottles_title' => 'Mehrwegbierflasche (Glas)',
+                'bottles_value' => 0.08,
+                'bottles_ordering' => 3,
+                'bottles_date' => now(),
             ],
             [
-                'botles_title' => 'Mehrwegbierflasche (Glas mit Bügelverschluss)',
-                'botles_value' => 0.15,
-                'botles_ordering' => 4,
-                'botles_date' => now(),
+                'bottles_title' => 'Mehrwegbierflasche (Glas mit Bügelverschluss)',
+                'bottles_value' => 0.15,
+                'bottles_ordering' => 4,
+                'bottles_date' => now(),
             ],
             [
-                'botles_title' => 'Mehrwegwasserflasche (Glas oder PET)',
-                'botles_value' => 0.15,
-                'botles_ordering' => 5,
-                'botles_date' => now(),
+                'bottles_title' => 'Mehrwegwasserflasche (Glas oder PET)',
+                'bottles_value' => 0.15,
+                'bottles_ordering' => 5,
+                'bottles_date' => now(),
             ],
             [
-                'botles_title' => 'Mehrwegflasche für Saft und Softdrinks',
-                'botles_value' => 0.15,
-                'botles_ordering' => 6,
-                'botles_date' => now(),
+                'bottles_title' => 'Mehrwegflasche für Saft und Softdrinks',
+                'bottles_value' => 0.15,
+                'bottles_ordering' => 6,
+                'bottles_date' => now(),
             ],
             [
-                'botles_title' => 'Milchprodukte oder Alkoholika in Flaschen',
-                'botles_value' => 0,
-                'botles_ordering' => 7,
-                'botles_date' => now(),
+                'bottles_title' => 'Milchprodukte oder Alkoholika in Flaschen',
+                'bottles_value' => 0,
+                'bottles_ordering' => 7,
+                'bottles_date' => now(),
             ],
         ]);
     }
