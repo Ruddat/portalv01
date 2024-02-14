@@ -82,7 +82,12 @@
                             <li><a href="{{ route('admin.profile') }}">{{ app(\App\Services\TranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
                             <li><a href="{{ route('admin.settings') }}">{{ app(\App\Services\TranslationService::class)->trans('Settings', app()->getLocale()) }}</a></li>
                             <li><a href="{{ route('admin.bottles-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\TranslationService::class)->trans('Flaschenpfand', app()->getLocale()) }}</a></li>
-                            <li><a href="{{ route('admin.additives-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\TranslationService::class)->trans('Zusatzstoffe', app()->getLocale()) }}</a></li>
+                            <li>
+                                <a href="{{ route('admin.additives-list') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.additives-list' ? 'active' : '' }}">
+                                    {{ app(\App\Services\TranslationService::class)->trans('Zusatzstoffe', app()->getLocale()) }}
+                                </a>
+                            </li>
+
                             <li><a href="{{ route('admin.allergens-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\TranslationService::class)->trans('Allergenes', app()->getLocale()) }}</a></li>
                         </ul>
                     </li>
