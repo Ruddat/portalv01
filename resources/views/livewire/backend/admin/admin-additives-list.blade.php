@@ -68,7 +68,15 @@
                                                 <td>{{ app(\App\Services\TranslationService::class)->trans($additive->additive_nr, app()->getLocale()) }}</td>
                                                 <td>{{ app(\App\Services\TranslationService::class)->trans($additive->additive_art, app()->getLocale()) }}</td>
                                                 <td>{{ app(\App\Services\TranslationService::class)->trans($additive->additive_title, app()->getLocale()) }}</td>
-                                                <td>{{ app(\App\Services\TranslationService::class)->trans($additive->additive_description, app()->getLocale()) }}</td>
+                                                <td>
+                                                    @php
+                                                        $description = app(\App\Services\TranslationService::class)->trans($additive->additive_description, app()->getLocale());
+                                                        $wrappedDescription = wordwrap($description, 38, "<br>\n", true);
+                                                        $limitedDescription = Str::limit($wrappedDescription, 10000, ''); // Keine Begrenzung durch Str::limit(), weil wordwrap bereits angewendet wurde
+                                                    @endphp
+
+                                                    {!! $limitedDescription !!}
+                                                </td>
                                                 <td>{{ \Carbon\Carbon::parse($additive->additive_updated_at)->format('d.m.Y') }}</td>
                                                 <td>
                                                     <!-- Klickbares Symbol für den Zusatzstoffstatus -->

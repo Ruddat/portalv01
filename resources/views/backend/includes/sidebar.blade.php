@@ -87,8 +87,12 @@
                                     {{ app(\App\Services\TranslationService::class)->trans('Zusatzstoffe', app()->getLocale()) }}
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ route('admin.allergens-list') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.additives-list' ? 'active' : '' }}">
+                                    {{ app(\App\Services\TranslationService::class)->trans('Allergenes', app()->getLocale()) }}</a></li>
+                                </a>
+                            </li>
 
-                            <li><a href="{{ route('admin.allergens-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\TranslationService::class)->trans('Allergenes', app()->getLocale()) }}</a></li>
                         </ul>
                     </li>
                      <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">

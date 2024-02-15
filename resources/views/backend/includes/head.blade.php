@@ -1,5 +1,5 @@
 	<!-- All Meta -->
-	<meta charset="utf-8">
+    <meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="keywords" content="{{ get_settings()->site_meta_keywords }}" />
 	<meta name="author" content="Ingo Ruddat" />

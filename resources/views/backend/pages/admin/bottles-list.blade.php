@@ -7,10 +7,6 @@
 
 @livewire('backend.admin.admin-bottles-list')
 
-
-
-
-
         @push('specific-css')
         <!-- Datatable -->
         <link href="{{ asset('backend/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">

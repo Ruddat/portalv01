@@ -25,16 +25,17 @@
                                 <div class="mb-3">
                                     <div class="input-group">
 
-                                        <button type="button" class="btn btn-primary" wire:click="toggleCreateForm">
+                                        <a href="{{ route('admin.add-bottle') }}" class="btn btn-primary " type="button">
                                             <span class="btn-icon-start text-info"><i class="fa fa-plus color-info"></i></span>
                                             {{ app(\App\Services\TranslationService::class)->trans('Add Bottles deposit', app()->getLocale()) }}
-                                        </button>
+                                        </a>
 
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
+                                    @include('backend.includes.errorflash')
 
                                     <table id="example3" class="display" style="min-width: 845px">
                                         <thead>
@@ -59,12 +60,24 @@
                                             <td> €{{ number_format($bottle->bottles_value, 2, '.', ',') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($bottle->bottles_date)->format('d.m.Y') }}</td>
                                             <td>
-                                                <i class="bi bi-lightbulb-fill" fill="currentColor" style="color: rgb(231, 144, 14);"></i>
+                                                <!-- Klickbares Symbol für den Zusatzstoffstatus -->
+                                                <a href="#" onclick="toggleActiveStatus({{ $bottle->id }})">
+                                                    @if ($bottle->published)
+                                                        <i id="lamp-{{ $bottle->id }}" class="bi bi-lightbulb-fill" width="26" height="26" fill="currentColor" style="color: rgb(231, 144, 14);"></i>
+                                                    @else
+                                                        <i id="lamp-{{ $bottle->id }}" class="bi bi-lightbulb" width="26" height="26" fill="currentColor" style="color: gray;"></i>
+                                                    @endif
+                                                </a>
                                             </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="#" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
-                                                <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.edit-bottle', ['id' => $bottle->id]) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fas fa-pencil-alt"></i></a>
+                                                <form action="{{ route('admin.delete-bottle') }}" method="POST" onsubmit="return confirmDelete();">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="hidden" name="id" value="{{ $bottle->id }}">
+                                                    <button type="submit" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
@@ -87,56 +100,6 @@
 
 
 
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">@yield('pageTitle') bearbeiten</h4>
-                            </div>
-                            <div class="card-body">
-                                <!-- Nav tabs -->
-
-                                <div class="basic-form">
-                                    <form>
-                                        <div class="row">
-                                        <div class="mb-3 col-md-2">
-                                            <label class="form-label">Number:</label>
-                                            <input type="text" class="form-control input-default " placeholder="Number">
-                                        </div>
-                                        <div class="mb-3 col-md-5">
-                                            <label class="form-label">Art der Zusatzstoffe:</label>
-                                            <input type="text" class="form-control input-default " placeholder="Number">
-                                        </div>
-
-                                        <div class="mb-3 col-md-5">
-                                            <label class="form-label">Auf der Speisekarte:</label>
-                                            <input type="text" class="form-control input-default " placeholder="Number">
-                                        </div>
-
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="mb-3 col-md-12">
-                                                <label class="form-label">Beispiele:</label>
-                                                <textarea class="form-control h-auto" rows="4" id="comment"></textarea>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                            <button type="submit" class="btn btn-secondary">Cancel changes</button>
-                                        </div>
-                                    </form>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    </div>
-
-
-
-
 				</div>
             </div>
         </div>
@@ -144,3 +107,34 @@
             Content body end
         ***********************************-->
 </div>
+
+
+<script>
+    // JavaScript-Funktion, um den Benutzer zu fragen, ob er sicher ist
+    function confirmDelete() {
+        return confirm('Sind Sie sicher, dass Sie dieses Element löschen möchten?');
+    }
+    </script>
+
+    <script>
+    // JavaScript-Funktion, um den Zusatzstoffstatus umzuschalten
+    function toggleActiveStatus(bottlesId) {
+        // AJAX-Anruf zum Aktualisieren des Zusatzstoffstatus
+        $.ajax({
+            type: "POST",
+            url: "{{ route('admin.toggle-bottle-status') }}",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "id": bottlesId
+            },
+            success: function(response) {
+                // Aktualisieren Sie das Symbol basierend auf der Serverantwort
+                if (response.published) {
+                    $("#lamp-" + bottlesId).removeClass("bi-lightbulb").addClass("bi-lightbulb-fill").css("color", "rgb(231, 144, 14)");
+                } else {
+                    $("#lamp-" + bottlesId).removeClass("bi-lightbulb-fill").addClass("bi-lightbulb").css("color", "gray");
+                }
+            }
+        });
+    }
+    </script>

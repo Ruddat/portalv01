@@ -38,6 +38,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/add', [BottlesController::class, 'addBottle'])->name('add-bottle');
         Route::get('/edit/{id}', [BottlesController::class, 'editBottle'])->name('edit-bottle');
         Route::post('/save', [BottlesController::class, 'saveBottle'])->name('save-bottle');
+        Route::post('/toggle-bottle-status', [BottlesController::class, 'toggleBottleStatus'])->name('toggle-bottle-status');
+        Route::delete('/delete', [BottlesController::class, 'deleteBottle'])->name('delete-bottle');
+        Route::put('/bottle/{id}', [BottlesController::class, 'updateBottle'])->name('update-bottle');
     });
 
     // Additives Routes

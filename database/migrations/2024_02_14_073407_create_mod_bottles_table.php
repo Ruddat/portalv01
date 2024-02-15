@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('bottles_title', 255);
             $table->double('bottles_value');
             $table->char('lang', 2)->default('de');
-            $table->integer('bottles_ordering')->default(10000);
-            $table->boolean('bottles_published')->default(true);
-            $table->dateTime('bottles_date');
+            $table->integer('ordering')->default(10000);
+            $table->boolean('published')->default(true);
+            $table->dateTime('date');
             $table->timestamps();
         });
     }

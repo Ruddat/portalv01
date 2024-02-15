@@ -77,11 +77,11 @@ class ModAllergensSeeder extends Seeder
             ModAllergens::create([
                 'parent' => 0,
                 'allergenic_short_title' => $allergen['allergenic_short_title'],
-                'allergenic_title' => $allergen['allergenic_title'],
-                'lang' => 'en', // Standardwert lt (Englisch), Sie können dies entsprechend Ihrer Anforderung ändern
-                'ordering' => 0, // Sie können dies entsprechend Ihrer Anforderung ändern
-                'published' => true, // Standardmäßig veröffentlicht, Sie können dies ändern, wenn erforderlich
-                'date' => now(), // Aktuelles Datum und Uhrzeit
+                'allergenic_title' => mb_convert_encoding($allergen['allergenic_title'], 'UTF-8'),
+                'lang' => 'en',
+                'ordering' => 0,
+                'published' => true,
+                'date' => now(),
             ]);
         }
     }

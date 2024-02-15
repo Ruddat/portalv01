@@ -10,7 +10,7 @@ class AdminBottlesList extends Component
     public function render()
     {
         return view('livewire.backend.admin.admin-bottles-list' , [
-            'bottles' => ModBottles::orderBy('bottles_ordering', 'asc')->get()
+            'bottles' => ModBottles::orderBy('ordering', 'asc')->get()
         ]);
     }
 }
