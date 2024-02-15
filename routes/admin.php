@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Backend\AdminSettings;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\Backend\Admin\AdditivesController;
+use App\Http\Controllers\Backend\Admin\AllergensController;
+use App\Http\Controllers\Backend\Admin\BottlesController; // Importiere den BottlesController
 
 Route::prefix('admin')->name('admin.')->group(function(){
 
-    Route::middleware(['guest:admin', 'PreventBackHistory'])->group(function(){
+    Route::middleware('PreventBackHistory')->group(function (){
         Route::view('/login', 'backend.pages.admin.auth.login')->name('login');
         Route::post('/login_handler', [AdminController::class, 'loginHandler'])->name('login_handler');
         Route::view('/forgot_password', 'backend.pages.admin.auth.forgot-password')->name('forgot-password');
@@ -30,6 +32,41 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
     });
 
+    // Bottles Routes
+    Route::prefix('bottles')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+        Route::get('/list', [BottlesController::class, 'BottlesList'])->name('bottles-list');
+        Route::get('/add', [BottlesController::class, 'addBottle'])->name('add-bottle');
+        Route::get('/edit/{id}', [BottlesController::class, 'editBottle'])->name('edit-bottle');
+        Route::post('/save', [BottlesController::class, 'saveBottle'])->name('save-bottle');
+        Route::post('/toggle-bottle-status', [BottlesController::class, 'toggleBottleStatus'])->name('toggle-bottle-status');
+        Route::delete('/delete', [BottlesController::class, 'deleteBottle'])->name('delete-bottle');
+        Route::put('/bottle/{id}', [BottlesController::class, 'updateBottle'])->name('update-bottle');
+    });
+
+    // Additives Routes
+    Route::prefix('additives')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+        Route::get('/list', [AdditivesController::class, 'AdditivesList'])->name('additives-list');
+        Route::get('/add', [AdditivesController::class, 'addAdditive'])->name('add-additive');
+        Route::get('/edit/{id}', [AdditivesController::class, 'editAdditive'])->name('edit-additive');
+        Route::delete('/delete', [AdditivesController::class, 'deleteAdditive'])->name('delete-additive');
+        Route::post('/additive', [AdditivesController::class, 'saveAdditive'])->name('save-additive');
+        Route::put('/additive/{id}', [AdditivesController::class, 'updateAdditive'])->name('update-additive');
+        Route::post('/toggle-additive-status', [AdditivesController::class, 'toggleAdditiveStatus'])->name('toggle-additive-status');
+
+
+    });
+
+    // Allergens Routes
+    Route::prefix('allergenes')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+        Route::get('/list', [AllergensController::class, 'AllergensList'])->name('allergens-list');
+        Route::get('/add', [AllergensController::class, 'addAllergen'])->name('add-allergen');
+        Route::get('/edit/{id}', [AllergensController::class, 'editAllergen'])->name('edit-allergen');
+        Route::post('/save', [AllergensController::class, 'saveAllergen'])->name('save-allergen');
+        Route::post('/toggle-allergen-status', [AllergensController::class, 'toggleAllergenStatus'])->name('toggle-allergen-status');
+        Route::delete('/delete', [AllergensController::class, 'deleteAllergen'])->name('delete-allergen');
+        Route::put('/allergen/{id}', [AllergensController::class, 'updateAllergen'])->name('update-allergen');
+    });
 });
+
 
 

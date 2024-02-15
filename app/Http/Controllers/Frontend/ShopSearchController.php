@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\ModShop;
 use Illuminate\Http\Request;
 
+use App\Models\ModSearchPlaces;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -49,6 +50,8 @@ public function search(Request $request)
             $search = $nominatim->newSearch()->query($query);
             $results = $nominatim->find($search);
 
+
+
             // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern, falls vorhanden
             if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
                 $userLatitude = $results[0]['lat'];
@@ -57,8 +60,10 @@ public function search(Request $request)
                 $request->session()->put('userLongitude', $userLongitude);
                 $request->session()->put('selectedLocation', $query);
             }
+
         }
 //dd($request);
+
 
         // Session-Werte abrufen
         $userLatitude = $request->session()->get('userLatitude', null);
@@ -72,6 +77,32 @@ public function search(Request $request)
             // Wenn der Filterwert nicht im Request vorhanden ist, verwenden wir den Wert aus der Session
             $selectedDistance = Session::get('selectedDistance', 20);
         }
+
+
+    // Überprüfen, ob die Ergebnisse nicht leer sind
+    if (!empty($results)) {
+        $result_neu = $results[0]; // Nur den ersten Eintrag verwenden
+
+        $placeId = $result_neu['place_id'];
+        // Überprüfen, ob der Eintrag bereits in der Datenbank vorhanden ist
+        $existingPlace = ModSearchPlaces::where('place_id', $placeId)->first();
+        if (!$existingPlace) {
+            // Eintrag in der Datenbank speichern, falls noch nicht vorhanden
+            ModSearchPlaces::create([
+                'place_id' => $placeId,
+                // Weitere Felder speichern
+                'licence' => $result_neu['licence'],
+                'osm_type' => $result_neu['osm_type'],
+                'osm_id' => $result_neu['osm_id'],
+                'lat' => $result_neu['lat'],
+                'lon' => $result_neu['lon'],
+                // Weitere Felder speichern ...
+                'display_name' => $result_neu['display_name'],
+            ]);
+        }
+    }
+
+
 
         // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
         if ($userLatitude !== null && $userLongitude !== null) {
@@ -89,6 +120,8 @@ public function search(Request $request)
                 ->orderBy('distance')
                 ->paginate(12);
 
+
+
             // Entfernung in der Session speichern, wenn eine neue Suche durchgeführt wurde
             if (!empty($query)) {
                 $request->session()->put('selectedDistance', $selectedDistance);
@@ -102,6 +135,8 @@ public function search(Request $request)
         // Die aktuellen Abfrageparameter für die Pagination beibehalten
         $restaurants->appends($request->only(['query', 'distance']));
 
+     //   dd($restaurants);
+
         return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => $restaurants,
             'userLatitude' => $userLatitude,
@@ -109,8 +144,11 @@ public function search(Request $request)
             'selectedDistance' => $selectedDistance,
         ]);
 
+
     } catch (\Exception $e) {
         // Fehlerbehandlung
+
+       // dd($restaurants);
         return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => [],
         ]);
@@ -171,6 +209,7 @@ public function speichereStandort(Request $request)
     $reverse = $nominatim->newReverse()->latlon($latitude, $longitude);
     $result = $nominatim->find($reverse);
 
+
     // Überprüfen, ob Ergebnisse vorhanden sind und den ausgewählten Ort speichern
     $selectedLocation = null;
     if (!empty($result) && isset($result[0]['display_name'])) {
@@ -178,8 +217,32 @@ public function speichereStandort(Request $request)
         $request->session()->put('selectedLocation', $selectedLocation);
     }
 
+
+
     // Geografische Entfernung für die Restaurantsuche festlegen
     $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
+
+
+    // Speichern des Standorts in der Datenbank, wenn er noch nicht vorhanden ist
+    $existingLocation = ModSearchPlaces::where('lat', $latitude)->where('lon', $longitude)->first();
+    if (!$existingLocation) {
+        ModSearchPlaces::create([
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'display_name' => $result['display_name'],
+            'name' => $result['name'],
+            'place_rank' => $result['place_rank'],
+            'place_id' => $result['place_id'],
+            'licence' => $result['licence'],
+            'osm_type' => $result['osm_type'],
+            'osm_id' => $result['osm_id'],
+            'importance' => $result['importance'],
+            'addresstype' => $result['addresstype'],
+            
+
+        ]);
+    }
+
 
     // Restaurants basierend auf der Entfernung suchen
     $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
@@ -206,8 +269,27 @@ public function speichereStandort(Request $request)
 
 
 
+private function saveSearchResults($results)
+{
+    // Überprüfen, ob die Ergebnisse nicht leer sind
+    if (!empty($results)) {
+        $result = $results[0]; // Nur den ersten Eintrag verwenden
 
-
-
+        $placeId = $result['place_id'];
+        // Überprüfen, ob der Eintrag bereits in der Datenbank vorhanden ist
+        $existingPlace = ModSearchPlaces::where('place_id', $placeId)->first();
+        if (!$existingPlace) {
+            // Eintrag in der Datenbank speichern, falls noch nicht vorhanden
+            ModSearchPlaces::create([
+                'place_id' => $placeId,
+                // Weitere Felder speichern
+                'licence' => $result['licence'],
+                'osm_type' => $result['osm_type'],
+                // Weitere Felder speichern ...
+                'display_name' => $result['display_name'],
+            ]);
+        }
+    }
+}
 
 }

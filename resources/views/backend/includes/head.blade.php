@@ -1,5 +1,5 @@
 	<!-- All Meta -->
-	<meta charset="utf-8">
+    <meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="keywords" content="{{ get_settings()->site_meta_keywords }}" />
 	<meta name="author" content="Ingo Ruddat" />
@@ -16,7 +16,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<!-- PAGE TITLE HERE -->
-	<title>FoodDesk - Online Food Delivery Admin Dashboard</title>
+	<title>{{ get_settings()->site_name }}</title>
 
 	<!-- FAVICONS ICON -->
 	<link rel="shortcut icon" type="image/png" href="/images/site/{{ get_settings()->site_favicon }}" />

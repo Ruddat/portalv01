@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('mod_search_places', function (Blueprint $table) {
             $table->id();
-            $table->string('place_id');
-            $table->string('licence');
-            $table->string('osm_type');
-            $table->string('osm_id');
-            $table->string('lat');
-            $table->string('lon');
-            $table->string('class');
-            $table->string('type');
-            $table->integer('place_rank');
-            $table->double('importance');
-            $table->string('addresstype');
-            $table->string('name');
-            $table->text('display_name');
+            $table->string('place_id')->nullable();
+            $table->string('licence')->nullable();
+            $table->string('osm_type')->nullable();
+            $table->string('osm_id')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('lon')->nullable();
+            $table->string('class')->nullable();
+            $table->string('type')->nullable();
+            $table->integer('place_rank')->nullable();
+            $table->double('importance')->nullable();
+            $table->string('addresstype')->nullable();
+            $table->string('name')->nullable();
+            $table->text('display_name')->nullable();
             $table->timestamps();
         });
     }
