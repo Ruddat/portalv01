@@ -563,8 +563,7 @@ function showToast(message) {
         }
     }
 
-    // Event Listener für den Klick auf den Button hinzufügen
-    document.getElementById("getLocationButton").addEventListener("click", getLocation);
+
     </script>
 
 

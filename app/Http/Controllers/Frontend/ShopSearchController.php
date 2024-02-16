@@ -84,8 +84,14 @@ public function search(Request $request)
         $result_neu = $results[0]; // Nur den ersten Eintrag verwenden
 
         $placeId = $result_neu['place_id'];
+        $osmId = $result_neu['osm_id'];
+      //  dd($osmId);
         // Überprüfen, ob der Eintrag bereits in der Datenbank vorhanden ist
-        $existingPlace = ModSearchPlaces::where('place_id', $placeId)->first();
+        $existingPlace = ModSearchPlaces::where(function($query) use ($placeId, $osmId) {
+            $query->where('place_id', $placeId)
+                  ->where('osm_id', $osmId);
+        })->first();
+
         if (!$existingPlace) {
             // Eintrag in der Datenbank speichern, falls noch nicht vorhanden
             ModSearchPlaces::create([
@@ -222,27 +228,38 @@ public function speichereStandort(Request $request)
     // Geografische Entfernung für die Restaurantsuche festlegen
     $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
 
+//dd($result['osm_id']);
 
-    // Speichern des Standorts in der Datenbank, wenn er noch nicht vorhanden ist
-    $existingLocation = ModSearchPlaces::where('lat', $latitude)->where('lon', $longitude)->first();
-    if (!$existingLocation) {
-        ModSearchPlaces::create([
-            'lat' => $latitude,
-            'lon' => $longitude,
-            'display_name' => $result['display_name'],
-            'name' => $result['name'],
-            'place_rank' => $result['place_rank'],
-            'place_id' => $result['place_id'],
-            'licence' => $result['licence'],
-            'osm_type' => $result['osm_type'],
-            'osm_id' => $result['osm_id'],
-            'importance' => $result['importance'],
-            'addresstype' => $result['addresstype'],
-            
+// Speichern des Standorts in der Datenbank, wenn er noch nicht vorhanden ist
+$existingLocation = ModSearchPlaces::where('lat', $latitude)
+    ->where('lon', $longitude)
+    ->where('osm_id', $result['osm_id'])
+    ->first();
 
-        ]);
-    }
+if (!$existingLocation) {
+    // Create a new record if the location doesn't exist
+    $newLocation = new ModSearchPlaces();
+    $newLocation->lat = $latitude;
+    $newLocation->lon = $longitude;
+    $newLocation->osm_id = $result['osm_id'];
+    $newLocation->display_name = $result['display_name'];
+    $newLocation->place_id = $result['place_id'];
+    $newLocation->licence = $result['licence'];
+    $newLocation->osm_type = $result['osm_type'];
+    $newLocation->class = $result['class'];
+    $newLocation->type = $result['type'];
+    $newLocation->place_rank = $result['place_rank'];
+    $newLocation->importance = $result['importance'];
+    $newLocation->addresstype = $result['addresstype'];
+    $newLocation->name = $result['name'];
+    // Optionally, you can assign other attributes to $newLocation as needed
+    // $newLocation->attribute = value;
 
+    // Save the new location to the database
+    $newLocation->save();
+} else {
+    // Location already exists, handle accordingly
+}
 
     // Restaurants basierend auf der Entfernung suchen
     $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
