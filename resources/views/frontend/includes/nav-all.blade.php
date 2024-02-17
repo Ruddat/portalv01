@@ -58,7 +58,7 @@
                         <li><a href="{{ url('/grid-listing-masonry-openstreetmap') }}">List Masonry Filter</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ url('/submit-restaurant') }}">{{ app(\App\Services\TranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
+                <li><a href="{{ route('seller.register') }}" {{ app(\App\Services\TranslationService::class)->trans('Add your restaurant', app()->getLocale()) }}">{{ app(\App\Services\TranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
                 <li><a href="submit-rider.html">Submit Rider</a></li>
                 <li><a href="{{ url('/order-details') }}">Order</a></li>
                 <li><a href="{{ url('/confirm-order') }}">Confirm Order</a></li>
@@ -81,6 +81,6 @@
             <li><a href="shortcodes.html">Shortcodes</a></li>
         </ul>
         </li>
-        <li><a href="{{ url('/submit-restaurant') }}">{{ app(\App\Services\TranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
+        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\TranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
     </ul>
 </nav>

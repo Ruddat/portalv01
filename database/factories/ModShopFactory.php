@@ -50,7 +50,7 @@ class ModShopFactory extends Factory
             'markup' => $this->faker->randomFloat(2, 0, 1000),
             'per_order' => $this->faker->randomFloat(2, 0, 1000),
             'price_sms' => $this->faker->randomFloat(2, 0, 1000),
-            'broker' => $this->faker->randomFloat(2, 0, 1000),
+         //   'broker' => $this->faker->randomFloat(2, 0, 1000),
             'registration_price' => $this->faker->randomFloat(2, 0, 1000),
             'order_email' => $this->faker->email,
             'order_fax' => $this->faker->phoneNumber,

@@ -1,8 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\Seller\SellerController;
 
 
-Route::get('/client', function () {
-    return view('welcome');
+
+
+
+Route::prefix('seller')->name('seller.')->group(function(){
+
+    Route::middleware('PreventBackHistory')->group(function (){
+        Route::view('/login', 'backend.pages.seller.auth.login')->name('login');
+        Route::post('/login_handler', [SellerController::class, 'loginHandler'])->name('login_handler');
+        Route::view('/forgot_password', 'backend.pages.seller.auth.forgot-password')->name('forgot-password');
+        Route::post('/send-password-reset-link', [SellerController::class, 'sendPasswordResetLink'])->name('send-password-reset-link');
+        Route::get('/password/reset/{token}', [SellerController::class, 'resetPassword'])->name('reset-password');
+        Route::post('/reset-password-handler', [SellerController::class, 'resetPasswordHandler'])->name('reset-password-handler');
+        Route::view('/register', 'backend.pages.seller.auth.register')->name('register');
+        Route::post('/register_handler', [SellerController::class, 'registerHandler'])->name('register_handler');
+        Route::get('/verify/{token}', [SellerController::class, 'verifyEmail'])->name('verify-email');
+        // register last step handler
+        Route::post('/register_last_step_handler', [SellerController::class, 'registerLastStepHandler'])->name('register_last_step_handler');
+    });
+
+    Route::middleware('auth:seller')->group(function (){
+        Route::get('/dashboard', [SellerController::class, 'dashboard'])->name('dashboard');
+        Route::get('/logout', [SellerController::class, 'logout'])->name('logout');
+    });
 });

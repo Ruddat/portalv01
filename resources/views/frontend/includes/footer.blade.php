@@ -1,5 +1,5 @@
 <footer>
-  
+
     <div class="container margin_60_40 fix_mobile">
         <div class="row">
             <div class="col-lg-3 col-md-6">
@@ -7,7 +7,7 @@
                 <div class="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
                         <li><a href="about.html">{{ app(\App\Services\TranslationService::class)->trans('About us', app()->getLocale()) }}</a></li>
-                        <li><a href="{{ url('/submit-restaurant') }}">{{ app(\App\Services\TranslationService::class)->trans('Add your restaurant', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\TranslationService::class)->trans('Add your restaurant', app()->getLocale()) }}</a></li>
                         <li><a href="help.html">{{ app(\App\Services\TranslationService::class)->trans('Help', app()->getLocale()) }}</a></li>
                         <li><a href="register.html">{{ app(\App\Services\TranslationService::class)->trans('My account', app()->getLocale()) }}</a></li>
                         <li><a href="{{ url('/blog') }}">{{ app(\App\Services\TranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>

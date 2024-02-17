@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\ModShop;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
@@ -21,7 +22,7 @@ class Seller extends Authenticatable
     use HasRoles;
 
     protected $guard = 'seller';
-    
+
 
     /**
      * The attributes that are mass assignable.
@@ -70,4 +71,10 @@ class Seller extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    public function shops()
+{
+    return $this->belongsToMany(ModShop::class, 'mod_seller_shops');
+}
 }

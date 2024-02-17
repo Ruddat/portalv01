@@ -107,10 +107,27 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="progress" style="background: rgba(127, 99, 244, .1)">
-                                    <div class="progress-bar bg-primary" style="width: 70%;" role="progressbar"><span class="sr-only">70% Complete</span>
-                                    </div>
-                                </div>
+                                @php
+                                // Nehmen wir an, $progress enthält den Fortschrittswert aus der Datenbank (0 bis 100)
+                                $progress = $shop->progress;
+                                // Konvertieren Sie den Fortschrittswert in eine Prozentskala
+                                $percentage = $progress . '%';
+
+                                // Definieren der Farben basierend auf dem Fortschrittswert
+                                $color = '';
+                                if ($progress <= 30) {
+                                    $color = 'red'; // Bis 30%: Rot
+                                } elseif ($progress <= 80) {
+                                    $color = 'orange'; // Von 31% bis 80%: Gelb
+                                } else {
+                                    $color = 'green'; // Ab 81%: Grün
+                                }
+                            @endphp
+
+                            <div class="progress" style="background: rgba(127, 99, 244, .1)">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ $percentage }}; background-color: {{ $color }};"></div>
+                            </div>
+
                             </td>
                             <td>{{ $shop->created_at->format('j F Y') }}</td>
                             <td>
