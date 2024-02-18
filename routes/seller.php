@@ -23,8 +23,10 @@ Route::prefix('seller')->name('seller.')->group(function(){
         Route::post('/register_last_step_handler', [SellerController::class, 'registerLastStepHandler'])->name('register_last_step_handler');
     });
 
-    Route::middleware('auth:seller')->group(function (){
+    Route::middleware(['auth:seller', 'PreventBackHistory'])->group(function () {
         Route::get('/dashboard', [SellerController::class, 'dashboard'])->name('dashboard');
-        Route::get('/logout', [SellerController::class, 'logout'])->name('logout');
+        Route::post('/logout_handler', [SellerController::class, 'logoutHandler'])->name('logout_handler');
+        Route::get('/settings', [SellerController::class, 'settings'])->name('settings');
+
     });
 });

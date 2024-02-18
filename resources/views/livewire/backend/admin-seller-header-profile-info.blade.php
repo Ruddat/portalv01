@@ -94,7 +94,7 @@
                         <img src="{{ asset('backend/images/banner-img/pic-1.png') }}" alt="">
                         <div class="d-flex align-items-center sidebar-info">
                             <div>
-                                <h6 class="font-w500 mb-0 ms-2">Joshua</h6>
+                                <h6 class="font-w500 mb-0 ms-2">{{ $seller->username }}</h6>
                             </div>
                             <i class="fas fa-chevron-down"></i>
                         </div>
@@ -133,7 +133,7 @@
                     </svg>
                     <span class="ms-2">Notification </span>
                 </a>
-                <a href="./setting.html" class="dropdown-item ai-icon ">
+                <a href="{{ route('seller.settings') }}" class="dropdown-item ai-icon ">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                             <rect x="0" y="0" width="24" height="24"/>
@@ -141,12 +141,16 @@
                             <path d="M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="var(--primary)"/>
                         </g>
                     </svg>
-                    <span class="ms-2">Settings </span>
+                    <span class="ms-2">{{ app(\App\Services\TranslationService::class)->trans('Settings', app()->getLocale()) }} </span>
                 </a>
-                    <a href="./page-login.html" class="dropdown-item ai-icon ms-1">
-                        <svg  xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                        <span class="ms-1">Logout </span>
-                    </a>
+                <a href="{{  route('seller.logout_handler') }}" class="dropdown-item ai-icon ms-1"
+                onclick="event.preventDefault(); document.getElementById('adminLogoutForm').submit();">
+                <svg  xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span class="ms-1">Logout </span>
+            </a>
+            <form id="adminLogoutForm" action="{{ route('seller.logout_handler') }}" method="POST" class="d-none">
+                @csrf
+            </form>
                 </div>
 
 

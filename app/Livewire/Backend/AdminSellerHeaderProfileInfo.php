@@ -17,13 +17,16 @@ class AdminSellerHeaderProfileInfo extends Component
         'updateAdminSellerHeaderInfo' => '$refresh'
     ];
 
-    public function mount(){
+    public function mount()
+    {
         if (Auth::guard('admin')->check()) {
             $this->admin = Auth::guard('admin')->user();
+        } elseif (Auth::guard('seller')->check()) {
+            $this->seller = Auth::guard('seller')->user();
+        }
     }
 
 
-    }
 
     public function render()
     {

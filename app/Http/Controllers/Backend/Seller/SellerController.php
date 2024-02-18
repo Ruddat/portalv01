@@ -21,7 +21,27 @@ class SellerController extends Controller
 
     public function dashboard()
     {
-        return view('backend.pages.seller.dashboard');
+        // Überprüfen, ob der Benutzer authentifiziert ist und das $seller-Objekt vorhanden ist
+        if (Auth::guard('seller')->check()) {
+            $seller = Auth::guard('seller')->user();
+
+            // Überprüfen, ob das $seller-Objekt korrekt zugewiesen wurde
+            if ($seller) {
+                // $seller-Objekt ist verfügbar, Sie können auf seine Eigenschaften zugreifen
+                $data = [
+                    'pageTitle' => 'Dashboard',
+                    'seller' => $seller, // Das $seller-Objekt an die Ansicht übergeben
+                ];
+
+                return view('backend.pages.seller.dashboard', $data);
+            } else {
+                // $seller-Objekt nicht korrekt zugewiesen, möglicherweise ein Fehler beim Abrufen des Benutzers
+                // Hier können Sie eine Fehlerbehandlung hinzufügen
+            }
+        } else {
+            // Benutzer ist nicht authentifiziert, möglicherweise nicht eingeloggt
+            // Hier können Sie eine Weiterleitung zu einer Login-Seite oder eine Fehlermeldung hinzufügen
+        }
     }
 
 
@@ -94,11 +114,14 @@ class SellerController extends Controller
 
 
 
-    public function logout()
+    public function logoutHandler()
     {
         Auth::guard('seller')->logout();
+        session()->flash('fail', 'You are logged out!');
         return redirect()->route('seller.login');
     }
+
+
 
     public function registerHandler(Request $request)
     {
@@ -487,7 +510,9 @@ class SellerController extends Controller
 
 
     // Anmelden des Verkäufers nach der Registrierung
-    Auth::guard('seller')->login($seller);
+
+   // Auth::guard('seller')->login($seller);
+    Auth::guard('seller')->login($seller, true, ['username' => $seller->username]);
     // Optional: Perform any additional actions here, such as redirecting or displaying a success message
      return redirect()->route('seller.dashboard')->with('success', 'Registration completed successfully.');
             } else {

@@ -20,7 +20,7 @@ return [
 
     'domain_url' => preg_replace('#^https?://#', '', rtrim(env('APP_URL', 'http://localhost'),'/')),
 
-    'version' => '1.0.6',
+    'version' => '1.0.8',
 
     /*
     |--------------------------------------------------------------------------
