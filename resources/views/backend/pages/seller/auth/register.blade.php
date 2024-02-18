@@ -132,6 +132,7 @@
 								</div>
 								<!-- /row -->
 								<div class="row">
+                                    
 									<div class="col-lg-12">
 										<div class="form-group">
 											<input type="text" class="form-control" value="{{ old('address_register') }}" placeholder="Address and Number" name="address_register" id="address_register">
@@ -152,6 +153,7 @@
                                         <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">{{ $message }}</div>
                                         @enderror
 									</div>
+
                                     <div class="col-md-6">
 										<div class="form-group">
 											<input type="text" class="form-control" value="{{ old('zip_register') }}" placeholder="Zip" name="zip_register" id="zip_register">

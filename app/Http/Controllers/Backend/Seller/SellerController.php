@@ -13,36 +13,92 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use NominatimLaravel\Content\Nominatim;
 
 class SellerController extends Controller
 {
-    //
-
 
     public function dashboard()
     {
         return view('backend.pages.seller.dashboard');
     }
 
+
     public function loginHandler(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $fieldType = filter_var($request->login_id, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        $credentials = $request->only('email', 'password');
-
-        if (auth()->guard('seller')->attempt($credentials)) {
-            return redirect()->route('seller.dashboard');
+        if ($fieldType == 'email') {
+            $request->validate([
+                'login_id' => 'required|email',
+                'password' => 'required|min:5|max:45'
+            ], [
+                'login_id.required' => 'Email or Username is required',
+                'login_id.email' => 'Invalid email address',
+                'password.required' => 'Password is required',
+            ]);
+        } else {
+            $request->validate([
+                'login_id' => 'required',
+                'password' => 'required|min:5|max:45'
+            ], [
+                'login_id.required' => 'Email or Username is required',
+                'password.required' => 'Password is required',
+            ]);
         }
 
-        return redirect()->back()->with('error', 'Invalid credentials');
+        $creds = [
+            $fieldType => $request->login_id,
+            'password' => $request->password
+        ];
+
+        // Check if the user exists
+        $user = Seller::where($fieldType, $request->login_id)->first();
+
+        if ($user) {
+            // Check if the password has been set
+            if (!is_null($user->password)) {
+                // Authenticate the user
+                if (Auth::guard('seller')->attempt($creds, $request->remember)) {
+                    // Check email verification status
+                    if ($user->email_verified_at) {
+                        // Redirect to dashboard or another protected page
+                        return redirect()->route('seller.dashboard');
+                    } else {
+                        // Email not verified, show error message
+                        Auth::guard('seller')->logout();
+                        session()->flash('fail', 'Your email is not verified. Please verify your email to login.');
+                        return redirect()->route('seller.login');
+                    }
+                } else {
+                    // Invalid credentials
+                    session()->flash('fail', 'Invalid credentials');
+                    return redirect()->route('seller.login');
+                }
+            } else {
+                // Password has not been set yet
+                session()->flash('fail', 'Password not set');
+                return redirect()->route('seller.login');
+            }
+        } else {
+            // User does not exist
+            session()->flash('fail', 'User does not exist');
+            return redirect()->route('seller.login');
+        }
     }
 
 
 
+
+
+
+
+    public function logout()
+    {
+        Auth::guard('seller')->logout();
+        return redirect()->route('seller.login');
+    }
 
     public function registerHandler(Request $request)
     {
@@ -221,7 +277,7 @@ class SellerController extends Controller
                     'mail_body'=>$email_body
 
                 );
-//dd($data, $mailConfig);
+        //dd($data, $mailConfig);
 
                 if(sendEmail($mailConfig)){
                     session()->flash('success', 'Your email has been verified.');
@@ -382,8 +438,8 @@ class SellerController extends Controller
 
 
 
-// Überprüfen Sie, ob der Verkäufer gefunden wurde
-if ($seller) {
+    // Überprüfen Sie, ob der Verkäufer gefunden wurde
+    if ($seller) {
     // login url erzeugen fuer den verkaeufer
     $loginUrl = route('seller.dashboard');
 
@@ -412,28 +468,28 @@ if ($seller) {
     // E-Mail senden
     if(sendEmail($mailConfig)){
         session()->flash('success', 'Password reset link sent on your email');
- //       return redirect()->route('admin.forgot-password');
+    //  return redirect()->route('admin.forgot-password');
 
-}else{
+    }else{
     session()->flash('fail', 'Something went wrong');
    // return redirect()->route('admin.forgot-password');
-}
+    }
 
 
 
     // Jetzt können Sie die E-Mail senden oder andere Aktionen ausführen
-} else {
+    } else {
     // Wenn der Verkäufer nicht gefunden wurde, können Sie entsprechend reagieren
     return "Seller not found.";
-}
+    }
 
 
 
 
-                 // Anmelden des Verkäufers nach der Registrierung
-                 Auth::guard('seller')->login($seller);
-                // Optional: Perform any additional actions here, such as redirecting or displaying a success message
-                return redirect()->route('seller.dashboard')->with('success', 'Registration completed successfully.');
+    // Anmelden des Verkäufers nach der Registrierung
+    Auth::guard('seller')->login($seller);
+    // Optional: Perform any additional actions here, such as redirecting or displaying a success message
+     return redirect()->route('seller.dashboard')->with('success', 'Registration completed successfully.');
             } else {
                 // Seller not found
                 return redirect()->route('seller.register')->with('fail', 'Seller not found.');
@@ -444,7 +500,156 @@ if ($seller) {
         }
     }
 
+public function sendPasswordResetLink(Request $request)
+{
+    // Überprüfen Sie, ob die E-Mail-Adresse im Request enthalten ist
+    if ($request->filled('email')) {
+        // Überprüfen Sie, ob die E-Mail-Adresse im Request enthalten ist
+        $request->validate([
+            'email' => 'required|email',
+        ], [
+            'email.required' => 'Email is required',
+            'email.email' => 'Invalid email address',
+        ]);
 
+        // Überprüfen Sie, ob der Verkäufer mit der E-Mail-Adresse gefunden wurde
+        $seller = Seller::where('email', $request->email)->first();
+
+        // Überprüfen Sie, ob der Verkäufer gefunden wurde
+        if ($seller) {
+            // Überprüfen Sie, ob der Verkäufer bereits verifiziert wurde
+            if ($seller->email_verified_at) {
+                // Generieren Sie einen Token
+                $token = Str::random(40);
+
+                // Speichern Sie den Token in der Datenbank
+                DB::table('password_reset_tokens')->insert([
+                    'email' => $request->email,
+                    'guard' => constGuards::SELLER,
+                    'token' => $token,
+                    'created_at' => now(),
+                ]);
+
+                // Generieren Sie die URL für das Zurücksetzen des Passworts
+                $resetUrl = route('seller.reset-password', ['token' => $token, 'email' => $request->email]);
+
+                // Daten für die E-Mail-Vorlage zusammenstellen
+                $data = [
+                    'seller' => $seller,
+                    'resetUrl' => $resetUrl
+                ];
+
+                // E-Mail-Vorlage rendern
+                $email_body = view('email-templates.seller-password-reset-email-template', $data)->render();
+
+                // E-Mail-Konfiguration zusammenstellen
+                $mailConfig = [
+                    'mail_from_email' => env('MAIL_FROM_ADDRESS'),
+                    'mail_from_name' => env('MAIL_FROM_NAME'),
+                    'mail_recipient_email' => $seller->email,
+                    'mail_recipient_name' => $seller->name,
+                    'mail_subject' => 'Password Reset',
+                    'mail_body' => $email_body,
+                ];
+
+                // E-Mail senden
+                if(sendEmail($mailConfig)){
+                    session()->flash('success', 'Success');
+                    return redirect()->route('seller.forgot-password');
+                }else{
+                    session()->flash('fail', 'Something went wrong');
+                    return redirect()->route('seller.forgot-password');
+                }
+
+                // Jetzt können Sie die E-Mail senden oder andere Aktionen ausführen
+            } else {
+                // Der Verkäufer wurde nicht verifiziert
+                return redirect()->route('seller.forgot-password')->with('fail', 'Your email is not verified. Please verify your email to reset your password.');
+            }
+        } else {
+            // Der Verkäufer wurde nicht gefunden
+            return redirect()->route('seller.forgot-password')->with('fail', 'Seller not found.');
+        }
+    } else {
+        // Die E-Mail-Adresse ist nicht im Request enthalten
+        return redirect()->route('seller.forgot-password')->with('fail', 'Email is required.');
+    }
+}
+
+public function resetPassword(Request $request, $token = null)
+{
+
+    $check_token = DB::table('password_reset_tokens')
+        ->where(['token' => $token, 'guard' => constGuards::SELLER])
+        ->first();
+
+    if ($check_token) {
+
+        // check if token is not expired
+        $diffMins = Carbon::createFromFormat('Y-m-d H:i:s', $check_token->created_at)->diffInMinutes(now());
+
+        if ($diffMins > constDefaults::tokenExpiredMinutes) {
+            session()->flash('fail', 'Token expired');
+            return redirect()->route('seller.forgot-password', ['token' => $token]);
+        }else{
+            return view('backend.pages.seller.auth.reset-password')->with(['token' => $token]);
+        }
+
+        return view('backend.pages.seller.auth.reset-password', ['token' => $token, 'email' => $check_token->email]);
+    } else {
+        session()->flash('fail', 'Invalid token');
+        return redirect()->route('seller.forgot-password');
+    }
+}
+
+
+public function resetPasswordHandler(Request $request)
+{
+$request->validate([
+    'new_password' => 'required|min:5|max:45|required_with:new_password_confirmation|same:new_password_confirmation',
+    'new_password_confirmation' => 'required|min:5|max:45|same:new_password'
+]);
+
+$token = DB::table('password_reset_tokens')
+    ->where(['token' => $request->token, 'guard' => constGuards::SELLER])
+    ->first();
+
+    // get seller details
+    $seller = Seller::where('email', $token->email)->first();
+
+    // update admin password
+    Seller::where('email', $token->email)->update([
+        'password' => Hash::make($request->new_password)
+    ]);
+
+    // delete token from password_resets table
+    DB::table('password_reset_tokens')
+        ->where(['token' => $request->token, 'guard' => constGuards::SELLER])
+        ->delete();
+
+    // send email to admin
+    $data = array(
+        'seller'=>$seller,
+        'new_password' =>$request->new_password
+    );
+
+    $mail_body = view('email-templates.seller-reset-email-template', $data)->render();
+
+    $mailConfig = array(
+        'mail_from_email'=>env('MAIL_FROM_ADDRESS'),
+        'mail_from_name'=>env('MAIL_FROM_NAME'),
+        'mail_recipient_email'=>$seller->email,
+        'mail_recipient_name'=>$seller->name,
+        'mail_subject'=>'Your password has been changed',
+        'mail_body'=>$mail_body
+
+    );
+
+    sendEmail($mailConfig);
+    return redirect()->route('seller.login')->with('success', 'Done!, Password changed successfully. Use new password to login');
+
+
+}
 
 
 }

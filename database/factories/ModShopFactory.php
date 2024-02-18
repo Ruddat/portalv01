@@ -28,7 +28,7 @@ class ModShopFactory extends Factory
         $referenceLongitude = 10.352971;
 
         // Radius in Kilometern
-        $radius = 150;
+        $radius = 200;
 
         // Neue Koordinaten generieren
         [$lat, $lng] = $this->generateRandomCoordinates($referenceLatitude, $referenceLongitude, $radius);

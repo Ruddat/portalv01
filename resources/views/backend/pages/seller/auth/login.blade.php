@@ -56,8 +56,8 @@
 										<div class="row d-flex justify-content-between mt-4 mb-2">
 											<div class="mb-3">
 											   <div class="form-check custom-checkbox ms-1">
-													<input type="checkbox" class="form-check-input" id="basic_checkbox_1">
-													<label class="form-check-label" for="basic_checkbox_1">Remember my preference</label>
+                                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                                <label class="form-check-label" for="remember">Remember me</label>
 												</div>
 											</div>
 											<div class="mb-3">

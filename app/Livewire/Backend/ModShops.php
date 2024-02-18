@@ -163,8 +163,6 @@ class ModShops extends Component
     }
 
 
-
-
     public function toggleStatus($shopId)
     {
         $shop = ModShop::find($shopId);
@@ -189,7 +187,7 @@ class ModShops extends Component
         $this->newShop['status'] = $this->status;
         $this->newShop['published'] = $this->published;
 
-    // Wenn das Formular angezeigt wird, setze die Kundennummer und deaktiviere das Eingabefeld
+        // Wenn das Formular angezeigt wird, setze die Kundennummer und deaktiviere das Eingabefeld
     if ($this->showCreateForm) {
         $timestamp = now()->format('ymdHi');
         $randomNumber = mt_rand(10, 99);
@@ -205,38 +203,33 @@ class ModShops extends Component
 
     }
 
-
-
-
     public function cancelCreateForm()
-{
-    $this->showCreateForm = false;
-    $this->reset('newShop'); // Zurücksetzen der Eingabefelder
-    // Zusätzliche Logik zum Zurücksetzen der Eingabefelder, falls erforderlich
-}
+    {
+        $this->showCreateForm = false;
+        $this->reset('newShop'); // Zurücksetzen der Eingabefelder
+        // Zusätzliche Logik zum Zurücksetzen der Eingabefelder, falls erforderlich
+    }
 
     public function createNewShop()
     {
         // Führe hier die Logik zum Anlegen eines neuen Shops aus
-
         // Aktualisiere die Tabelle
         $this->refreshTable();
     }
 
-
-
     public function ShopDeletion($shopId)
     {
-    // Füge hier deine Logik zum Löschen des Geschäfts basierend auf $shopId ein
-    // Zum Beispiel:
-    $shop = ModShop::find($shopId);
+        // Füge hier deine Logik zum Löschen des Geschäfts basierend auf $shopId ein
+        // Zum Beispiel:
+        $shop = ModShop::find($shopId);
 
-    if ($shop) {
-        $shop->delete();
+        if ($shop) {
+            $shop->delete();
 
         // Nach dem Löschen kannst du die Seite aktualisieren oder eine Aktualisierung über Livewire durchführen
         $this->dispatch('refreshTable');
     }
+
     }
 
 
@@ -271,8 +264,8 @@ class ModShops extends Component
         // ... Weitere Codezeilen ...
     }
 
-public function updateShop()
-{
+    public function updateShop()
+    {
     // Validiere die Eingabe
     $this->validate([
         'newShop.shop_nr' => 'required',
