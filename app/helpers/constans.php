@@ -10,5 +10,6 @@ class constGuards
 class constDefaults
 {
     const tokenExpiredMinutes = 15;
-   
+    const sellerTokenExpiredMinutes = 30;
+
 }

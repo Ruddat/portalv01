@@ -21,15 +21,17 @@
 					<div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">@yield('pageTitle')</h4>
-                                <div class="mb-3">
-                                    <div class="input-group">
-
-                                        <a href="{{ route('admin.add-bottle') }}" class="btn btn-primary " type="button">
-                                            <span class="btn-icon-start text-info"><i class="fa fa-plus color-info"></i></span>
-                                            {{ app(\App\Services\TranslationService::class)->trans('Add Bottles deposit', app()->getLocale()) }}
-                                        </a>
-
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h4 class="card-title mb-0">@yield('pageTitle')</h4>
+                                    </div>
+                                    <div class="col-auto mb-3 mb-md-0">
+                                        <div class="input-group">
+                                            <a href="{{ route('admin.add-bottle') }}" class="btn btn-primary" type="button">
+                                                <span class="btn-icon-start text-info"><i class="fa fa-plus color-info"></i></span>
+                                                {{ app(\App\Services\TranslationService::class)->trans('Add Bottles deposit', app()->getLocale()) }}
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

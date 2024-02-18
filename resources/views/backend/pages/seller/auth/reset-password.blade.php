@@ -24,11 +24,10 @@
                                         <strong>Enter your new password, confirm and submit</strong>
                                     </div>
 
-									<form action="{{ route('admin.reset-password-handler',['token'=>request()->token]) }}" method="POST">
+									<form action="{{ route('seller.reset-password-handler',['token'=>request()->token]) }}" method="POST">
                                         @csrf
-                                        
-                                        @include('backend.includes.errorflash')
 
+                                        @include('backend.includes.errorflash')
 
                                         <div class="mb-3">
                                             <input type="password" class="form-control" placeholder="New Password" name="new_password"

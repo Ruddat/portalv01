@@ -28,7 +28,7 @@ return new class extends Migration
             $table->double('markup')->default(0);
             $table->double('per_order')->default(0);
             $table->double('price_sms')->default(0);
-            $table->double('broker')->default(0);
+            $table->string('broker')->nullable();
             $table->double('registration_price')->default(0);
             $table->string('order_email')->default(0);
             $table->string('order_fax')->default(0);
@@ -98,6 +98,7 @@ return new class extends Migration
             $table->integer('eshop_discount')->default(0);
             $table->dateTime('eshop_discount_valid')->nullable();
             $table->string('winorder_version')->default('4');
+            $table->string('progress')->default('0');
             $table->timestamps();
         });
     }

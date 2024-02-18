@@ -21,14 +21,16 @@ class GoogleTranslateController extends Controller
         session(['locale' => $request->lang]);
 
         // Optional: Weiterleitung zu einer anderen Seite
-        return redirect()->back();
+        //return redirect()->back();
+        return redirect('/');
     }
 
     public function change(Request $request)
     {
         session()->put('locale', $request->lang);
   //      dd(session('locale'));
-        return back();
+        //return back();
+        return redirect('/');
     }
 
     public function translateText(Request $request)
