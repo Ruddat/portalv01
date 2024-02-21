@@ -46,21 +46,59 @@
 
 
                     </li>
-					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 
+                    <div>
+                        <p>Aktueller Shop-Titel: {{ session('currentShopTitle') }}</p>
+                    </div>
+
+                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 								<i class="bi bi-shop-window"></i>
 							<span class="nav-text">Restaurant</span>
 						</a>
                         <ul aria-expanded="false">
-							<li><a href="dashboard.html">Dashboard</a></li>
-							<li><a href="menu.html">Menu</a></li>
-							<li><a href="orders.html">Orders</a></li>
-							<li><a href="customer-reviews.html">Reviews</a></li>
-							<li><a href="restro-setting.html">Setting</a></li>
+                            <li><a href="{{ route('seller.dashboard') }}">Dashboard</a></li>
 
-						</ul>
+                            <li><a href="#">Domains</a></li>
+                            <li><a href="#">Shopdaten</a></li>
+                            <li><a href="#">Liefergebiet</a></li>
+                            <li><a href="{{ route('seller.worktimes') }}">Öffnungszeiten</a></li>
+                            <li><a href="#">Aktionszeiten</a></li>
+                            <li><a href="#">Layout / Design</a></li>
+                            <li><a href="#">Zahlungsmethoden</a></li>
+                        </ul>
 
                     </li>
+
+                    @php
+                    $shopId = session('currentShopId'); // Annahme: Shop-ID ist in der Sitzung gespeichert
+                    @endphp
+
+                    @if ($shopId)
+                    {{-- Aktiver Shop, zeige das entsprechende Menü --}}
+                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="bi bi-shop-window"></i>
+                            <span class="nav-text">{{ session('currentShopTitle') }}</span>
+                            </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('seller.dashboard') }}">Dashboard</a></li>
+
+                            <li><a href="#">Shopdaten</a></li>
+                            <li><a href="#">Domains</a></li>
+                            <li><a href="#">Logo & Design</a></li>
+                            <li><a href="{{ route('seller.deliveryarea', ['shop' => $shopId]) }}">Liefergebiet</a></li>
+                            <li><a href="{{ route('seller.worktimes') }}">Öffnungszeiten</a></li>
+                            <li><a href="#">Aktionszeiten</a></li>
+                            <li><a href="#">Zahlungsmethoden</a></li>
+                        </ul>
+
+                    </li>
+                @endif
+
+
+
+
+
+
 					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 						<i class="bi bi-bicycle"></i>
 
@@ -74,11 +112,14 @@
 
                     </li>
 					<li class="menu-title">Other</li>
+
+                    @if (Auth::guard('admin')->check())
+                    {{-- Aktives Menu wenn Admin eingeloggt --}}
                      <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 						<i class="bi bi-info-circle"></i>
 							<span class="nav-text">Apps</span>
 						</a>
-                        <ul aria-expanded="false">
+                         <ul aria-expanded="false">
                             <li><a href="{{ route('admin.profile') }}">{{ app(\App\Services\TranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
                             <li><a href="{{ route('admin.settings') }}">{{ app(\App\Services\TranslationService::class)->trans('Settings', app()->getLocale()) }}</a></li>
                             <li><a href="{{ route('admin.bottles-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\TranslationService::class)->trans('Flaschenpfand', app()->getLocale()) }}</a></li>
@@ -93,8 +134,28 @@
                                 </a>
                             </li>
 
+                          </ul>
+                      </li>
+                      @elseif(Auth::guard('seller')->check())
+                       {{-- Aktives Menu wenn Seller eingeloggt --}}
+
+
+
+                      <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+						<i class="bi bi-info-circle"></i>
+							<span class="nav-text">Settings</span>
+						</a>
+                         <ul aria-expanded="false">
+                            <li><a href="{{ route('seller.profile') }}">{{ app(\App\Services\TranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
+
                         </ul>
                     </li>
+
+
+                    @endif
+
+
+
                      <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 							<i class="bi bi-pie-chart"></i>
 							<span class="nav-text">Charts</span>

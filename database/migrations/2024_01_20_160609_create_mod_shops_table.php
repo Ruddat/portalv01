@@ -99,6 +99,7 @@ return new class extends Migration
             $table->dateTime('eshop_discount_valid')->nullable();
             $table->string('winorder_version')->default('4');
             $table->string('progress')->default('0');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

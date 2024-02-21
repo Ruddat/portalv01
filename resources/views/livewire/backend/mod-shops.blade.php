@@ -171,6 +171,10 @@
 <a wire:click="ShopDeletion({{ $shop->id }})" class="btn btn-danger shadow btn-xs sharp">
     <i class="fa fa-trash"></i>
 </a>
+
+<a wire:click="ShopDeletion({{ $shop->id }})" class="btn btn-success shadow btn-xs sharp">
+    <i class="fa fa-copy"></i>
+</a>
                                 </div>
                             </td>
                         </tr>

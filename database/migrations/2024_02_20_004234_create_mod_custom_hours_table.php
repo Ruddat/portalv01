@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mod_seller_shops', function (Blueprint $table) {
+        Schema::create('mod_custom_hours', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('seller_id');
             $table->unsignedBigInteger('mod_shop_id');
-            $table->boolean('is_master')->default(false); // Neue Spalte für den Master-Shop
-            $table->boolean('is_finished')->default(false);
+            $table->date('custom_hours_date');
+            $table->time('expiry_time');
             $table->timestamps();
 
-            $table->foreign('seller_id')->references('id')->on('sellers')->onDelete('cascade');
             $table->foreign('mod_shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mod_seller_shops');
+        Schema::dropIfExists('mod_custom_hours');
     }
 };

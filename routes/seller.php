@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Seller\SellerController;
+use App\Http\Controllers\backend\seller\DashboardController;
 
 
 
@@ -27,6 +28,33 @@ Route::prefix('seller')->name('seller.')->group(function(){
         Route::get('/dashboard', [SellerController::class, 'dashboard'])->name('dashboard');
         Route::post('/logout_handler', [SellerController::class, 'logoutHandler'])->name('logout_handler');
         Route::get('/settings', [SellerController::class, 'settings'])->name('settings');
+        Route::get('/profile', [SellerController::class, 'profileView'])->name('profile');
+        Route::post('/change-profile-picture', [SellerController::class, 'changeProfilePicture'])->name('change-profile-picture');
+
 
     });
+        // Dashboard routes
+        Route::prefix('shop')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+            Route::get('/details', [DashboardController::class, 'sellerDetails'])->name('sellerDetails');
+            Route::post('/shops/{shop}/copy', [DashboardController::class, 'copyShop'])->name('copyShop');
+            Route::delete('/shops/{shop}/delete', [DashboardController::class, 'deleteShop'])->name('deleteShop');
+            Route::get('/switchshop', [DashboardController::class, 'switchShop'])->name('switchShop');
+        });
+
+        // Openinghours Routes
+        Route::prefix('openinghours')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+            Route::view('/worktimes', 'backend.pages.seller.worktimes.work-times')->name('worktimes');
+        });
+
+        // Openinghours Routes
+        Route::prefix('deliveryarea')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        //    Route::view('/shops/{shop}/deliveryarea', 'backend/pages/shops/mod-liefergebiet')->name('deliveryarea');
+            Route::get('/shops/{shop}/deliveryarea', [DashboardController::class, 'deliveryArea'])->name('deliveryarea');
+        });
+
+
+
 });
+
+
+
