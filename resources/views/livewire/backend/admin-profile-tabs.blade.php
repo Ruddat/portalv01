@@ -17,6 +17,7 @@
                             <div class="settings-form">
                                 <h4 class="text-primary">Account Setting</h4>
                                 <form wire:submit.prevent='updateAdminPersonalDetails()'>
+                                    
                                     <div class="row">
                                         <div class="mb-3 col-md-4">
                                             <label class="form-label">Name</label>

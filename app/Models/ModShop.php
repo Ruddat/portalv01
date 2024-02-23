@@ -5,11 +5,14 @@ namespace App\Models;
 
 use App\Models\Seller;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ModShop extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
 
     protected $guarded = [];
 
@@ -41,5 +44,16 @@ class ModShop extends Model
     {
         return $this->belongsToMany(Seller::class, 'mod_seller_shops');
     }
+
+    public function getPictureAttribute($value)
+    {
+        if ($value ) {
+            return asset('/uploads/images/user/sellers/' . $value);
+        } else {
+            return asset('/uploads/images/user/default-avatar.png');
+        }
+     //   return $value ? asset('storage/' . $value) : asset('storage/images/default.png');
+    }
+
 
 }

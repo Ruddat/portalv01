@@ -1,5 +1,6 @@
 <?php
 
+use Dotenv\Dotenv;
 use App\Models\SocialNetwork;
 use App\Models\GeneralSettings;
 use PHPMailer\PHPMailer\Exception;
@@ -96,5 +97,23 @@ if( !function_exists('get_settings')){
             return $results;
         }
 
+    }
+
+    if (!function_exists('custom_env')) {
+        /**
+         * Gets the value of an environment variable.
+         *
+         * @param  string  $key
+         * @param  mixed  $default
+         * @return mixed
+         */
+        function custom_env($key, $default = null)
+        {
+            $envFilePath = base_path('.env');
+            $dotenv = Dotenv::createImmutable(dirname($envFilePath), basename($envFilePath));
+            $dotenv->load();
+
+            return $_ENV[$key] ?? $default;
+        }
     }
 }

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('seller_id');
             $table->unsignedBigInteger('mod_shop_id');
-            $table->boolean('is_finished')->default(0);
+            $table->boolean('is_master')->default(false); // Neue Spalte für den Master-Shop
+            $table->boolean('is_finished')->default(false);
             $table->timestamps();
 
             $table->foreign('seller_id')->references('id')->on('sellers')->onDelete('cascade');

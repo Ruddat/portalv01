@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account-Verifizierung</title>
+    <title>Account Verification</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +28,7 @@
 
         p {
             color: #666666;
+            margin-bottom: 15px;
         }
 
         .button {
@@ -48,11 +49,11 @@
 <body>
     <div class="container">
         <h1>Account Verification</h1>
-        <p>Sehr geehrter {{ $seller['name'] }},</p>
-        <p>Vielen Dank für Ihre Registrierung bei unserem Service. Bitte klicken Sie auf den unten stehenden Link, um Ihren Account zu verifizieren:</p>
-        <p><a class="button" href="{{ $verificationUrl }}">Account verifizieren</a></p>
-        <p>Bitte beachten Sie, dass der Verifizierungslink in 30 Minuten abläuft. Wenn Sie den Link nicht innerhalb dieses Zeitraums verwenden, müssen Sie sich erneut registrieren.</p>
-        <p>Vielen Dank,<br>{{ config('app.name') }}</p>
+        <p>Dear {{ $seller['name'] }},</p>
+        <p>Thank you for registering with our service. Please click the link below to verify your account:</p>
+        <p><a class="button" href="{{ $verificationUrl }}">Verify Account</a></p>
+        <p>Please note that the verification link will expire in 30 minutes. If you do not use the link within this timeframe, you will need to register again.</p>
+        <p>Thank you,<br>{{ config('app.name') }}</p>
     </div>
 </body>
 

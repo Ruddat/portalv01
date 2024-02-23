@@ -8,6 +8,7 @@ use App\Models\DeliveryArea;
 
 class ModDeliveryArea extends Component
 {
+    public $shopId = 1; // Festen Wert für die shop_id zum Testen
     public $shop;
     public $deliveryAreas;
     public $createFormVisible = false;
@@ -17,7 +18,6 @@ class ModDeliveryArea extends Component
     public $free_delivery_threshold;
     public $min_delivery_threshold;
 
-
     protected $rules = [
         'distance_km' => 'required|numeric',
         'delivery_cost' => 'required|numeric',
@@ -25,17 +25,17 @@ class ModDeliveryArea extends Component
         'delivery_charge' => 'required|numeric',
     ];
 
-
-
     public function mount(ModShop $shop, DeliveryArea $deliveryAreas)
     {
+        $this->shopId = session('currentShopId');
+     //   dd($this->shopId); // Hier wird die Shop-ID korrekt ausgegeben
         $this->deliveryAreas = $deliveryAreas;
-        $this->shop = ModShop::find(350);
+        $this->shop = ModShop::find($this->shopId); // Verwende die festgelegte Shop-ID
     }
 
     public function render()
     {
-        $this->deliveryAreas = DeliveryArea::all();
+        $this->deliveryAreas = DeliveryArea::where('shop_id', $this->shopId)->get(); // Verwende die festgelegte Shop-ID
         return view('livewire.backend.mod-delivery-area');
     }
 
@@ -48,16 +48,12 @@ class ModDeliveryArea extends Component
     {
         $this->validate();
 
-        // Beispiel: Dummy-Koordinaten für den Shop
-        $shopLatitude = 52.2752536;
-        $shopLongitude = 10.5345822;
+        $shop = ModShop::findOrFail($this->shopId);
+        $shopLatitude = $shop->lat;
+        $shopLongitude = $shop->lng;
 
         $coordinates = $this->calculateNewCoordinates($shopLatitude, $shopLongitude);
-
-        // Berechne den Radius in Metern
         $radius = $this->distance_km * 1000;
-
-        // Berechne die Farbe basierend auf der Entfernung (ein einfaches Beispiel)
         $color = $this->calculateColor($this->distance_km);
 
         DeliveryArea::create([
@@ -145,7 +141,13 @@ public function refresh()
 {
     // Hier kannst du Logik hinzufügen, die du vor dem Neuladen ausführen möchtest
 
-    $this->render(); // Neuladen der Livewire-Komponente
+
+    // Hier kannst du die erforderliche Logik einfügen, um die Daten zu aktualisieren
+    $this->shop = ModShop::find($this->shopId);
+    $this->deliveryAreas = DeliveryArea::where('shop_id', $this->shopId)->get();
+
+    // Nachdem die Daten aktualisiert wurden, rufe render() auf, um die Ansicht neu zu rendern
+    $this->render();
 }
 
 }

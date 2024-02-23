@@ -77,4 +77,16 @@ class Seller extends Authenticatable
 {
     return $this->belongsToMany(ModShop::class, 'mod_seller_shops');
 }
+
+
+public function getPictureAttribute($value)
+{
+    if ($value ) {
+        return asset('/uploads/images/user/sellers/' . $value);
+    } else {
+        return asset('/uploads/images/user/default-avatar.png');
+    }
+ //   return $value ? asset('storage/' . $value) : asset('storage/images/default.png');
+}
+
 }

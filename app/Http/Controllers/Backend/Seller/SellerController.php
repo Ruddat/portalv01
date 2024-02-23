@@ -10,11 +10,15 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ModSellerShops;
 use Illuminate\Support\Carbon;
+use App\Models\PasswordResetToken;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use NominatimLaravel\Content\Nominatim;
+use Illuminate\Support\Facades\Storage;
 
 class SellerController extends Controller
 {
@@ -27,25 +31,40 @@ class SellerController extends Controller
 
             // Überprüfen, ob das $seller-Objekt korrekt zugewiesen wurde
             if ($seller) {
+                // Nehmen wir an, dass wir die ausgewählte Shop-ID aus dem Seller-Objekt erhalten
+                $selectedShopId = $seller->selected_shop_id;
+
+                            // Lade die Shops des Verkäufers mit den Pivot-Daten
+            $sellerShops = $seller->shops()->withPivot('is_master')->get();
+
                 // $seller-Objekt ist verfügbar, Sie können auf seine Eigenschaften zugreifen
                 $data = [
                     'pageTitle' => 'Dashboard',
                     'seller' => $seller, // Das $seller-Objekt an die Ansicht übergeben
+                    'selectedShopId' => $selectedShopId, // Die ausgewählte Shop-ID an die Ansicht übergeben
+                    'sellerShops' => $sellerShops, // Übergib die geladenen Shops an die Ansicht
+                    'currentShopId' => null,
+
+                    // Weitere Daten hier hinzufügen, falls erforderlich
+
+
                 ];
 
+                        // Löschen Sie die Shop-ID aus der Sitzung, wenn das Dashboard aufgerufen wird
+                Session::forget('currentShopId');
+                Session::forget('currentShopId');
+                Session::forget('currentShopTitle');
                 return view('backend.pages.seller.dashboard', $data);
-            } else {
-                // $seller-Objekt nicht korrekt zugewiesen, möglicherweise ein Fehler beim Abrufen des Benutzers
-                // Hier können Sie eine Fehlerbehandlung hinzufügen
             }
-        } else {
-            // Benutzer ist nicht authentifiziert, möglicherweise nicht eingeloggt
-            // Hier können Sie eine Weiterleitung zu einer Login-Seite oder eine Fehlermeldung hinzufügen
         }
+        // Falls die Authentifizierung fehlschlägt oder der Seller nicht korrekt zugewiesen wurde,
+        // leiten Sie den Benutzer an eine Fehlerseite oder eine andere Seite weiter
+        return redirect()->route('login')->withErrors(['error' => 'Unauthorized access.']);
     }
 
 
-    public function loginHandler(Request $request)
+
+    public function loginHandler(Request $request )
     {
         $fieldType = filter_var($request->login_id, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
@@ -194,7 +213,8 @@ class SellerController extends Controller
         $seller = Seller::create([
             'name' => $request->name_register,
             'email' => $request->email_register,
-        //    'password' => bcrypt($request->password_register),
+       //     'is_master' => true,
+         //    'password' => bcrypt($request->password_register),
         //    'restaurant_name' => $request->restaurantname_register,
         //    'address' => $request->address_register,
         //    'city' => $request->city_register,
@@ -202,7 +222,7 @@ class SellerController extends Controller
         //    'country' => $request->country_register,
         ]);
 
-        $seller->shops()->create([
+        $shop = $seller->shops()->create([
             'shop_nr' => $this->newShop['shop_nr'],
             'title' => $request->restaurantname_register,
             'street' => $request->address_register,
@@ -218,8 +238,16 @@ class SellerController extends Controller
             'order_email' => $request->email_register,
             'progress' => '0',
             'status' => 'limited',
-        ]);
+       //     'pivot' => ['is_master' => true], // Setze das Pivot-Attribut is_master auf true
 
+        ]);
+// Den Shop als Master-Shop markieren
+$seller->shops()->wherePivot('mod_shop_id', $shop->id)->updateExistingPivot($shop->id, ['is_master' => true]);
+
+
+
+    // Den Shop als Master-Shop markieren
+  //  $seller->shops()->attach($shop->id, ['is_master' => true]);
 
         // Seller-Daten zusammenstellen
         $seller = [
@@ -529,13 +557,14 @@ public function sendPasswordResetLink(Request $request)
 {
     // Überprüfen Sie, ob die E-Mail-Adresse im Request enthalten ist
     if ($request->filled('email')) {
-        // Überprüfen Sie, ob die E-Mail-Adresse im Request enthalten ist
+
         $request->validate([
             'email' => 'required|email',
         ], [
             'email.required' => 'Email is required',
             'email.email' => 'Invalid email address',
         ]);
+
 
         // Überprüfen Sie, ob der Verkäufer mit der E-Mail-Adresse gefunden wurde
         $seller = Seller::where('email', $request->email)->first();
@@ -544,6 +573,22 @@ public function sendPasswordResetLink(Request $request)
         if ($seller) {
             // Überprüfen Sie, ob der Verkäufer bereits verifiziert wurde
             if ($seller->email_verified_at) {
+
+
+
+                $existingToken = PasswordResetToken::where('email', $request->email)->first();
+
+                if ($existingToken) {
+                    // Eintrag für diese E-Mail-Adresse bereits vorhanden, aktualisieren oder löschen
+                    // Zum Beispiel:
+                    // $existingToken->update(['token' => $newToken]);
+                    // oder
+//dd($existingToken);
+                    //$existingToken->delete();
+                    PasswordResetToken::where('email', $request->email)->delete();
+                    // Hier kannst du deine Logik einfügen, um den vorhandenen Token zu aktualisieren oder zu löschen.
+                }
+
                 // Generieren Sie einen Token
                 $token = Str::random(40);
 
@@ -569,17 +614,20 @@ public function sendPasswordResetLink(Request $request)
 
                 // E-Mail-Konfiguration zusammenstellen
                 $mailConfig = [
-                    'mail_from_email' => env('MAIL_FROM_ADDRESS'),
-                    'mail_from_name' => env('MAIL_FROM_NAME'),
+                    'mail_from_email' => custom_env('MAIL_FROM_ADDRESS'),
+                    'mail_from_name' => custom_env('MAIL_FROM_NAME'),
                     'mail_recipient_email' => $seller->email,
                     'mail_recipient_name' => $seller->name,
                     'mail_subject' => 'Password Reset',
                     'mail_body' => $email_body,
                 ];
 
+ //               dd($mailConfig);
+
+
                 // E-Mail senden
                 if(sendEmail($mailConfig)){
-                    session()->flash('success', 'Success');
+                    session()->flash('success', 'Success Password Reset link sent on your email');
                     return redirect()->route('seller.forgot-password');
                 }else{
                     session()->flash('fail', 'Something went wrong');
@@ -622,7 +670,7 @@ public function resetPassword(Request $request, $token = null)
 
         return view('backend.pages.seller.auth.reset-password', ['token' => $token, 'email' => $check_token->email]);
     } else {
-        session()->flash('fail', 'Invalid token');
+        session()->flash('fail', 'Invalid token provided for password reset');
         return redirect()->route('seller.forgot-password');
     }
 }
@@ -675,6 +723,63 @@ $token = DB::table('password_reset_tokens')
 
 
 }
+
+public function profileView(request $request)
+{
+
+    $seller = null;
+    if (Auth::guard('seller')->check()) {
+        // $seller = Auth::findOrFail(auth()->id()); // get seller details
+        $seller = Seller::findOrFail(auth()->id()); // get seller details
+
+    // $seller = Auth::user();
+    }
+
+                    // Löschen Sie die Shop-ID aus der Sitzung, wenn das Dashboard aufgerufen wird
+                    Session::forget('currentShopId');
+                    Session::forget('currentShopId');
+                    Session::forget('currentShopTitle');
+
+    return view('backend.pages.seller.settings.profile', ['seller' => $seller]);
+}
+
+
+
+public function changeProfilePicture(Request $request)
+{
+
+    $seller = Seller::findOrFail(auth('seller')->id());
+
+    $path = 'uploads/images/user/sellers';
+    $file = $request->file('sellerProfilePictureFile');
+    $old_picture = $seller->picture; // direkter Zugriff auf das Bildattribut
+    $file_path = public_path($path . '/' . $old_picture); // Pfad des alten Bildes
+    $filename = 'SELLER_IMG_' . uniqid() . '.jpg'; // Neuer Dateiname
+//    $filename = 'SELLER_IMG_' . uniqid() . '.' .$file->getClientOriginalExtension();
+
+    // Überprüfen, ob eine Datei hochgeladen wurde
+    if ($file) {
+        // Das neue Bild hochladen
+        $upload = $file->move(public_path($path), $filename);
+
+        // Überprüfen, ob das Hochladen erfolgreich war
+        if ($upload) {
+            // Das alte Bild löschen, wenn es existiert
+            if ($old_picture && File::exists($file_path)) {
+                File::delete($file_path);
+            }
+
+            // Das neue Bild im Seller-Modell aktualisieren
+            $seller->update(['picture' => $filename]);
+
+            return response()->json(['status' => 1, 'msg' => 'Your profile picture has been successfully updated.']);
+        }
+    }
+
+    // Rückgabe im Fehlerfall
+    return response()->json(['status' => 0, 'msg' => 'Something went wrong']);
+}
+
 
 
 }

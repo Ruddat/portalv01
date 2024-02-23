@@ -52,7 +52,11 @@ class AdminController extends Controller
         );
 
         if(Auth::guard('admin')->attempt($creds)){
-            return redirect()->route('admin.home');
+
+
+            $currentShopId = null;
+            session(['currentShopId' => $currentShopId]); // Speichere $currentShopId in der Session
+            return redirect()->route('admin.home')->with('currentShopId', $currentShopId);
 
         }else{
             session()->flash('fail', 'Invalid credentials');
@@ -181,7 +185,7 @@ class AdminController extends Controller
 
 
 
-    
+
     public function resetPasswordHandler(Request $request)
     {
     $request->validate([
