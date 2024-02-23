@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Seller\SellerController;
 use App\Http\Controllers\backend\seller\DashboardController;
+use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
 
 
 
@@ -30,16 +31,16 @@ Route::prefix('seller')->name('seller.')->group(function(){
         Route::get('/settings', [SellerController::class, 'settings'])->name('settings');
         Route::get('/profile', [SellerController::class, 'profileView'])->name('profile');
         Route::post('/change-profile-picture', [SellerController::class, 'changeProfilePicture'])->name('change-profile-picture');
-
-
     });
-        // Dashboard routes
+
+    // Dashboard routes
         Route::prefix('shop')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
             Route::get('/details', [DashboardController::class, 'sellerDetails'])->name('sellerDetails');
             Route::post('/shops/{shop}/copy', [DashboardController::class, 'copyShop'])->name('copyShop');
             Route::delete('/shops/{shop}/delete', [DashboardController::class, 'deleteShop'])->name('deleteShop');
             Route::get('/switchshop', [DashboardController::class, 'switchShop'])->name('switchShop');
         });
+
 
         // Openinghours Routes
         Route::prefix('openinghours')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
@@ -51,6 +52,13 @@ Route::prefix('seller')->name('seller.')->group(function(){
         //    Route::view('/shops/{shop}/deliveryarea', 'backend/pages/shops/mod-liefergebiet')->name('deliveryarea');
             Route::get('/shops/{shop}/deliveryarea', [DashboardController::class, 'deliveryArea'])->name('deliveryarea');
         });
+
+// Shopdaten
+Route::prefix('shopdata')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+    Route::view('/shops/{shop}/shopdata', 'backend/pages/seller/shopdata/mod-shopdaten')->name('shopData');
+    Route::get('/shop/{shop}/shopdata', [ShopDataController::class, 'restoData'])->name('restoData');
+    Route::post('/change-logo-pictures', [ShopDataController::class, 'changeLogoPictures'])->name('change-logo-pictures');
+});
 
 
 

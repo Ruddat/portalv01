@@ -26,7 +26,7 @@
                         <div class="card">
                             <div class="card-header d-block">
                                 <h4 class="card-title">Regular opening hours </h4>
-                                <p class="mb-0 subtitle">You can update the regular opening hours of your restaurant. Please select a day of the week below and fill out the opening hours of your restaurant.</p>
+                                <p class="mb-0 subtitle">{{ app(\App\Services\TranslationService::class)->trans('You can update the regular opening hours of your restaurant. Please select a day of the week below and fill out the opening hours of your restaurant.', app()->getLocale()) }}</p>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">

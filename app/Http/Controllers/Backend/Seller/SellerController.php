@@ -750,7 +750,7 @@ public function changeProfilePicture(Request $request)
 
     $seller = Seller::findOrFail(auth('seller')->id());
 
-    $path = 'uploads/images/users/sellers';
+    $path = 'uploads/images/user/sellers';
     $file = $request->file('sellerProfilePictureFile');
     $old_picture = $seller->picture; // direkter Zugriff auf das Bildattribut
     $file_path = public_path($path . '/' . $old_picture); // Pfad des alten Bildes

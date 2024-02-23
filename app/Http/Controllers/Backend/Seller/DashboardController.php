@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend\seller;
 
 use App\Models\ModShop;
+use App\Models\DeliveryArea;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
@@ -15,15 +16,16 @@ class DashboardController extends Controller
     {
         // Hier kannst du Logik implementieren, um Daten abzurufen oder zu verarbeiten
         $id = $request->query('id');
+
         $currentShopId = $request->query('id');
         $shop = ModShop::find($request->query('id'));
-
+//dd($shop);
         // Setzen der Shop-ID in der Sitzung
         Session::put('currentShopId', $currentShopId);
-
+        Session::put('currentShopTitle', $shop->title); // Speichere den Shop-Titel in der Session
 
      //   dd($request);
-        return view('backend.pages.seller.dashboard-2', [
+        return view('backend.pages.seller.dashboard-shop-edit', [
             'currentShopId' => $currentShopId,
             'id' => $id,
             'shop' => $shop,
@@ -49,7 +51,7 @@ class DashboardController extends Controller
 
 
 
-        return view('backend.pages.seller.dashboard-2', [
+        return view('backend.pages.seller.dashboard-shop-edit', [
             'currentShopId' => $currentShopId,
             'id' => $id,
             'shop' => $shop,
@@ -93,11 +95,44 @@ class DashboardController extends Controller
     // Die Beziehung zwischen dem neuen Shop und dem aktuellen Verkäufer eintragen
     auth()->user()->shops()->attach($newShop->id);
 
+    // Aufruf der Funktion copyDeliveryArea mit den IDs des Master-Shops und des neuen Shops
+    $this->copyDeliveryArea($masterShop->id, $newShop->id);
+
     // Optional: Eine Benachrichtigung oder Bestätigung anzeigen
     return redirect()->back()->with('success', 'Shop erfolgreich kopiert.');
-
+    // Aufruf der Funktion copyDeliveryArea
+   // $this->copyDeliveryArea($newShop);
 
     }
+
+    public function copyDeliveryArea($masterShopId, $newShopId)
+    {
+        // Den Master-Shop abrufen
+        $masterShop = ModShop::findOrFail($masterShopId);
+
+        // Das Liefergebiet des Master-Shops abrufen
+        $masterDeliveryArea = DeliveryArea::where('shop_id', $masterShopId)->get();
+
+        // Für jedes Liefergebiet des Master-Shops ein neues Liefergebiet erstellen und kopieren
+        foreach ($masterDeliveryArea as $deliveryArea) {
+            $newDeliveryArea = new DeliveryArea();
+            $newDeliveryArea->shop_id = $newShopId;
+            $newDeliveryArea->distance_km = $deliveryArea->distance_km;
+            $newDeliveryArea->delivery_cost = $deliveryArea->delivery_cost;
+            $newDeliveryArea->delivery_charge = $deliveryArea->delivery_charge;
+            $newDeliveryArea->free_delivery_threshold = $deliveryArea->free_delivery_threshold;
+            $newDeliveryArea->latitude = $deliveryArea->latitude;
+            $newDeliveryArea->longitude = $deliveryArea->longitude;
+            $newDeliveryArea->radius = $deliveryArea->radius;
+            $newDeliveryArea->color = $deliveryArea->color;
+            $newDeliveryArea->save();
+        }
+
+        // Optional: Eine Benachrichtigung oder Bestätigung anzeigen
+        return redirect()->back()->with('success', 'Liefergebiet erfolgreich kopiert.');
+    }
+
+
 
     public function deleteShop(ModShop $shop)
 {

@@ -82,9 +82,9 @@ class Seller extends Authenticatable
 public function getPictureAttribute($value)
 {
     if ($value ) {
-        return asset('/uploads/images/users/sellers/' . $value);
+        return asset('/uploads/images/user/sellers/' . $value);
     } else {
-        return asset('/uploads/images/users/default-avatar.png');
+        return asset('/uploads/images/user/default-avatar.png');
     }
  //   return $value ? asset('storage/' . $value) : asset('storage/images/default.png');
 }

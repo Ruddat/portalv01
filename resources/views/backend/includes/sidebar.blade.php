@@ -4,8 +4,33 @@
         <div class="dlabnav border-right">
             <div class="dlabnav-scroll">
 					<p class="menu-title style-1"> Main Menu</p>
+
+
+
 				<ul class="metismenu" id="menu">
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+
+                    @if (Auth::guard('admin')->check())
+                    {{-- Aktives Menu wenn Admin eingeloggt --}}
+                    <li><a class="no-arrow " href="{{ route('admin.home') }}" aria-expanded="false">
+                        <i class="bi bi-house"></i>
+                        <span class="nav-text">Admin Home</span>
+                    </a>
+                    </li>
+                    @elseif(Auth::guard('seller')->check())
+                    {{-- Aktives Menu wenn Seller eingeloggt --}}
+                    <li><a class="no-arrow " href="{{ route('seller.dashboard') }}" aria-expanded="false">
+                        <i class="bi bi-house"></i>
+                        <span class="nav-text">Home</span>
+                    </a>
+                    </li>
+                    @endif
+
+
+
+
+
+                    @if (Auth::guard('admin')->check())
+                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 							<i class="bi bi-grid"></i>
 							<span class="nav-text">Dashboard</span>
 						</a>
@@ -42,32 +67,11 @@
                             <li><a href="{{ url('/roles-permissons') }}">Roles and Permission</a></li>
 							<li><a href="setting.html">Setting</a></li>
 						</ul>
-
-
-
                     </li>
+                    @elseif(Auth::guard('seller')->check())
 
-                    <div>
-                        <p>Aktueller Shop-Titel: {{ session('currentShopTitle') }}</p>
-                    </div>
+                    @endif
 
-                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-								<i class="bi bi-shop-window"></i>
-							<span class="nav-text">Restaurant</span>
-						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="{{ route('seller.dashboard') }}">Dashboard</a></li>
-
-                            <li><a href="#">Domains</a></li>
-                            <li><a href="#">Shopdaten</a></li>
-                            <li><a href="#">Liefergebiet</a></li>
-                            <li><a href="{{ route('seller.worktimes') }}">Öffnungszeiten</a></li>
-                            <li><a href="#">Aktionszeiten</a></li>
-                            <li><a href="#">Layout / Design</a></li>
-                            <li><a href="#">Zahlungsmethoden</a></li>
-                        </ul>
-
-                    </li>
 
                     @php
                     $shopId = session('currentShopId'); // Annahme: Shop-ID ist in der Sitzung gespeichert
@@ -80,9 +84,9 @@
                             <span class="nav-text">{{ session('currentShopTitle') }}</span>
                             </a>
                         <ul aria-expanded="false">
-                            <li><a href="{{ route('seller.dashboard') }}">Dashboard</a></li>
+                            <li><a href="{{ route('seller.switchShop', ['id' => $shopId]) }}">Dashboard</a></li>
 
-                            <li><a href="#">Shopdaten</a></li>
+                            <li><a href="{{ route('seller.restoData', ['shop' => $shopId]) }}">Shopdaten</a></li>
                             <li><a href="#">Domains</a></li>
                             <li><a href="#">Logo & Design</a></li>
                             <li><a href="{{ route('seller.deliveryarea', ['shop' => $shopId]) }}">Liefergebiet</a></li>
@@ -90,14 +94,7 @@
                             <li><a href="#">Aktionszeiten</a></li>
                             <li><a href="#">Zahlungsmethoden</a></li>
                         </ul>
-
                     </li>
-                @endif
-
-
-
-
-
 
 					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 						<i class="bi bi-bicycle"></i>
@@ -109,9 +106,26 @@
 							<li><a href="deliver-order.html">Orders</a></li>
 							<li><a href="feedback.html">Feedback</a></li>
 						</ul>
-
                     </li>
-					<li class="menu-title">Other</li>
+
+
+					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+						<i class="bi bi-bicycle"></i>
+
+							<span class="nav-text">Live Order</span>
+						</a>
+                        <ul aria-expanded="false">
+							<li><a href="deliver-main.html">Dashboard</a></li>
+							<li><a href="deliver-order.html">Orders</a></li>
+							<li><a href="feedback.html">Feedback</a></li>
+						</ul>
+                    </li>
+
+                    @endif
+
+
+
+                    <li class="menu-title">Other</li>
 
                     @if (Auth::guard('admin')->check())
                     {{-- Aktives Menu wenn Admin eingeloggt --}}
