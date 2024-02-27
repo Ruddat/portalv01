@@ -169,7 +169,7 @@
                                                         <th><a href="{{ route('seller.sellerDetails', ['id' => $shop->id]) }}" class="w-space-no"> #{{ $shop->shop_nr }}</a></th>
                                                         <td>
                                                             <div class="d-flex align-items-center">
-                                                                <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt=""/>
+                                                                <img src="{{ $shop->logo_url }}" class="rounded-lg me-2" width="24" alt=""/>
                                                                 <a href="{{ route('seller.sellerDetails', ['id' => $shop->id]) }}" class="w-space-no">{{ $shop->title }}</a>
                                                             </div>
                                                         </td>
