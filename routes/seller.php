@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Seller\SellerController;
 use App\Http\Controllers\Backend\Seller\DashboardController;
 use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
+use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
 
 
@@ -60,6 +61,14 @@ Route::prefix('shopdata')->middleware(['auth:seller', 'PreventBackHistory'])->gr
     Route::get('/shop/{shop}/shopdata', [ShopDataController::class, 'restoData'])->name('restoData');
     Route::post('/change-logo-pictures', [ShopDataController::class, 'changeLogoPictures'])->name('change-logo-pictures');
 });
+
+
+Route::prefix('manage-categories')->name('manage-categories.')->group(function() {
+    Route::get('/', [CategoriesController::class, 'catSubcatList'])->name('cats-subcats-list');
+});
+
+
+
 
 
 
