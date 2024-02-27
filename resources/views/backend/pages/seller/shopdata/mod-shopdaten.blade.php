@@ -23,14 +23,10 @@
 
                                                 <div id="imagePreview" class="mb-2 mt-1" style="max-width: 200px;">
                                                     <img wire:ignore src="" class="img-thumbnail"
-                                                        data-ijabo-default-img="/uploads/shops/{{ $shop->id }}/images/{{ $shop->logo }}"
+                                                        data-ijabo-default-img="{{ $shop->logo_url }}"
                                                         id="site_logo_image_preview">
-                                                </div>
+                                                    </div>
 											</div>
-
-
-
-
 
                                                 <form action="{{ route('seller.change-logo-pictures') }}" method="POST"
                                                     enctype="multipart/form-data" id="change_site_logo_form">
@@ -73,14 +69,18 @@
     @endpush
 
     @push('specific-scripts')
+
+
+
 <!-- JavaScript, um das Scrollen zu steuern -->
 <script>
     document.addEventListener('livewire:load', function () {
-        Livewire.on('scroll-to-message', function () {
-            const messageElement = document.querySelector('.alert');
-            if (messageElement) {
-                messageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+        Livewire.on('scroll-to-error', () => {
+            // Zum Anfang der Seite scrollen
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     });
 </script>

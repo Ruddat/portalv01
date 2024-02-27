@@ -112,7 +112,7 @@ public function search(Request $request)
 
         // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
         if ($userLatitude !== null && $userLongitude !== null) {
-            $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
+            $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo')
                 ->selectRaw(
                     '( 6371 * acos( cos( radians(?) ) *
                     cos( radians( lat ) ) *
@@ -134,14 +134,14 @@ public function search(Request $request)
             }
         } else {
             // Wenn keine Geokoordinaten vorhanden sind, eine einfache Datenbankabfrage durchführen
-            $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
+            $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo')
                 ->paginate(12);
         }
 
         // Die aktuellen Abfrageparameter für die Pagination beibehalten
         $restaurants->appends($request->only(['query', 'distance']));
 
-     //   dd($restaurants);
+//        dd($restaurants);
 
         return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => $restaurants,
@@ -166,7 +166,7 @@ public function search(Request $request)
 
 private function performRestaurantSearch($userLatitude, $userLongitude, $selectedDistance)
 {
-    return ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
+    return ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo')
         ->selectRaw(
             '( 6371 * acos( cos( radians(?) ) *
             cos( radians( lat ) ) *
@@ -262,7 +262,7 @@ if (!$existingLocation) {
 }
 
     // Restaurants basierend auf der Entfernung suchen
-    $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung')
+    $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo')
         ->selectRaw(
             '( 6371 * acos( cos( radians(?) ) *
             cos( radians( lat ) ) *

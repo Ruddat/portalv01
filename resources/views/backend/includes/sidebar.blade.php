@@ -81,7 +81,7 @@
                     {{-- Aktiver Shop, zeige das entsprechende Menü --}}
                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                             <i class="bi bi-shop-window"></i>
-                            <span class="nav-text">{{ session('currentShopTitle') }}</span>
+                            <span class="nav-text"> {{ Str::limit(session('currentShopTitle'), 13) }}</span>
                             </a>
                         <ul aria-expanded="false">
                             <li><a href="{{ route('seller.switchShop', ['id' => $shopId]) }}">Dashboard</a></li>
@@ -115,7 +115,7 @@
 							<span class="nav-text">Live Order</span>
 						</a>
                         <ul aria-expanded="false">
-							<li><a href="deliver-main.html">Dashboard</a></li>
+							<li><a href="{{ route('seller.indexAction') }}">LieferandoSpider</a></li>
 							<li><a href="deliver-order.html">Orders</a></li>
 							<li><a href="feedback.html">Feedback</a></li>
 						</ul>
@@ -124,8 +124,43 @@
                     @endif
 
 
-
                     <li class="menu-title">Other</li>
+                    <li><a href="{{ route('seller.indexAction') }}">LieferandoSpider</a></li>
+
+                    {{-- Bestellungen Aktiver Shop, zeige das entsprechende Menü --}}
+                    <li class="menu-title">Bestellungen</li>
+                    <li><a href="widget-basic.html" class="" aria-expanded="false">
+                        <i class="bi bi-gear-wide"></i>
+                        <span class="nav-text">Bestellübersicht</span>
+                    </a>
+                </li>
+                <li><a href="widget-basic.html" class="" aria-expanded="false">
+                    <i class="bi bi-gear-wide"></i>
+                    <span class="nav-text">Bewertungen</span>
+                    </a>
+                </li>
+                <li><a href="widget-basic.html" class="" aria-expanded="false">
+                    <i class="bi bi-gear-wide"></i>
+                    <span class="nav-text">Rechnungen</span>
+                    </a>
+                </li>
+
+
+
+                    {{-- Karte Aktiver Shop, zeige das entsprechende Menü --}}
+                    <li class="menu-title">Karte</li>
+                    <li><a href="widget-basic.html" class="" aria-expanded="false">
+                        <i class="bi bi-gear-wide"></i>
+                        <span class="nav-text">Größen</span>
+                    </a>
+                </li>
+                <li><a href="widget-basic.html" class="" aria-expanded="false">
+                    <i class="bi bi-gear-wide"></i>
+                    <span class="nav-text">Zutaten</span>
+                    </a>
+                </li>
+
+
 
                     @if (Auth::guard('admin')->check())
                     {{-- Aktives Menu wenn Admin eingeloggt --}}

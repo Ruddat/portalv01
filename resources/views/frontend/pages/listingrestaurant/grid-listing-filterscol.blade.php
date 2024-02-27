@@ -281,13 +281,13 @@
                                     <figure>
                                         <span class="ribbon off">15% off</span>
                                         <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
-                                        <a href="{{ route('detail-restaurant.index', ['restaurantName' => $restaurant->title]) }} " class="strip_info">
-                                            <small>Pizza, Burger</small>
-
-                                            <div class="item_title">
-                                                <h3> {{ $restaurant->title }}</h3>
-                                                <small>{{ $restaurant->street }} --- {{ number_format($restaurant->distance, 2) }} km</small>
-
+                                        <a href="{{ route('detail-restaurant.index', ['restaurantId' => $restaurant->id]) }} " class="strip_info">                                            <small>Pizza, Burger</small>
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
+                                                <div class="item_title">
+                                                    <h3>{{ $restaurant->title }}</h3>
+                                                    <small>{{ $restaurant->street }} --- {{ number_format($restaurant->distance, 2) }} km</small>
+                                                </div>
                                             </div>
                                         </a>
                                     </figure>

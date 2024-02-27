@@ -55,14 +55,14 @@
 
                     <div class="col-xl-6">
                         <label  class="form-label">Phonenumber</label>
-                        <input wire:model.live="phone" type="text" wire:model="shop_phone" class="form-control mb-3" placeholder="Phonenumber">
+                        <input wire:model.live="shop_phone" type="text" wire:model="shop_phone" class="form-control mb-3" placeholder="Phonenumber">
                         @error('shop_phone') <!-- Hier wird überprüft, ob ein Validierungsfehler für das Feld "shop_owner" vorliegt -->
                         <span class="text-danger">{{ $message }}</span> <!-- Anzeige des Validierungsfehlers -->
                         @enderror
                     </div>
                     <div class="col-xl-6">
                         <label  class="form-label">Order Email Address</label>
-                        <input wire:model.live="email" type="text" wire:model="shop_email" class="form-control mb-3" placeholder="ordanico@mail.com">
+                        <input wire:model.live="shop_email" type="text" wire:model="shop_email" class="form-control mb-3" placeholder="ordanico@mail.com">
                         @error('shop_email') <!-- Hier wird überprüft, ob ein Validierungsfehler für das Feld "shop_owner" vorliegt -->
                         <span class="text-danger">{{ $message }}</span> <!-- Anzeige des Validierungsfehlers -->
                         @enderror
@@ -70,14 +70,14 @@
 
                     <div class="col-xl-6">
                         <label  class="form-label">Owner</label>
-                        <input wire:model.live="Owner" type="text" wire:model="shop_owner" class="form-control mb-3" placeholder="Owner">
+                        <input wire:model.live="shop_owner" type="text" wire:model="shop_owner" class="form-control mb-3" placeholder="Owner">
                         @error('shop_owner') <!-- Hier wird überprüft, ob ein Validierungsfehler für das Feld "shop_owner" vorliegt -->
                         <span class="text-danger">{{ $message }}</span> <!-- Anzeige des Validierungsfehlers -->
                         @enderror
                     </div>
                     <div class="col-xl-6">
                         <label  class="form-label">tax ID</label>
-                        <input wire:model.live="extra_contacts" type="text" wire:model="shop_extra_contacts" class="form-control mb-3" placeholder="tax ID">
+                        <input wire:model.live="shop_extra_contacts" type="text" wire:model="shop_extra_contacts" class="form-control mb-3" placeholder="tax ID">
                         @error('shop_extra_contacts') <!-- Hier wird überprüft, ob ein Validierungsfehler für das Feld "shop_owner" vorliegt -->
                         <span class="text-danger">{{ $message }}</span> <!-- Anzeige des Validierungsfehlers -->
                         @enderror
@@ -116,16 +116,8 @@
                 </div>
             </div>
             <div class="Security">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h4>Security</h4>
-                    <span class="badge badge-sm badge-primary c-pointer" id="ed-profile">Edit</span>
-                </div>
                 <div class="row">
                     <div class="col-xl-12">
-                        <label  class="form-label">Passward</label>
-                         <input type="password" class="form-control mb-3" placeholder="Enter Your Passward" id="password">
-
-                        <button class="btn btn-outline-primary float-end ms-3">Cancel</button>
                         <button class="btn btn-primary float-end">Save</button>
                     </div>
                 </div>
@@ -137,3 +129,15 @@
 
 
 
+<!-- JavaScript-Code, um zum Erfolgsmeldungsbereich zu scrollen -->
+<script>
+    document.addEventListener('livewire:load', function () {
+        Livewire.on('scroll-to-success', () => {
+            // Den Bereich mit der Erfolgsmeldung auswählen und zum oberen Teil des Bildschirms scrollen
+            const successMessage = document.querySelector('.alert-success');
+            if (successMessage) {
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>

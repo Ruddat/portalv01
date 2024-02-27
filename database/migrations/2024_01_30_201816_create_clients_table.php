@@ -26,9 +26,16 @@ return new class extends Migration
             $table->string('postal_code')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
+            $table->string('about')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('website')->nullable();
+            $table->enum('role', ['seller'])->default('seller');
             $table->timestamp('email_verified_at')->nullable();
-            $table->enum('status', ['Active', 'Pending'])->default('Pending');
-            
+            $table->enum('status', ['Active', 'Pending', 'Inactive'])->default('Active');
             $table->timestamps();
         });
     }
