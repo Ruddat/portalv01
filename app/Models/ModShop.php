@@ -15,7 +15,7 @@ class ModShop extends Model
 
 
     protected $guarded = [];
-
+    protected $appends = ['logo_url'];
 
     public function categories()
     {
@@ -53,6 +53,15 @@ class ModShop extends Model
             return asset('/uploads/images/user/default-avatar.png');
         }
      //   return $value ? asset('storage/' . $value) : asset('storage/images/default.png');
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        if ($this->logo) {
+            return asset('uploads/shops/' . $this->id . '/images/' . $this->logo);
+        } else {
+            return asset('uploads/images/default/logo.png');
+        }
     }
 
 

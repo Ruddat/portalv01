@@ -77,9 +77,7 @@ Route::get('/index-13', function () {
     return view('frontend/pages/index.index-13');
 });
 
-Route::get('/detail-restaurant', function () {
-    return view('frontend/pages/detailrestaurant.detail-restaurant');
-});
+
 
 Route::get('/detail-restaurant-2', function () {
     return view('frontend/pages/detailrestaurant.detail-restaurant-2');
@@ -186,9 +184,7 @@ Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStand
 
 
 
-
-Route::get('/detail-restaurant/{restaurantName}', [ShopCardController::class, 'index'])->name('detail-restaurant.index');
-
+Route::get('/detail-restaurant/{restaurantId}', [ShopCardController::class, 'index'])->name('detail-restaurant.index');
 
 
 // Match my own domain

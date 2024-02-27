@@ -66,6 +66,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::delete('/delete', [AllergensController::class, 'deleteAllergen'])->name('delete-allergen');
         Route::put('/allergen/{id}', [AllergensController::class, 'updateAllergen'])->name('update-allergen');
     });
+
+
 });
 
 

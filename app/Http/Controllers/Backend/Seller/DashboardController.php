@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\backend\seller;
+namespace App\Http\Controllers\Backend\Seller;
 
 use App\Models\ModShop;
 use App\Models\DeliveryArea;

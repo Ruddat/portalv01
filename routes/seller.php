@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Seller\SellerController;
-use App\Http\Controllers\backend\seller\DashboardController;
+use App\Http\Controllers\Backend\Seller\DashboardController;
 use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
+use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
 
 
 
@@ -47,7 +48,7 @@ Route::prefix('seller')->name('seller.')->group(function(){
             Route::view('/worktimes', 'backend.pages.seller.worktimes.work-times')->name('worktimes');
         });
 
-        // Openinghours Routes
+        // DeliveryArea Routes
         Route::prefix('deliveryarea')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
         //    Route::view('/shops/{shop}/deliveryarea', 'backend/pages/shops/mod-liefergebiet')->name('deliveryarea');
             Route::get('/shops/{shop}/deliveryarea', [DashboardController::class, 'deliveryArea'])->name('deliveryarea');
@@ -59,6 +60,13 @@ Route::prefix('shopdata')->middleware(['auth:seller', 'PreventBackHistory'])->gr
     Route::get('/shop/{shop}/shopdata', [ShopDataController::class, 'restoData'])->name('restoData');
     Route::post('/change-logo-pictures', [ShopDataController::class, 'changeLogoPictures'])->name('change-logo-pictures');
 });
+
+
+
+// Testing Methods
+    Route::prefix('test')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::get('/test', [LieferandoSpiderController::class, 'indexAction'])->name('indexAction');
+    });
 
 
 

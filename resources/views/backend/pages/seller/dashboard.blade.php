@@ -44,6 +44,8 @@
 													<li class="font-w600 text-success ms-2">+15%</li>
 												</ul>
 											</div>
+
+
 											<div class="col-xl-2 col-lg-2 col-6">
 												<p class="font-w500 text-danger mb-0">Expense</p>
 												<h4 class="cate-title data">$2890,00</h4>
@@ -74,28 +76,10 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xl-6 col-lg-6 col-sm-6">
-								<div class="card style-4">
-									<div class="card-body py-0 px-0">
-										<canvas id="activeUser" class="h-80"></canvas>
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-sm-6">
-								<div class="card income style-2">
-									<div class="card-body">
-										<div class="d-flex align-itens-center flex-xl-nowrap flex-wrap">
-											<div>
-												<h4 class="cate-title data">Performance</h4>
-												<span>Lorem ipsum dolor sit amet, adipiscing elit..</span>
-											</div>
-											<div>
-												<div id="redial"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
+
+
+
+
 							<div class="col-xl-12">
 								<div class="card">
 									<div class="card-body pb-0">
@@ -157,15 +141,93 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xl-12">
-								<div class="card">
-									<div class="card-body pb-0">
-										<h4 class="cate-title">Activity</h4>
-										<div id="chartBar5"></div>
-									</div>
-								</div>
-							</div>
-						</div>
+
+
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">MyShops</h4>
+                                    </div>
+                                    <div class="card-body pb-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-responsive-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ROLL NO.</th>
+                                                        <th>Shopname</th>
+                                                        <th>Adress</th>
+                                                        <th>Progress</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @include('backend.includes.errorflash')
+
+                                                    @foreach($sellerShops as $shop)
+                                                    <tr>
+                                                        <th><a href="{{ route('seller.sellerDetails', ['id' => $shop->id]) }}" class="w-space-no"> #{{ $shop->shop_nr }}</a></th>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt=""/>
+                                                                <a href="{{ route('seller.sellerDetails', ['id' => $shop->id]) }}" class="w-space-no">{{ $shop->title }}</a>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{ $shop->street }} <br>{{ $shop->zip }} {{ $shop->city }}</td>
+                                                        <td>
+                                                            <div class="progress" style="background: rgba(127, 99, 244, .1)">
+                                                                <div class="progress-bar" style="width: 70%;" role="progressbar"><span class="sr-only">70% Complete</span></div>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="badge badge-success">Online</span></td>
+                                                        <td>
+                                                            <div class="d-flex">
+                                                                <a href="{{ route('seller.sellerDetails', ['id' => $shop->id]) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
+
+                                                                @if ($shop->pivot->is_master)
+                                                                <form action="{{ route('seller.copyShop', $shop->id) }}" method="POST">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-primary shadow btn-xs sharp"><i class="fa fa-copy"></i></button>
+                                                                </form>
+
+                                                                @endif
+
+                                                        @if (!$shop->pivot->is_master) <!-- Beachte den Zugriff auf 'is_master' über 'pivot' -->
+                                                        <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
+
+                                                    @endif
+
+                                                    @if (!$shop->pivot->is_master) <!-- Beachte den Zugriff auf 'is_master' über 'pivot' -->
+
+                                                    <form action="{{ route('seller.deleteShop', $shop->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></button>
+                                                    </form>
+                                                    @endif
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /# card -->
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
 					</div>
 					<div class="col-xl-4">
 						<div class="row">
@@ -328,133 +390,6 @@
         <!--**********************************
             Content body end
         ***********************************-->
-
-
-
-
-
-
-        <!--**********************************
-            Content body start
-        ***********************************-->
-        <div class="content-body">
-            <div class="container">
-				<div class="row page-titles">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item active"><a href="javascript:void(0)">Table</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0)">Bootstrap</a></li>
-					</ol>
-                </div>
-                <!-- row -->
-
-                <div class="row">
-
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">MyShops</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-responsive-sm">
-                                        <thead>
-                                            <tr>
-                                                <th>ROLL NO.</th>
-                                                <th>Shopname</th>
-                                                <th>Adress</th>
-                                                <th>Progress</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @include('backend.includes.errorflash')
-
-                                            @foreach($sellerShops as $shop)
-                                            <tr>
-                                                <th><a href="{{ route('seller.sellerDetails', ['id' => $shop->id]) }}" class="w-space-no"> {{ $shop->id }} - {{ $shop->shop_nr }}</a></th>
-                                                <td>
-                                                    <div class="d-flex align-items-center">
-                                                        <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt=""/>
-                                                        <a href="{{ route('seller.sellerDetails', ['id' => $shop->id]) }}" class="w-space-no">{{ $shop->title }}</a>
-                                                    </div>
-                                                </td>
-                                                <td>{{ $shop->street }} <br>{{ $shop->zip }} {{ $shop->city }}</td>
-                                                <td>
-                                                    <div class="progress" style="background: rgba(127, 99, 244, .1)">
-                                                        <div class="progress-bar" style="width: 70%;" role="progressbar"><span class="sr-only">70% Complete</span></div>
-                                                    </div>
-                                                </td>
-                                                <td><span class="badge badge-success">Online</span></td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <a href="{{ route('seller.sellerDetails', ['id' => $shop->id]) }}" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></a>
-
-                                                        @if ($shop->pivot->is_master)
-                                                        <form action="{{ route('seller.copyShop', $shop->id) }}" method="POST">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-primary shadow btn-xs sharp"><i class="fa fa-copy"></i></button>
-                                                        </form>
-
-                                                        @endif
-
-                                                @if (!$shop->pivot->is_master) <!-- Beachte den Zugriff auf 'is_master' über 'pivot' -->
-                                                <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-
-                                            @endif
-
-                                            @if (!$shop->pivot->is_master) <!-- Beachte den Zugriff auf 'is_master' über 'pivot' -->
-
-                                            <form action="{{ route('seller.deleteShop', $shop->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></button>
-                                            </form>
-                                            @endif
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /# card -->
-                    </div>
-
-
-
-                </div>
-            </div>
-        </div>
-        <!--**********************************
-            Content body end
-        ***********************************-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -35,8 +35,6 @@ class ShopDataForm extends Component
     }
 
 
-
-
     public function updateShopDataDetails()
     {
         // Validate data if necessary
@@ -131,6 +129,9 @@ class ShopDataForm extends Component
         // Aktionen nach erfolgreicher Validierung
         session()->flash('success_message', 'Your Shopinfo has been updated successfully.');
         $this->dispatch('scroll-to-message');
+
+        // Triggern Sie das Livewire-Event, wenn die Daten erfolgreich aktualisiert wurden
+        $this->dispatch('scroll-to-success');
 
         // Optionally, you can also redirect the user or display a success message
         return $this->dispatch('toast', message: 'Shop data updated successfully', notify:'success' );
