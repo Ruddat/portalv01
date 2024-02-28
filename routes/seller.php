@@ -67,7 +67,8 @@ Route::prefix('manage-categories')->name('manage-categories.')->middleware(['aut
     Route::get('/', [CategoriesController::class, 'catSubcatList'])->name('cats-subcats-list');
     Route::get('/add-category', [CategoriesController::class, 'addCategory'])->name('add-category');
     Route::post('/store-category', [CategoriesController::class, 'storeCategory'])->name('store-category');
-    Route::get('/edit-category/{category}', [CategoriesController::class, 'editCategory'])->name('edit-category');
+    Route::get('/edit-category', [CategoriesController::class, 'editCategory'])->name('edit-category');
+    Route::post('/update-category', [CategoriesController::class, 'updateCategory'])->name('update-category');
 });
 
 

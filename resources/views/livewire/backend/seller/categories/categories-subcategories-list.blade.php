@@ -66,7 +66,7 @@
 
                                                 <td>
                                                     <div class="d-flex">
-                                                        <a href="#"
+                                                        <a href="{{ route('seller.manage-categories.edit-category', ['id'=>$item->id]) }}"
                                                             class="btn btn-primary shadow btn-xs sharp me-1"><i
                                                                 class="fa fa-pencil"></i></a>
                                                         <a href="#" class="btn btn-danger shadow btn-xs sharp"><i

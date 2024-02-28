@@ -18,7 +18,7 @@
                     <div class="col-xl-12 col-lg-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Categories</h4>
+                                <h4 class="card-title">Edit Categories</h4>
 
                             <div class="pull-right">
                                 <a href="{{ route('seller.manage-categories.cats-subcats-list') }}" class="btn btn-primary btn-sm" type="button">
@@ -30,36 +30,44 @@
 
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form action="{{ route('seller.manage-categories.store-category') }}" method="POST" enctype="multipart/form-data" class="mt-3">
+                                    <form action="{{ route('seller.manage-categories.update-category') }}" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="category_id" value="{{ Request('id') }}" >
                                         @csrf
+
                                         @include('backend.includes.errorflash')
 
                                         <div class="mb-3">
                                             <div class="form-group">
                                             <label for="category-name" class="form-label">Category name</label>
                                             <input type="text" name="category_name" class="form-control input-default"
-                                            value="{{ old('category_name') }}" placeholder="Enter category name">
+                                            value="{{ $category->category_name }}" placeholder="Enter category name">
                                        @error('category_name')
                                         <div class="alert alert-danger">{{ $message }}</div>
                                        @enderror
                                         </div>
                                         </div>
+
                                         <div class="mb-3">
                                             <div class="form-group">
-                                            <label for="formFile" class="form-label">Default file input example</label>
-                                            <input type="file" name="category_image" class="form-control">
-                                            @error('category_image')
-                                            <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        </div>
+                                                <label for="formFile" class="form-label">Default file input example</label>
+                                                <input type="file" name="category_image" class="form-control" id="category_image_input">
 
-                                          <button type="submit" class="btn btn-primary">Create</button>
+                                                @error('category_image')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
+
+                                                <div class="avatar mb-3">
+                                                    <img src="{{ $category->category_image ? asset('images/categories/' . $category->category_image) : '' }}" alt="Category Image" id="category_image_preview" width="100" height="50">
+                                                </div>
+                                            </div>
+                                        </div>
+                                          <button type="submit" class="btn btn-primary">Save Changes</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
 					</div>
+                 </div>
 
                 </div>
             </div>
@@ -76,16 +84,28 @@
 
 
 
-
-
-
-
-
     @push('specific-css')
     @endpush
 
     @push('specific-scripts')
-    
+    <script>
+        // Überprüfen Sie, ob das Eingabefeld für das Bild geändert wurde
+        $(document).on('change', 'input[name="category_image"]', function () {
+            // Das ausgewählte Bild lesen
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // Das Vorschaubild aktualisieren
+                    $('#category_image_preview').attr('src', e.target.result);
+                }
+
+                // Das ausgewählte Bild in das Vorschaubild einfügen
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+    </script>
     @endpush
 
 @endsection
