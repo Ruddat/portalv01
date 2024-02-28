@@ -62,9 +62,12 @@ Route::prefix('shopdata')->middleware(['auth:seller', 'PreventBackHistory'])->gr
     Route::post('/change-logo-pictures', [ShopDataController::class, 'changeLogoPictures'])->name('change-logo-pictures');
 });
 
-
-Route::prefix('manage-categories')->name('manage-categories.')->group(function() {
+// Categories Routes
+Route::prefix('manage-categories')->name('manage-categories.')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
     Route::get('/', [CategoriesController::class, 'catSubcatList'])->name('cats-subcats-list');
+    Route::get('/add-category', [CategoriesController::class, 'addCategory'])->name('add-category');
+    Route::post('/store-category', [CategoriesController::class, 'storeCategory'])->name('store-category');
+    Route::get('/edit-category/{category}', [CategoriesController::class, 'editCategory'])->name('edit-category');
 });
 
 

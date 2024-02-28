@@ -27,7 +27,7 @@
                                 <h4 class="card-title">Categories</h4>
 
                             <div class="pull-right">
-                                <a href="" class="btn btn-primary btn-sm" type="button">
+                                <a href="{{ route('seller.manage-categories.add-category') }}" class="btn btn-primary btn-sm" type="button">
                                    <i class="fa fa-plus"></i>
                                    Add Category
                                 </a>
@@ -85,7 +85,7 @@
                 <h4 class="card-title">Sub Categories</h4>
 
             <div class="pull-right">
-                <a href="" class="btn btn-primary btn-sm" type="button">
+                <a href="{{ route('seller.manage-categories.add-category') }}" class="btn btn-primary btn-sm" type="button">
                    <i class="fa fa-plus"></i>
                    Add Sub Category
                 </a>

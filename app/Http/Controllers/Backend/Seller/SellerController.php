@@ -320,8 +320,8 @@ $seller->shops()->wherePivot('mod_shop_id', $shop->id)->updateExistingPivot($sho
 
         // E-Mail-Konfiguration zusammenstellen
                 $mailConfig = array(
-                    'mail_from_email' => env('MAIL_FROM_ADDRESS'),
-                    'mail_from_name' => env('MAIL_FROM_NAME'),
+                    'mail_from_email' => custom_env('MAIL_FROM_ADDRESS'),
+                    'mail_from_name' => custom_env('MAIL_FROM_NAME'),
                     'mail_recipient_email'=>$request->email_register,
                     'mail_recipient_name'=>$request->name_register,
                     'mail_subject'=>'Email Verification',
@@ -508,8 +508,8 @@ $seller->shops()->wherePivot('mod_shop_id', $shop->id)->updateExistingPivot($sho
 
     // E-Mail-Konfiguration zusammenstellen
     $mailConfig = [
-        'mail_from_email' => env('MAIL_FROM_ADDRESS'),
-        'mail_from_name' => env('MAIL_FROM_NAME'),
+        'mail_from_email' => custom_env('MAIL_FROM_ADDRESS'),
+        'mail_from_name' => custom_env('MAIL_FROM_NAME'),
         'mail_recipient_email' => $seller->email,
         'mail_recipient_name' => $seller->name,
         'mail_subject' => 'Email Verification',
