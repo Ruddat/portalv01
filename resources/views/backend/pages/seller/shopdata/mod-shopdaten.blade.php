@@ -105,7 +105,7 @@
 
         $('input[type="file"][name="site_logo"][id="site_logo"]').ijaboViewer({
             preview: '#site_logo_image_preview',
-            imageShape: 'square', // set square image shape
+            imageShape: 'universal', // set square image shape
             allowedExtensions: ['jpg', 'jpeg', 'png', 'svg'],
             onErrorShape: function(message, element) {
                 alert(message);

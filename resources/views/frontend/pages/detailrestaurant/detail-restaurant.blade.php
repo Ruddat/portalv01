@@ -49,172 +49,65 @@
 		</div>
 		<!--/hero_in-->
 
-		<nav class="secondary_nav sticky_horizontal">
-		    <div class="container">
-		        <ul id="secondary_nav">
-		            <li><a href="#section-1">Starters</a></li>
-		            <li><a href="#section-2">Main Courses</a></li>
-		            <li><a href="#section-3">Desserts</a></li>
-		            <li><a href="#section-4">Drinks</a></li>
-		            <li><a href="#section-5"><i class="icon_chat_alt"></i>Reviews</a></li>
-		        </ul>
-		    </div>
-		    <span></span>
-		</nav>
+        <nav class="secondary_nav sticky_horizontal">
+            <div class="container">
+                <ul id="secondary_nav">
+                    @foreach($categories as $category)
+                        <li><a href="#section-{{ $category->id }}">{{ $category->category_name }}</a></li>
+                    @endforeach
+                    <li><a href="#section-20"><i class="icon_chat_alt"></i>Reviews</a></li>
+                </ul>
+            </div>
+            <span></span>
+        </nav>
+
 		<!-- /secondary_nav -->
 
 		<div class="bg_gray">
 		    <div class="container margin_detail">
 		        <div class="row">
 		            <div class="col-lg-8 list_menu">
-		                <section id="section-1">
-		                    <h4>Starters</h4>
-		                    <div class="row">
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-1.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>1. Mexican Enchiladas</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-2.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>2. Fajitas</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-3.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>3. Royal Fajitas</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-4.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>4. Chicken Enchilada Wrap</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                    </div>
-		                    <!-- /row -->
-		                </section>
-		                <!-- /section -->
-		                <section id="section-2">
-		                    <h4>Main Courses</h4>
-		                    <div class="row">
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-5.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>5. Cheese Quesadilla</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-6.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>6. Chorizo & Cheese</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-7.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>7. Beef Taco</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-8.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>8. Minced Beef Double Layer</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-9.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>9. Piri Piri Chicken</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-10.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>10. Burrito Al Pastor</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                    </div>
-		                    <!-- /row -->
-		                </section>
-		                <!-- /section -->
-		                <section id="section-3">
-		                    <h4>Desserts</h4>
-		                    <div class="row">
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-5.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>5. Cheese Quesadilla</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-6.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>6. Chorizo & Cheese</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-7.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>7. Beef Taco</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-8.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>8. Minced Beef Double Layer</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-9.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>9. Piri Piri Chicken</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-10.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>10. Burrito Al Pastor</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                    </div>
-		                    <!-- /row -->
-		                </section>
+
+                        @foreach($categories as $category)
+                        <section id="section-{{ $category->id }}">
+                            <h4>{{ $category->category_name }}</h4>
+                            <p>{{ $category->category_description }}</p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="image-wrapper" style="margin-bottom: 12px;">
+                                        <img src="{{ asset($category->category_image_url) }}" alt="{{ $category->category_name }}" class="category-image rounded shadow" style="max-width: 100%; max-height: 168px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @foreach($productsByCategory[$category->category_name] as $product)
+                                    <div class="col-md-6">
+                                        <a class="menu_item modal_dialog" href="#modal-dialog">
+                                            <figure class="zoom-effect">
+                                                <img src="{{ $product->product_image_url }}" data-src="{{ $product->product_image_url }}" alt="thumb - {{ $product->product_title }}" class="lazy">
+                                            </figure>
+
+                                            <h3>{{ $product->product_code }} {{ $product->product_title }}
+                                            </h3>
+                                            @if ($product->bottle)
+                                            <p>Pfand: {{ $product->bottle->bottles_value }}</p>
+                                        @else
+
+                                        @endif
+                                            <p>{!! $product->product_description !!}</p>
+                                            <strong>${{ $product->price }}</strong>
+
+
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <!-- /row -->
+                        </section>
+                        <!-- /section -->
+                    @endforeach
+
+
 		                <!-- /section -->
 		                <section id="section-4">
 		                    <h4>Drinks</h4>
@@ -400,7 +293,7 @@
 		<div class="container margin_30_20">
 			<div class="row">
 				<div class="col-lg-8 list_menu">
-					<section id="section-5">
+					<section id="section-20">
 						<h4>Reviews</h4>
 					    <div class="row add_bottom_30 d-flex align-items-center reviews">
 					        <div class="col-md-3">
@@ -598,7 +491,40 @@
     </div>
     <!-- /Modal item order -->
 
+@push('specific-header')
+<style>
+    .rounded {
+    border-radius: 8px; /* Anpassen der Rundung nach Bedarf */
+}
 
+.shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Anpassen des Schattens nach Bedarf */
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1* var(--bs-gutter-y));
+    margin-right: calc(-.5* var(--bs-gutter-x));
+    margin-left: calc(-.5* var(--bs-gutter-x));
+    justify-content: space-evenly;
+}
+.zoom-effect {
+    overflow: hidden; /* Verstecke den über den Rahmen hinausragenden Inhalt */
+    border-radius: 10px; /* Füge abgerundete Ecken hinzu */
+}
+
+.zoom-effect img {
+    transition: transform 0.3s ease; /* Füge eine Transitions-Eigenschaft hinzu, um den Übergang weich zu gestalten */
+}
+
+.zoom-effect:hover img {
+    transform: scale(1.2); /* Vergrößere das Bild um 20% */
+}
+</style>
+@endpush
 
         @push('specific-scripts')
 
@@ -608,4 +534,6 @@
     <script src="{{ asset('frontend/js/specific_detail.js') }}"></script>
 
         @endpush
+
+
         @endsection

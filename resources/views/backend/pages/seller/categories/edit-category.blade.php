@@ -10,7 +10,7 @@
 				<div class="row page-titles">
 					<ol class="breadcrumb">
 						<li class="breadcrumb-item active"><a href="javascript:void(0)">Form</a></li>
-						<li class="breadcrumb-item"><a href="javascript:void(0)">Element</a></li>
+						<li class="breadcrumb-item"><a href="javascript:void(0)">@yield('pageTitle')</a></li>
 					</ol>
                 </div>
                 <!-- row -->
@@ -18,7 +18,7 @@
                     <div class="col-xl-12 col-lg-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Edit Categories</h4>
+                                <h4 class="card-title">@yield('pageTitle')</h4>
 
                             <div class="pull-right">
                                 <a href="{{ route('seller.manage-categories.cats-subcats-list') }}" class="btn btn-primary btn-sm" type="button">
@@ -47,6 +47,18 @@
                                         </div>
                                         </div>
 
+
+                                        <div class="mb-3">
+                                            <div class="form-group">
+                                            <label for="category-description" class="form-label">Category description</label>
+                                            <textarea class="form-control h-auto" rows="4" name="category_description" id="category_description">{{ $category->category_description }}</textarea>
+
+                                       @error('category_description')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                       @enderror
+                                        </div>
+                                        </div>
+
                                         <div class="mb-3">
                                             <div class="form-group">
                                                 <label for="formFile" class="form-label">Default file input example</label>
@@ -57,8 +69,8 @@
                                                 @enderror
 
                                                 <div class="avatar mb-3">
-                                                    <img src="{{ $category->category_image ? asset('images/categories/' . $category->category_image) : '' }}" alt="Category Image" id="category_image_preview" width="100" height="50">
-                                                </div>
+                                                    <img src="{{ $category->category_image_url }}" alt="Category Image" id="category_image_preview" width="80%" height="160">
+                                                                                               </div>
                                             </div>
                                         </div>
                                           <button type="submit" class="btn btn-primary">Save Changes</button>

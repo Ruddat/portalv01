@@ -259,6 +259,7 @@
 <script src="{{ asset('extra-assets/ijabo/ijabo.min.js') }}"></script>
 <script src="{{ asset('extra-assets/ijabo/jquery.ijaboViewer.min.js') }}"></script>
 <script src="{{ asset('extra-assets/ijabo/ijaboCropTool.min.js') }}"></script>
+<script src="{{ asset('extra-assets/jquery-ui-1.13.2/jquery-ui.js') }}"></script>
 
 @include('backend.includes.scripts')
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\Seller\SellerController;
 use App\Http\Controllers\Backend\Seller\DashboardController;
 use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
+use App\Http\Controllers\Backend\Seller\Products\ProductController;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
 
@@ -69,9 +70,27 @@ Route::prefix('manage-categories')->name('manage-categories.')->middleware(['aut
     Route::post('/store-category', [CategoriesController::class, 'storeCategory'])->name('store-category');
     Route::get('/edit-category', [CategoriesController::class, 'editCategory'])->name('edit-category');
     Route::post('/update-category', [CategoriesController::class, 'updateCategory'])->name('update-category');
+    // update-ordering with ajax request
+    Route::post('/update-ordering', [CategoriesController::class, 'updateOrdering'])->name('update-ordering');
+    Route::post('toggle-category-status', [CategoriesController::class, 'toggleCategoryStatus'])->name('toggle-category-status');
+    Route::post('/toggle-show-in-list', [CategoriesController::class, 'toggleShowInList'])->name('toggle-show-in-list');
+    Route::post('/toggle-show-status', [CategoriesController::class, 'toggleShowStatus'])->name('toggle-show-status');
+
 });
 
-
+// Products Routes
+Route::prefix('manage-products')->name('manage-products.')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+    Route::get('/', [ProductController::class, 'productsList'])->name('products-list');
+    Route::get('/add-product', [ProductController::class, 'addProduct'])->name('add-product');
+    Route::post('/store-product', [ProductController::class, 'storeProduct'])->name('store-product');
+    Route::get('/edit-product', [ProductController::class, 'editProduct'])->name('edit-product');
+    Route::get('/delete-product', [ProductController::class, 'deleteProduct'])->name('delete-product');
+    Route::post('/update-product', [ProductController::class, 'updateProduct'])->name('update-product');
+    Route::post('/toggle-product-status', [ProductController::class, 'toggleProductStatus'])->name('toggle-product-status');
+    Route::post('/toggle-show-status', [ProductController::class, 'toggleShowStatus'])->name('toggle-show-status');
+    Route::post('/toggle-show-in-list', [ProductController::class, 'toggleShowInList'])->name('toggle-show-in-list');
+    Route::post('/update-ordering', [ProductController::class, 'updateOrdering'])->name('update-ordering');
+});
 
 
 

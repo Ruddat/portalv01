@@ -13,31 +13,38 @@ return new class extends Migration
     {
         Schema::create('mod_products', function (Blueprint $table) {
             $table->id();
-            $table->integer('parent');
- //           $table->foreignId('category_id')->constrained('categories'); // Fremdschlüsselbeziehung zu 'categories'
- //           $table->foreignId('shop_id')->constrained(); // Fremdschlüsselbeziehung zu 'shops'
-            $table->foreignId('shop_id')->constrained('mod_shops'); // Fremdschlüsselbeziehung zu 'mod_shops'
-            $table->foreignId('category_id')->constrained('mod_categories'); // Fremdschlüsselbeziehung zu 'categories'
+            $table->foreignId('shop_id')->constrained('mod_shops');
+            $table->foreignId('category_id')->constrained('mod_categories');
+//            $table->foreignId('bottles_id')->constrained('mod_bottles')->nullable();
+            $table->foreignId('bottles_id')->nullable()->constrained('mod_bottles');
 
-            $table->string('code');
-            $table->string('title');
-            $table->text('anonce');
-            $table->longText('body');
-            $table->integer('amount')->default(0);
-            $table->string('logo');
-            $table->string('image')->default('default_image.jpg');
-            $table->string('image_from_gallery')->nullable()->default('default_value');
-            $table->integer('bottles_id')->default(0);
-            $table->text('additives_ids');
-            $table->string('permalink');
-            $table->dateTime('date')->default(now());
-            $table->integer('ordering');
-            $table->tinyInteger('published');
+
+            //    $table->foreignId('bottles_id')->constrained('mod_bottles')->nullable();
+          //  $table->foreignId('additives_id')->constrained('mod_additives');
+          //  $table->foreignId('allergens_id')->constrained('mod_allergens');
+            $table->string('product_code')->nullable();  // article number
+            $table->string('product_title'); // article title
+            $table->text('product_anonce'); // product short description
+            $table->longText('product_description'); // product description
+            $table->integer('product_amount')->default(0);
+            $table->string('product_image')->nullable();
+            $table->string('product_image_from_gallery')->nullable()->default('default_value');
+         //   $table->integer('bottles_id')->default(0);
+          //  $table->text('additives_ids')->default('0'); // Änderung des Standardwerts von 0 zu '0'
+            $table->string('additives_ids')->nullable();
+            $table->string('allergens_ids')->nullable(); // Änderung des Standardwerts von 0 zu '0'
+         //   $table->text('allergens_ids')->default('0'); // Änderung des Standardwerts von 0 zu '0'
+            $table->string('product_slug');
+            $table->dateTime('product_date')->default(now());
+            $table->integer('product_ordering')->default(100000); // Änderung des Standardwerts von '100000' zu 100000
+            $table->boolean('produckt_show_in_list')->default(true);
+            $table->boolean('product_published')->default(true);
             $table->tinyInteger('deleted')->default(0);
-            $table->tinyInteger('featured')->default(0);
-            $table->tinyInteger('show_in_list')->default(1)->comment('show product in list');
+            $table->tinyInteger('product_featured')->default(0);
+            $table->integer('product_parent')->nullable()->default(null);
             $table->timestamps();
         });
+
     }
 
     /**

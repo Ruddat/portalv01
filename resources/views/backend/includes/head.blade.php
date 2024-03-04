@@ -37,7 +37,11 @@
     <!-- Style css -->
 	<link href="{{ asset('backend/vendor/swiper/css/swiper-bundle.min.css') }}" rel="stylesheet">
 
-	<!-- Global Stylesheet -->
+    <!-- Custom Stylesheet -->
+    <link href="{{ asset('extra-assets/jquery-ui-1.13.2/jquery-ui.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('extra-assets/jquery-ui-1.13.2/jquery-ui.structure.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('extra-assets/jquery-ui-1.13.2/jquery-ui.theme.min.css') }}" rel="stylesheet">
+    <!-- Global Stylesheet -->
 	<link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
 
 

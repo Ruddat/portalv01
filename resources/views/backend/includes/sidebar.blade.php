@@ -132,6 +132,8 @@
 							<li><a href="{{ route('seller.manage-categories.cats-subcats-list') }}">{{ app(\App\Services\TranslationService::class)->trans('Product Categories', app()->getLocale()) }}</a></li>
 							<li><a href="deliver-order.html">Orders</a></li>
 							<li><a href="feedback.html">Feedback</a></li>
+
+
 						</ul>
                     </li>
 

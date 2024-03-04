@@ -121,7 +121,7 @@ class ModShopFactory extends Factory
             'winorder_version' => $this->faker->word,
            // 'created_at' => $this->faker->dateTime(),
             'created_at' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
-            'updated_at' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
+      //      'updated_at' => $this->faker->dateTime()->format('Y-m-d H:i:s'),
        //     'updated_at' => $this->faker->dateTime(),
         ];
     }
