@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\ModShop;
 use App\Models\ModBottles;
 use App\Models\ModCategory;
+use App\Models\ModProductSizes;
+use App\Models\ModProductSizesPrices;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,6 +22,18 @@ class ModProducts extends Model
     public function shop()
     {
         return $this->belongsTo(ModShop::class);
+    }
+
+    public function productSizes()
+    {
+        return $this->hasMany(ModProductSizes::class, 'parent', 'id')->orderBy('ordering');
+       // return $this->hasMany(ModProductSizes::class, 'product_id', 'id');
+
+    }
+
+    public function productSizesPrices()
+    {
+        return $this->hasMany(ModProductSizesPrices::class, 'parent', 'id');
     }
 
 
@@ -79,5 +93,6 @@ public function deleteProduct(Request $request)
     // Erfolgsmeldung zurückgeben
     return response()->json(['success' => true, 'message' => 'Product deleted successfully']);
 }
+
 
 }

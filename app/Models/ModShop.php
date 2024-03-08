@@ -70,5 +70,10 @@ class ModShop extends Model
         return $this->hasMany(ModProducts::class, 'shop_id', 'id');
     }
 
+    public function productSizes()
+    {
+        return $this->hasMany(ModProductSize::class);
+    }
 
+    
 }

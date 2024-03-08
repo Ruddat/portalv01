@@ -17,8 +17,10 @@ return new class extends Migration
           //  $table->increments('id');
           //  $table->integer('parent');
             $table->foreignId('shop_id')->constrained('mod_shops'); // Fremdschlüsselbeziehung zu 'mod_shops'
-            $table->foreignId('product_id')->constrained('mod_products'); // Fremdschlüsselbeziehung zu 'mod_products'
-            $table->integer('parent')->default(0)->comment('product_id');
+         //   $table->foreignId('parent')->constrained('mod_products')->default(0)->comment('product_id'); // Fremdschlüsselbeziehung zu 'mod_products'
+             $table->unsignedBigInteger('parent')->nullable()->comment('product_id');
+
+         //       $table->integer('parent')->default(0)->comment('product_id');
          //   $table->integer('shop_id')->default(0);
             $table->string('title', 255);
             $table->dateTime('date')->default(DB::raw('CURRENT_TIMESTAMP'));

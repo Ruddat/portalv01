@@ -80,17 +80,41 @@
                                        </div>
 
 
-                                        <div class="mb-3">
-                                            <div class="form-group">
+                                       <div class="mb-3">
+                                        <div class="form-group">
                                             <label for="product-basic-price" class="form-label">Basic price</label>
-                                            <input type="text" name="product_basic_price" class="form-control input-default"
-                                            value="{{ old('product_basic_price') }}" placeholder="00.00">
-                                       @error('product_basic_price')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                       @enderror
+                                            <input type="text" name="base_price" class="form-control input-default" value="{{ old('base_price' , '0.00') }}" placeholder="00.00">
+                                            <input type="hidden" name="product_hidden_field" value="base_price">
+                                            @error('base_price')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        </div>
+                                    </div>
 
+                                    @if($currentProductSizes->isNotEmpty())
+                                    <div class="mb-3 col-md-2">
+                                        <label class="form-label">Main Size Prices</label>
+                                        @foreach($currentProductSizes as $size)
+                                            @if($size->parent == 0)
+                                                <div>
+                                                    <span>{{ $size->title }}:</span>
+                                                    @foreach($size->children as $price)
+                                                        <div>
+                                                            <!-- Hier den Text für die Größe einfügen -->
+                                                            <span>{{ $price->title }}</span>:
+                                                            <input type="text" name="product_price_{{ $price->id }}" class="form-control input-default" value="{{ old('product_price_'.$price->id, '0.00') }}" placeholder="00.00">
+                                                            <input type="hidden" name="product_hidden_field" value="product_price_{{ $price->id }}">
+                                                            @error('product_price_'.$price->id)
+                                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+<hr>
                                         <div class="input-group mb-3">
                                             <label class="input-group-text mb-0">Bottles</label>
                                             <select id="bottlesSelect" class="default-select form-control wide ms-0">
@@ -127,7 +151,7 @@
                                         </div>
                                         </div>
                                         </div>
-                                        
+
                                         <div class="mb-3">
                                             <label for="product-short-description" class="form-label">Short description</label>
                                             <textarea class="form-control h-auto" rows="4" name="product_short_description" id="product_short_description">{{ old('product_short_description') }}</textarea>

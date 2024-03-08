@@ -87,7 +87,8 @@
                                                 </div>
                                             </div>
 
-
+                                            <div class="row">
+                                                <div class="col-md-2">
                                         <div class="mb-3">
                                             <div class="form-group">
                                             <label for="product-basic-price" class="form-label">Basic price</label>
@@ -98,6 +99,25 @@
                                        @enderror
                                         </div>
                                         </div>
+                                    </div>
+
+    @foreach($sizes as $size)
+        <div class="col-md-2">
+            <div class="mb-3">
+                <label class="form-label">{{ $size->title }} Price</label>
+                @php
+                    $price = $productPrices->where('size_id', $size->id)->first();
+                @endphp
+                <input type="text" name="prices[{{ $size->id }}]" class="form-control input-default" value="{{ $price ? $price->price : '' }}" placeholder="Enter price">
+            </div>
+        </div>
+    @endforeach
+
+
+
+                                        </div>
+
+
 
                                         <div class="input-group mb-3">
                                             <label class="input-group-text mb-0">Bottles</label>

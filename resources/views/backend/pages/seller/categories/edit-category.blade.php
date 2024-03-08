@@ -47,6 +47,17 @@
                                         </div>
                                         </div>
 
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text mb-0">Sizes</label>
+                                            <select name="size_id" id="sizesSelect" class="default-select form-control wide ms-0">
+                                                <option value="">Choose...</option>
+                                                @foreach ($sizes as $size)
+                                                    <option value="{{ $size->id }}" {{ $category->sizes_category == $size->id ? 'selected' : '' }}>{{ $size->title }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+
 
                                         <div class="mb-3">
                                             <div class="form-group">

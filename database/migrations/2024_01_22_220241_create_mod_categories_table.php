@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('mod_categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('shop_id')->constrained('mod_shops'); // Fremdschlüsselbeziehung zu 'mod_shops'
+            $table->integer('sizes_category')->nullable(); // ohne Anführungszeichen für numerische Standardwerte
             $table->string('category_name');
             $table->string('category_slug')->unique();
             $table->string('category_image')->default('default_image.jpg');

@@ -83,7 +83,9 @@
                             <i class="bi bi-shop-window"></i>
                             <span class="nav-text"> {{ Str::limit(session('currentShopTitle'), 13) }}</span>
                             </a>
-                        <ul aria-expanded="false">
+
+
+                            <ul aria-expanded="false">
                             <li><a href="{{ route('seller.switchShop', ['id' => $shopId]) }}">Dashboard</a></li>
 
                             <li><a href="{{ route('seller.restoData', ['shop' => $shopId]) }}">Shopdaten</a></li>
@@ -93,6 +95,8 @@
                             <li><a href="{{ route('seller.worktimes') }}">Öffnungszeiten</a></li>
                             <li><a href="#">Aktionszeiten</a></li>
                             <li><a href="#">Zahlungsmethoden</a></li>
+                            <hr>
+                            <li><a href="{{ route('seller.product-sizes', ['shop' => $shopId]) }}">Produktgroessen</a></li>
                         </ul>
                     </li>
 

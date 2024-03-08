@@ -176,7 +176,7 @@ if ($category->category_image) {
         copy($oldImagePath, $newImagePath);
 
         // Speichern des Dateipfads des kopierten Bildes in der neuen Kategorie
-        $newCategory->category_image = 'images/category/' . $newShopId . '/' . $category->category_image;
+        $newCategory->category_image = $category->category_image;
     }
 }
 
@@ -232,7 +232,19 @@ foreach ($masterProducts as $product) {
         $newProduct->product_anonce = $product->product_anonce;
         $newProduct->product_code = $product->product_code;
         $newProduct->product_image = $product->product_image;
-
+        $newProduct->product_image_from_gallery = $product->product_image_from_gallery;
+        $newProduct->product_amount = $product->product_amount;
+        $newProduct->additives_ids = $product->additives_ids;
+        $newProduct->allergens_ids = $product->allergens_ids;
+        $newProduct->product_slug = $product->product_slug;
+        $newProduct->product_date = $product->product_date;
+        $newProduct->product_ordering = $product->product_ordering;
+        $newProduct->produckt_show_in_list = $product->produckt_show_in_list;
+        $newProduct->product_published = $product->product_published;
+        $newProduct->deleted = $product->deleted;
+        $newProduct->product_featured = $product->product_featured;
+        $newProduct->product_parent = $product->product_parent;
+        
 
 
         // Kopieren des Bildes, wenn ein Bild vorhanden ist

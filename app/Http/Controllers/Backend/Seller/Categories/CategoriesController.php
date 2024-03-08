@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Seller\Categories;
 
 use App\Models\ModCategory;
 use Illuminate\Http\Request;
+use App\Models\ModProductSizes;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -30,9 +31,27 @@ class CategoriesController extends Controller
 
     public function addCategory(Request $request)
     {
+
+
+                        // Überprüfen, ob die Shop-ID in der Session vorhanden ist
+                        $currentShopId = Session::get('currentShopId');
+                        if ($currentShopId === null) {
+                        // Fehlermeldung für den Fall, dass kein aktiver Shop ausgewählt wurde
+                        $errorMessage = 'Please select a shop or no active shop selected.';
+                        return redirect()->route('seller.dashboard')->with('fail', $errorMessage);
+                        }
+
+        // Laden der Größen mit sortierten Untergrößen und unter Berücksichtigung der Shop-ID
+        $sizes = ModProductSizes::where('parent', 0)
+            ->where('shop_id', $currentShopId)
+            ->orderBy('ordering')
+            ->get();
+
+
         $data = [
             'pageTitle' => 'Add Category',
             'categoryImage' => '', // Leeres Bild für die Vorschau
+            'sizes' => $sizes, // Größen für die Dropdown-Liste
         ];
         return view('backend.pages.seller.categories.add-category', $data);
     }
@@ -40,6 +59,7 @@ class CategoriesController extends Controller
     public function storeCategory(Request $request)
     {
 
+       // dd($request->all());
 
         // Überprüfen, ob die Shop-ID in der Session vorhanden ist
         $currentShopId = Session::get('currentShopId');
@@ -94,6 +114,11 @@ class CategoriesController extends Controller
                 $category->category_name = $request->category_name;
                 $category->category_description = $request->category_description;
                 $category->category_image = $filename;
+                $category->ordering = 100000;
+                $category->sizes_category = $request->size_id;
+                $category->show_in_list = true;
+                $category->published = true;
+
                 $saved = $category->save();
 
                 if ($saved) {
@@ -116,12 +141,26 @@ class CategoriesController extends Controller
     public function editCategory(Request $request)
     {
 
+        // Save the category image to the database
+        $currentShopId = session('currentShopId');
+
+//        dd($currentShopId);
+
         $category_id = $request->id;
         $category = ModCategory::findOrFail($category_id);
+
+                // Laden der Größen mit sortierten Untergrößen und unter Berücksichtigung der Shop-ID
+                $sizes = ModProductSizes::where('parent', 0)
+                ->where('shop_id', $currentShopId)
+                ->orderBy('ordering')
+                ->get();
+
+
 
         $data = [
             'pageTitle' => 'Edit Category',
             'category' => $category,
+            'sizes' => $sizes, // Größen für die Dropdown-Liste
         ];
 
 
@@ -183,6 +222,7 @@ class CategoriesController extends Controller
             // Update category info
             $category->category_name = $request->category_name;
             $category->category_description = $request->category_description;
+            $category->sizes_category = $request->size_id;
             $category->category_slug = null;
             $saved = $category->save();
         }

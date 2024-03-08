@@ -94,11 +94,17 @@ Route::prefix('manage-products')->name('manage-products.')->middleware(['auth:se
 
 
 
-
 // Testing Methods
-    Route::prefix('test')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
-        Route::get('/test', [LieferandoSpiderController::class, 'indexAction'])->name('indexAction');
-    });
+Route::prefix('test')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+    Route::get('/test', [LieferandoSpiderController::class, 'indexAction'])->name('indexAction');
+});
+
+
+
+// Product Sizes Neu
+    Route::prefix('manage-product-sizes')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::view('/shops/{shop}/productsize', 'backend.pages.seller.sizes.product-sizes')->name('product-sizes');
+     });
 
 
 
