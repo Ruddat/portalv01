@@ -22,10 +22,13 @@ return new class extends Migration
             $table->double('action_price')->default(0)->comment('Preis für die Aktion');
             $table->integer('ordering')->default(10000)->comment('Reihenfolge, in der die Preise angezeigt werden sollen');
             $table->timestamps(); // Zeitstempel für Erstellung und Aktualisierung
+
+            // Indizes hinzufügen
+            $table->index(['parent', 'size_id', 'shop_id']); // Kombinierter Index für häufige Suchabfragen
+            $table->index('shop_id'); // Index für die shop_id, um Suchabfragen nach Shop-spezifischen Daten zu beschleunigen
+            $table->index('visibility'); // Index für die visibility-Spalte, um Suchabfragen nach sichtbaren oder unsichtbaren Preisen zu beschleunigen
         });
-
     }
-
     /**
      * Reverse the migrations.
      */

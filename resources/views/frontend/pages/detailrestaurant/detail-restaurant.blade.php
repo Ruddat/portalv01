@@ -100,27 +100,7 @@
             @endforeach
 
 
-            @foreach($productsByCategory[$category->category_name] as $product)
-    <div class="col-md-6">
-        <div class="product-card">
-            <a href="#modal-dialog" class="menu_item modal_dialog" data-product="{{ json_encode($product) }}">
-                <figure class="zoom-effect">
-                    <img src="{{ $product->product_image_url }}" data-src="{{ $product->product_image_url }}" alt="thumb - {{ $product->product_title }}" class="lazy">
-                </figure>
-                <h3>{{ $product->product_code }} {{ $product->product_title }}</h3>
-                @if ($product->bottle)
-                    <p>Pfand: {{ $product->bottle->bottles_value }}</p>
-                @endif
-                <p>{!! $product->product_description !!}</p>
-                @if ($product->minPrice > 0)
-                    <strong>${{ $product->minPrice }}</strong>
-                @else
-                    <strong>N/A</strong>
-                @endif
-            </a>
-        </div>
-    </div>
-@endforeach
+
 
 
 

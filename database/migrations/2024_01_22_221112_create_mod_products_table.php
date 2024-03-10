@@ -17,9 +17,10 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('mod_categories');
             $table->foreignId('bottles_id')->nullable()->constrained('mod_bottles');
             $table->string('product_code')->nullable();
-            $table->string('product_title');
+            $table->string('product_title')->comment('Product Title');
             $table->text('product_anonce');
             $table->longText('product_description');
+            $table->decimal('base_price', 8, 2)->default(0)->comment('Base Preis des Produkts ohne groesse');
             $table->integer('product_amount')->default(0);
             $table->string('product_image')->nullable();
             $table->string('product_image_from_gallery')->nullable()->default('default_value');

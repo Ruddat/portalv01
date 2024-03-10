@@ -7,7 +7,9 @@ use App\Models\ModCategory;
 use App\Models\ModProducts;
 use App\Models\DeliveryArea;
 use Illuminate\Http\Request;
+use App\Models\ModProductSizes;
 use App\Http\Controllers\Controller;
+use App\Models\ModProductSizesPrices;
 use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
@@ -69,7 +71,7 @@ class DashboardController extends Controller
 
     // Ein neues Shop-Objekt erstellen und die Eigenschaften des Master-Shops kopieren
     $newShop = new ModShop();
-    $newShop->title = $masterShop->title . ' Copy'; // Anpassen des Titels nach Bedarf
+    $newShop->title = $masterShop->title . ' Ghost'; // Anpassen des Titels nach Bedarf
     $newShop->street = $masterShop->street;
     $newShop->zip = $masterShop->zip;
     $newShop->city = $masterShop->city;
@@ -99,9 +101,13 @@ class DashboardController extends Controller
 
     // Aufruf der Funktion copyDeliveryArea mit den IDs des Master-Shops und des neuen Shops
     $this->copyDeliveryArea($masterShop->id, $newShop->id);
-    $this->copyCategories($masterShop->id, $newShop->id);
-    $this->copyProducts($masterShop->id, $newShop->id);
 
+    $this->copyCategories($masterShop->id, $newShop->id);
+
+    $this->copyProducts($masterShop->id, $newShop->id);
+    // ProductSizes Copy
+    $this->copyProductsSizes($masterShop->id, $newShop->id);
+   // $this->copyProductSizesPrices($masterShop->id, $newShop->id);
 
     // Optional: Eine Benachrichtigung oder Bestätigung anzeigen
     return redirect()->back()->with('success', 'Shop erfolgreich kopiert.');
@@ -230,6 +236,7 @@ foreach ($masterProducts as $product) {
         $newProduct->product_title = $product->product_title;
         $newProduct->product_description = $product->product_description;
         $newProduct->product_anonce = $product->product_anonce;
+        $newProduct->base_price = $product->base_price;
         $newProduct->product_code = $product->product_code;
         $newProduct->product_image = $product->product_image;
         $newProduct->product_image_from_gallery = $product->product_image_from_gallery;
@@ -244,7 +251,7 @@ foreach ($masterProducts as $product) {
         $newProduct->deleted = $product->deleted;
         $newProduct->product_featured = $product->product_featured;
         $newProduct->product_parent = $product->product_parent;
-        
+
 
 
         // Kopieren des Bildes, wenn ein Bild vorhanden ist
@@ -277,6 +284,90 @@ foreach ($masterProducts as $product) {
 }
 
     }
+
+
+
+
+
+    public function copyProductsSizes($masterShopId, $newShopId)
+    {
+        // Kopieren der Produktgrößen
+        $masterProductSizes = ModProductSizes::where('shop_id', $masterShopId)->where('parent', 0)->get();
+
+        // Array für die Zuordnung der alten Größen-ID zur neuen Größen-ID erstellen
+        $sizeIdMap = [];
+
+        foreach ($masterProductSizes as $masterProductSize) {
+            // Duplizieren der Hauptgröße
+            $newMainSize = $masterProductSize->replicate();
+            $newMainSize->shop_id = $newShopId;
+            $newMainSize->parent = 0; // Die Hauptgröße hat kein übergeordnetes Element mehr
+            $newMainSize->save();
+
+            // Zuordnung zwischen alter und neuer Hauptgröße erstellen
+            $sizeIdMap[$masterProductSize->id] = $newMainSize->id;
+
+            // Kopieren der zugehörigen Untergrößen für diese Hauptgröße
+            $subSizes = ModProductSizes::where('parent', $masterProductSize->id)->get();
+
+            // Überprüfen, ob Untergrößen vorhanden sind
+            if ($subSizes->isNotEmpty()) {
+                foreach ($subSizes as $subSize) {
+                    // Duplizieren der Untergröße
+                    $newSubSize = $subSize->replicate();
+                    $newSubSize->shop_id = $newShopId;
+                    $newSubSize->parent = $sizeIdMap[$masterProductSize->id]; // Verweisen auf die neue Hauptgröße
+                    $newSubSize->save();
+
+                    // Zuordnung zwischen alter und neuer Untergröße erstellen
+                    $sizeIdMap[$subSize->id] = $newSubSize->id;
+                }
+            }
+        }
+
+// Neue Kategorien aus der Datenbank abrufen
+$newCategoryCopy = ModCategory::where('shop_id', $newShopId)->get();
+
+foreach ($newCategoryCopy as $category) {
+    // Den Titel der Kategorie abrufen
+    $categoryTitle = $category->category_name;
+
+    // Neue Produktgröße aus der Datenbank abrufen, die den gleichen Titel hat wie die Kategorie
+    $newProductSize = ModProductSizes::where('shop_id', $newShopId)
+                                      ->where('parent', 0)
+                                      ->where('title', $categoryTitle)
+                                      ->first();
+
+    // Wenn eine passende Produktgröße gefunden wurde, aktualisieren Sie die sizes_category-Spalte der Kategorie
+    if ($newProductSize) {
+        $category->sizes_category = $newProductSize->id; // ID der gefundenen Hauptgröße setzen
+        $category->save(); // Änderungen speichern
+    }
+}
+
+
+
+        // Optional: Eine Benachrichtigung oder Bestätigung anzeigen
+        // return redirect()->back()->with('success', 'Produktgrößen erfolgreich kopiert.');
+      //  dd($sizeIdMap, $newCategoryCopy, $newProductSizesCopy);
+
+    }
+
+    public function copyProductSizesPrices($masterShopId, $newShopId)
+    {
+        // Suchen nach Preisen der Produktgrößen und Kopieren in den neuen Shop
+        ModProductSizesPrices::whereHas('size', function ($query) use ($masterShopId) {
+            $query->where('shop_id', $masterShopId);
+        })->get()->each(function ($price) use ($newShopId) {
+            // Duplizieren des Preises und Aktualisieren des Shop-IDs
+            $newPrice = $price->replicate();
+            $newPrice->shop_id = $newShopId;
+            $newPrice->save();
+        });
+    }
+
+
+
 
 
 

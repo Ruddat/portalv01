@@ -31,7 +31,6 @@ class ProductController extends Controller
             return back()->with('error', 'Missing Shop ID, Menu ID, or Category ID.');
         }
 
-
         $products = ModProducts::where('shop_id', $shopId)
         ->where('category_id', $categoryId)
         ->orderBy('product_ordering')
@@ -39,13 +38,6 @@ class ProductController extends Controller
             $query->orderBy('ordering', 'asc'); // Sortiere die Preise nach der Bestellung aufsteigend
         }, 'productSizesPrices.size']) // Lade die Beziehung zu den Größen
         ->get();
-
-
-
-       // dd($products);
-
-
-
         // Weitergeben der IDs und Produkte an die Ansicht
         return view('backend.pages.seller.products.products-list', compact('shopId', 'menuId', 'categoryId', 'products'));
     }
@@ -75,9 +67,6 @@ class ProductController extends Controller
             ->orderBy('ordering')
             ->get();
 
-      //  dd($currentProductSizes);
-
-
         $data = [
             'pageTitle' => 'Add Product',
             'currentCategory' => $currentCategory, // Die aktuelle Kategorie an die Ansicht übergeben
@@ -103,7 +92,7 @@ class ProductController extends Controller
             'product_title' => 'required',
             'product_description' => 'required',
             'product_short_description' => 'required|min:5',
-            'base_price' => 'required|numeric|min:0.01',
+            'base_price' => 'required|numeric|min:0.00',
             // Weitere Validierungsregeln hier hinzufügen
         ], [
             // fehlermeldungen in deutsch
@@ -133,8 +122,11 @@ class ProductController extends Controller
         $product->product_title = $request->input('product_title');
         $product->product_description = $request->input('product_description');
         $product->product_anonce = $request->input('product_short_description');
+        $product->base_price = $request->input('base_price');
         $product->product_code = $request->input('product_article_no');
         $product->bottles_id = $request->input('bottle_id');
+        $product->product_published = $request->input('product_published');
+
         // Speichern der ausgewählten Allergene als JSON
         $product->allergens_ids = json_encode($request->input('allergens'));
         // Speichern der ausgewählten Zusatzstoffe als JSON
@@ -161,7 +153,7 @@ foreach ($request->all() as $key => $value) {
                 'size_id' => $sizeId,
                 'shop_id' => $shopId,
                 'price' => $value,
-                // Weitere Felder entsprechend Ihrer Tabelle
+                // Weitere Felder entsprechend der Tabelle
             ]);
         }
     }
@@ -290,6 +282,7 @@ $currentCategory = ModCategory::findOrFail($categoryId);
         if (!$shopId || !$categoryId) {
             return back()->with('error', 'Shop ID or Category ID not provided.');
         }
+//dd($request->product_id, $request->all());
 
         // Produkt aus der Datenbank abrufen
         $product = ModProducts::findOrFail($request->product_id);
@@ -301,6 +294,7 @@ $currentCategory = ModCategory::findOrFail($categoryId);
         $product->product_description = $request->input('product_description');
         $product->product_anonce = $request->input('product_short_description');
         $product->product_code = $request->input('product_article_no');
+        $product->base_price = $request->input('product_basic_price');
         $product->product_published = $request->input('product_published');
         $product->bottles_id = $request->input('bottle_id');
         // Speichern der ausgewählten Allergene als Array
@@ -383,6 +377,14 @@ foreach ($request->prices as $sizeId => $price) {
 
     public function deleteProduct(Request $request){
         $productId = $request->productId;
+
+//dd($productId);
+
+
+
+ModProductSizesPrices::where('parent', $productId)->delete();
+//dd($prices);
+
         $product = ModProducts::findOrFail($productId);
 
         // Überprüfen, ob das Produktbild vorhanden ist und löschen

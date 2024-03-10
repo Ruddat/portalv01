@@ -76,13 +76,13 @@ class CategoriesController extends Controller
         // validate the form data
         $request->validate([
             'category_name' => 'required|min:5',
-            'category_description' => 'nullable|min:20',
+            'category_description' => 'nullable|min:5',
             'category_image' => 'required|image|mimes:png,jpg,jpeg,svg',
         ],[
             'category_name.required' => 'Category name is required',
             'category_name.min' => 'Category name must be at least 5 characters',
             'category_description.required' => 'Category description is required',
-            'category_description.min' => 'Category description must be at least 20 characters',
+            'category_description.min' => 'Category description must be at least 5 characters',
             'category_image.required' => 'Category image is required',
             'category_image.image' => 'Category image must be an image',
             'category_image.mimes' => 'Category image must be a file of type: png, jpg, jpeg, svg',

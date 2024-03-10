@@ -114,7 +114,7 @@
                                         @endforeach
                                     </div>
                                 @endif
-<hr>
+                                <hr>
                                         <div class="input-group mb-3">
                                             <label class="input-group-text mb-0">Bottles</label>
                                             <select id="bottlesSelect" class="default-select form-control wide ms-0">
@@ -172,7 +172,7 @@
 
                                         <div class="input-group mb-3 input-success">
                                             <label class="input-group-text mb-0">Status</label>
-                                            <select class="default-select form-control wide ms-0">
+                                            <select class="default-select form-control wide ms-0" name="product_published">
                                                 <option value="1" selected>Active</option>
                                                 <option value="0">Inactive</option>
                                             </select>

@@ -127,12 +127,6 @@ class SellerController extends Controller
         }
     }
 
-
-
-
-
-
-
     public function logoutHandler()
     {
         Auth::guard('seller')->logout();
@@ -241,13 +235,13 @@ class SellerController extends Controller
        //     'pivot' => ['is_master' => true], // Setze das Pivot-Attribut is_master auf true
 
         ]);
-// Den Shop als Master-Shop markieren
-$seller->shops()->wherePivot('mod_shop_id', $shop->id)->updateExistingPivot($shop->id, ['is_master' => true]);
+        // Den Shop als Master-Shop markieren
+        $seller->shops()->wherePivot('mod_shop_id', $shop->id)->updateExistingPivot($shop->id, ['is_master' => true]);
 
 
 
-    // Den Shop als Master-Shop markieren
-  //  $seller->shops()->attach($shop->id, ['is_master' => true]);
+        // Den Shop als Master-Shop markieren
+        //  $seller->shops()->attach($shop->id, ['is_master' => true]);
 
         // Seller-Daten zusammenstellen
         $seller = [

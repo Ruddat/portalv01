@@ -192,12 +192,8 @@
 
                                                                 @endif
 
-                                                        @if (!$shop->pivot->is_master) <!-- Beachte den Zugriff auf 'is_master' über 'pivot' -->
-                                                        <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-
-                                                    @endif
-
-                                                    @if (!$shop->pivot->is_master) <!-- Beachte den Zugriff auf 'is_master' über 'pivot' -->
+ 													<!-- Beachte den Zugriff auf 'is_master' über 'pivot' -->
+                                                    @if (!$shop->pivot->is_master)
 
                                                     <form action="{{ route('seller.deleteShop', $shop->id) }}" method="POST">
                                                         @csrf
@@ -216,17 +212,6 @@
                                 </div>
                                 <!-- /# card -->
                             </div>
-
-
-
-
-
-
-
-
-
-
-
                         </div>
 					</div>
 					<div class="col-xl-4">
@@ -288,28 +273,6 @@
 							<div class="col-xl-12 col-sm-6">
 								<div class="card">
 									<div class="card-body pb-0">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 										<div class="d-flex align-items-center justify-content-between">
 											<h4 class="cate-title">Popular Food</h4>
