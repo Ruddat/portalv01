@@ -49,172 +49,69 @@
 		</div>
 		<!--/hero_in-->
 
-		<nav class="secondary_nav sticky_horizontal">
-		    <div class="container">
-		        <ul id="secondary_nav">
-		            <li><a href="#section-1">Starters</a></li>
-		            <li><a href="#section-2">Main Courses</a></li>
-		            <li><a href="#section-3">Desserts</a></li>
-		            <li><a href="#section-4">Drinks</a></li>
-		            <li><a href="#section-5"><i class="icon_chat_alt"></i>Reviews</a></li>
-		        </ul>
-		    </div>
-		    <span></span>
-		</nav>
+        <nav class="secondary_nav sticky_horizontal">
+            <div class="container">
+                <ul id="secondary_nav">
+                    @foreach($categories as $category)
+                        <li><a href="#section-{{ $category->id }}">{{ $category->category_name }}</a></li>
+                    @endforeach
+                    <li><a href="#section-20"><i class="icon_chat_alt"></i>Reviews</a></li>
+                </ul>
+            </div>
+            <span></span>
+        </nav>
+
 		<!-- /secondary_nav -->
 
 		<div class="bg_gray">
 		    <div class="container margin_detail">
 		        <div class="row">
 		            <div class="col-lg-8 list_menu">
-		                <section id="section-1">
-		                    <h4>Starters</h4>
-		                    <div class="row">
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-1.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>1. Mexican Enchiladas</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-2.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>2. Fajitas</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-3.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>3. Royal Fajitas</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-4.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>4. Chicken Enchilada Wrap</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                    </div>
-		                    <!-- /row -->
-		                </section>
-		                <!-- /section -->
-		                <section id="section-2">
-		                    <h4>Main Courses</h4>
-		                    <div class="row">
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-5.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>5. Cheese Quesadilla</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-6.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>6. Chorizo & Cheese</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-7.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>7. Beef Taco</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-8.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>8. Minced Beef Double Layer</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-9.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>9. Piri Piri Chicken</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-10.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>10. Burrito Al Pastor</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                    </div>
-		                    <!-- /row -->
-		                </section>
-		                <!-- /section -->
-		                <section id="section-3">
-		                    <h4>Desserts</h4>
-		                    <div class="row">
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-5.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>5. Cheese Quesadilla</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-6.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>6. Chorizo & Cheese</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-7.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>7. Beef Taco</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-8.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>8. Minced Beef Double Layer</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-9.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>9. Piri Piri Chicken</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                        <div class="col-md-6">
-		                            <a class="menu_item modal_dialog" href="#modal-dialog">
-		                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-10.jpg') }}" alt="thumb" class="lazy"></figure>
-		                                <h3>10. Burrito Al Pastor</h3>
-		                                <p>Fuisset mentitum deleniti sit ea.</p>
-		                                <strong>$9.40</strong>
-		                            </a>
-		                        </div>
-		                    </div>
-		                    <!-- /row -->
-		                </section>
+<!-- Ihr Produktbereich -->
+@foreach($categories as $category)
+    <section id="section-{{ $category->id }}">
+        <h4>{{ $category->category_name }}</h4>
+        <p>{{ $category->category_description }}</p>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="image-wrapper" style="margin-bottom: 12px;">
+                    <img src="{{ asset($category->category_image_url) }}" alt="{{ $category->category_name }}" class="category-image rounded shadow" style="max-width: 100%; max-height: 168px;">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            @foreach($productsByCategory[$category->category_name] as $product)
+                <div class="col-md-6">
+                    <div class="product-card">
+                        <a href="#modal-dialog" class="menu_item modal_dialog" data-product="{{ json_encode($product) }}">
+                            <figure class="zoom-effect">
+                                <img src="{{ $product->product_image_url }}" data-src="{{ $product->product_image_url }}" alt="thumb - {{ $product->product_title }}" class="lazy">
+                            </figure>
+                            <h3>{{ $product->product_code }} {{ $product->product_title }}</h3>
+                            @if ($product->bottle)
+                                <p>Pfand: {{ $product->bottle->bottles_value }}</p>
+                            @endif
+                            <p>{!! $product->product_description !!}</p>
+                            <strong>${{ $product->minPrice }}</strong>
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+
+
+
+
+
+
+
+
+
+        </div>
+    </section>
+  @endforeach
+
+
 		                <!-- /section -->
 		                <section id="section-4">
 		                    <h4>Drinks</h4>
@@ -400,7 +297,7 @@
 		<div class="container margin_30_20">
 			<div class="row">
 				<div class="col-lg-8 list_menu">
-					<section id="section-5">
+					<section id="section-20">
 						<h4>Reviews</h4>
 					    <div class="row add_bottom_30 d-flex align-items-center reviews">
 					        <div class="col-md-3">
@@ -531,54 +428,57 @@
 		</div>
 		<!-- /container -->
 
-<!-- Modal item order -->
+<!-- Ihr vorhandenes Modal für Produktoptionen -->
 <div id="modal-dialog" class="zoom-anim-dialog mfp-hide">
+    <!-- Ihr Modal-Inhalt hier -->
     <div class="small-dialog-header">
-        <h3>Cheese Quesadilla</h3>
+        <h3 id="productTitle">Pizza Veggi Smith (Junior Ø20cm)</h3>
     </div>
     <div class="content">
         <h5>Quantity</h5>
         <div class="numbers-row">
-            <input type="text" value="1" id="qty_1" class="qty2 form-control" name="quantity">
+            <input type="text" value="1" id="qty" class="qty2 form-control" name="quantity">
         </div>
         <h5>Size</h5>
-        <ul class="clearfix">
+        <ul class="clearfix" id="sizeOptions">
             <li>
                 <label class="container_radio">Medium<span>+ $3.30</span>
-                    <input type="radio" value="option1" name="options_1">
+                    <input type="radio" value="3.30" name="sizeOption">
                     <span class="checkmark"></span>
                 </label>
             </li>
             <li>
                 <label class="container_radio">Large<span>+ $5.30</span>
-                    <input type="radio" value="option2" name="options_1">
+                    <input type="radio" value="5.30" name="sizeOption">
                     <span class="checkmark"></span>
                 </label>
             </li>
             <li>
                 <label class="container_radio">Extra Large<span>+ $8.30</span>
-                    <input type="radio" value="option3" name="options_1">
+                    <input type="radio" value="8.30" name="sizeOption">
                     <span class="checkmark"></span>
                 </label>
             </li>
         </ul>
-        <h5>Extra Ingredients</h5>
-        <ul class="clearfix">
+
+
+        <h5>Wählen Sie weitere Zutaten für Ihr Wunschgericht.</h5>
+        <ul class="clearfix" id="ingredientOptions">
             <li>
-                <label class="container_check">Extra Tomato<span>+ $4.30</span>
-                    <input type="checkbox">
+                <label class="container_check">Zwiebeln rot<span>+ $0.70</span>
+                    <input type="checkbox" value="4.30" name="ingredientOption">
                     <span class="checkmark"></span>
                 </label>
             </li>
             <li>
                 <label class="container_check">Extra Peppers<span>+ $2.50</span>
-                    <input type="checkbox">
+                    <input type="checkbox" value="2.50" name="ingredientOption">
                     <span class="checkmark"></span>
                 </label>
             </li>
             <li>
                 <label class="container_check">Extra Ham<span>+ $4.30</span>
-                    <input type="checkbox">
+                    <input type="checkbox" value="4.30" name="ingredientOption">
                     <span class="checkmark"></span>
                 </label>
             </li>
@@ -590,22 +490,107 @@
                 <button type="reset" class="btn_1 outline full-width mb-mobile">Cancel</button>
             </div>
             <div class="col-md-8">
-                <button type="reset" class="btn_1 full-width">Add to cart</button>
+                <button type="button" class="btn_1 full-width" onclick="addToCart()">Add to cart</button>
             </div>
         </div>
-        <!-- /Row -->
     </div>
-    </div>
-    <!-- /Modal item order -->
+</div>
 
 
+
+
+
+
+@push('specific-header')
+<style>
+    .rounded {
+    border-radius: 8px; /* Anpassen der Rundung nach Bedarf */
+}
+
+.shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Anpassen des Schattens nach Bedarf */
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1* var(--bs-gutter-y));
+    margin-right: calc(-.5* var(--bs-gutter-x));
+    margin-left: calc(-.5* var(--bs-gutter-x));
+    justify-content: space-evenly;
+}
+.zoom-effect {
+    overflow: hidden; /* Verstecke den über den Rahmen hinausragenden Inhalt */
+    border-radius: 10px; /* Füge abgerundete Ecken hinzu */
+}
+
+.zoom-effect img {
+    transition: transform 0.3s ease; /* Füge eine Transitions-Eigenschaft hinzu, um den Übergang weich zu gestalten */
+}
+
+.zoom-effect:hover img {
+    transform: scale(1.2); /* Vergrößere das Bild um 20% */
+}
+</style>
+@endpush
 
         @push('specific-scripts')
+
 
             <!-- SPECIFIC SCRIPTS -->
     <script src="{{ asset('frontend/js/sticky_sidebar.min.js') }}"></script>
     <script src="{{ asset('frontend/js/sticky-kit.min.js') }}"></script>
     <script src="{{ asset('frontend/js/specific_detail.js') }}"></script>
 
+
+    <script>
+        $(document).ready(function() {
+            $('.menu_item').click(function() {
+                var product = {
+                    id: 1,
+                    name: "Product 1",
+                    product_title: "Product 1 Title",
+                    price: 10
+                };
+                $('#productTitle').text(product.product_title);
+                // Setzen der Größenoptionen
+                var sizeOptions = $('#sizeOptions');
+                sizeOptions.find('input').each(function() {
+                    $(this).change(function() {
+                        product.price = 10 + parseFloat($(this).val());
+                    });
+                });
+                // Setzen der Zutatenoptionen
+                var ingredientOptions = $('#ingredientOptions');
+                ingredientOptions.find('input').each(function() {
+                    $(this).change(function() {
+                        if ($(this).is(":checked")) {
+                            product.price += parseFloat($(this).val());
+                        } else {
+                            product.price -= parseFloat($(this).val());
+                        }
+                    });
+                });
+                // Setzen des Produktpreises
+                $('#qty').val(1); // Zurücksetzen der Menge
+                $('#modal-dialog').data('product', product);
+            });
+
+            // Funktion zum Hinzufügen zum Warenkorb
+            function addToCart() {
+                var product = $('#modal-dialog').data('product');
+                var quantity = $('#qty').val();
+                var totalPrice = product.price * quantity;
+                alert('Product ' + product.id + ' with quantity ' + quantity + ' added to cart. Total price: $' + totalPrice.toFixed(2));
+                $.magnificPopup.close();
+            }
+        });
+    </script>
+
+
         @endpush
+
+
         @endsection

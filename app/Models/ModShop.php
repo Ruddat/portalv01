@@ -4,6 +4,8 @@ namespace App\Models;
 
 
 use App\Models\Seller;
+use App\Models\ModCategory;
+use App\Models\ModProducts;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +23,6 @@ class ModShop extends Model
     {
         return $this->hasMany(ModCategory::class);
     }
-
 
 
     public static function search($search)
@@ -64,5 +65,15 @@ class ModShop extends Model
         }
     }
 
+    public function products()
+    {
+        return $this->hasMany(ModProducts::class, 'shop_id', 'id');
+    }
 
+    public function productSizes()
+    {
+        return $this->hasMany(ModProductSize::class);
+    }
+
+    
 }

@@ -83,7 +83,9 @@
                             <i class="bi bi-shop-window"></i>
                             <span class="nav-text"> {{ Str::limit(session('currentShopTitle'), 13) }}</span>
                             </a>
-                        <ul aria-expanded="false">
+
+
+                            <ul aria-expanded="false">
                             <li><a href="{{ route('seller.switchShop', ['id' => $shopId]) }}">Dashboard</a></li>
 
                             <li><a href="{{ route('seller.restoData', ['shop' => $shopId]) }}">Shopdaten</a></li>
@@ -93,6 +95,8 @@
                             <li><a href="{{ route('seller.worktimes') }}">Öffnungszeiten</a></li>
                             <li><a href="#">Aktionszeiten</a></li>
                             <li><a href="#">Zahlungsmethoden</a></li>
+                            <hr>
+                            <li><a href="{{ route('seller.product-sizes', ['shop' => $shopId]) }}">Produktgroessen</a></li>
                         </ul>
                     </li>
 
@@ -118,6 +122,22 @@
 							<li><a href="{{ route('seller.indexAction') }}">LieferandoSpider</a></li>
 							<li><a href="deliver-order.html">Orders</a></li>
 							<li><a href="feedback.html">Feedback</a></li>
+						</ul>
+                    </li>
+
+
+                    {{-- Produkte Aktiver Shop, zeige das entsprechende Menü --}}
+                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+						<i class="bi bi-cart-plus"></i>
+
+							<span class="nav-text">{{ app(\App\Services\TranslationService::class)->trans('Products', app()->getLocale()) }}</span>
+						</a>
+                        <ul aria-expanded="false">
+							<li><a href="{{ route('seller.manage-categories.cats-subcats-list') }}">{{ app(\App\Services\TranslationService::class)->trans('Product Categories', app()->getLocale()) }}</a></li>
+							<li><a href="deliver-order.html">Orders</a></li>
+							<li><a href="feedback.html">Feedback</a></li>
+
+
 						</ul>
                     </li>
 

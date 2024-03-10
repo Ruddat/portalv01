@@ -13,31 +13,39 @@ return new class extends Migration
     {
         Schema::create('mod_products', function (Blueprint $table) {
             $table->id();
-            $table->integer('parent');
- //           $table->foreignId('category_id')->constrained('categories'); // Fremdschlüsselbeziehung zu 'categories'
- //           $table->foreignId('shop_id')->constrained(); // Fremdschlüsselbeziehung zu 'shops'
-            $table->foreignId('shop_id')->constrained('mod_shops'); // Fremdschlüsselbeziehung zu 'mod_shops'
-            $table->foreignId('category_id')->constrained('mod_categories'); // Fremdschlüsselbeziehung zu 'categories'
-
-            $table->string('code');
-            $table->string('title');
-            $table->text('anonce');
-            $table->longText('body');
-            $table->integer('amount')->default(0);
-            $table->string('logo');
-            $table->string('image')->default('default_image.jpg');
-            $table->string('image_from_gallery')->nullable()->default('default_value');
-            $table->integer('bottles_id')->default(0);
-            $table->text('additives_ids');
-            $table->string('permalink');
-            $table->dateTime('date')->default(now());
-            $table->integer('ordering');
-            $table->tinyInteger('published');
+            $table->foreignId('shop_id')->constrained('mod_shops');
+            $table->foreignId('category_id')->constrained('mod_categories');
+            $table->foreignId('bottles_id')->nullable()->constrained('mod_bottles');
+            $table->string('product_code')->nullable();
+            $table->string('product_title')->comment('Product Title');
+            $table->text('product_anonce');
+            $table->longText('product_description');
+            $table->decimal('base_price', 8, 2)->default(0)->comment('Base Preis des Produkts ohne groesse');
+            $table->integer('product_amount')->default(0);
+            $table->string('product_image')->nullable();
+            $table->string('product_image_from_gallery')->nullable()->default('default_value');
+            $table->string('additives_ids')->nullable();
+            $table->string('allergens_ids')->nullable();
+            $table->string('product_slug');
+            $table->dateTime('product_date')->default(now());
+            $table->integer('product_ordering')->default(100000);
+            $table->boolean('produckt_show_in_list')->default(true);
+            $table->boolean('product_published')->default(true);
             $table->tinyInteger('deleted')->default(0);
-            $table->tinyInteger('featured')->default(0);
-            $table->tinyInteger('show_in_list')->default(1)->comment('show product in list');
+            $table->tinyInteger('product_featured')->default(0);
+            $table->integer('product_parent')->nullable()->default(null);
             $table->timestamps();
+
+            // Indizes hinzufügen
+            $table->index('shop_id');
+            $table->index('category_id');
+            $table->index('bottles_id');
+            $table->index('product_published');
+            $table->index('product_slug');
+            // Weitere Indizes hinzufügen, je nachdem, wie Sie auf die Daten zugreifen möchten
         });
+
+
     }
 
     /**
