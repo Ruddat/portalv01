@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('product_title')->comment('Product Title');
             $table->text('product_anonce');
             $table->longText('product_description');
-            $table->decimal('base_price', 8, 2)->default(0)->comment('Base Preis des Produkts ohne groesse');
+       //     $table->decimal('base_price', 8, 2)->default(0)->comment('Base Preis des Produkts ohne groesse');
+            $table->decimal('base_price', 8, 2)->nullable()->default(0)->comment('Base Preis des Produkts ohne Groesse');
+
             $table->integer('product_amount')->default(0);
             $table->string('product_image')->nullable();
             $table->string('product_image_from_gallery')->nullable()->default('default_value');

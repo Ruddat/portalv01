@@ -1,13 +1,19 @@
 @extends('frontend.layouts.default')
 @section('content')
+
+
+
     <!-- seitenabhengig css -->
     @push('specific-css')
         <link href="{{ asset('frontend/css/detail-page.css') }}" rel="stylesheet">
     @endpush
 
+
+
     <body data-spy="scroll" data-bs-target="#secondary_nav" data-offset="75">
 
         @include('frontend.includes.header-in-clearfix')
+
 
 
 
@@ -93,23 +99,29 @@
                                 <p>Pfand: {{ $product->bottle->bottles_value }}</p>
                             @endif
                             <p>{!! $product->product_description !!}</p>
-                            <strong>${{ $product->minPrice }}</strong>
+                            @if ($product->minPrice)
+                            <strong>ab €{{ $product->minPrice }}</strong>
+                        @elseif ($product->basePrice)
+                            <strong>€{{ $product->basePrice }}</strong>
+                        @else
+                            <strong>Preis nicht verfügbar</strong>
+                        @endif
+
                         </a>
+                        <button wire:click="addToCart({{ $product->id }}, '{{ $product->product_title }}', {{ $product->minPrice }}, 1)">In den Warenkorb</button>
                     </div>
                 </div>
             @endforeach
-
-
-
-
-
-
-
-
-
         </div>
     </section>
   @endforeach
+
+  <livewire:frontend.card.new-shopping-cart />
+
+
+  <button wire:click="addToCart(15, 'bla', 12.50, 1)">In den Warenkorb</button>
+
+
 
 
 		                <!-- /section -->
@@ -293,6 +305,12 @@
 		    <!-- /container -->
 		</div>
 		<!-- /bg_gray -->
+
+
+
+
+
+
 
 		<div class="container margin_30_20">
 			<div class="row">
@@ -588,7 +606,13 @@
             }
         });
     </script>
-
+    <script>
+        document.addEventListener("livewire:init", () => {
+            Livewire.on("toast", (event) => {
+                toastr[event.notify](event.message);
+            });
+        });
+    </script>
 
         @endpush
 
