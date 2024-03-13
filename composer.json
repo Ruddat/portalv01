@@ -19,6 +19,7 @@
         "spatie/laravel-permission": "^6.3",
         "stichoza/google-translate-php": "^5.1",
         "twbs/bootstrap": "^5.3"
+        
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

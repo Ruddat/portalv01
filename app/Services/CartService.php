@@ -22,30 +22,41 @@ class CartService {
         $this->session = $session;
     }
 
-    /**
-     * Adds a new item to the cart.
-     *
-     * @param string $id
-     * @param string $name
-     * @param string $price
-     * @param string $quantity
-     * @param array $options
-     * @return void
-     */
-    public function add($id, $name, $price, $quantity, $options = []): void
-    {
-        $cartItem = $this->createCartItem($name, $price, $quantity, $options);
+/**
+ * Adds a new item to the cart.
+ *
+ * @param string $id
+ * @param string $name
+ * @param string $price
+ * @param string $quantity
+ * @param array $options
+ * @return void
+ */
+public function add($id, $name, $price, $size, $quantity, $options = []): void
+{
 
-        $content = $this->getContent();
+   // $sizeArray = ['S', 'M', 'L'];
+   // $size = 'M';
 
-        if ($content->has($id)) {
-            $cartItem->put('quantity', $content->get($id)->get('quantity') + $quantity);
-        }
 
-        $content->put($id, $cartItem);
+   // $sizeString = implode(', ', $sizeArray);
 
-        $this->session->put(self::DEFAULT_INSTANCE, $content);
+    $cartItem = $this->createCartItem($name, $price, $quantity, $size, $options);
+
+    $content = $this->getContent();
+
+    if ($content->has($id)) {
+        // Falls das Produkt bereits im Warenkorb ist, aktualisieren Sie die vorhandene Zeile
+        $existingQuantity = $content->get($id)->get('quantity');
+        $cartItem->put('quantity', $existingQuantity + $quantity);
     }
+
+    // Fügen Sie das Produkt (oder die aktualisierte Zeile) zum Warenkorbinhalt hinzu
+    $content->put($id, $cartItem);
+
+    // Aktualisieren Sie den Warenkorb im Sitzungsspeicher
+    $this->session->put(self::DEFAULT_INSTANCE, $content);
+}
 
     /**
      * Updates the quantity of a cart item.
@@ -143,29 +154,31 @@ class CartService {
         return $this->session->has(self::DEFAULT_INSTANCE) ? $this->session->get(self::DEFAULT_INSTANCE) : collect([]);
     }
 
-    /**
-     * Creates a new cart item from given inputs.
-     *
-     * @param string $name
-     * @param string $price
-     * @param string $quantity
-     * @param array $options
-     * @return Illuminate\Support\Collection
-     */
-    protected function createCartItem(string $name, string $price, string $quantity, array $options): Collection
-    {
-        $price = floatval($price);
-        $quantity = intval($quantity);
+/**
+ * Creates a new cart item from given inputs.
+ *
+ * @param string $name
+ * @param string $price
+ * @param string $quantity
+ * @param string $size
+ * @param array $options
+ * @return Illuminate\Support\Collection
+ */
+protected function createCartItem(string $name, string $price, string $quantity, string $size, array $options): Collection
+{
+    $price = floatval($price);
+    $quantity = intval($quantity);
 
-        if ($quantity < self::MINIMUM_QUANTITY) {
-            $quantity = self::MINIMUM_QUANTITY;
-        }
-
-        return collect([
-            'name' => $name,
-            'price' => $price,
-            'quantity' => $quantity,
-            'options' => $options,
-        ]);
+    if ($quantity < self::MINIMUM_QUANTITY) {
+        $quantity = self::MINIMUM_QUANTITY;
     }
+
+    return collect([
+        'name' => $name,
+        'price' => $price,
+        'quantity' => $quantity,
+        'size' => $size,
+        'options' => $options,
+    ]);
+}
 }
