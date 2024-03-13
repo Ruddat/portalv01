@@ -5,7 +5,7 @@
 
 @stack('specific-scripts')
 
-@livewireScripts
+
 
 <script type="text/javascript">
     var url = "{{ route('change.lang') }}";
@@ -16,3 +16,4 @@
 
 
 
+@livewireScripts

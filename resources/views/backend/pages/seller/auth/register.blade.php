@@ -4,52 +4,45 @@
     @push('specific-css')
         <link href="{{ asset('frontend/css/submit.css') }}" rel="stylesheet">
         <style>
-            /* Stil für die Ladeanimation */
-            #loadingAnimation {
-                display: none;
-                /* Startet unsichtbar */
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-                z-index: 9999;
-                /* Stellen Sie sicher, dass es über anderen Elementen liegt */
-            }
+/* Stil für die Ladeanimation */
+#loadingAnimation {
+  display: none; /* Startet unsichtbar */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: #fff; /* Hintergrundfarbe ohne Transparenz */
+  padding: 20px; /* Platz um den Text */
+  border-radius: 10px; /* Abrundung der Ecken */
+  z-index: 9999; /* Stellen Sie sicher, dass es über anderen Elementen liegt */
+}
 
-            /* Stil für den Text in der Ladeanimation */
-            .loadingText {
-                font-size: 16px;
-                color: #333;
-                /* Schwarzer Text */
-            }
+/* Stil für den Text in der Ladeanimation */
+.loadingText {
+  font-size: 16px;
+  color: #333; /* Schwarzer Text */
+}
 
-            /* Stil für das animierte Element */
-            #loadingAnimation::after {
-                content: "";
-                display: block;
-                width: 40px;
-                height: 40px;
-                margin: 20px auto;
-                border-radius: 50%;
-                border: 5px solid #3498db;
-                /* Blauer Rand */
-                border-top: 5px solid #fff;
-                /* Weißer Rand oben */
-                animation: spin 1s linear infinite;
-                /* Rotation */
-            }
+/* Stil für das animierte Element */
+#loadingAnimation::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  border-radius: 50%;
+  border: 5px solid #3498db; /* Blauer Rand */
+  border-top: 5px solid #fff; /* Weißer Rand oben */
+  animation: spin 1s linear infinite; /* Rotation */
+}
 
-            /* Animation für die Rotation */
-            @keyframes spin {
-                0% {
-                    transform: rotate(0deg);
-                }
+/* Animation für die Rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
-                100% {
-                    transform: rotate(360deg);
-                }
-            }
         </style>
     @endpush
 

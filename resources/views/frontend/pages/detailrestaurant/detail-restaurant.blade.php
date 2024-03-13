@@ -1,17 +1,18 @@
 @extends('frontend.layouts.default')
 @section('content')
+
+
+
     <!-- seitenabhengig css -->
     @push('specific-css')
         <link href="{{ asset('frontend/css/detail-page.css') }}" rel="stylesheet">
     @endpush
 
+
+
     <body data-spy="scroll" data-bs-target="#secondary_nav" data-offset="75">
 
         @include('frontend.includes.header-in-clearfix')
-
-
-
-
 
 
 		<div class="hero_in detail_page background-image" data-background="url({{ asset('frontend/img/hero_general_2.jpg') }})">
@@ -67,49 +68,8 @@
 		    <div class="container margin_detail">
 		        <div class="row">
 		            <div class="col-lg-8 list_menu">
-<!-- Ihr Produktbereich -->
-@foreach($categories as $category)
-    <section id="section-{{ $category->id }}">
-        <h4>{{ $category->category_name }}</h4>
-        <p>{{ $category->category_description }}</p>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="image-wrapper" style="margin-bottom: 12px;">
-                    <img src="{{ asset($category->category_image_url) }}" alt="{{ $category->category_name }}" class="category-image rounded shadow" style="max-width: 100%; max-height: 168px;">
-                </div>
-            </div>
-        </div>
-        <div class="row">
 
-            @foreach($productsByCategory[$category->category_name] as $product)
-                <div class="col-md-6">
-                    <div class="product-card">
-                        <a href="#modal-dialog" class="menu_item modal_dialog" data-product="{{ json_encode($product) }}">
-                            <figure class="zoom-effect">
-                                <img src="{{ $product->product_image_url }}" data-src="{{ $product->product_image_url }}" alt="thumb - {{ $product->product_title }}" class="lazy">
-                            </figure>
-                            <h3>{{ $product->product_code }} {{ $product->product_title }}</h3>
-                            @if ($product->bottle)
-                                <p>Pfand: {{ $product->bottle->bottles_value }}</p>
-                            @endif
-                            <p>{!! $product->product_description !!}</p>
-                            <strong>${{ $product->minPrice }}</strong>
-                        </a>
-                    </div>
-                </div>
-            @endforeach
-
-
-
-
-
-
-
-
-
-        </div>
-    </section>
-  @endforeach
+                        <livewire:frontend.product.index :restaurant="$restaurant" :categories="$categories" :productsByCategory="$productsByCategory" />
 
 
 		                <!-- /section -->
@@ -178,18 +138,9 @@
 		                    </div>
 		                    <!-- /head -->
 		                    <div class="main">
-		                        <ul class="clearfix">
-		                            <li><a href="#0">1x Enchiladas</a><span>$11</span></li>
-		                            <li><a href="#0">2x Burrito</a><span>$14</span></li>
-		                            <li><a href="#0">1x Chicken</a><span>$18</span></li>
-		                            <li><a href="#0">2x Corona Beer</a><span>$9</span></li>
-		                            <li><a href="#0">2x Cheese Cake</a><span>$11</span></li>
-		                        </ul>
-		                        <ul class="clearfix">
-		                            <li>Subtotal<span>$56</span></li>
-		                            <li>Delivery fee<span>$10</span></li>
-		                            <li class="total">Total<span>$66</span></li>
-		                        </ul>
+
+                                <livewire:frontend.card.cart-component />
+
 		                        <div class="row opt_order">
 		                            <div class="col-6">
 		                                <label class="container_radio">Delivery
@@ -279,7 +230,7 @@
 		                        </div>
 		                        <!-- /dropdown -->
 		                        <div class="btn_1_mobile">
-		                            <a href="order.html" class="btn_1 gradient full-width mb_5">Order Now</a>
+		                            <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}" class="btn_1 gradient full-width mb_5">Order Now</a>
 		                            <div class="text-center"><small>No money charged on this steps</small></div>
 		                        </div>
 		                    </div>
@@ -428,75 +379,11 @@
 		</div>
 		<!-- /container -->
 
+
+
+
+
 <!-- Ihr vorhandenes Modal für Produktoptionen -->
-<div id="modal-dialog" class="zoom-anim-dialog mfp-hide">
-    <!-- Ihr Modal-Inhalt hier -->
-    <div class="small-dialog-header">
-        <h3 id="productTitle">Pizza Veggi Smith (Junior Ø20cm)</h3>
-    </div>
-    <div class="content">
-        <h5>Quantity</h5>
-        <div class="numbers-row">
-            <input type="text" value="1" id="qty" class="qty2 form-control" name="quantity">
-        </div>
-        <h5>Size</h5>
-        <ul class="clearfix" id="sizeOptions">
-            <li>
-                <label class="container_radio">Medium<span>+ $3.30</span>
-                    <input type="radio" value="3.30" name="sizeOption">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="container_radio">Large<span>+ $5.30</span>
-                    <input type="radio" value="5.30" name="sizeOption">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="container_radio">Extra Large<span>+ $8.30</span>
-                    <input type="radio" value="8.30" name="sizeOption">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-        </ul>
-
-
-        <h5>Wählen Sie weitere Zutaten für Ihr Wunschgericht.</h5>
-        <ul class="clearfix" id="ingredientOptions">
-            <li>
-                <label class="container_check">Zwiebeln rot<span>+ $0.70</span>
-                    <input type="checkbox" value="4.30" name="ingredientOption">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="container_check">Extra Peppers<span>+ $2.50</span>
-                    <input type="checkbox" value="2.50" name="ingredientOption">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-            <li>
-                <label class="container_check">Extra Ham<span>+ $4.30</span>
-                    <input type="checkbox" value="4.30" name="ingredientOption">
-                    <span class="checkmark"></span>
-                </label>
-            </li>
-        </ul>
-    </div>
-    <div class="footer">
-        <div class="row small-gutters">
-            <div class="col-md-4">
-                <button type="reset" class="btn_1 outline full-width mb-mobile">Cancel</button>
-            </div>
-            <div class="col-md-8">
-                <button type="button" class="btn_1 full-width" onclick="addToCart()">Add to cart</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 
 
@@ -545,49 +432,18 @@
     <script src="{{ asset('frontend/js/specific_detail.js') }}"></script>
 
 
-    <script>
-        $(document).ready(function() {
-            $('.menu_item').click(function() {
-                var product = {
-                    id: 1,
-                    name: "Product 1",
-                    product_title: "Product 1 Title",
-                    price: 10
-                };
-                $('#productTitle').text(product.product_title);
-                // Setzen der Größenoptionen
-                var sizeOptions = $('#sizeOptions');
-                sizeOptions.find('input').each(function() {
-                    $(this).change(function() {
-                        product.price = 10 + parseFloat($(this).val());
-                    });
-                });
-                // Setzen der Zutatenoptionen
-                var ingredientOptions = $('#ingredientOptions');
-                ingredientOptions.find('input').each(function() {
-                    $(this).change(function() {
-                        if ($(this).is(":checked")) {
-                            product.price += parseFloat($(this).val());
-                        } else {
-                            product.price -= parseFloat($(this).val());
-                        }
-                    });
-                });
-                // Setzen des Produktpreises
-                $('#qty').val(1); // Zurücksetzen der Menge
-                $('#modal-dialog').data('product', product);
-            });
 
-            // Funktion zum Hinzufügen zum Warenkorb
-            function addToCart() {
-                var product = $('#modal-dialog').data('product');
-                var quantity = $('#qty').val();
-                var totalPrice = product.price * quantity;
-                alert('Product ' + product.id + ' with quantity ' + quantity + ' added to cart. Total price: $' + totalPrice.toFixed(2));
-                $.magnificPopup.close();
-            }
-        });
-    </script>
+
+<script>
+    document.addEventListener('livewire:cartUpdated', function () {
+        Livewire.dispatch('refreshComponent');
+    });
+</script>
+
+
+
+
+
 
 
         @endpush

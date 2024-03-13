@@ -41,25 +41,17 @@ class ShopCardController extends Controller
                                         ->orderBy('product_ordering', 'ASC')
                                         ->get();
 
-                // Für jedes Produkt die Preise abrufen und den günstigsten Preis bestimmen
+
+             //   dd($products);
+                // Für jedes Produkt den richtigen Preis abrufen und zuweisen
                 foreach ($products as $product) {
-                    $productSizes = ModProductSizes::where('parent', $product->id)->get();
-
-                    // Sammeln aller Preise
-                    $allPrices = collect();
-                    foreach ($productSizes as $productSize) {
-                        $prices = ModProductSizesPrices::where('size_id', $productSize->id)->pluck('price');
-                        $allPrices = $allPrices->merge($prices);
-                    }
-
-                    // Bestimmen des günstigsten Preises
-                    $minPrice = $allPrices->min();
-                    $product->minPrice = $minPrice;
+                    // Hier wird die Methode getProductPrice aufgerufen, um den Preis für das aktuelle Produkt abzurufen
+                    $product->minPrice = $this->getProductPrice($product->id);
                 }
 
                 $productsByCategory[$category->category_name] = $products;
             }
-
+//dd($restaurant);
             // Restaurant gefunden, geben Sie die Detailansicht zurück
             return view('frontend.pages.detailrestaurant.detail-restaurant', [
                 'restaurant' => $restaurant,
@@ -70,6 +62,32 @@ class ShopCardController extends Controller
             // Restaurant nicht gefunden, geben Sie eine Fehlermeldung zurück oder leiten Sie weiter
             return redirect()->route('home')->with('error', 'Restaurant nicht gefunden.');
         }
+    }
+
+    // Methode zur Bestimmung des richtigen Preises für ein Produkt
+    public function getProductPrice($productId)
+    {
+        // Basispreis des Produkts abrufen
+        $basePrice = ModProducts::find($productId)->base_price;
+
+
+        // Wenn ein Basispreis vorhanden ist und größer als 0 ist, diesen zurückgeben
+        if ($basePrice > 0) {
+        return $basePrice;
+        }
+
+
+        // Ansonsten den günstigsten Preis der Produktgrößen zurückgeben
+        $productSizesPrices = ModProductSizesPrices::where('parent', $productId)->pluck('price')->toArray();
+
+
+        // Wenn Produktgrößen-Preise vorhanden sind, den günstigsten Preis zurückgeben
+        if (!empty($productSizesPrices)) {
+            return min($productSizesPrices);
+        }
+
+        // Falls keine Preise gefunden werden, Standardwert oder Null zurückgeben
+        return 0;
     }
 
 

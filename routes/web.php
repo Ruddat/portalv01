@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Frontend\ShopSearchResults;
+use App\Http\Livewire\Frontend\Card\ProductList;
 use App\Http\Controllers\GoogleTranslateController;
 use App\Http\Controllers\Frontend\ShopCardController;
 use App\Http\Controllers\Frontend\Card\CardController;
@@ -24,10 +25,11 @@ use App\Http\Controllers\Frontend\ShopSearchController;
     // Shopping card  routes
     Route::prefix('card')->group(function() {
         Route::post('/add', [CardController::class, 'addCard'])->name('cart-add');
+      //  Route::get('/products/{restaurantId}', [ProductList::class, '__invoke'])->name('products');
+        Route::get('/order/{restaurantId}', [App\Http\Controllers\Frontend\Cart\OrderController::class, 'index'])->name('order');
+
+
     });
-
-
-
 
 //Route::get('/', function () {
 //    return view('welcome');
