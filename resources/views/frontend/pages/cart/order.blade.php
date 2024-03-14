@@ -22,15 +22,72 @@
                         <div class="box_order_form">
                             <div class="head">
                                 <div class="title">
-                                    <h3>Personal Details</h3>
+                                    <h3>{{ app(\App\Services\TranslationService::class)->trans('Personal Details -  Ihre Bestellung', app()->getLocale()) }}</h3>
                                 </div>
                             </div>
                             <!-- /head -->
                             <div class="main">
-                                <div class="form-group">
-                                    <label>First and Last Name</label>
+
+                                <div class="row opt_order">
+		                            <div class="col-3">
+		                                <label class="container_radio">Frau
+		                                    <input type="radio" value="option1" name="opt_order" checked="">
+		                                    <span class="checkmark"></span>
+		                                </label>
+		                            </div>
+		                            <div class="col-3">
+		                                <label class="container_radio">Herr
+		                                    <input type="radio" value="option1" name="opt_order">
+		                                    <span class="checkmark"></span>
+		                                </label>
+		                            </div>
+                                    <div class="col-3">
+		                                <label class="container_radio">Divers
+		                                    <input type="radio" value="option1" name="opt_order">
+		                                    <span class="checkmark"></span>
+		                                </label>
+		                            </div>
+                                    <div class="col-3">
+		                                <label class="container_radio">Firma
+		                                    <input type="radio" value="option1" name="opt_order">
+		                                    <span class="checkmark"></span>
+		                                </label>
+		                            </div>
+		                        </div>
+
+                                <div class="row">
+                                    <div class="col-6">
+                                    <div class="form-group">
+                                    <label>Company</label>
                                     <input class="form-control" placeholder="First and Last Name">
+                                    </div>
                                 </div>
+                                <div class="col-6">
+                                <div class="form-group">
+                                    <label>Abteilung</label>
+                                    <input class="form-control" placeholder="First and Last Name">
+                                    </div>
+                                </div>
+                                <hr>
+                                </div>
+
+
+
+                                <div class="row">
+                                    <div class="col-6">
+                                    <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input class="form-control" placeholder="First and Last Name">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input class="form-control" placeholder="First and Last Name">
+                                    </div>
+                                </div>
+                                </div>
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -45,12 +102,19 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                    <textarea class="form-control" style="height: 120px;" placeholder="Order Comment" id="order_comment" name="order_comment"></textarea>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label>Full Address</label>
                                     <input class="form-control" placeholder="Full Address">
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         <div class="form-group">
                                             <label>City</label>
                                             <input class="form-control" placeholder="City">
@@ -63,64 +127,48 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                    <textarea class="form-control" style="height: 120px;" placeholder="Shipping Comment" id="shipping_comment" name="order_comment"></textarea>
+                                    </div>
+                                </div>
+
+
+                                <div class="row opt_order">
+		                            <div class="col-12">
+		                                <label class="container_radio">Ja, ich möchte gelegentlich Neuigkeiten und Coupons erfahren.
+		                                    <input type="checkbox" value="option1" name="opt_news_coupons" checked="">
+		                                    <span class="checkmark"></span>
+		                                </label>
+		                            </div>
+		                            <div class="col-12">
+		                                <label class="container_radio">Meine Daten für den nächsten Besuch speichern.
+		                                    <input type="checkbox" value="option1" name="opt_save_data" checked="">
+		                                    <span class="checkmark"></span>
+		                                </label>
+		                            </div>
+		                        </div>
                             </div>
                         </div>
                         <!-- /box_order_form -->
                         <div class="box_order_form">
                             <div class="head">
                                 <div class="title">
-                                    <h3>Payment Method</h3>
+                                    <h3>{{ app(\App\Services\TranslationService::class)->trans('Zahlungsarten', app()->getLocale()) }}</h3>
                                 </div>
                             </div>
                             <!-- /head -->
                             <div class="main">
                                 <div class="payment_select">
-                                    <label class="container_radio">Credit Card
+                                    <label class="container_radio">Pay with Cash
                                         <input type="radio" value="" checked name="payment_method">
                                         <span class="checkmark"></span>
                                     </label>
-                                    <i class="icon_creditcard"></i>
+                                    <i class="icon_wallet"></i>
                                 </div>
-                                <div class="form-group">
-                                    <label>Name on card</label>
-                                    <input type="text" class="form-control" id="name_card_order" name="name_card_order" placeholder="First and last name">
-                                </div>
-                                <div class="form-group">
-                                    <label>Card number</label>
-                                    <input type="text" id="card_number" name="card_number" class="form-control" placeholder="Card number">
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Expiration date</label>
-                                        <div class="row">
-                                            <div class="col-md-6 col-6">
-                                                <div class="form-group">
-                                                    <input type="text" id="expire_month" name="expire_month" class="form-control" placeholder="mm">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-6">
-                                                <div class="form-group">
-                                                    <input type="text" id="expire_year" name="expire_year" class="form-control" placeholder="yyyy">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label>Security code</label>
-                                            <div class="row">
-                                                <div class="col-md-4 col-6">
-                                                    <div class="form-group">
-                                                        <input type="text" id="ccv" name="ccv" class="form-control" placeholder="CCV">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8 col-6">
-                                                    <img src="img/icon_ccv.gif" width="50" height="29" alt="ccv"><small>Last 3 digits</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
+
                                 <!--End row -->
                                 <div class="payment_select" id="paypal">
                                     <label class="container_radio">Pay with Paypal
@@ -129,11 +177,11 @@
                                     </label>
                                 </div>
                                 <div class="payment_select">
-                                    <label class="container_radio">Pay with Cash
+                                    <label class="container_radio">EC Card
                                         <input type="radio" value="" name="payment_method">
                                         <span class="checkmark"></span>
                                     </label>
-                                    <i class="icon_wallet"></i>
+                                    <i class="icon_creditcard"></i>
                                 </div>
                             </div>
                         </div>

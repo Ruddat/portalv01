@@ -9,7 +9,7 @@
 		        	<div class="box_order_form">
 					    <div class="head">
 					        <div class="title">
-					            <h3>Personal Details</h3>
+					            <h3>Personal De//tails</h3>
 					        </div>
 					    </div>
 					    <!-- /head -->

@@ -63,8 +63,8 @@
         </nav>
 
 		<!-- /secondary_nav -->
+        <div class="bg_gray">
 
-		<div class="bg_gray">
 		    <div class="container margin_detail">
 		        <div class="row">
 		            <div class="col-lg-8 list_menu">
@@ -135,10 +135,11 @@
 		                    <div class="head">
 		                        <h3>Order Summary</h3>
 		                        <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
+
 		                    </div>
 		                    <!-- /head -->
 		                    <div class="main">
-
+                                @include('backend.includes.errorflash')
                                 <livewire:frontend.card.cart-component />
 
 		                        <div class="row opt_order">
@@ -244,7 +245,6 @@
 		    <!-- /container -->
 		</div>
 		<!-- /bg_gray -->
-
 		<div class="container margin_30_20">
 			<div class="row">
 				<div class="col-lg-8 list_menu">

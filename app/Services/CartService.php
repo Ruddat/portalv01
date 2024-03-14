@@ -181,4 +181,15 @@ protected function createCartItem(string $name, string $price, string $quantity,
         'options' => $options,
     ]);
 }
+
+    /**
+     * Checks if the cart is empty.
+     *
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return $this->content()->isEmpty();
+    }
+
 }
