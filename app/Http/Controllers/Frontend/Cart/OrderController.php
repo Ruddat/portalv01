@@ -15,7 +15,7 @@ class OrderController extends Controller
     {
         // Abrufen der Shop-Daten anhand der ID oder eine Fehlermeldung anzeigen, falls nicht gefunden
         $shopData = ModShop::findOrFail($restaurantId);
-
+// dd($shopData);
         // Überprüfen, ob der Warenkorb leer ist
         // Überprüfen, ob der Warenkorb leer ist
     // Überprüfen, ob der Warenkorb leer ist
