@@ -47,11 +47,6 @@ return new class extends Migration
             $table->decimal('eshop_discount', 10, 0);
             $table->decimal('price_total', 10, 0);
             $table->tinyInteger('use_system_payment')->default(0);
-            $table->timestamps();
-            $table->integer('fax_api_status')->default(0)->comment('400 - error; 1 - pending; 2 - success');
-            $table->integer('fax_api_error_code')->nullable();
-            $table->integer('fax_api_jobID')->nullable();
-            $table->timestamp('fax_send_started_time')->nullable();
             $table->integer('soap_status')->default(0);
             $table->tinyInteger('transfer_type')->nullable()->comment('1 - fax, 2 - email, 3 - soap, 4 - sms, 5 - pizzamanager');
             $table->integer('pizzamanager_id')->default(0);
