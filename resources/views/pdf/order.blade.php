@@ -16,7 +16,7 @@
                 <img src="{{ asset('backend/images/logo-full.png') }}" alt="laravel daily" width="200" />
             </td>
             <td class="w-half">
-                <h2>Invoice ID: 834847473</h2>
+                <h2>Invoice ID: {{ $newOrderNumber }}</h2>
             </td>
         </tr>
     </table>
@@ -50,9 +50,9 @@
         <table class="w-full">
             <tr>
                 <td class="w-half">
-                    <div><h4>Bestellung:</h4></div>
+                    <div><h2>Bestellung:</h2></div>
                     <div>
-                        @foreach($customerData as $key => $value)
+                        @foreach($orderData as $key => $value)
                             @if (!empty($value))
                               {{ ucfirst($key) }}:<strong> {{ $value }}</strong><br>
                             @endif
@@ -60,9 +60,12 @@
                     </div>
                 </td>
                 <td class="w-half">
-                    <div><h4>From:</h4></div>
-                    <div>Laravel Daily</div>
-                    <div>London</div>
+                    <div><h4>Scan Me</h4></div>
+                    <img src="data:image/png;base64,{{ $qrcode }}">
+                    <div>
+
+
+                    </div>
                 </td>
             </tr>
         </table>
@@ -72,18 +75,18 @@
     <div class="margin-top">
         <table class="payment_info">
             <tr>
-                <td style="border: 1px solid #000; padding: 10px; font-weight: bold; text-align: center;">
-                    <div>
+                <td style="border: 1px solid #857d7d; font-weight: bold; text-align: center;">
+
                         @if($payment_method === 'paypal')
-                            <p>Zahlung: Onlinezahlung!!!</p>
+                            <h4>Zahlung: Onlinezahlung!!!</h4>
                         @elseif($payment_method === 'cash')
-                            <p>Zahlung: Barzahlung beim Fahrer!!!</p>
+                            <h4> Barzahlung beim Fahrer!!! </h4>
                         @elseif($payment_method === 'ec-card')
-                            <p>Zahlung: EC-Karte Kunde zahlt mit Karte!!!</p>
+                            <h4>Zahlung: EC-Karte Kunde zahlt mit Karte!!!</h4>
                         @else
-                            <p>Zahlungsmethode nicht bekannt</p>
+                            <h4>Zahlungsmethode nicht bekannt</h4>
                         @endif
-                    </div>
+
                 </td>
             </tr>
         </table>
@@ -93,9 +96,9 @@
     <div class="margin-top">
         <table class="products">
             <tr>
-                <th>Qty</th>
-                <th>Description</th>
-                <th>Price</th>
+                <th>Art.-Nr. </th>
+                <th>Artikel + Zutaten</th>
+                <th>Summe</th>
             </tr>
             <tr class="items">
                 @foreach($data as $item)
@@ -119,7 +122,7 @@
 
     <div class="footer margin-top">
         <div>Thank you</div>
-        <div>&copy; Laravel Daily</div>
+        <div>&copy; {{ $shopData['title'] }}</div>
     </div>
 </body>
 </html>

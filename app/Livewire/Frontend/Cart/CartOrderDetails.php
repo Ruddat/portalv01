@@ -2,13 +2,17 @@
 
 namespace App\Livewire\Frontend\Cart;
 
+use SimpleXMLElement;
 use App\Models\ModShop;
 use Livewire\Component;
 use App\Models\ModOrders;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use NominatimLaravel\Content\Nominatim;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\File;
 
 class CartOrderDetails extends Component
 {
@@ -32,7 +36,8 @@ class CartOrderDetails extends Component
     public $xml; // Definiere die Variable $xml
     public $delivery_option = 'Abholung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
     public $ipAddress;
-
+    public $newOrderNumber;
+    public $OrderNumber;
 
     public function mount($restaurantId)
     {
@@ -108,7 +113,14 @@ class CartOrderDetails extends Component
         }
     }
          // koordinaten vom besteller zur berechnung der liefergebueren
-        // dd($latitude, $longitude);
+
+         // Speichern der Werte in der Session
+        Session::put('latitude', $latitude);
+        Session::put('longitude', $longitude);
+
+        //dd($latitude, $longitude);
+
+        // Shopinformationen aus der Datenbank
         $shopId = $this->shopData->id;
 
         // Eindeutigen Hash-Wert generieren
@@ -118,9 +130,11 @@ class CartOrderDetails extends Component
 
         // Inkrementieren der letzten Bestellnummer um eins, um die neue Bestellnummer zu generieren
           $newOrderNumber = $lastOrderNumber + 1;
+        // Bestellnummer als Eigenschaft des Livewire-Komponentenobjekts speichern
+          $this->newOrderNumber = $newOrderNumber;
 
 
-    // Neue Bestellung erstellen und in die Datenbank speichern
+       // Neue Bestellung erstellen und in die Datenbank speichern
     $order = ModOrders::create([
         'order_nr' => $newOrderNumber,
         'parent' => $shopId,
@@ -179,6 +193,9 @@ class CartOrderDetails extends Component
 public function generateNewPdf()
 {
 
+    $newOrderNumber = $this->newOrderNumber;
+
+
     // Kundeninformationen aus dem Formular erhalten
     $customerData = [
         'phone' => $this->phone,
@@ -196,9 +213,33 @@ public function generateNewPdf()
         'title' => $this->shopData->title,
         'street' => $this->shopData->street,
         'address' => $this->shopData->zip . ' ' . $this->shopData->city,
+        'datum' => now()->format('d.m.Y H:i:s'),
     ];
 
+    // Shopinformationen aus der Datenbank
+    $orderData = [
+        'Bestellung' => 'Lieferung',
+        'Zeitpunkt' => 'sofort',
+        'Zahlungsart' => $this->payment_method,
+      ];
+
     $payment_method = $this->payment_method; // Beispielwert
+
+    // Geokoordinaten (Beispielwerte)
+    $latitude = Session::get('latitude');
+    $longitude = Session::get('longitude');
+
+    // URL für die Navigation
+    $navigationUrl = "http://maps.google.com/maps?q={$latitude},{$longitude}";
+
+    // QR-Code generieren
+    $qrcode = base64_encode(QrCode::format('svg')->size(160)->errorCorrection('H')->generate($navigationUrl));
+    $data = [
+        'title' => $navigationUrl,
+        'qrcode' => $qrcode
+        ];
+
+//dd($data);
 
 
     $data = [
@@ -211,16 +252,27 @@ public function generateNewPdf()
 
     //$pdf = Pdf::loadView('pdf.order', ['data' => $data]);
 
-    $pdf = PDF::loadView('pdf.order', compact('customerData', 'shopData', 'payment_method', 'data'));
+    $pdf = PDF::loadView('pdf.order', compact('customerData', 'qrcode', 'shopData', 'orderData', 'payment_method', 'newOrderNumber', 'data'));
 
+    // Holen Sie die Shop-ID aus dem $shopData-Array
+    $shopId = $this->shopData['id'];
 
+    // Generieren Sie einen Dateinamen mit der newOrderNumber
+    $filename = "{$newOrderNumber}_bestellbestaetigung.pdf";
 
-    $filePath = 'pdf/' . time() . '_bestellbestaetigung.pdf';
-    Storage::put($filePath, $pdf->output());
+    // Verzeichnis für die Speicherung des PDFs
+    $directory = "uploads/shops/{$shopId}/orders/";
 
-  //  return $pdf->download();
+    // Überprüfen, ob das Verzeichnis existiert. Wenn nicht, erstellen Sie es.
+    if (!Storage::exists($directory)) {
+        Storage::makeDirectory($directory, 0777, true); // Rekursiv erstellen
+    }
 
+    // Speichern Sie die PDF-Datei im Speicherverzeichnis
+    Storage::put("{$directory}{$filename}", $pdf->output());
 
+    // Rückgabewert mit dem relativen Pfad des gespeicherten PDF
+    return $directory . $filename;
 }
 
 
@@ -444,7 +496,22 @@ if (!empty($articles)) {
 
 
 
+public function generateQrCode()
+{
 
+     // Generiere den QR-Code als Bild
+     $qrCode = QrCode::size(200)->geo(51.378638, -0.100897);
+     dd($qrCode);
+
+
+
+    // Generiere den QR-Code als Bild und speichere ihn auf dem Server
+    $qrCodePath = public_path('qr_codes/') . 'qr_code.png';
+    QrCode::size(200)->geo(51.378638, -0.100897)->format('png')->generate('QR Code', $qrCodePath);
+
+    // Rückgabe des Dateipfads des gespeicherten QR-Codes
+    return $qrCodePath;
+}
 
 
 
