@@ -64,6 +64,13 @@ return new class extends Migration
             $table->string('coupon_code');
             $table->string('rand_id', 20);
             $table->integer('user_status')->default(0)->comment('400 - error, 500 - canceled');
+          // wegen rest api call
+            $table->timestamp('order_date')->nullable();
+            $table->string('order_tracking_status')->nullable();
+            $table->string('deliver_eta')->nullable();
+            $table->string('deliver_minutes')->nullable();
+            $table->json('order_json_data')->nullable();
+
             $table->timestamps();
         });
                 // Indexes
