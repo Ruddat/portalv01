@@ -176,6 +176,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\TranslationServiceProvider::class,
         App\Providers\CartFacadeServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ])->toArray(),
 
@@ -194,6 +195,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class,
         'Cart'=> App\Facades\Cart::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
 
 ];

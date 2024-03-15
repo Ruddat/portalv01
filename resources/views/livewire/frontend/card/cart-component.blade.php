@@ -7,7 +7,7 @@
             <button class="" wire:click="updateCartItem({{ $id }}, 'minus')"> - </button>
             <button class="" wire:click="updateCartItem({{ $id }}, 'plus')"> + </button>
             <button class="fs1" aria-hidden="true" data-icon="" wire:click="removeFromCart({{ $id }})" style="border: none;"><i class="fs1"></i></button>
-
+</br>
             @foreach($item->get('options') as $option)
                 {{ htmlspecialchars($option) }}
             @endforeach
