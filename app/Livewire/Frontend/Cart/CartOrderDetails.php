@@ -52,6 +52,17 @@ class CartOrderDetails extends Component
 
     public function orderNowForm()
     {
+
+            // Überprüfen, ob der Warenkorb leer ist
+            $order = session()->get('shopping-cart');
+
+            dd($order);
+   // if (empty($order) || !Session::has('newOrderNumber')) {
+    if (empty($order)) {
+    return redirect()->back()->with('error', 'Der Warenkorb ist leer oder die Sitzung ist abgelaufen.');
+} else {
+
+}
         $validatedData = $this->validate([
            // 'selectedOption' => 'required',
            // 'company' => 'required_if:selectedOption,Firma',
@@ -123,6 +134,7 @@ class CartOrderDetails extends Component
 
         // Shopinformationen aus der Datenbank
         $shopId = $this->shopData->id;
+        Session::put('shopId', $shopId);
 
         // Eindeutigen Hash-Wert generieren
         $orderHash = Str::random(16);
@@ -177,7 +189,7 @@ class CartOrderDetails extends Component
 
         $order = session()->get('shopping-cart');
 
-        //dd($order);
+       // dd($order);
 
 
     $this->createXml();
@@ -284,6 +296,8 @@ public function createXml()
 {
     $orderIDValue = Session::get('orderHash');
 
+  //  $articles = session()->get('shopping-cart');
+
     //dd($orderHash);
    // $delivery_option = 'Lieferung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
 
@@ -365,10 +379,10 @@ if (!empty($articles)) {
 
     foreach ($articles as $article) {
         $articleNode = $articleList->addChild('Article');
-        $articleNode->addChild('ArticleNo', $article['article_no']);
-        $articleNode->addChild('ArticleName', $article['article_name']);
-        $articleNode->addChild('ArticleSize', $article['article_size']);
-        $articleNode->addChild('Count', $article['count']);
+        $articleNode->addChild('ArticleNo', '1');
+        $articleNode->addChild('ArticleName', $article['name']);
+        $articleNode->addChild('ArticleSize', $article['size']);
+        $articleNode->addChild('Count', $article['quantity']);
         $articleNode->addChild('Price', $article['price']);
 
         if (isset($article['sub_articles'])) {
@@ -390,9 +404,20 @@ if (!empty($articles)) {
     // Konvertiere das XML-Dokument in eine Zeichenkette und speichere es in der Eigenschaft $xml
     $this->xml = $xml->asXML();
 
-    $xml->asXML(public_path('order_0815.xml'));
 
-  //  dd($this->xml);
+    $newOrderNumber = Session::get('newOrderNumber');
+    $shopId = Session::get('shopId');
+
+    // Definiere das Verzeichnis
+$directory = "uploads/shops/{$shopId}/orders";
+
+// Erstelle das Verzeichnis, wenn es nicht existiert
+if (!Storage::exists($directory)) {
+    Storage::makeDirectory($directory, 0777, true); // Hier können Sie die Berechtigungen anpassen
+}
+
+// Speichere das XML-Dokument im Verzeichnis
+Storage::put("{$directory}/order_{$newOrderNumber}.xml", $this->xml);
 
 
 // XML in ein Array konvertieren
@@ -409,9 +434,11 @@ $jsonData = json_encode($array, JSON_PRETTY_PRINT);
 //$jsonData = json_encode($this->xml);
 
 $newOrderNumber = Session::get('newOrderNumber');
+$shopId = Session::get('shopId');
 
-//dd($newOrderNumber);
-$existingOrder = ModOrders::where('order_nr', $newOrderNumber)->first();
+$existingOrder = ModOrders::where('order_nr', $newOrderNumber)
+    ->where('parent', $shopId)
+    ->first();
 
 if ($existingOrder) {
     $existingOrder->order_json_data = $jsonData;

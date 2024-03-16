@@ -26,6 +26,7 @@ class CartService {
  * Adds a new item to the cart.
  *
  * @param string $id
+ * @param string $code
  * @param string $name
  * @param string $price
  * @param string $quantity
@@ -157,6 +158,7 @@ public function add($id, $name, $price, $size, $quantity, $options = []): void
 /**
  * Creates a new cart item from given inputs.
  *
+ * @param array $code
  * @param string $name
  * @param string $price
  * @param string $quantity
