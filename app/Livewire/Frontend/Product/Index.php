@@ -20,6 +20,7 @@ class Index extends Component
     public $product;
     public $quantity;
     public $productId;
+    public $productCode;
     public $productName;
     public $productPrice;
     public $selectedSize;
@@ -38,7 +39,7 @@ class Index extends Component
 
     public function mount($restaurant, $categories, $productsByCategory, CartService $cartService)
     {
-        // Hier kannst du deine Daten initialisieren
+        // Daten initialisieren
         $this->restaurant = $restaurant;
         $this->categories = $categories;
         $this->productsByCategory = $productsByCategory;
@@ -67,12 +68,6 @@ class Index extends Component
         // Überprüfen, ob das Produkt gefunden wurde
         if (!$product) {
             // Fehler behandeln, wenn das Produkt nicht gefunden wurde
-            $this->dispatch('modal.open', [
-                'title' => 'Produkt nicht gefunden',
-                'message' => 'Das Produkt konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.',
-                'type' => 'error',
-            ]);
-
             $this->dispatch('show-toast', 'Das Produkt konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.', 'error');
             return;
         }
@@ -112,9 +107,14 @@ class Index extends Component
 
         $size = '';
         // Definieren Sie die Optionen als Array
-        $options = ['wings' => 2];
+        $options = [
+            'kaeserand' => 1,
+            'price' => $price,
 
-        Cart::add($productId, $product->product_title, $price, $size, $quantity, $options);
+    ];
+
+       Cart::add($productId, $product->product_title, $price, $size, $quantity, $options);
+
         $this->dispatch('productAddedToCart');
     }
 
@@ -134,17 +134,22 @@ class Index extends Component
         $selectedQuantity = (int) $selectedQuantity;
 
         // Definieren Sie die Optionen als Array
-        $options = ['wings' => $selectedQuantity];
+        $options = [
+            'wings' => $selectedQuantity,
+            'Kaeserand' => $selectedQuantity,
+            'price' => 2.70,
+            'size' => $selectedSize['title'],
+            'size_id' => $selectedSize['id'],
+            'product_code' => $productId,
+        ];
 
         $uniqueIdentifier = rand(100000, 999999); // Erzeugt eine Zufallszahl zwischen 100.000 und 999.999
-//dd($uniqueIdentifier);
+        //dd($uniqueIdentifier);
 
         $extendedProductId = $productId . '' . $uniqueIdentifier;
 
-
-
-$sizeTitle = $selectedSize['title'];
-//dd($sizeTitle);
+        $sizeTitle = $selectedSize['title'];
+        //dd($sizeTitle);
 
 
     //    dd($selectedPrice, $selectedSize['title'], $selectedQuantity, $options, $extendedProductId, $productName);

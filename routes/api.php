@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::group(['prefix' => 'v1'], function () {
+    Route::apiResource('orders', OrderController::class);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::post('orders/{ordersid}/tracking-status', [OrderController::class, 'tracking_status'])->name('orders.tracking_status');
+
+    Route::apiResource('GetNewOrders', OrderController::class);
+    Route::apiResource('orders', OrderController::class);
+    Route::apiResource('SendTrackingStatus', OrderController::class);
+
 });

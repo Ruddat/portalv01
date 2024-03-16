@@ -34,16 +34,17 @@ class CartOrderDetails extends Component
     public $description_of_way = ''; // Eigenschaft zum Speichern des Versandkommentars
 
     public $xml; // Definiere die Variable $xml
-    public $delivery_option = 'Abholung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
+    public $delivery_option = 'Lieferung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
     public $ipAddress;
     public $newOrderNumber;
     public $OrderNumber;
+    public $orderHash;
 
     public function mount($restaurantId)
     {
         // Abrufen der Shop-Daten anhand der ID oder eine Fehlermeldung anzeigen, falls nicht gefunden
         $this->shopData = ModShop::findOrFail($restaurantId);
-        $this->createXml();
+     //   $this->createXml();
         $this->ipAddress = $_SERVER['REMOTE_ADDR'];
 
     }
@@ -51,6 +52,17 @@ class CartOrderDetails extends Component
 
     public function orderNowForm()
     {
+
+            // Überprüfen, ob der Warenkorb leer ist
+            $order = session()->get('shopping-cart');
+
+            dd($order);
+   // if (empty($order) || !Session::has('newOrderNumber')) {
+    if (empty($order)) {
+    return redirect()->back()->with('error', 'Der Warenkorb ist leer oder die Sitzung ist abgelaufen.');
+} else {
+
+}
         $validatedData = $this->validate([
            // 'selectedOption' => 'required',
            // 'company' => 'required_if:selectedOption,Firma',
@@ -122,6 +134,7 @@ class CartOrderDetails extends Component
 
         // Shopinformationen aus der Datenbank
         $shopId = $this->shopData->id;
+        Session::put('shopId', $shopId);
 
         // Eindeutigen Hash-Wert generieren
         $orderHash = Str::random(16);
@@ -133,6 +146,8 @@ class CartOrderDetails extends Component
         // Bestellnummer als Eigenschaft des Livewire-Komponentenobjekts speichern
           $this->newOrderNumber = $newOrderNumber;
 
+        Session::put('newOrderNumber', $newOrderNumber);
+        Session::put('orderHash', $orderHash);
 
        // Neue Bestellung erstellen und in die Datenbank speichern
     $order = ModOrders::create([
@@ -174,7 +189,7 @@ class CartOrderDetails extends Component
 
         $order = session()->get('shopping-cart');
 
-        //dd($order);
+       // dd($order);
 
 
     $this->createXml();
@@ -277,104 +292,15 @@ public function generateNewPdf()
 
 
 
-public function generatePDF()
-{
-    // Erfassen der Bestellinformationen
-    $orderNumber = '7587';
-    $orderDate = now()->format('d.m.Y H:i:s');
-    $storeName = 'Pizza Express Edemissen';
-    $storePhoneNumber = '053739966';
-    $storeAddress = 'Heidkrugsweg 31, 31234 Edemissen, Deutschland';
-    $orderMethod = 'Internetbestellung über www.just-deliver.de';
-    $customerPhone = '05373930430';
-    $customerName = 'Bargholz Andre';
-    $customerCompany = ''; // Falls nicht angegeben
-    $customerStreet = 'Seershäuser Weg 5';
-    $customerPostalCode = '38543';
-    $customerCity = 'Hillerse (Volkse)';
-    $customerAdditional = ''; // Falls nicht angegeben
-    $customerEmail = 'Eva_und_Andre@t-online.de';
-    $orderIP = '94.31.104.186';
-
-    // Bestellpositionen
-    $orderItems = [
-        ['name' => '40', 'Bulls Big Daddy', 'price' => '10.90'],
-        ['name' => '68', 'Presley Burger - Wedges', 'price' => '11.90']
-    ];
-
-    // HTML für das PDF generieren
-    $html = '
-        <div>
-            <h1>Bestellung: ' . $orderNumber . ' | Datum: ' . $orderDate . '</h1>
-            <p>Filiale: ' . $storeName . ' | Tel.: ' . $storePhoneNumber . '</p>
-            <p>' . $storeAddress . '</p>
-            <p>' . $orderMethod . '</p>
-
-            <h2>Kundendaten</h2>
-            Telefon: ' . $customerPhone . '</br>
-            Name: ' . $customerName . '
-            <p>Firma / Abt.: ' . $customerCompany . '</p>
-            <p>Straße: ' . $customerStreet . '</p>
-            <p>PLZ / Ort: ' . $customerPostalCode . ' ' . $customerCity . '</p>
-            <p>Zusatz: ' . $customerAdditional . '</p>
-            <p>E-Mail-Adresse: ' . $customerEmail . '</p>
-            <p>Bestell-IP: ' . $orderIP . '</p>
-            <p style="font-weight: bold;">Zahlung: Kunde hat bereits online bezahlt!!!</p>
-            <h2>Bestellung</h2>
-            <p>Bestellung: Lieferung</p>
-            <p>Zeitpunkt: sofort</p>
-            <p>Zahlungsart: Paypal Express</p>
-            <table style="margin: auto;">
-                <thead>
-                    <tr>
-                        <th>Art.-Nr.</th>
-                        <th>Artikel + Zutaten</th>
-                        <th>Einzelpreis</th>
-                        <th>Summe</th>
-                    </tr>
-                </thead>
-                <tbody>';
-    // Durchlaufe die Bestellpositionen und füge sie zur Tabelle hinzu
-    $index = 1;
-
-    foreach ($orderItems as $item) {
-        $html .= '
-                    <tr>
-                    <td>' . $index . '</td>
-                    <td>' . $item['name'] . '</td>
-                        <td>' . $item['price'] . ' €</td>
-                        <td>' . $item['price'] . ' €</td>
-                    </tr> ';
-
- }
-    // Schließe die Tabelle und füge Zwischensumme, Zahlung und Gesamtsumme hinzu
-    $html .= '
-                </tbody>
-            </table>
-            <p>Zwischensumme: 22.80 €</p>
-            <p>Zahlung: 1.01 €</p>
-            <p>Summe: 23.81 €</p>
-        </div>';
-
-    // PDF mit DOMPDF generieren
-    $pdf = PDF::loadHTML($html);
-
-        // Speichern der PDF-Datei auf dem Server
-        $filePath = 'pdf/' . time() . '_bestellbestaetigung.pdf';
-        Storage::put($filePath, $pdf->output());
-
-        // Rückgabe des Dateipfads für die gespeicherte PDF
-        return $filePath;
-}
-
-
-
-
-
-
 public function createXml()
 {
-    $delivery_option = 'Abholung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
+    $orderIDValue = Session::get('orderHash');
+
+  //  $articles = session()->get('shopping-cart');
+
+    //dd($orderHash);
+   // $delivery_option = 'Lieferung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
+
     // Erstelle ein neues XML-Dokument
     $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><WinOrder></WinOrder>');
 
@@ -400,8 +326,11 @@ public function createXml()
     $customer->addChild('CustomerNo', 2);
     $customer->addChild('NoMarketing', 'false');
 
+// Setze die OrderID
+$orderID = $order->addChild('OrderID', $orderIDValue);
 
-    if ($this->delivery_option !== 'Abholung') {
+//dd($this->delivery_option);
+    if ($this->delivery_option != 'Abholung') {
         // Füge die Lieferadresse hinzu
         $deliveryAddress = $customer->addChild('DeliveryAddress');
         $deliveryAddress->addChild('Title', ''); // Hier Titel einfügen
@@ -450,10 +379,10 @@ if (!empty($articles)) {
 
     foreach ($articles as $article) {
         $articleNode = $articleList->addChild('Article');
-        $articleNode->addChild('ArticleNo', $article['article_no']);
-        $articleNode->addChild('ArticleName', $article['article_name']);
-        $articleNode->addChild('ArticleSize', $article['article_size']);
-        $articleNode->addChild('Count', $article['count']);
+        $articleNode->addChild('ArticleNo', '1');
+        $articleNode->addChild('ArticleName', $article['name']);
+        $articleNode->addChild('ArticleSize', $article['size']);
+        $articleNode->addChild('Count', $article['quantity']);
         $articleNode->addChild('Price', $article['price']);
 
         if (isset($article['sub_articles'])) {
@@ -475,8 +404,53 @@ if (!empty($articles)) {
     // Konvertiere das XML-Dokument in eine Zeichenkette und speichere es in der Eigenschaft $xml
     $this->xml = $xml->asXML();
 
-    $xml->asXML(public_path('order_0815.xml'));
 
+    $newOrderNumber = Session::get('newOrderNumber');
+    $shopId = Session::get('shopId');
+
+    // Definiere das Verzeichnis
+$directory = "uploads/shops/{$shopId}/orders";
+
+// Erstelle das Verzeichnis, wenn es nicht existiert
+if (!Storage::exists($directory)) {
+    Storage::makeDirectory($directory, 0777, true); // Hier können Sie die Berechtigungen anpassen
+}
+
+// Speichere das XML-Dokument im Verzeichnis
+Storage::put("{$directory}/order_{$newOrderNumber}.xml", $this->xml);
+
+
+// XML in ein Array konvertieren
+$array = json_decode(json_encode($xml), true);
+// Das Array in ein JSON-Format umwandeln
+$jsonData = json_encode($array, JSON_PRETTY_PRINT);
+
+//dd($jsonData);
+
+
+
+// XML in JSON umwandeln und sicherstellen, dass Sonderzeichen korrekt behandelt werden
+//$xmlString = htmlspecialchars($this->xml);
+//$jsonData = json_encode($this->xml);
+
+$newOrderNumber = Session::get('newOrderNumber');
+$shopId = Session::get('shopId');
+
+$existingOrder = ModOrders::where('order_nr', $newOrderNumber)
+    ->where('parent', $shopId)
+    ->first();
+
+if ($existingOrder) {
+    $existingOrder->order_json_data = $jsonData;
+    $existingOrder->order_tracking_status = '999999';
+    $existingOrder->save();
+} else {
+    $newOrder = new ModOrders();
+    $newOrder->order_nr = $newOrderNumber;
+    $newOrder->order_json_data = $jsonData;
+    $newOrder->order_tracking_status = '999999';
+    $newOrder->save();
+}
 
     // Sende eine Erfolgsmeldung
     session()->flash('message', 'XML-Dokument wurde erfolgreich erstellt.');

@@ -49,7 +49,7 @@ return new class extends Migration
             $table->tinyInteger('use_system_payment')->default(0);
             $table->integer('soap_status')->default(0);
             $table->tinyInteger('transfer_type')->nullable()->comment('1 - fax, 2 - email, 3 - soap, 4 - sms, 5 - pizzamanager');
-            $table->integer('pizzamanager_id')->default(0);
+           // $table->integer('pizzamanager_id')->default(0);
             $table->tinyInteger('transfer_by_email')->default(1);
             $table->dateTime('transfer_time')->nullable();
             $table->tinyInteger('subscribe_news')->default(0);
@@ -64,6 +64,13 @@ return new class extends Migration
             $table->string('coupon_code');
             $table->string('rand_id', 20);
             $table->integer('user_status')->default(0)->comment('400 - error, 500 - canceled');
+          // wegen rest api call
+            $table->timestamp('order_date')->nullable();
+            $table->string('order_tracking_status')->default(0)->comment('0 - new (created), 1 - ready to send, 2 - restaurant received, 3 - baking, 4 - delivering, 5 - boxing (packing), 6 - delivered (done), 400 - error, 500 - canceled');
+            $table->string('deliver_eta')->nullable();
+            $table->string('deliver_minutes')->nullable();
+            $table->json('order_json_data')->nullable();
+
             $table->timestamps();
         });
                 // Indexes

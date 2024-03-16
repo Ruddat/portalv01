@@ -21,7 +21,6 @@ class CartComponent extends Component
        // $this->content = collect($this->cart); // Konvertiere das Array $cart in eine Collection $content
 
         $this->updateCart();
-
         // Berechne den Gesamtpreis des Warenkorbs
        // $this->total = $this->calculateTotal();
     }
