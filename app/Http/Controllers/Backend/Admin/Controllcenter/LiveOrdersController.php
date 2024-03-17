@@ -11,10 +11,7 @@ class LiveOrdersController extends Controller
     //
 
 
-
     public function index (request $request) {
-
-
 
         $orderList = ModOrders::all(); // alle Bestellungen abholen
 
@@ -22,7 +19,7 @@ class LiveOrdersController extends Controller
         $data = [
             'pageTitle' => 'Liveansicht der Bestellungen',
         ];
-
+        // go through liveOrders and livewire them
         return view('backend.pages.admin.controllcenter.liveorder-index', $data);
 
     }

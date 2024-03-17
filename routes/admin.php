@@ -72,6 +72,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
     // Live Orders Routes
     Route::prefix('live-orders')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
         Route::get('/list', [LiveOrdersController::class, 'index'])->name('live-orders-list');
+      //  Route::match(['get', 'post'], '/list', [LiveOrdersController::class, 'handleListRequest'])->name('live-orders-list');
+
     });
 
 });
