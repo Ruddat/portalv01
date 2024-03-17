@@ -149,9 +149,10 @@
 
                     {{-- Bestellungen Aktiver Shop, zeige das entsprechende Menü --}}
                     <li class="menu-title">Bestellungen</li>
-                    <li><a href="widget-basic.html" class="" aria-expanded="false">
+                    <li><a href="{{ route('seller.indexOrderOverview') }}" class="" aria-expanded="false">
                         <i class="bi bi-gear-wide"></i>
                         <span class="nav-text">Bestellübersicht</span>
+                        
                     </a>
                 </li>
                 <li><a href="widget-basic.html" class="" aria-expanded="false">

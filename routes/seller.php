@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
 use App\Http\Controllers\Backend\Seller\Products\ProductController;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
+use App\Http\Controllers\Backend\Seller\OrderOverview\OrderOverviewController;
 
 
 
@@ -107,6 +108,10 @@ Route::prefix('test')->middleware(['auth:seller', 'PreventBackHistory'])->group(
      });
 
 
+// OrderOverview
+     Route::prefix('order-overview')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::get('/', [OrderOverviewController::class, 'indexOrderOverview'])->name('indexOrderOverview');
+     });
 
 });
 
