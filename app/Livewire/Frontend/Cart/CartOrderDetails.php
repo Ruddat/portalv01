@@ -56,7 +56,7 @@ class CartOrderDetails extends Component
             // Überprüfen, ob der Warenkorb leer ist
             $order = session()->get('shopping-cart');
 
-            dd($order);
+          //  dd($order);
    // if (empty($order) || !Session::has('newOrderNumber')) {
     if (empty($order)) {
     return redirect()->back()->with('error', 'Der Warenkorb ist leer oder die Sitzung ist abgelaufen.');
@@ -153,14 +153,16 @@ class CartOrderDetails extends Component
     $order = ModOrders::create([
         'order_nr' => $newOrderNumber,
         'parent' => $shopId,
+        'shop_name' => $this->shopData->title,
         'hash' => $orderHash,
         'clients_ip' => $this->ipAddress,
         'gender' => '1', // Beispielwert
-        'status' => '0', // New
+      //  'status' => '0', // New
         'name' => $validatedData['last_name'],
         'surname' => $validatedData['first_name'],
         'email' => $validatedData['email'],
         'phone' => $validatedData['phone'],
+        'order_date' => now(),
         'shipping_street' => $validatedData['full_address'],
         'shipping_house_no' => '2', // Beispielwert
         'shipping_type' => 'picup', // Beispielwert
@@ -169,7 +171,7 @@ class CartOrderDetails extends Component
         'price_bottles' => '0.00', // Beispielwert
         'price_payment' => '0.00', // Beispielwert
         'price_tips' => '0.00', // Beispielwert
-        'price_total' => '0.00', // Beispielwert
+        'price_total' => '72.90', // Beispielwert
         'eshop_discount' => '0.00', // Beispielwert
         'cart_in_session' => '0', // Beispielwert
         'coupon_code' => '', // Beispielwert
@@ -189,7 +191,7 @@ class CartOrderDetails extends Component
 
         $order = session()->get('shopping-cart');
 
-       // dd($order);
+      //  dd($order);
 
 
     $this->createXml();

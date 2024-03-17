@@ -5,6 +5,7 @@ use App\Livewire\Backend\AdminSettings;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\Admin\AdditivesController;
 use App\Http\Controllers\Backend\Admin\AllergensController;
+use App\Http\Controllers\Backend\Admin\Controllcenter\LiveOrdersController;
 use App\Http\Controllers\Backend\Admin\BottlesController; // Importiere den BottlesController
 
 Route::prefix('admin')->name('admin.')->group(function(){
@@ -67,6 +68,13 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::put('/allergen/{id}', [AllergensController::class, 'updateAllergen'])->name('update-allergen');
     });
 
+
+    // Live Orders Routes
+    Route::prefix('live-orders')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+        Route::get('/list', [LiveOrdersController::class, 'index'])->name('live-orders-list');
+      //  Route::match(['get', 'post'], '/list', [LiveOrdersController::class, 'handleListRequest'])->name('live-orders-list');
+
+    });
 
 });
 

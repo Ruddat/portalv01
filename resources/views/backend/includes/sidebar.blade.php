@@ -63,7 +63,7 @@
 							<li><a href="message.html">Message</a></li>
 							<li><a href="order-history.html">Order History</a></li>
 							<li><a href="notification.html">Notification</a></li>
-							<li><a href="bill.html">Bill</a></li>
+							<li><a href="{{ route('admin.live-orders-list') }}">LiveOrders</a></li>
                             <li><a href="{{ url('/roles-permissons') }}">Roles and Permission</a></li>
 							<li><a href="setting.html">Setting</a></li>
 						</ul>
