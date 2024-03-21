@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Backend\Seller\SellerController;
 use App\Http\Controllers\Backend\Seller\DashboardController;
 use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
@@ -109,9 +110,23 @@ Route::prefix('test')->middleware(['auth:seller', 'PreventBackHistory'])->group(
 
 
 // OrderOverview
-     Route::prefix('order-overview')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
-        Route::get('/', [OrderOverviewController::class, 'indexOrderOverview'])->name('indexOrderOverview');
-     });
+Route::prefix('order-overview')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+    // Mit optionaler Shop-ID
+    Route::get('/orders/{shopId}', [OrderOverviewController::class, 'indexOrderOverview'])->name('indexOrderOverview');
+    // Bestellungen für ein bestimmtes Jahr und einen bestimmten Monat abrufen
+  //  Route::get('/months/{year}', [OrderOverviewController::class, 'getOrdersForYearAndMonth'])->name('getOrdersForYearAndMonth');
+    // Bestellungen für ein bestimmtes Jahr und einen bestimmten Monat abrufen
+    Route::get('/get-Orders-By-Month', [OrderOverviewController::class, 'getOrdersByMonth'])->name('getOrdersByMonth');
+    Route::get('order-overview/{shopId}', [OrderOverviewController::class, 'indexOrderOverview'])->name('orderOverview');
+    Route::get('/ajax-Get-Orders-By-Month', [OrderOverviewController::class, 'ajaxGetOrdersByMonth'])->name('AjaxGetOrdersByMonth');
+
+});
+
+Route::get('/download-pdf/{shopId}/{orderId}', function ($shopId, $orderId) {
+    $filePath = 'uploads/shops/' . $shopId . '/orders/' . $orderId . '_bestellbestaetigung.pdf';
+    return Storage::download($filePath);
+})->name('download.pdf');
+
 
 });
 
