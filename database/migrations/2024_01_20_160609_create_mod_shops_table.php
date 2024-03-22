@@ -44,6 +44,8 @@ return new class extends Migration
             $table->tinyInteger('transfer')->default(0);
             $table->string('soap_username')->default(0);
             $table->string('soap_password')->default(0);
+            $table->string('api_username')->default(0);
+            $table->string('api_password')->default(0);
             $table->tinyInteger('feedbacks')->default(0);
             $table->tinyInteger('justdeliverlogo')->default(0);
             $table->string('domain')->default(0);
@@ -60,7 +62,7 @@ return new class extends Migration
             $table->string('paypal_api_endpoint')->nullable();
             $table->string('paypal_url')->nullable();
             $table->string('logo')->nullable();
-            $table->char('lang', 2)->default('lt');
+            $table->char('lang', 2)->default('de');
             $table->integer('ordering')->default(0);
             $table->integer('ordering2')->default(0);
             $table->tinyInteger('published')->default(1);

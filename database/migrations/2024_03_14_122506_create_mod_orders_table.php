@@ -35,6 +35,8 @@ return new class extends Migration
             $table->string('shipping_city');
             $table->string('shipping_state')->nullable()->comment('reserved for future purposes');
             $table->string('shipping_country_code', 3)->default('DE');
+            $table->string('shipping_lat')->default(0);
+            $table->string('shipping_lng')->default(0);
             $table->string('shipping_comment')->nullable();
             $table->string('delivery_time')->nullable();
             $table->string('shipping_type', 50)->comment('[pickup, delivery]');

@@ -252,7 +252,7 @@ return response()->json([
             case 999999:
                 return ['status' => 'New (Created)', 'color' => 'primary'];
             case 0:
-                return ['status' => 'Ready to Send', 'color' => 'dark'];
+                return ['status' => 'Restaurant Received', 'color' => 'dark'];
             case 1:
                 return ['status' => 'Ready to Send', 'color' => 'dark'];
             case 2:

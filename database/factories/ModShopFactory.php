@@ -80,7 +80,7 @@ class ModShopFactory extends Factory
             'paypal_api_signature' => $this->faker->word,
             'paypal_api_endpoint' => $this->faker->url,
             'paypal_url' => $this->faker->url,
-            'logo' => $this->faker->imageUrl(),
+         //   'logo' => $this->faker->imageUrl(),
             'lang' => $this->faker->languageCode,
             'ordering' => $this->faker->randomNumber(),
             'ordering2' => $this->faker->randomNumber(),
