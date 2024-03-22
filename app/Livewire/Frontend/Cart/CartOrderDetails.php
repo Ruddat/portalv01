@@ -8,11 +8,13 @@ use Livewire\Component;
 use App\Models\ModOrders;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use NominatimLaravel\Content\Nominatim;
+use Illuminate\Support\Facades\Redirect;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Redirect as Redirector;
 
 class CartOrderDetails extends Component
 {
@@ -187,10 +189,6 @@ class CartOrderDetails extends Component
         // Fügen Sie weitere Felder hinzu, je nach Bedarf
     ]);
 
-
-
-
-
         $order = session()->get('shopping-cart');
 
       //  dd($order);
@@ -199,6 +197,16 @@ class CartOrderDetails extends Component
     $this->createXml();
 
     $this->generateNewPDF();
+
+
+    // Hier wird zur Livewire-Komponente `LifeTracking` weitergeleitet
+    // und der $orderHash als Parameter übergeben
+    return Redirect::route('life-tracking', ['orderHash' => $orderHash]);
+
+        // Hier wird zur Methode `redirectToLifeTracking` im Livewire-Controller `LifeTracking` weitergeleitet
+        return Redirect::route('life-tracking');
+
+//        return Redirector::toRoute('life-tracking');
 
 }
 
