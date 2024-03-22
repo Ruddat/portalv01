@@ -201,14 +201,12 @@
                         <hr>
                         <livewire:frontend.card.cart-component />
 
-                        <button type="submit" class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</button>
-
-                        @if($xml)
-                        <div class="mt-4">
-                            <h4>Generiertes XML-Dokument:</h4>
-                            <pre>{{ $xml }}</pre>
+                        <button wire:loading.class="opacity-50" type="submit" class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</button>
+                        <div wire:loading>
+                            Bestellung wird uebertragen......
                         </div>
-                    @endif
+
+
 
 
                         <div class="text-center"><small>{{ app(\App\Services\TranslationService::class)->trans('Or Call Us at', app()->getLocale()) }} <strong>{{ $shopData->phone }}</strong></small></div>

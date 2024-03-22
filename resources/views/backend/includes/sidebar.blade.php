@@ -95,6 +95,7 @@
                             <li><a href="{{ route('seller.worktimes') }}">Öffnungszeiten</a></li>
                             <li><a href="#">Aktionszeiten</a></li>
                             <li><a href="#">Zahlungsmethoden</a></li>
+                            <li><a href="{{ route('seller.indexOrderOverview', ['shopId' => $shopId]) }}">Bestellübersicht</a></li>
                             <hr>
                             <li><a href="{{ route('seller.product-sizes', ['shop' => $shopId]) }}">Produktgroessen</a></li>
                         </ul>
@@ -149,9 +150,10 @@
 
                     {{-- Bestellungen Aktiver Shop, zeige das entsprechende Menü --}}
                     <li class="menu-title">Bestellungen</li>
-                    <li><a href="widget-basic.html" class="" aria-expanded="false">
+                    <li><a href="#" class="" aria-expanded="false">
                         <i class="bi bi-gear-wide"></i>
                         <span class="nav-text">Bestellübersicht</span>
+
                     </a>
                 </li>
                 <li><a href="widget-basic.html" class="" aria-expanded="false">

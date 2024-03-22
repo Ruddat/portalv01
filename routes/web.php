@@ -27,6 +27,7 @@ use App\Http\Controllers\Frontend\ShopSearchController;
         Route::post('/add', [CardController::class, 'addCard'])->name('cart-add');
       //  Route::get('/products/{restaurantId}', [ProductList::class, '__invoke'])->name('products');
         Route::get('/order/{restaurantId}', [App\Http\Controllers\Frontend\Cart\OrderController::class, 'index'])->name('order');
+        
 
 
     });

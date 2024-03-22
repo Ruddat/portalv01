@@ -166,6 +166,8 @@ class CartOrderDetails extends Component
         'shipping_street' => $validatedData['full_address'],
         'shipping_house_no' => '2', // Beispielwert
         'shipping_type' => 'picup', // Beispielwert
+        'shipping_lng' => $longitude,
+        'shipping_lat' => $latitude,
         'price_products' => '0.00', // Beispielwert
         'price_shipping' => '0.00', // Beispielwert
         'price_bottles' => '0.00', // Beispielwert
