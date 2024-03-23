@@ -227,7 +227,7 @@ class SellerController extends Controller
             'lat' => $latitude,
             'lng' => $longitude,
             'ordering' => '100000',
-            'published' => '0',
+            'published' => '1',
             'broker' => $request->name_register,
             'order_email' => $request->email_register,
             'progress' => '0',
