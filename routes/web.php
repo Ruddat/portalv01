@@ -30,6 +30,7 @@ use App\Http\Controllers\Frontend\ShopSearchController;
     });
 
     Route::view('/life-tracking/{orderHash}', 'frontend.lifetracking.life-tracking')->name('life-tracking');
+    Route::view('/restaurantvoting/{orderHash}', 'frontend.votingsrestaurant.restaurant-voting')->name('votings-restaurant');
 
 
 

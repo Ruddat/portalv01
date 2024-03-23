@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+         Paginator::useBootstrap(); // For Bootstrap 5
+    //	 Paginator::useBootstrapFour(); // For Bootstrap 4
+	//   Paginator::useBootstrapThree(); // For Bootstrap 3
+
         //
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             $userLanguage = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);

@@ -30,6 +30,7 @@
 		        <!-- /col -->
 		    </div>
 		    <!-- /row -->
+            <a href="{{ route('votings-restaurant', ['orderHash' => $orderHash]) }}" class="btn_1">Submit review</a>
 		</div>
 		<!-- /container -->
 

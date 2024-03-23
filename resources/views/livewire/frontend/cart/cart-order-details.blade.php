@@ -16,27 +16,33 @@
                     <div class="main">
 
                         <div class="row opt_order">
-                            <div class="col-3">
+                            <div class="col-2">
+                                <label class="container_radio">Familie
+                                    <input type="radio" wire:model.change="selectedOption" value="familie">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="col-2">
                                 <label class="container_radio">Frau
-                                    <input type="radio" wire:model="selectedOption" value="frau" checked>
+                                    <input type="radio" wire:model.change="selectedOption" value="frau" checked>
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <label class="container_radio">Herr
-                                    <input type="radio" wire:model="selectedOption" value="herr">
+                                    <input type="radio" wire:model.change="selectedOption" value="herr">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <label class="container_radio">Divers
-                                    <input type="radio" wire:model="selectedOption" value="Divers">
+                                    <input type="radio" wire:model.change="selectedOption" value="Divers">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <label class="container_radio">Firma
-                                    <input type="radio" wire:model="selectedOption" value="Firma">
+                                    <input type="radio" wire:model.change="selectedOption" value="firma">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
@@ -47,19 +53,18 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>Firma</label>
-                                        <input wire:model="company" class="form-control" placeholder="Firma">
+                                        <input wire:model="company" class="form-control" placeholder="Firma" value="company">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>Abteilung</label>
-                                        <input wire:model="department" class="form-control" placeholder="Abteilung">
+                                        <input wire:model="department" class="form-control" placeholder="Abteilung" value="department">
                                     </div>
                                 </div>
                                 <hr>
                             </div>
                         @endif
-
 
 
 
@@ -99,7 +104,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <textarea  wire:model="order_comment" class="form-control" style="height: 120px;" placeholder="Order Comment" id="order_comment" name="order_comment"></textarea>
+                                <textarea  wire:model="order_comment" class="form-control" style="height: 80px;" placeholder="Order Comment" id="order_comment" name="order_comment"></textarea>
                             </div>
                         </div>
 
@@ -127,7 +132,7 @@
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <textarea wire:model="description_of_way" class="form-control" style="height: 120px;" placeholder="Shipping Comment" id="shipping_comment" name="order_comment"></textarea>
+                                <textarea wire:model="description_of_way" class="form-control" style="height: 80px;" placeholder="Shipping Comment" id="shipping_comment" name="order_comment"></textarea>
                             </div>
                         </div>
 

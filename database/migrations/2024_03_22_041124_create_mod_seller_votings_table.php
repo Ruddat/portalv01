@@ -34,7 +34,8 @@ return new class extends Migration
 
 
 
-            $table->foreign('shop_id')->references('id')->on('shops');
+            $table->foreign('shop_id')->references('id')->on('mod_shops');
+            $table->foreign('order_id')->references('id')->on('mod_orders');
             // Falls du eine Tabelle 'shops' für die Zuordnung von Shop-IDs hast, ansonsten kannst du sie ändern
             // oder falls keine Zuordnung benötigt wird, kannst du diese Zeile löschen
         });

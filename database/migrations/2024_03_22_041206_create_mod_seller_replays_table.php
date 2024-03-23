@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('content');
             $table->timestamps();
 
-            $table->foreign('voting_id')->references('id')->on('votings')->onDelete('cascade');
+            $table->foreign('voting_id')->references('id')->on('mod_seller_votings')->onDelete('cascade');
             // 'onDelete('cascade')' sorgt dafür, dass die Replays gelöscht werden, wenn der zugehörige Voting-Eintrag gelöscht wird
         });
     }

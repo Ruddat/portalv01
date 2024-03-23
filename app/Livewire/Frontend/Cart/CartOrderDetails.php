@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend\Cart;
 
 use SimpleXMLElement;
+use App\Models\Client;
 use App\Models\ModShop;
 use Livewire\Component;
 use App\Models\ModOrders;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Redirect as Redirector;
 class CartOrderDetails extends Component
 {
     public $shopData;
-    public $selectedOption = ''; // Eigenschaft zum Speichern des aktuellen ausgewählten Optionswerts
+    public $selectedOption = 'familie'; // Eigenschaft zum Speichern des aktuellen ausgewählten Optionswerts
     public $company = ''; // Eigenschaft zum Speichern des Firmennamens
     public $department = ''; // Eigenschaft zum Speichern des Abteilungsnamens
     public $last_name = ''; // Eigenschaft zum Speichern des Nachnamens
@@ -51,7 +52,6 @@ class CartOrderDetails extends Component
 
     }
 
-
     public function orderNowForm()
     {
 
@@ -66,9 +66,9 @@ class CartOrderDetails extends Component
 
 }
         $validatedData = $this->validate([
-           // 'selectedOption' => 'required',
-           // 'company' => 'required_if:selectedOption,Firma',
-           // 'department' => 'required_if:selectedOption,Firma',
+            'selectedOption' => 'required',
+            'company' => 'required_if:selectedOption,Firma',
+            'department' => 'required_if:selectedOption,Firma',
             'last_name' => 'required|min:4', // Beispiel für Validierung
             'first_name' => 'required|min:4', // Beispiel für Validierung
             'email' => 'required|email', // Validierung der E-Mail-Adresse
@@ -158,8 +158,8 @@ class CartOrderDetails extends Component
         'shop_name' => $this->shopData->title,
         'hash' => $orderHash,
         'clients_ip' => $this->ipAddress,
-        'gender' => '1', // Beispielwert
-      //  'status' => '0', // New
+        'gender' => $this->selectedOption === 'familie' ? '1' : ($this->selectedOption === 'frau' ? '2' : ($this->selectedOption === 'herr' ? '3' : '4')),
+        //  'status' => '0', // New
         'name' => $validatedData['last_name'],
         'surname' => $validatedData['first_name'],
         'email' => $validatedData['email'],
@@ -198,6 +198,7 @@ class CartOrderDetails extends Component
 
     $this->generateNewPDF();
 
+    $this->generateNewClient($validatedData);
 
     // Hier wird zur Livewire-Komponente `LifeTracking` weitergeleitet
     // und der $orderHash als Parameter übergeben
@@ -210,9 +211,46 @@ class CartOrderDetails extends Component
 
 }
 
+public function generateNewClient($data)
+{
+    // Geokoordinaten (Beispielwerte)
+    $latitude = Session::get('latitude');
+    $longitude = Session::get('longitude');
 
+    // Überprüfen, ob ein Client mit dem angegebenen Benutzernamen bereits existiert
+    $existingClient = Client::where('username', $data['first_name'])->orWhere('email', $data['email'])->first();
 
+    // Wenn der Client bereits existiert, überspringen Sie das Einfügen
+    if ($existingClient) {
+        return $existingClient;
+    }
 
+    // Neue Bestellung erstellen und in die Datenbank speichern
+    $order = Client::create([
+        //    'order_nr' => $newOrderNumber,
+        //    'parent' => $shopId,
+        //    'shop_name' => $this->shopData->title,
+        //    'hash' => $orderHash,
+        //    'clients_ip' => $this->ipAddress,
+        //    'gender' => '1', // Beispielwert
+        //  'status' => '0', // New
+        'name' => $data['last_name'],
+        'username' => $data['first_name'],
+        'email' => $data['email'],
+        'phone' => $data['phone'],
+        // 'order_date' => now(),
+        'address' => $data['full_address'],
+        'shipping_house_no' => '2', // Beispielwert
+        'shipping_type' => 'picup', // Beispielwert
+        'longitude' => $longitude,
+        'latitude' => $latitude,
+        'city' => $data['city'],
+        'postal_code' => $data['postal_code'],
+        // Fügen Sie weitere Felder hinzu, je nach Bedarf
+    ]);
+
+    return $order;
+}
 
 
 
@@ -508,12 +546,14 @@ public function generateQrCode()
     {
         // Wenn der Benutzer "Firma" auswählt, setze den Wert von $selectedOption auf "Firma"
         // Andernfalls setze ihn auf einen leeren String
-        if ($value === 'Firma') {
-            $this->selectedOption = 'Firma';
-            $this->refreshData();
+     //   dd($value);
+        if ($value === 'firma') {
+            $this->selectedOption = 'firma';
+       //     $this->refreshData();
 
         } else {
-            $this->selectedOption = '';
+            $this->selectedOption = $value;
+            $this->reset(['company', 'department']);
         }
     }
 

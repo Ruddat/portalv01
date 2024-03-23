@@ -25,7 +25,16 @@
                                 <div class="head">
                                     <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 100px; border-radius: 10px;">
 
-                                <div class="score"><span>Superb<em>350 Reviews</em></span><strong>8.9</strong></div>
+                                <div class="score"><span>
+                                    @if ($overallRating !== null)
+                                    @php
+                                        $ratingText = ($overallRating >= 8.5) ? 'Best' : (($overallRating >= 7) ? 'Superb' : (($overallRating >= 5) ? 'Good' : 'Average'));
+                                    @endphp
+                                    <div>{{ $ratingText }}</div>
+                                @else
+                                    <div>No reviews yet</div>
+                                @endif
+                            <em>{{ $numberOfRatings }} Reviews</em></span><strong>{{ number_format($overallRating, 1) }}</strong></div>
                             </div>
 								<h1>{{ $restaurant->title }}</h1>
 								{{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a href="https://www.google.com/maps/dir/{{ $restaurant->lat }},{{ $restaurant->lng }}/{{ urlencode($restaurant->title) }}" target="_blank">Get directions to {{ $restaurant->title }}</a>
@@ -39,6 +48,7 @@
 										<a href="{{ asset('frontend/img/detail_3.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"></a>
 									</span>
 									<a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>Wishlist</a>
+                                    <a href="#0" class="btn_hero wishlist"><i class="icon_info"></i>Info</a>
 								</div>
 							</div>
 						</div>
@@ -245,93 +255,118 @@
 		    <!-- /container -->
 		</div>
 		<!-- /bg_gray -->
+
+
 		<div class="container margin_30_20">
 			<div class="row">
 				<div class="col-lg-8 list_menu">
 					<section id="section-20">
 						<h4>Reviews</h4>
 					    <div class="row add_bottom_30 d-flex align-items-center reviews">
-					        <div class="col-md-3">
-					            <div id="review_summary">
-					                <strong>8.5</strong>
-					                <em>Superb</em>
-					                <small>Based on 4 reviews</small>
-					            </div>
-					        </div>
-					        <div class="col-md-9 reviews_sum_details">
-					            <div class="row">
-					                <div class="col-md-6">
-					                    <h6>Food Quality</h6>
-					                    <div class="row">
-					                        <div class="col-xl-10 col-lg-9 col-9">
-					                            <div class="progress">
-					                                <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-					                            </div>
-					                        </div>
-					                        <div class="col-xl-2 col-lg-3 col-3"><strong>9.0</strong></div>
-					                    </div>
-					                    <!-- /row -->
-					                    <h6>Service</h6>
-					                    <div class="row">
-					                        <div class="col-xl-10 col-lg-9 col-9">
-					                            <div class="progress">
-					                                <div class="progress-bar" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-					                            </div>
-					                        </div>
-					                        <div class="col-xl-2 col-lg-3 col-3"><strong>9.5</strong></div>
-					                    </div>
-					                    <!-- /row -->
-					                </div>
-					                <div class="col-md-6">
-					                    <h6>Punctuality</h6>
-					                    <div class="row">
-					                        <div class="col-xl-10 col-lg-9 col-9">
-					                            <div class="progress">
-					                                <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-					                            </div>
-					                        </div>
-					                        <div class="col-xl-2 col-lg-3 col-3"><strong>6.0</strong></div>
-					                    </div>
-					                    <!-- /row -->
-					                    <h6>Price</h6>
-					                    <div class="row">
-					                        <div class="col-xl-10 col-lg-9 col-9">
-					                            <div class="progress">
-					                                <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-					                            </div>
-					                        </div>
-					                        <div class="col-xl-2 col-lg-3 col-3"><strong>6.0</strong></div>
-					                    </div>
-					                    <!-- /row -->
-					                </div>
-					            </div>
-					            <!-- /row -->
-					        </div>
+<div class="col-md-3">
+    <div id="review_summary">
+        <strong>{{ number_format($overallRating, 1) }}</strong>
+        <em><em>
+            @if ($overallRating !== null)
+            @php
+                $ratingText = ($overallRating >= 8.5) ? 'Best' : (($overallRating >= 7) ? 'Superb' : (($overallRating >= 5) ? 'Good' : 'Average'));
+            @endphp
+            <div>{{ $ratingText }}</div>
+        @else
+            <div>No reviews yet</div>
+        @endif
+        </em></em>
+        <small>Based on {{ $numberOfRatings }} reviews</small>
+    </div>
+</div>
+<div class="col-md-9 reviews_sum_details">
+    <div class="row">
+        <div class="col-md-6">
+            <h6>Food Quality</h6>
+            <div class="row">
+                <div class="col-xl-10 col-lg-9 col-9">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ $overallRatingProgress ? $overallRatingProgress->foodQualityTotal * 10 : 0 }}%" aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->foodQualityTotal * 10 : 0 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-3"><strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->foodQualityTotal, 1) : 'N/A' }}</strong></div>
+            </div>
+            <!-- /row -->
+            <h6>Service</h6>
+            <div class="row">
+                <div class="col-xl-10 col-lg-9 col-9">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ $overallRatingProgress ? $overallRatingProgress->serviceTotal * 10 : 0 }}%" aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->serviceTotal * 10 : 0 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-3"><strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->serviceTotal, 1) : 'N/A' }}</strong></div>
+            </div>
+            <!-- /row -->
+        </div>
+        <div class="col-md-6">
+            <h6>Punctuality</h6>
+            <div class="row">
+                <div class="col-xl-10 col-lg-9 col-9">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ $overallRatingProgress ? $overallRatingProgress->deliveryTimeTotal * 10 : 0 }}%" aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->deliveryTimeTotal * 10 : 0 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-3"><strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->deliveryTimeTotal, 1) : 'N/A' }}</strong></div>
+            </div>
+            <!-- /row -->
+            <h6>Price</h6>
+            <div class="row">
+                <div class="col-xl-10 col-lg-9 col-9">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ $overallRatingProgress ? $overallRatingProgress->priceTotal * 10 : 0 }}%" aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->priceTotal * 10 : 0 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-3"><strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->priceTotal, 1) : 'N/A' }}</strong></div>
+            </div>
+            <!-- /row -->
+        </div>
+    </div>
+    <!-- /row -->
+</div>
+
+
 					    </div>
 					    <!-- /row -->
 					     <div id="reviews">
-					        <div class="review_card">
-					            <div class="row">
-					                <div class="col-md-2 user_info">
-					                    <figure><img src="{{ asset('frontend/img/avatar4.jpg') }}" alt=""></figure>
-					                    <h5>Lukas</h5>
-					                </div>
-					                <div class="col-md-10 review_content">
-					                    <div class="clearfix add_bottom_15">
-					                        <span class="rating">8.5<small>/10</small> <strong>Rating average</strong></span>
-					                        <em>Published 54 minutes ago</em>
-					                    </div>
-					                    <h4>"Great Location!!"</h4>
-					                    <p>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea. Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his. Tollit molestie suscipiantur his et.</p>
-					                    <ul>
-					                        <li><a href="#0"><i class="icon_like"></i><span>Useful</span></a></li>
-					                        <li><a href="#0"><i class="icon_dislike"></i><span>Not useful</span></a></li>
-					                        <li><a href="#0"><i class="arrow_back"></i> <span>Reply</span></a></li>
-					                    </ul>
-					                </div>
-					            </div>
-					            <!-- /row -->
-					        </div>
+                        @foreach ($ratings->reverse() as $rating)
+                            <div class="review_card">
+                                <div class="row">
+                                    <div class="col-md-2 user_info">
+                                        <figure><img src="{{ asset('uploads/images/default/avatar_3.jpg') }}" alt=""></figure>{{ $rating->gender }}
+                                        <h5>{{ $rating->order->surname }}</h5>
+                                        </div>
+
+                                    <div class="col-md-10 review_content">
+                                        <div class="clearfix add_bottom_15">
+
+                                            <?php
+                                            $averageRating = ($rating->food_quality + $rating->service + $rating->price + $rating->punctuality) / 4;
+                                            ?>
+                                            <span class="rating">{{ $averageRating ? number_format($averageRating, 1) : 'N/A' }}<small>/10</small> <strong>Rating average</strong></span>
+                                            <em>Published {{ $rating->created_at->diffForHumans() }}</em>
+                                        </div>
+                                        <h4>"{{ $rating->review_title }}"</h4>
+                                        <p>{{ $rating->review_content }}</p>
+                                        <ul>
+                                            <li><a href="#0"><i class="icon_like"></i><span>Useful 20</span></a></li>
+                                            <li><a href="#0"><i class="icon_dislike"></i><span>Not useful 40</span></a></li>
+                                            <li><a href="#0"><i class="arrow_back"></i> <span>Reply</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- /row -->
+                            </div>
+                        @endforeach
+                        <!-- /review_card -->
+                        <div class="d-flex">
+                            {!! $ratings->links() !!}
+                        </div>
+
 					        <!-- /review_card -->
 					        <div class="review_card">
 					            <div class="row">
@@ -379,6 +414,7 @@
 		</div>
 		<!-- /container -->
 
+        <div id="message">Item added to cart</div><!-- Add to cart message -->
 
 
 
