@@ -56,15 +56,21 @@ class Index extends Component
 
         $this->updateCart();
 
+
     }
 
     public function addToCart($productId, $productName, $productPrice, $quantity)
     {
+
+
+    // Zuerst die Längen- und Breitengradwerte aus der Session holen
+    $userLatitude = session('userLatitude');
+    $userLongitude = session('userLongitude');
+  //  dd($userLatitude, $userLongitude);
+
         // Produkt aus der Datenbank abrufen
         $product = ModProducts::find($productId);
 //dd($product);
-
-
         // Überprüfen, ob das Produkt gefunden wurde
         if (!$product) {
             // Fehler behandeln, wenn das Produkt nicht gefunden wurde
@@ -131,6 +137,13 @@ class Index extends Component
      */
     public function addToCartWithOptions($productId, $productName, $selectedPrice, $selectedSize, $selectedQuantity)
     {
+
+    // Zuerst die Längen- und Breitengradwerte aus der Session holen
+    $userLatitude = session('userLatitude');
+    $userLongitude = session('userLongitude');
+//    dd($userLatitude, $userLongitude);
+
+
         $selectedQuantity = (int) $selectedQuantity;
 
         // Definieren Sie die Optionen als Array
