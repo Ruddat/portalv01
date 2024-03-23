@@ -69,8 +69,8 @@ class CartOrderDetails extends Component
             'selectedOption' => 'required',
             'company' => 'required_if:selectedOption,Firma',
             'department' => 'required_if:selectedOption,Firma',
-            'last_name' => 'required|min:4', // Beispiel für Validierung
-            'first_name' => 'required|min:4', // Beispiel für Validierung
+            'last_name' => 'required_if:selectedOption,Frau,Herr,Divers|min:4',
+            'first_name' => 'required_if:selectedOption,Frau,Herr,Divers|min:4',
             'email' => 'required|email', // Validierung der E-Mail-Adresse
             'phone' => 'required', // Validierung der Telefonnummer
             'full_address' => 'required:min:5', // Validierung der vollständigen Adresse
@@ -164,6 +164,8 @@ class CartOrderDetails extends Component
         'surname' => $validatedData['first_name'],
         'email' => $validatedData['email'],
         'phone' => $validatedData['phone'],
+        'company' => $validatedData['company'],
+        'department' => $validatedData['department'],
         'order_date' => now(),
         'shipping_street' => $validatedData['full_address'],
         'shipping_house_no' => '2', // Beispielwert

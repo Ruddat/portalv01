@@ -84,7 +84,7 @@ class ShopCardController extends Controller
                 'numberOfRatings' => $numberOfRatings, // Übergeben Sie die Anzahl der Bewertungen an die Blade-Vorlage
                 'overallRatingProgress' => $overallRatingProgress, // Übergeben Sie die Fortschrittsbalken für die Gesamtbewertung an die Blade-Vorlage
                 'ratings' => $ratings, // Übergeben Sie die Ratings an die Blade-Vorlage
-                'overallRatingSingle' => $ratingData['overallRatingSingle'], // Übergeben Sie die Gesamtbewertung für jede Kategorie an die Blade-Vorlage
+           //     'overallRatingSingle' => $ratingData['overallRatingSingle'], // Übergeben Sie die Gesamtbewertung für jede Kategorie an die Blade-Vorlage
 
             ]);
         } else {
@@ -143,7 +143,7 @@ class ShopCardController extends Controller
         $priceTotal = $ratings->avg('price');
         $deliveryTimeTotal = $ratings->avg('punctuality');
         // Calculate the overall average rating
-        $overallRatingSingle = ($foodQualityTotal + $serviceTotal + $priceTotal + $deliveryTimeTotal) / 4;
+    //    $overallRatingSingle = ($foodQualityTotal + $serviceTotal + $priceTotal + $deliveryTimeTotal) / 4;
         // Gesamtbewertung berechnen
         $overallRating = $ratings->avg(function ($rating) {
             return ($rating->food_quality + $rating->service + $rating->punctuality + $rating->price) / 4;
@@ -159,7 +159,7 @@ class ShopCardController extends Controller
 
 //dd($overallRatingSingle);
         // Return the overall rating
-        return ['overallRating' => $overallRating, 'numberOfRatings' => $numberOfRatings, 'overallRatingProgress' => $overallRatingProgress, 'ratings' => $ratings, 'overallRatingSingle' => $overallRatingSingle]; ;
+        return ['overallRating' => $overallRating, 'numberOfRatings' => $numberOfRatings, 'overallRatingProgress' => $overallRatingProgress, 'ratings' => $ratings]; ;
     }
 
 

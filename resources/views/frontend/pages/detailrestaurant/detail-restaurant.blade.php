@@ -143,7 +143,7 @@
 		            <div class="col-lg-4" id="sidebar_fixed">
 		                <div class="box_order mobile_fixed">
 		                    <div class="head">
-		                        <h3>Order Summary</h3>
+		                        <h3>{{ app(\App\Services\TranslationService::class)->trans('Order Summary', app()->getLocale()) }}</h3>
 		                        <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
 
 		                    </div>
@@ -154,13 +154,13 @@
 
 		                        <div class="row opt_order">
 		                            <div class="col-6">
-		                                <label class="container_radio">Delivery
+		                                <label class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Delivery', app()->getLocale()) }}
 		                                    <input type="radio" value="option1" name="opt_order" checked>
 		                                    <span class="checkmark"></span>
 		                                </label>
 		                            </div>
 		                            <div class="col-6">
-		                                <label class="container_radio">Take away
+		                                <label class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Selbstabholen', app()->getLocale()) }}
 		                                    <input type="radio" value="option1" name="opt_order">
 		                                    <span class="checkmark"></span>
 		                                </label>
@@ -241,13 +241,13 @@
 		                        </div>
 		                        <!-- /dropdown -->
 		                        <div class="btn_1_mobile">
-		                            <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}" class="btn_1 gradient full-width mb_5">Order Now</a>
-		                            <div class="text-center"><small>No money charged on this steps</small></div>
+		                            <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}" class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</a>
+		                            <div class="text-center"><small>{{ app(\App\Services\TranslationService::class)->trans('No money charged on this steps', app()->getLocale()) }}</small></div>
 		                        </div>
 		                    </div>
 		                </div>
 		                <!-- /box_order -->
-		                <div class="btn_reserve_fixed"><a href="#0" class="btn_1 gradient full-width">View Basket</a></div>
+		                <div class="btn_reserve_fixed"><a href="#0" class="btn_1 gradient full-width">{{ app(\App\Services\TranslationService::class)->trans('View Basket', app()->getLocale()) }}</a></div>
 		            </div>
 		        </div>
 		        <!-- /row -->
@@ -419,7 +419,7 @@
 
 
 
-<!-- Ihr vorhandenes Modal für Produktoptionen -->
+<!-- vorhandenes Modal für Produktoptionen -->
 
 
 
