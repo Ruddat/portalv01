@@ -12,7 +12,12 @@ Dieses Projekt ist ein Online-Bestellportal für Pizza, Sushi und Burger, das al
 
 ## Überblick
 
-Beschreiben Sie hier kurz, worum es in Ihrem Projekt geht und was es tut. Geben Sie eine kurze Einführung und möglicherweise eine Übersicht über die wichtigsten Funktionen.
+Benutzerregistrierung und -anmeldung: Benutzer können sich anmelden oder ein Konto erstellen, um auf das Bestellportal zuzugreifen.
+Restaurantauswahl: Benutzer können aus einer Vielzahl von Restaurants wählen, die in der Nähe ihres Standorts verfügbar sind.
+Speisekartenansicht: Benutzer können die Speisekarten der ausgewählten Restaurants anzeigen und die gewünschten Gerichte auswählen.
+Warenkorb-System: Benutzer können Gerichte in ihren Warenkorb legen, um ihre Bestellung zu organisieren und zu bearbeiten.
+Bestellabwicklung: Benutzer können ihre Bestellung abschließen, Lieferdetails angeben und die Zahlung vornehmen.
+Lieferverfolgung: Benutzer können den Status ihrer Bestellung verfolgen und den voraussichtlichen Lieferzeitpunkt anzeigen.
 
 ## Installation
 
