@@ -86,8 +86,8 @@ class ShopSearchController extends Controller
                 $placeId = $result_neu['place_id'];
                 $osmId = $result_neu['osm_id'];
             // Überprüfen, ob der Eintrag bereits in der Datenbank vorhanden ist
-
             $this->saveLocation($results);
+
             }
 
             // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
@@ -214,9 +214,7 @@ class ShopSearchController extends Controller
         $firstResult = $result[0];
 
         // Suchen des Standorts in der Datenbank
-        $existingLocation = ModSearchPlaces::where('lat', $firstResult['lat'])
-            ->where('lon', $firstResult['lon'])
-            ->where('osm_id', $firstResult['osm_id'])
+        $existingLocation = ModSearchPlaces::where('osm_id', $firstResult['osm_id'])
             ->where('place_id', $firstResult['place_id'])
             ->first();
 

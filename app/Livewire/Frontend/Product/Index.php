@@ -29,7 +29,6 @@ class Index extends Component
     protected $content;
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
-     //   'show-size-modal' => 'open',
         'add-to-cart' => 'addToCartWithOptions'
     ];
 
@@ -37,26 +36,26 @@ class Index extends Component
     protected $cartService;
 
 
+    /**
+     * Initialize the component with required data.
+     *
+     * @param  mixed  $restaurant
+     * @param  mixed  $categories
+     * @param  mixed  $productsByCategory
+     * @param  \App\Services\CartService  $cartService
+     * @return void
+     */
     public function mount($restaurant, $categories, $productsByCategory, CartService $cartService)
     {
-        // Daten initialisieren
         $this->restaurant = $restaurant;
         $this->categories = $categories;
         $this->productsByCategory = $productsByCategory;
         $this->cartService = $cartService;
+        $this->selectedSize = null;
 
-
-        $this->selectedSize = null; // Initialisieren Sie $selectedSize als null oder eine Standardgröße
-
-       $this->listeners['show-size-modal'] = 'open';
-
-
-        // Berechne und speichere die Mindestpreise für jedes Produkt
+        // Calculate and store minimum prices for each product
         $this->minPrices = $this->calculateMinPrices();
-
         $this->updateCart();
-
-
     }
 
     public function addToCart($productId, $productName, $productPrice, $quantity)
@@ -125,28 +124,25 @@ class Index extends Component
     }
 
 
-        /**
-     * Adds a new item to the cart.
+    /**
+     * Add a new item to the cart with options.
      *
-     * @param string $id
-     * @param string $name
-     * @param string $price
-     * @param string $quantity
-     * @param array $options
+     * @param  int  $productId
+     * @param  string  $productName
+     * @param  float  $selectedPrice
+     * @param  array  $selectedSize
+     * @param  int  $selectedQuantity
      * @return void
      */
     public function addToCartWithOptions($productId, $productName, $selectedPrice, $selectedSize, $selectedQuantity)
     {
-
-    // Zuerst die Längen- und Breitengradwerte aus der Session holen
-    $userLatitude = session('userLatitude');
-    $userLongitude = session('userLongitude');
-//    dd($userLatitude, $userLongitude);
-
+        // Retrieve latitude and longitude from session
+        $userLatitude = session('userLatitude');
+        $userLongitude = session('userLongitude');
 
         $selectedQuantity = (int) $selectedQuantity;
 
-        // Definieren Sie die Optionen als Array
+        // Define options array
         $options = [
             'wings' => $selectedQuantity,
             'Kaeserand' => $selectedQuantity,
@@ -156,38 +152,27 @@ class Index extends Component
             'product_code' => $productId,
         ];
 
-        $uniqueIdentifier = rand(100000, 999999); // Erzeugt eine Zufallszahl zwischen 100.000 und 999.999
-        //dd($uniqueIdentifier);
-
+        $uniqueIdentifier = rand(100000, 999999);
         $extendedProductId = $productId . '' . $uniqueIdentifier;
-
         $sizeTitle = $selectedSize['title'];
-        //dd($sizeTitle);
 
 
-    //    dd($selectedPrice, $selectedSize['title'], $selectedQuantity, $options, $extendedProductId, $productName);
-        // Fügen Sie das Produkt zum Warenkorb hinzu
         Cart::add($extendedProductId, $productName, $selectedPrice, $sizeTitle, $selectedQuantity, $options);
 
-        // Schließen Sie das Modal
         $this->dispatch('closeModal');
-
-        // Zeigen Sie eine Erfolgsmeldung an
         $this->dispatch('show-toast', 'Produkt wurde zum Warenkorb hinzugefügt', 'success');
-
-        // Aktualisieren Sie den Warenkorb
         $this->dispatch('productAddedToCart');
     }
 
-        // Hier Logik für addToCart mit Optionen
-//dd($productId, $productName, $productPrice, $selectetQuantity);
 
-
-
+    /**
+     * Render the livewire component.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         return view('livewire.frontend.product.index', [
-            // Hier werden die Daten an die View übergeben
             'restaurant' => $this->restaurant,
             'categories' => $this->categories,
             'productsByCategory' => $this->productsByCategory,
@@ -195,17 +180,20 @@ class Index extends Component
             'total' => $this->total,
             'content' => $this->content,
             'productName' => $this->productName,
-
         ]);
     }
 
+    /**
+     * Calculate minimum prices for products.
+     *
+     * @return array
+     */
     protected function calculateMinPrices()
     {
         $minPrices = [];
 
         foreach ($this->productsByCategory as $products) {
             foreach ($products as $product) {
-                // Hier rufen wir die Methode getProductPrice auf, um den Mindestpreis für jedes Produkt zu berechnen
                 $minPrices[$product->id] = app(ShopCardController::class)->getProductPrice($product->id);
             }
         }
@@ -214,6 +202,11 @@ class Index extends Component
     }
 
 
+    /**
+     * Update cart total and content.
+     *
+     * @return void
+     */
     public function updateCart()
     {
         $this->total = Cart::total();
@@ -221,7 +214,15 @@ class Index extends Component
     }
 
 
-    private function prepareSizeData($prices, $sizes) {
+    /**
+     * Prepare size data.
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $prices
+     * @param  array  $sizes
+     * @return array
+     */
+    private function prepareSizeData($prices, $sizes)
+    {
         $sizeData = [];
 
         foreach ($sizes as $size) {
