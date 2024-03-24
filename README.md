@@ -32,7 +32,7 @@ Dieses Projekt ist ein Online-Bestellportal für Pizza, Sushi und Burger, das al
 
 ## Lizens
 
-Dieses Projekt ist unter der MIT-Lizenz lizenziert. Weitere Informationen finden Sie in der Lizenzdatei.
+Dieses Projekt is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Installation
 
