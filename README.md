@@ -1,6 +1,6 @@
-# Projektname
+# Just-Deliver Bestellportal
 
-Kurze Beschreibung des Projekts hier.
+Dieses Projekt ist ein Online-Bestellportal für Pizza, Sushi und Burger, das als Teil der Just-Deliver-Plattform entwickelt wurde. Es ermöglicht Benutzern, Speisen aus verschiedenen Restaurants zu bestellen und sie direkt an ihre Tür liefern zu lassen.
 
 ## Inhaltsverzeichnis
 
