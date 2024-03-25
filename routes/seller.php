@@ -63,6 +63,7 @@ Route::prefix('shopdata')->middleware(['auth:seller', 'PreventBackHistory'])->gr
     Route::view('/shops/{shop}/shopdata', 'backend/pages/seller/shopdata/mod-shopdaten')->name('shopData');
     Route::get('/shop/{shop}/shopdata', [ShopDataController::class, 'restoData'])->name('restoData');
     Route::post('/change-logo-pictures', [ShopDataController::class, 'changeLogoPictures'])->name('change-logo-pictures');
+    Route::post('/change-shop-restapi', [ShopDataController::class, 'changeShopDataRestApi'])->name('change-shop-restapi');
 });
 
 // Categories Routes

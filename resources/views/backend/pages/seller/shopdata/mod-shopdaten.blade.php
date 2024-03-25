@@ -13,6 +13,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xl-4">
+                        <div class="row">
 						<div class="card h-auto">
 							<div class="card-body">
 								<div class="profile text-center">
@@ -45,13 +46,82 @@
 								</div>
 							</div>
 						</div>
+
+						<div class="card h-auto">
+
+							<div class="card-body">
+                                <h6>Übertragung von aktuellen Bestelldaten</h6>
+                                @include('backend.includes.errorflash')
+                                <div class="basic-form">
+
+                                        <div>
+                                            <p>Tragen Sie die folgende URL zusammen mit Ihrem Benutzernamen und Passwort in Ihr Kassensystem ein:</p>
+                                            <p><strong>Beschreibung:</strong> Abrufen neuer Bestellungen</p>
+                                            <p><strong>URL:</strong> <span id="url">{{ $url }}</span> <button class="btn btn-outline-primary btn-xs" onclick="copyToClipboard()">Kopieren</button></p>
+                                            <input type="checkbox" id="copied" style="vertical-align: middle; margin-left: 5px;" hidden>
+                                            <label for="copied" id="copyLabel" style="vertical-align: middle; display: none;">URL wurde in die Zwischenablage kopiert.</label>
+                                        </div>
+
+                                        <form action="{{ route('seller.change-shop-restapi') }}" method="POST" id="change-shop-restapi">
+                                            @csrf
+                                            <div class="row">
+                                                <div class="mb-3 col-md-12">
+                                                    <label class="form-label">Übertragungsart</label>
+                                                    <select id="inputState" name="transfer_type" class="default-select form-control ms-0 wide">
+                                                        <option value="Choose..." selected>Choose...</option>
+                                                        <option value="1">RestApi</option>
+                                                        <option value="2">Winorder</option>
+                                                    </select>
+                                                    @error('transfer_type')
+                                                        <p style="color: red;">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="mb-3 col-md-6">
+                                                    <label class="form-label">User Name</label>
+                                                    <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                                                    @error('username')
+                                                        <p style="color: red;">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label class="form-label">Password</label>
+                                                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                                                    @error('password')
+                                                        <p style="color: red;">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </form>
+                                </div>
+
+							</div>
+						</div>
+
+
+                        </div>
+
 					</div>
+
+
+
+
+
 
 
                     @livewire('backend.seller.shop.shop-data-form')
 
 
 				</div>
+
+
+
+
             </div>
         </div>
 
@@ -66,11 +136,12 @@
 
 
     @push('specific-css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     @endpush
 
     @push('specific-scripts')
 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <!-- JavaScript, um das Scrollen zu steuern -->
 <script>
@@ -163,6 +234,43 @@
     });
 
     </script>
+
+<script>
+    function copyToClipboard() {
+        var url = document.getElementById("url");
+        var input = document.createElement("input");
+        input.value = url.textContent;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+        document.getElementById("copied").checked = true;
+        document.getElementById("copyLabel").style.display = "inline-block";
+        setTimeout(function(){
+            document.getElementById("copied").checked = false;
+            document.getElementById("copyLabel").style.display = "none";
+        }, 4000); // Die Anzeige wird nach 2 Sekunden ausgeblendet
+    }
+</script>
+
+<script>
+    // Überprüfen, ob das Dokument vollständig geladen wurde
+    document.addEventListener("DOMContentLoaded", function() {
+        // Selektor für den Sweet-Success-Button
+        const sweetSuccessBtn = document.querySelector('.sweet-success');
+
+        // Hinzufügen eines Klickereignisses auf den Sweet-Success-Button
+        sweetSuccessBtn.addEventListener('click', function() {
+            // Anzeigen der SweetAlert-Benachrichtigung
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Sweet Success triggered!',
+            });
+        });
+    });
+</script>
+
 
     @endpush
 
