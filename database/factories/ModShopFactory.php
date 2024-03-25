@@ -97,7 +97,7 @@ class ModShopFactory extends Factory
             'payment_usage_amount' => $this->faker->randomNumber(),
             'no_abholung' => $this->faker->numberBetween(0, 1),
             'no_lieferung' => $this->faker->numberBetween(0, 1),
-            'rating' => $this->faker->randomFloat(2, 0, 1000),
+         //   'rating' => $this->faker->randomFloat(2, 0, 1000),
             'paid_on_top' => $this->faker->randomNumber(),
             'show_logo' => $this->faker->numberBetween(0, 1),
             'have_new_products' => $this->faker->numberBetween(0, 1),
