@@ -97,6 +97,29 @@ class VotingsRestaurant extends Component
         $review->published = 1;
         $review->save();
 
+
+
+    // Bewertungen aus der Datenbank abrufen
+    $votings = ModSellerVotings::where('shop_id', $this->restaurant->id)->get();
+
+    // Anzahl der Bewertungen und Durchschnittswert berechnen
+    $totalVotes = $votings->count();
+    $totalFoodQuality = $votings->sum('food_quality');
+    $totalService = $votings->sum('service');
+    $totalPrice = $votings->sum('price');
+    $totalPunctuality = $votings->sum('punctuality');
+
+    // Den Durchschnittswert berechnen
+    $votingAverage = ($totalFoodQuality + $totalService + $totalPrice + $totalPunctuality) / (4 * $totalVotes);
+
+    // Shop-Daten aktualisieren
+    $shop = ModShop::find($this->restaurant->id);
+    $shop->votes_count = $totalVotes;
+    $shop->voting_average = $votingAverage;
+    $shop->save();
+
+
+
         dd($request->all());
 
         // Hier könntest du die eingereichten Daten validieren und in der Datenbank speichern

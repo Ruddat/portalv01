@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Seller\Shop;
 
 use App\Models\ModShop;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 use NominatimLaravel\Content\Nominatim;
 
 class ShopDataForm extends Component
@@ -15,23 +16,29 @@ class ShopDataForm extends Component
 
     public function mount(ModShop $shopData)
     {
+        // Überprüfen, ob die Shop-ID in der Session vorhanden ist
+        if (Auth::guard('seller')->check()) {
+            $seller = Auth::guard('seller')->user();
+        }
+        if (!session()->has('currentShopId')) {
+            return redirect()->route('seller.login'); // Benutzer zur Homepage umleiten
+        }
+
+        // Shopdaten aus der Datenbank abrufen
         $shopId = session('currentShopId');
         $this->shop = ModShop::findOrFail($shopId);
-      //  dd($this->shop); // Debug-Ausgabe hinzufügen, um sicherzustellen, dass das Modell erfolgreich abgerufen wurde
-    //  $this->shopData = ModShop::findOrFail(session('currentShopId'));
-    // Zuweisen der Daten zu den entsprechenden Variablen
-    $this->shop_name = $this->shop->title;
-    $this->shop_email = $this->shop->email;
-    $this->shop_phone = $this->shop->phone;
-    $this->shop_street = $this->shop->street;
-    $this->shop_zip = $this->shop->zip;
-    $this->shop_city = $this->shop->city;
-    $this->shop_owner = $this->shop->owner;
-    $this->shop_extra_contacts = $this->shop->extra_contacts;
 
-    // Weitere Daten zuweisen, falls erforderlich
+        // Zuweisen der Daten zu den entsprechenden Variablen
+        $this->shop_name = $this->shop->title;
+        $this->shop_email = $this->shop->email;
+        $this->shop_phone = $this->shop->phone;
+        $this->shop_street = $this->shop->street;
+        $this->shop_zip = $this->shop->zip;
+        $this->shop_city = $this->shop->city;
+        $this->shop_owner = $this->shop->owner;
+        $this->shop_extra_contacts = $this->shop->extra_contacts;
 
-
+        // Weitere Daten zuweisen, falls erforderlich
     }
 
 
