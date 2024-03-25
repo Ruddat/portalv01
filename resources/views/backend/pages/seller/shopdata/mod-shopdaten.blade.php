@@ -62,6 +62,17 @@
                                             <label for="copied" id="copyLabel" style="vertical-align: middle; display: none;">URL wurde in die Zwischenablage kopiert.</label>
                                         </div>
 
+                                        <div class="col-xl-12 col-lg-12 col-xxl-12 col-sm-8">
+                                            <div class="card text-black text-black">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Einstellungen Kassensystem</span></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Übertragungsart :</span><strong>{{ $shop->transfer }}</strong></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">User Name :</span><strong>{{ $shop->api_username }}</strong></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Password :</span><strong>{{ $shop->api_password }}</strong></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
                                         <form action="{{ route('seller.change-shop-restapi') }}" method="POST" id="change-shop-restapi">
                                             @csrf
                                             <div class="row">
@@ -98,6 +109,8 @@
 
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
+
+
                                 </div>
 
 							</div>
