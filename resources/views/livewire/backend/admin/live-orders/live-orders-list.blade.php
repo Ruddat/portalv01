@@ -164,5 +164,8 @@
 
 
   </div>
+  <button id="play-sound-btn" style="display: none;" wire:click="triggerSound"></button>
+
+  <button wire:click="triggerSound" class="btn btn-primary">Test Sound abspielen</button>
 </div>
 

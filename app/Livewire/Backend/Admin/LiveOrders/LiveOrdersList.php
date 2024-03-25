@@ -13,7 +13,15 @@ class LiveOrdersList extends Component
 
     public $search = '';
     public $sortOption = 'recently'; // Standard-Sortierung
+    // public $triggerSound = false;
 
+    protected $listeners =
+    [
+        'refreshNumber' => '$refresh',
+        'newOrder' => 'newOrder',
+        'triggerSound' => 'triggerSound'
+
+    ];
 
     public function loadOrders()
     {
@@ -65,7 +73,7 @@ class LiveOrdersList extends Component
     }
 
 
-    public function refreshOrders()
+    public function refreshOrders()  // TODO - Das ist ein Test
     {
         $this->loadOrders();
     }
@@ -117,6 +125,9 @@ class LiveOrdersList extends Component
 
     public function render()
     {
+
+
+
         $this->loadOrders();
 
         return view('livewire.backend.admin.live-orders.live-orders-list', [
@@ -124,4 +135,25 @@ class LiveOrdersList extends Component
             'pagination_theme' => 'bootstrap-5',
         ]);
     }
+
+    public function updated()
+    {
+        // Wenn eine neue Bestellung eingeht, das Ereignis auslösen
+       $this->dispatch('orderCompleted');
+    }
+
+    public function triggerSound()
+{
+
+
+
+  // dd('Sound triggered');
+   $this->dispatch('orderCompleted');
+}
+
+
+
+
+
+
 }

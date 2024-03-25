@@ -15,7 +15,7 @@ class OrderController extends Controller
     //
     protected $statusCode = Res::HTTP_OK;
 
-    public function index()
+    public function index() // TODO - Shop_id Username and Password
     {
         // Überprüfen, ob Bestellungen mit dem Status '999999' vorhanden sind
         if (ModOrders::where('order_tracking_status', '999999')->exists()) {
