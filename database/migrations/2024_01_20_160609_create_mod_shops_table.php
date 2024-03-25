@@ -78,7 +78,12 @@ return new class extends Migration
             $table->integer('payment_usage_amount')->default(0);
             $table->tinyInteger('no_abholung')->default(0);
             $table->tinyInteger('no_lieferung')->default(0);
-            $table->double('rating')->default(0);
+            // spalten fuer Votings
+            $table->unsignedInteger('votes_count')->default(0); // Spalte für die Anzahl der Stimmen
+            $table->decimal('voting_average', 5, 2)->nullable(); // Spalte für den Durchschnitt der Abstimmung
+            $table->tinyInteger('show_voting')->default(0); // Spalte für die Anzeige der Bewertung
+            // ende
+
             $table->integer('paid_on_top')->default(0);
             $table->tinyInteger('show_logo')->default(1);
             $table->tinyInteger('have_new_products')->default(0);

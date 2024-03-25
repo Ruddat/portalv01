@@ -12,21 +12,19 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-       // return $request->expectsJson() ? null : route('login');
-
-
         if (! $request->expectsJson()) {
             if($request->routeIs('admin.*')){
                 session()->flash('fail', 'You must be logged in to access this page.');
                 return route('admin.login');
-
-
-            }elseif($request->is('seller/*')){
+            } elseif($request->is('seller/*')){
                 return route('seller.login');
-            }elseif($request->is('client/*')){
+            } elseif($request->is('client/*')){
                 return route('client.login');
+            } else {
+                return route('seller.login'); // Standard-Anmeldeseite für alle anderen Routen
             }
         }
 
+        return null; // Rückgabe von null, wenn JSON erwartet wird
     }
 }
