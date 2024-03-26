@@ -333,17 +333,16 @@
 					    </div>
 					    <!-- /row -->
 					     <div id="reviews">
-                        @foreach ($ratings->reverse() as $rating)
+                            @foreach ($ratings->reverse() as $rating)
                             <div class="review_card">
                                 <div class="row">
                                     <div class="col-md-2 user_info">
                                         <figure><img src="{{ asset('uploads/images/default/avatar_3.jpg') }}" alt=""></figure>{{ $rating->gender }}
                                         <h5>{{ $rating->order->surname }}</h5>
-                                        </div>
+                                    </div>
 
                                     <div class="col-md-10 review_content">
                                         <div class="clearfix add_bottom_15">
-
                                             <?php
                                             $averageRating = ($rating->food_quality + $rating->service + $rating->price + $rating->punctuality) / 4;
                                             ?>
@@ -353,15 +352,32 @@
                                         <h4>"{{ $rating->review_title }}"</h4>
                                         <p>{{ $rating->review_content }}</p>
                                         <ul>
-                                            <li><a href="#0"><i class="icon_like"></i><span>Useful 20</span></a></li>
-                                            <li><a href="#0"><i class="icon_dislike"></i><span>Not useful 40</span></a></li>
+                                            <!-- Like Symbol -->
+                                            <li>
+                                                <a href="#" class="like-btn" data-restaurant-id="{{ $restaurant->id }}" data-order-id="{{ $rating->order_id }}">
+                                                    <i class="icon_like"></i>
+                                                    <span>Useful {{ $rating->likes_count }}</span>
+                                                </a>
+                                            </li>
+
+                                            <!-- Dislike Symbol -->
+                                            <li>
+                                                <a href="#" class="dislike-btn" data-restaurant-id="{{ $restaurant->id }}" data-order-id="{{ $rating->order_id }}">
+                                                    <i class="icon_dislike"></i>
+                                                    <span>Not useful {{ $rating->dislikes_count }}</span>
+                                                </a>
+                                            </li>
+
                                             <li><a href="#0"><i class="arrow_back"></i> <span>Reply</span></a></li>
                                         </ul>
+                                        <!-- Erfolgsmeldung für jedes Rating -->
+                                        <div class="vote-message" style="display: none;">Danke für Ihr Voting!</div>
                                     </div>
                                 </div>
                                 <!-- /row -->
                             </div>
                         @endforeach
+
                         <!-- /review_card -->
                         <div class="d-flex">
                             {!! $ratings->links() !!}
@@ -477,6 +493,65 @@
 </script>
 
 
+
+<script>
+    $(document).ready(function() {
+        // Like-Button klicken
+        $('.like-btn').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var restaurantId = btn.data('restaurant-id');
+            var type = 'like';
+            vote(restaurantId, type, btn);
+        });
+
+        // Dislike-Button klicken
+        $('.dislike-btn').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var restaurantId = btn.data('restaurant-id');
+            var type = 'dislike';
+            vote(restaurantId, type, btn);
+        });
+
+        // Funktion für die Ajax-Anfrage
+        function vote(restaurantId, type, btn) {
+            $.ajax({
+                type: 'POST',
+                url: '/vote',
+                data: {
+                    restaurant_id: restaurantId,
+                    order_id: btn.data('order-id'),
+                    type: type,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    // Erfolgsmeldung verarbeiten
+                    console.log(response);
+                    if (response.success) {
+                        // Erfolgreich abgestimmt, aktualisieren Sie die Anzeige der Anzahl der Stimmen und den Zustand des Buttons
+                        var voteType = type === 'like' ? 'Useful' : 'Not useful';
+                        var currentVotesText = btn.find('span').text(); // Textinhalt extrahieren
+                        var matches = currentVotesText.match(/\d+/); // Den Wert der Stimmen mit einem regulären Ausdruck extrahieren
+                        if (matches && matches.length > 0) {
+                            var currentVotes = parseInt(matches[0]); // Extrahierten Wert in eine Ganzzahl konvertieren
+                            currentVotes++; // Inkrementieren Sie die Anzahl der Stimmen
+                            btn.find('span').text(voteType + ' ' + currentVotes); // Aktualisieren Sie die Anzeige der Anzahl der Stimmen
+                            // Zeigen Sie die Erfolgsmeldung an
+                            btn.closest('.review_content').find('.vote-message').show();
+                        } else {
+                            console.error('Unable to extract current votes count');
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Fehlermeldung verarbeiten
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    });
+    </script>
 
 
 

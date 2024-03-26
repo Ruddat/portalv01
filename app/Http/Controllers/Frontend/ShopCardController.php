@@ -6,6 +6,7 @@ use App\Models\ModShop;
 use App\Models\ModCategory;
 use App\Models\ModProducts;
 use Illuminate\Http\Request;
+use App\Models\ModSellerVotes;
 use App\Models\ModProductSizes;
 use App\Http\Controllers\Controller;
 use App\Models\ModProductSizesPrices;
@@ -50,6 +51,12 @@ class ShopCardController extends Controller
         $ratings = ModSellerVotings::where('shop_id', $restaurantId)->paginate(10);
      //   $ratings = $ratingData['ratings'];
      //dd($ratings);
+
+        // Für jede Bewertung die Anzahl von Likes und Dislikes abrufen und als zusätzliche Attribute hinzufügen
+        foreach ($ratings as $rating) {
+            $rating->likes_count = $rating->votes()->where('type', 'like')->count();
+            $rating->dislikes_count = $rating->votes()->where('type', 'dislike')->count();
+        }
 
 
             // Für jede Kategorie die entsprechenden Produkte abrufen und zuweisen
@@ -161,6 +168,71 @@ class ShopCardController extends Controller
         // Return the overall rating
         return ['overallRating' => $overallRating, 'numberOfRatings' => $numberOfRatings, 'overallRatingProgress' => $overallRatingProgress, 'ratings' => $ratings]; ;
     }
+
+
+    public function vote(Request $request)
+    {
+        // Validieren der eingehenden Daten
+        $request->validate([
+            'restaurant_id' => 'required|exists:mod_shops,id',
+            'type' => 'required|in:like,dislike',
+            'order_id' => 'required', // Stellen Sie sicher, dass order_id vorhanden ist
+        ]);
+
+        // Überprüfen, ob der Gast bereits für dieselbe Bestellung abgestimmt hat
+        $existingVote = ModSellerVotes::where('shop_id', $request->restaurant_id)
+            ->where('order_hash', $request->session()->getId())
+            ->where('voting_id', $request->order_id)
+            ->first();
+
+        // Restaurant-ID und Voting-Typ aus der Anfrage extrahieren
+        $restaurantId = $request->restaurant_id;
+        $type = $request->type;
+
+        // Wenn bereits eine Abstimmung existiert
+        if ($existingVote) {
+            // Überprüfen, ob der Typ geändert wurde
+            if ($existingVote->type === $type) {
+                return response()->json(['success' => false, 'message' => 'You have already voted with the same vote type for this order.']);
+            } else {
+                // Typ aktualisieren
+                $existingVote->type = $type;
+                $existingVote->save();
+            }
+        } else {
+            // Neuen Eintrag erstellen
+            $voting = new ModSellerVotes();
+            $voting->shop_id = $restaurantId;
+            $voting->type = $type;
+            $voting->order_hash = $request->session()->getId();
+            $voting->voting_id = $request->order_id; // Falls erforderlich, passen Sie die Voting-ID entsprechend an
+            $voting->save();
+        }
+
+    // Anzahl der Likes und Dislikes für diese Bestellung zählen und speichern
+    $likesCount = ModSellerVotes::where('shop_id', $restaurantId)
+        ->where('voting_id', $request->order_id)
+        ->where('type', 'like')
+        ->count();
+
+    $dislikesCount = ModSellerVotes::where('shop_id', $restaurantId)
+        ->where('voting_id', $request->order_id)
+        ->where('type', 'dislike')
+        ->count();
+
+    // Den aktuellen Shop-Eintrag aktualisieren
+    $currentShopVotes = ModSellerVotes::where('shop_id', $restaurantId)
+        ->where('voting_id', $request->order_id)
+        ->first();
+
+    $currentShopVotes->likes_count = $likesCount;
+    $currentShopVotes->dislikes_count = $dislikesCount;
+    $currentShopVotes->save();
+
+        // Erfolgsantwort zurückgeben
+        return response()->json(['success' => true, 'message' => 'Vote saved successfully.']);
+    }
+
 
 
 

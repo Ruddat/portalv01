@@ -13,12 +13,20 @@ return new class extends Migration
     {
         Schema::create('mod_seller_votes', function (Blueprint $table) {
             $table->id();
+            // Shop ID hinzufügen
+            $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('voting_id');
-            $table->enum('type', ['up', 'down']); // Daumen-hoch oder Daumen-runter
+            $table->enum('type', ['like', 'dislike']); // Daumen-hoch oder Daumen-runter
+            $table->unsignedInteger('likes_count')->default(0); // Spalte für die Anzahl der Likes
+            $table->unsignedInteger('dislikes_count')->default(0); // Spalte für die Anzahl der Dislikes
+            // Order Hash hinzufügen
+            $table->string('order_hash');
             $table->timestamps();
 
             $table->foreign('voting_id')->references('id')->on('mod_seller_votings')->onDelete('cascade');
             // 'onDelete('cascade')' sorgt dafür, dass die Abstimmungen gelöscht werden, wenn der zugehörige Voting-Eintrag gelöscht wird
+            // Fremdschlüsselbeziehung zu mod_shops
+            $table->foreign('shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
         });
     }
 

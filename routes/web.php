@@ -201,6 +201,7 @@ Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStand
 
 
 Route::get('/detail-restaurant/{restaurantId}', [ShopCardController::class, 'index'])->name('detail-restaurant.index');
+Route::post('/vote', [ShopCardController::class, 'vote'])->name('vote-restaurant.vote');
 
 
 // Match my own domain

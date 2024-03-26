@@ -126,7 +126,8 @@ class VotingsRestaurant extends Component
 
         // Erfolgsmeldung anzeigen oder Benutzer weiterleiten
         session()->flash('success', 'Your review has been submitted successfully!');
-          return redirect()->route('home');
+     //     return redirect()->route('home');
+          return redirect()->route('detail-restaurant.index', ['restaurantId' => $this->restaurant->id]);
     }
 
 
