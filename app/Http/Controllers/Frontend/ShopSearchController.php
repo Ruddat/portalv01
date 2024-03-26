@@ -53,11 +53,14 @@ class ShopSearchController extends Controller
                 $nominatim = new Nominatim($url);
                 $search = $nominatim->newSearch()->query($query);
                 $results = $nominatim->find($search);
+//dd($results);
 
                 // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
                 if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
                     $userLatitude = $results[0]['lat'];
                     $userLongitude = $results[0]['lon'];
+                    $userCity = $results[0]['name'];
+               // dd($userCity);
                     $request->session()->put('userLatitude', $userLatitude);
                     $request->session()->put('userLongitude', $userLongitude);
                     $request->session()->put('selectedLocation', $query);
@@ -85,6 +88,14 @@ class ShopSearchController extends Controller
                 $result_neu = $results[0]; // Nur den ersten Eintrag verwenden
                 $placeId = $result_neu['place_id'];
                 $osmId = $result_neu['osm_id'];
+            // Stadtnamen aus den Ergebnissen extrahieren
+         //   $city = $result[0]['display_name']['name'] ?? null;
+            $name = $results[0]['name'] ?? null;
+            if ($name) {
+                // Stadtnamen und Ortsnamen in der Session speichern
+             //   $request->session()->put('selectedCity', $city);
+                $request->session()->put('selectedName', $name);
+                }
             // Überprüfen, ob der Eintrag bereits in der Datenbank vorhanden ist
             $this->saveLocation($results);
 
@@ -92,7 +103,7 @@ class ShopSearchController extends Controller
 
             // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
             if ($userLatitude !== null && $userLongitude !== null) {
-                $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo')
+                $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average')
                     ->selectRaw(
                         '( 6371 * acos( cos( radians(?) ) *
                         cos( radians( lat ) ) *
@@ -112,13 +123,14 @@ class ShopSearchController extends Controller
                 }
             } else {
             // Wenn keine Geokoordinaten vorhanden sind, eine einfache Datenbankabfrage durchführen
-                $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo')
+                $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average')
                 ->paginate($this->perPage);
              }
 
             // Die aktuellen Abfrageparameter für die Pagination beibehalten
             $restaurants->appends($request->only(['query', 'distance']));
-
+            // Stadtnamen aus der Session abrufen
+            $findCityName = $request->session()->get('selectedName');
 
             // View zurückgeben
             return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
@@ -126,6 +138,9 @@ class ShopSearchController extends Controller
                 'userLatitude' => $userLatitude,
                 'userLongitude' => $userLongitude,
                 'selectedDistance' => $selectedDistance,
+                'findCityName' => $findCityName
+
+
             ]);
 
         } catch (\Exception $e) {
@@ -146,6 +161,7 @@ class ShopSearchController extends Controller
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
 
+
         // Fehlerbehandlung für fehlende Koordinaten
         if (!$latitude || !$longitude) {
             return response()->json(['error' => 'Fehlende Geokoordinaten im Request'], 400);
@@ -154,16 +170,25 @@ class ShopSearchController extends Controller
         // Standort in der Session speichern
         $request->session()->put('userLatitude', $latitude);
         $request->session()->put('userLongitude', $longitude);
-
         // Nominatim-Anfrage durchführen, um den ausgewählten Ort zu erhalten
         $url = "http://nominatim.openstreetmap.org/";
         $nominatim = new Nominatim($url);
         $reverse = $nominatim->newReverse()->latlon($latitude, $longitude);
         $result = $nominatim->find($reverse);
 
+//dd($result);
+
         // Überprüfen, ob die Ergebnisse nicht leer sind
         if (!empty($result)) {
         // return response()->json($result);
+        // Stadtnamen aus den Ergebnissen extrahieren
+        $name = $result['name'] ?? null;
+        // Überprüfen, ob ein Stadtnamen gefunden wurde
+        if ($name) {
+        // Stadtnamen und Ortsnamen in der Session speichern
+        $request->session()->put('selectedName', $name);
+        }
+
         $this->saveLocation([$result]);
         }
 
@@ -173,6 +198,8 @@ class ShopSearchController extends Controller
             $selectedLocation = $result[0]['display_name'];
             $request->session()->put('selectedLocation', $selectedLocation);
           //  $this->saveLocation($request);
+
+       //   dd($request);
         }
         // Geografische Entfernung für die Restaurantsuche festlegen
         $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
@@ -193,8 +220,8 @@ class ShopSearchController extends Controller
             ->paginate($this->perPage);
 
         // Standortinformationen an die Blade-Ansicht übergeben
-        return response()->json(['success' => true, 'message' => 'Geokoordinaten erfolgreich gespeichert'], 200);
-    }
+// Standortinformationen und Stadtnamen an die Blade-Ansicht übergeben
+return response()->json(['success' => true, 'message' => 'Geokoordinaten erfolgreich gespeichert', 'name' => $name ], 200);    }
 
 
     /**

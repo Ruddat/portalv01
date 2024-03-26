@@ -120,7 +120,7 @@ class VotingsRestaurant extends Component
 
 
 
-        dd($request->all());
+      //  dd($request->all());
 
         // Hier könntest du die eingereichten Daten validieren und in der Datenbank speichern
 
