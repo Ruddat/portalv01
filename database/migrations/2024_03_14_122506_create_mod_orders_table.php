@@ -72,7 +72,9 @@ return new class extends Migration
             $table->timestamp('order_date')->nullable();
             $table->string('order_tracking_status')->default(0)->comment('999999 - new (created), 1 - ready to send, 2 - restaurant received, 3 - baking, 4 - delivering, 5 - boxing (packing), 6 - delivered (done), 400 - error, 500 - canceled');
             $table->string('deliver_eta')->nullable();
-            $table->string('deliver_minutes')->nullable();
+            $table->string('message')->nullable();
+            $table->integer('deliver_minutes')->nullable();
+            $table->string('reject_reason')->nullable();
             $table->json('order_json_data')->nullable();
 
             $table->timestamps();

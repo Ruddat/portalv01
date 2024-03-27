@@ -62,6 +62,8 @@ public function index(Request $request)
 }
 
 
+
+
 /**
  * Speichert die aktualisierten Daten einer Bestellung.
  *
@@ -70,20 +72,53 @@ public function index(Request $request)
  */
 public function store(Request $request)
 {
+
+    	    // Protokolliere den gesamten API-Request
+            \Log::info('API Request:', [
+                'url' => $request->fullUrl(),
+                'method' => $request->method(),
+                'request_data' => $request->all(),
+            ]);
+
     // Extrahieren der relevanten Daten aus der Anfrage
-    $data = $request->only(['message', 'ordersid', 'trackingstatus', 'deliver_eta', 'deliver_minutes']);
-    $ordersid = $data['ordersid'];
-    $trackingstatus = $data['trackingstatus'];
-    $deliver_eta = $data['deliver_eta'];
-    $deliver_minutes = $data['deliver_minutes'];
+    $data = $request->only(['message', 'ordersid', 'trackingstatus', 'deliver_minutes', 'deliver_eta', 'reject_reason']);
+
+    // Standardwerte festlegen, falls die Daten nicht gesendet wurden
+    $ordersid = $data['ordersid'] ?? null;
+    $trackingstatus = $data['trackingstatus'] ?? null;
+    $deliver_eta = $data['deliver_eta'] ?? null;
+    $deliver_minutes = $data['deliver_minutes'] ?? null;
+    $deliver_message = $data['message'] ?? null;
+    $reject_reason = $data['reject_reason'] ?? null;
+
+    // Überprüfen, ob die erforderlichen Daten vorhanden sind
+    if (!$ordersid || !$deliver_message) {
+        // Fehlermeldung zurückgeben, wenn erforderliche Daten fehlen
+        return response()->json([
+            'error' => true,
+            'message'  => "Missing required data. Please provide ordersid, trackingstatus, deliver_eta, and deliver_minutes.",
+        ], 400);
+    }
 
     // Abrufen der Bestellung anhand der Bestellungs-ID
     $orders = ModOrders::where('hash', $ordersid)->first();
 
+    // Überprüfen, ob die Bestellung gefunden wurde
+    if (!$orders) {
+        // Fehlermeldung zurückgeben, wenn die Bestellung nicht gefunden wurde
+        return response()->json([
+            'error' => true,
+            'message'  => "Order not found with id: $ordersid",
+        ], 404);
+    }
+
     // Aktualisieren der Bestellungsdaten
+   // $orders->ordersid = $ordersid;
     $orders->order_tracking_status = $trackingstatus;
     $orders->deliver_eta = $deliver_eta;
     $orders->deliver_minutes = $deliver_minutes;
+    $orders->message = $deliver_message;
+    $orders->reject_reason = $reject_reason;
 
     // Speichern der aktualisierten Bestellung in der Datenbank
     $orders->save();
@@ -91,15 +126,28 @@ public function store(Request $request)
     // Erfolgreiche Rückmeldung als JSON
     return response()->json([
         'error' => false,
-        'message'  => "The Order with the id $orders->id has successfully been updated.",
+        'message'  => "The Order with the id $ordersid has successfully been updated.",
     ], 200);
 }
+
+
+
+
+
 
 
 
     public function tracking_status(Request $request)
 
     {
+
+
+            	    // Protokolliere den gesamten API-Request
+                    \Log::info('API Request:', [
+                        'url' => $request->fullUrl(),
+                        'method' => $request->method(),
+                        'request_data' => $request->all(),
+                    ]);
 
         // daten hier
 
@@ -112,6 +160,14 @@ public function store(Request $request)
 
     public function show($id)
     {
+
+                    	    // Protokolliere den gesamten API-Request
+                            \Log::info('API Show Request:', [
+                                'url' => $request->fullUrl(),
+                                'method' => $request->method(),
+                                'request_data' => $request->all(),
+                            ]);
+
         $order = ModOrders::find($id);
 
         return response()->json([
@@ -122,6 +178,13 @@ public function store(Request $request)
 
     public function update(Request $request, $id)
     {
+            	    // Protokolliere den gesamten API-Request
+                    \Log::info('API Update Request:', [
+                        'url' => $request->fullUrl(),
+                        'method' => $request->method(),
+                        'request_data' => $request->all(),
+                    ]);
+
         $order = ModOrders::find($id);
 
         $order->order_notes = $request->input('order_notes');
@@ -136,6 +199,14 @@ public function store(Request $request)
 
     public function destroy($id)
     {
+
+            	    // Protokolliere den gesamten API-Request
+                    \Log::info('API Destroy Request:', [
+                        'url' => $request->fullUrl(),
+                        'method' => $request->method(),
+                        'request_data' => $request->all(),
+                    ]);
+
         $orders = ModOrders::find($id);
         $orders->delete();
 
