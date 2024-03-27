@@ -8,6 +8,7 @@ use App\Models\ModProducts;
 use Illuminate\Http\Request;
 use App\Models\ModSellerVotes;
 use App\Models\ModProductSizes;
+use App\Models\ModSellerReplays;
 use App\Http\Controllers\Controller;
 use App\Models\ModProductSizesPrices;
 use App\Models\ModSellerVotings; // Add the Voting model
@@ -234,7 +235,45 @@ class ShopCardController extends Controller
     }
 
 
+    // Reply with the vote id for a specific order
+    public function reply(request $request) // TODO - Clientabfrage machen ob client angemeldet ist sonst zum Login. Client Name dann eintragen
+    {
 
+
+
+        // Validate the incoming data
+        $request->validate([
+            'rating_id' => 'required|exists:mod_seller_votings,id',
+            'reply_title' => 'required|string',
+            'reply_content' => 'required|string',
+        ],[
+            'rating_id.required' => 'The rating ID is required.',
+            'rating_id.exists' => 'The rating ID does not exist.',
+            'reply_title.required' => 'The reply title is required.',
+            'reply_title.string' => 'The reply title must be a string.',
+            'reply_content.required' => 'The reply content is required.',
+            'reply_content.string' => 'The reply content must be a string.',
+        ]);
+
+     //   dd($request->all());
+
+
+        // update ModSellerReplays
+        $reply = new ModSellerReplays();
+        $reply->voting_id = $request->rating_id;
+        $reply->reply_author = 'Admin'; //
+        $reply->reply_title = $request->reply_title;
+        $reply->reply_content = $request->reply_content;
+        $reply->save();
+
+
+        // Return a success response
+        return back()->with('success', 'Reply saved successfully.');
+        return response()->json(['success' => false, 'message' => 'You have already voted with the same vote type for this order.']);
+        return response()->json(['success' => true, 'message' => 'Reply saved successfully.']);
+
+
+    }
 
 
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\ModOrders;
 use App\Models\ModSellerVotes;
+use App\Models\ModSellerReplays;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -24,5 +25,14 @@ class ModSellerVotings extends Model
     {
         return $this->hasMany(ModSellerVotes::class, 'voting_id');
     }
+
+    /**
+     * Get the replies for the rating.
+     */
+    public function replies()
+    {
+        return $this->hasMany(ModSellerReplays::class, 'voting_id');
+    }
+
 
 }

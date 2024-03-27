@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('mod_seller_replays', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('voting_id');
-            $table->text('content');
+            $table->text('reply_author');
+            $table->text('reply_title');
+            $table->text('reply_content');
             $table->timestamps();
 
             $table->foreign('voting_id')->references('id')->on('mod_seller_votings')->onDelete('cascade');

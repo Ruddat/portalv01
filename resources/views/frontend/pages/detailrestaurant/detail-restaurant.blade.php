@@ -368,13 +368,63 @@
                                                 </a>
                                             </li>
 
-                                            <li><a href="#0"><i class="arrow_back"></i> <span>Reply</span></a></li>
+<!-- Button zum Öffnen des Modals -->
+<li>
+    <!-- Reply-Link -->
+    <a href="#" class="reply-link" data-toggle="collapse" data-target="#replyForm{{ $rating->id }}" aria-expanded="false" aria-controls="replyForm{{ $rating->id }}">
+        <i class="arrow_back"></i>
+        <span>Reply</span>
+    </a>
+</li>
                                         </ul>
                                         <!-- Erfolgsmeldung für jedes Rating -->
                                         <div class="vote-message" style="display: none;">Danke für Ihr Voting!</div>
                                     </div>
                                 </div>
-                                <!-- /row -->
+
+        <!-- Reply-Formular -->
+
+
+        <div class="collapse" id="replyForm{{ $rating->id }}">
+            <div class="box_general write_review">
+                <form action="{{ route('vote-restaurant.reply') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="rating_id" value="{{ $rating->id }}">
+                    <h4 class="add_bottom_15">Write a Reply for "{{ $restaurant->title }}"</h4>
+                    <div class="form-group">
+                        <label for="reply_title">Title of your Reply</label>
+                        <input class="form-control" id="reply_title" name="reply_title" type="text" placeholder="If you could say it in one sentence, what would you say?">
+                        @error('reply_title') <span class="error">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="reply_content">Your Reply</label>
+                        <textarea class="form-control" id="reply_content" name="reply_content" style="height: 180px;" placeholder="Write your review to help others learn about this online business"></textarea>
+                        @error('reply_content') <span class="error">{{ $message }}</span> @enderror
+                    </div>
+                    <button type="submit" class="btn_1">Submit Reply</button>
+                </form>
+            </div>
+        </div>
+                                        <!-- /row -->
+                                        @foreach ($rating->replies->reverse() ?? [] as $reply)
+
+                                        <div class="row reply">
+                                            <div class="col-md-2 user_info">
+                                                <figure><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></figure>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="review_content">
+                                                    <strong>Reply from {{ $reply->reply_author }}</strong>
+                                                    <em>Published {{ $reply->created_at->diffForHumans() }}</em>
+                                                    <p><br>{{ $reply->reply_title }}<br></p>
+                                                    <p>{{ $reply->reply_content }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /reply -->
+                                        @endforeach
+
+
                             </div>
                         @endforeach
 
@@ -383,46 +433,8 @@
                             {!! $ratings->links() !!}
                         </div>
 
-					        <!-- /review_card -->
-					        <div class="review_card">
-					            <div class="row">
-					                <div class="col-md-2 user_info">
-					                    <figure><img src="{{ asset('frontend/img/avatar1.jpg') }}" alt=""></figure>
-					                    <h5>Marika</h5>
-					                </div>
-					                <div class="col-md-10 review_content">
-					                    <div class="clearfix add_bottom_15">
-					                        <span class="rating">9.0<small>/10</small> <strong>Rating average</strong></span>
-					                        <em>Published 11 Oct. 2019</em>
-					                    </div>
-					                    <h4>"Really great dinner!!"</h4>
-					                    <p>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea. Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his. Tollit molestie suscipiantur his et.</p>
-					                    <ul>
-					                        <li><a href="#0"><i class="icon_like"></i><span>Useful</span></a></li>
-					                        <li><a href="#0"><i class="icon_dislike"></i><span>Not useful</span></a></li>
-					                        <li><a href="#0"><i class="arrow_back"></i> <span>Reply</span></a></li>
-					                    </ul>
-					                </div>
-					            </div>
-					            <!-- /row -->
-					            <div class="row reply">
-					                <div class="col-md-2 user_info">
-					                    <figure><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></figure>
-					                </div>
-					                <div class="col-md-10">
-					                    <div class="review_content">
-					                        <strong>Reply from Foogra</strong>
-					                        <em>Published 3 minutes ago</em>
-					                        <p><br>Hi Monika,<br><br>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea. Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his. Tollit molestie suscipiantur his et.<br><br>Thanks</p>
-					                    </div>
-					                </div>
-					            </div>
-					            <!-- /reply -->
-					        </div>
-					        <!-- /review_card -->
 					    </div>
 					    <!-- /reviews -->
-					    <div class="text-end"><a href="leave-review.html" class="btn_1 gradient">Leave a Review</a></div>
 					</section>
 					<!-- /section -->
 				</div>
@@ -433,7 +445,7 @@
         <div id="message">Item added to cart</div><!-- Add to cart message -->
 
 
-
+<!-- HTML für das Formular -->
 
 <!-- vorhandenes Modal für Produktoptionen -->
 
@@ -554,8 +566,16 @@
     </script>
 
 
-
-
+<script>
+    // JavaScript für das Ein- und Ausblenden des Reply-Formulars
+    $(document).ready(function() {
+        $('.reply-link').click(function(e) {
+            e.preventDefault();
+            var targetId = $(this).data('target');
+            $(targetId).collapse('toggle');
+        });
+    });
+    </script>
 
         @endpush
 
