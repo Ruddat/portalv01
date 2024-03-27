@@ -14,9 +14,19 @@
 		    <div class="container">
 		    	<div class="row">
 		    		<div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-block">
-                        <h1>Es wurden {{ $restaurants->total() }} Restaurants in {{ $restaurants->first()->street ?? 'unbekannter Straße' }} gefunden.</h1>
-
+                        <h1>Es wurden {{ $restaurants->total() }} Restaurants in
+                            @php
+                            $findCityName = Session::get('selectedName');
+                            @endphp
+                            @if ($findCityName)
+                            {{ $findCityName }}
+                            @else
+                                Stadt oder Ortsname nicht verfügbar
+                               @endif
+                          gefunden.</h1>
 		        		<a href="#0">Change address</a>
+                        <!-- Im Header des Templates, wo die Stadt und der Ortsname angezeigt werden sollen -->
+
 		    		</div>
 		    		<div class="col-xl-4 col-lg-5 col-md-5">
 		    			<div class="search_bar_list">
@@ -293,14 +303,17 @@
                                     </figure>
                                     <ul>
                                         <li>
-                                            <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}">Takeaway</span>
-                                            <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}">Delivery</span>
+                                            <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}" title="Takeaway">Takeaway</span>
+                                            <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}" title="Delivery">Delivery</span>
+                                            <strong class="icon-food_icon_shop fs2"> {{ number_format($restaurant->distance, 2) }} km</strong>
                                         </li>
                                         <li>
-                                            <div class="score"><strong>8.9</strong></div><div><strong>{{ number_format($restaurant->distance, 2) }} km</strong></div>
-                                        </li>
+                                            @if($restaurant->voting_average !== null)
+                                            <div class="score" title="Bewertung durchschnitt"><strong>{{ number_format($restaurant->voting_average, 1) }}</strong></div>
+                                        @else
 
-
+                                        @endif
+                                       </li>
                                     </ul>
                                 </div>
                             </div>

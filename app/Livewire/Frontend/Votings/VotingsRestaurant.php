@@ -120,13 +120,14 @@ class VotingsRestaurant extends Component
 
 
 
-        dd($request->all());
+      //  dd($request->all());
 
         // Hier könntest du die eingereichten Daten validieren und in der Datenbank speichern
 
         // Erfolgsmeldung anzeigen oder Benutzer weiterleiten
         session()->flash('success', 'Your review has been submitted successfully!');
-          return redirect()->route('home');
+     //     return redirect()->route('home');
+          return redirect()->route('detail-restaurant.index', ['restaurantId' => $this->restaurant->id]);
     }
 
 
