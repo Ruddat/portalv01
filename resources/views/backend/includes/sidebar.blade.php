@@ -98,6 +98,8 @@
                             <li><a href="{{ route('seller.indexOrderOverview', ['shopId' => $shopId]) }}">Bestellübersicht</a></li>
                             <hr>
                             <li><a href="{{ route('seller.product-sizes', ['shop' => $shopId]) }}">Produktgroessen</a></li>
+                            <li><a href="{{ route('seller.manage-ingredients.ingredients-index', ['shop' => $shopId]) }}">Zutaten</a></li>
+                            <hr>
                         </ul>
                     </li>
 
