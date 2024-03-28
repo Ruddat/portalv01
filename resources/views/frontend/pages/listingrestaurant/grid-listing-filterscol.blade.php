@@ -17,14 +17,19 @@
                         <h1>Es wurden {{ $restaurants->total() }} Restaurants in
                             @php
                             $findCityName = Session::get('selectedName');
-                            @endphp
+                            $words = explode(' ', $findCityName); // Den String in Wörter aufteilen
+                            $firstTwoWords = implode(' ', array_slice($words, 0, 2)); // Die ersten beiden Wörter wieder zusammenfügen
+                        @endphp
+
+
                             @if ($findCityName)
-                            {{ $findCityName }}
+                                {{ rtrim($firstTwoWords, ',') }} <!-- rtrim-Funktion entfernt das Komma -->
+                                gefunden!
                             @else
-                                Stadt oder Ortsname nicht verfügbar
-                               @endif
-                          gefunden.</h1>
-		        		<a href="#0">Change address</a>
+                                Stadt oder Ortsname nicht verfügbar.
+                            @endif
+                        </h1>
+		        		<a href="/">Change address</a>
                         <!-- Im Header des Templates, wo die Stadt und der Ortsname angezeigt werden sollen -->
 
 		    		</div>

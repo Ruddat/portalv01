@@ -91,10 +91,12 @@ class ShopSearchController extends Controller
             // Stadtnamen aus den Ergebnissen extrahieren
          //   $city = $result[0]['display_name']['name'] ?? null;
             $name = $results[0]['name'] ?? null;
+            $display_name = $results[0]['display_name'] ?? null;
+            // Überprüfen, ob ein Stadtnamen gefunden wurde
             if ($name) {
                 // Stadtnamen und Ortsnamen in der Session speichern
              //   $request->session()->put('selectedCity', $city);
-                $request->session()->put('selectedName', $name);
+                $request->session()->put('selectedName', $display_name);
                 }
             // Überprüfen, ob der Eintrag bereits in der Datenbank vorhanden ist
             $this->saveLocation($results);
@@ -183,10 +185,11 @@ class ShopSearchController extends Controller
         // return response()->json($result);
         // Stadtnamen aus den Ergebnissen extrahieren
         $name = $result['name'] ?? null;
+        $display_name = $result['display_name'] ?? null;
         // Überprüfen, ob ein Stadtnamen gefunden wurde
         if ($name) {
         // Stadtnamen und Ortsnamen in der Session speichern
-        $request->session()->put('selectedName', $name);
+        $request->session()->put('selectedName', $display_name);
         }
 
         $this->saveLocation([$result]);
