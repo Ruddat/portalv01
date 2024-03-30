@@ -7,11 +7,6 @@
 
 
 
-
-
-
-
-
         <!--**********************************
             Content body start
         ***********************************-->
@@ -28,70 +23,29 @@
                 <div class="row">
 
 
-					<div class="col-xl-12 col-lg-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Textarea</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="basic-form">
-                                    <form>
-                                        <div class="mb-3">
-                                            <textarea class="form-control h-auto" rows="4" id="comment"></textarea>
-                                        </div>
-
-                                        <div class="row align-items-center">
-                                            <div class="mb-3">
-                                                <label class="me-sm-12">Preference</label>
-                                                <select class="me-sm-12 default-select form-control wide ms-0" id="inlineFormCustomSelect">
-                                                    <option selected>Choose...</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                    <option value="4">Four</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row align-items-center">
-                                            <div class="mb-3">
-                                                <label class="me-sm-12">Preference</label>
-<!-- Standard-Select-Element -->
-<select class="me-sm-12 multi-select form-control wide ms-0" id="mySelect" multiple>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    <option value="4">Four</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    <option value="4">Four</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    <option value="4">Four</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    <option value="4">Four</option>
-</select>
-                                            </div>
-                                        </div>
 
 
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-					</div>
+
+                    <livewire:backend.seller.add-ingredients.add-ingredients-component />
 
 
 
                     <div class="col-lg-12">
                         <div class="card">
+
+
                             <div class="card-header">
-                                <h4 class="card-title">Table Hover</h4>
+                                <h4 class="card-title">@yield('pageTitle')</h4>
+
+                                <div class="pull-right">
+                                    <a href="{{ route('seller.manage-categories.add-category') }}"
+                                        class="btn btn-primary btn-sm" type="button">
+                                        <i class="fa fa-plus"></i>
+                                        Add Ingredients
+                                    </a>
+                                </div>
                             </div>
+
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover table-responsive-sm">
@@ -145,7 +99,11 @@
                                 </td>
                                                 <td class="row_81" align="center">
                                                             <div class="p5">
-                                            <span id="published_53113" class="published-item"><a title="deaktivieren"><img src="http://just-deliver.de/manager/assets/images/icons/on.png" alt="deaktivieren" border="0"></a></span>
+
+                                                                    <!-- Klickbares Symbol für den Kategoriestatus -->
+                                                                    <a href="#" onclick="toggleActiveStatus(1)">
+                                                                                                                                <i id="lamp-1" class="bi bi-lightbulb-fill" width="26" height="26" fill="currentColor" style="color: rgb(231, 144, 14);"></i>
+                                                                                                                        </a>
 
                                     </div>
                                 </td>
@@ -217,8 +175,10 @@
 					            </td>
 									<td class="row_82" align="center">
 										<div class="p5">
-								<span id="published_53152" class="published-item"><a title="deaktivieren"><img src="http://just-deliver.de/manager/assets/images/icons/on.png" alt="deaktivieren" border="0"></a></span>
-                						</div>
+                                                                    <!-- Klickbares Symbol für den Kategoriestatus -->
+                                                                    <a href="#" onclick="toggleActiveStatus(1)">
+                                                                        <i id="lamp-1" class="bi bi-lightbulb-fill" width="26" height="26" fill="currentColor" style="color: rgb(231, 144, 14);"></i>
+                                                                </a>                						</div>
 				            	</td>
 
 
@@ -267,7 +227,7 @@
                                     <td>Classic</br> </td>
                                     <td>Small</br></td>
                                     <td>Small</br></td>
-                                </tr>
+                               </tr>
                                 <tr>
                                     <td>0.90 €</td>
                                     <td>2.00 €</td>
@@ -289,8 +249,10 @@
 					            </td>
 									<td class="row_82" align="center">
 										<div class="p5">
-								<span id="published_53152" class="published-item"><a title="deaktivieren"><img src="http://just-deliver.de/manager/assets/images/icons/on.png" alt="deaktivieren" border="0"></a></span>
-                						</div>
+                                                                    <!-- Klickbares Symbol für den Kategoriestatus -->
+                                                                    <a href="#" onclick="toggleActiveStatus(1)">
+                                                                        <i id="lamp-1" class="bi bi-lightbulb-fill" width="26" height="26" fill="currentColor" style="color: rgb(231, 144, 14);"></i>
+                                                                </a>                						</div>
 				            	</td>
 									<td class="row_82" align="left">
 									    <div class="p5">
@@ -328,29 +290,8 @@
 
 
 
-        <script>
-            // JavaScript-Code zur dynamischen Anpassung der Höhe des Dropdown-Menüs
-            window.addEventListener('load', function() {
-                var selectElement = document.getElementById('mySelect');
-                var optionCount = selectElement.options.length;
-                var defaultOptionHeight = 30; // Standardhöhe für eine Option in Pixeln
-                var maxHeight = 400; // Maximal zulässige Höhe in Pixeln
-
-                // Berechnen der Höhe basierend auf der Anzahl der Optionen
-                var height = Math.min(optionCount * defaultOptionHeight, maxHeight);
-
-                // Setzen der berechneten Höhe als Höhe des Dropdown-Menüs
-                selectElement.style.height = height + 'px';
-            });
-        </script>
-
-
-
-
-
-
-
 @push('specific-scripts')
+
 @endpush
 
 
@@ -361,6 +302,15 @@
     #mySelect {
         height: 150px; /* Höhe nach Bedarf ändern */
     }
+
+    .flex-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    }
+
 </style>
 
 @endpush

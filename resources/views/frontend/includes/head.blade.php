@@ -29,7 +29,7 @@
 
     <!-- YOUR CUSTOM CSS -->
     <link href="{{ asset('frontend/css/custom.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('frontend/css/feather.css') }}" rel="stylesheet">
 
     <!-- Styles -->
     @livewireStyles
