@@ -13,6 +13,8 @@ use App\Models\ModProductSizes;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Models\ModProductSizesPrices;
+use App\Models\ModProductsIngredients;
+use App\Models\ModProductIngredientsNodes;
 
 
 class ProductController extends Controller
@@ -67,9 +69,20 @@ class ProductController extends Controller
             ->orderBy('ordering')
             ->get();
 
+
+//dd($currentCategory->sizes_category);
+
+        // Abrufen aller Hauptkategorien für Zutaten
+        $ingredientCategories = ModProductsIngredients::where('parent', 0) // Annahme: Hauptkategorien haben parent = 0
+        ->where('shop_id', $shopId) // Filtern nach Shop-ID
+        //->whereJsonContains('sizes_category', [$currentCategory->id]) // Überprüfen, ob die sizes_category die Produktskategorie enthält
+        ->where('sizes_category', 'LIKE', '%"'.$currentCategory->sizes_category.'"%')
+        ->get(); // Alle übereinstimmenden Kategorien abrufen
+
         $data = [
             'pageTitle' => 'Add Product',
             'currentCategory' => $currentCategory, // Die aktuelle Kategorie an die Ansicht übergeben
+            'ingredientCategories' => $ingredientCategories, // Die Hauptkategorie für Zutaten an die Ansicht übergeben
         ];
 
         // Abrufen der Bottles, Additives und Allergene aus der Datenbank
@@ -158,6 +171,25 @@ foreach ($request->all() as $key => $value) {
         }
     }
 }
+
+//dd($request->all());
+
+// Durchlaufen der Ingredients-Nodes und Speichern in die Datenbank
+if ($request->has('ingredients')) {
+    foreach ($request->input('ingredients') as $categoryId => $ingredient) {
+        ModProductIngredientsNodes::create([
+            'parent' => $productId,
+            'shop_id' => $shopId,
+            'ingredients_id' => $categoryId, // Verwenden Sie $categoryId als die Zutaten-ID
+            'free_ingredients' => $ingredient['free_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
+            'min_ingredients' => $ingredient['min_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
+            'max_ingredients' => $ingredient['max_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
+        ]);
+    }
+}
+
+
+
 
         // Speichern des Produktbildes, falls vorhanden
         if ($request->hasFile('product_image')) {

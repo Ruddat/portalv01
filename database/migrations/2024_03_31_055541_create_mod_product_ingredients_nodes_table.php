@@ -9,9 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('mod_products_ingredients_nodes', function (Blueprint $table) {
+        Schema::create('mod_product_ingredients_nodes', function (Blueprint $table) {
             $table->id();
             $table->integer('parent')->comment('product id');
             $table->integer('shop_id')->default(0);

@@ -126,58 +126,14 @@
                                             <input type="hidden" name="bottle_id" id="bottleIdInput">
                                         </div>
 
-
-                                        <div class="col-xl-6 col-lg-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h4 class="card-title">Form Label Size</h4>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="basic-form">
-                                                        <form>
-                                                            <div class="mb-3 row">
-                                                                <label>City</label>
-                                                                <label>City</label>
-                                                                <label class="col-sm-2 col-form-label col-form-label-sm">Email</label>
-                                                                <div class="col-sm-2">
-                                                                    <label>City</label>
-                                                                    <input type="email" class="form-control form-control-sm" placeholder="col-form-label-sm">
-                                                                </div>
-                                                                <div class="col-sm-2">
-                                                                    <input type="email" class="form-control form-control-sm" placeholder="col-form-label-sm">
-                                                                </div>
-                                                                <div class="col-sm-2">
-                                                                    <input type="email" class="form-control form-control-sm" placeholder="col-form-label-sm">
-                                                                </div>
-                                                            </div>
-                                                            <div class="mb-3 row">
-                                                                <label class="col-sm-2 col-form-label">Email</label>
-                                                                <div class="col-sm-10">
-                                                                    <input type="email" class="form-control" placeholder="col-form-label">
-                                                                </div>
-                                                            </div>
-                                                            <div class="mb-3 row">
-                                                                <label class="col-sm-2 col-form-label col-form-label-lg">Email</label>
-                                                                <div class="col-sm-10">
-                                                                    <input type="email" class="form-control form-control-lg" placeholder="col-form-label-lg">
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
                                         <div class="col-lg-12">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h4 class="card-title">Table Bordered</h4>
+                                                    <h4 class="card-title">Responsive Table</h4>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-responsive-sm">
+                                                        <table class="table header-border table-responsive-sm">
                                                             <thead>
                                                                 <tr>
                                                                     <th>#</th>
@@ -188,41 +144,41 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                @foreach($ingredientCategories as $category)
                                                                 <tr>
                                                                     <th>
-                                                                        <div class="form-check custom-checkbox checkbox-success check-lg me-2">
-                                                                        <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                                                        <label class="form-check-label" for="customCheckBox2"></label>
-                                                                    </div>
-                                                                </th>
-                                                                    <td>Kolor Tea Shirt For Man</td>
-                                                                    <td><input type="email" class="form-control form-control-sm auto" placeholder="col-form-label-sm">
+                                                                        <div class="form-check custom-checkbox checkbox-success check-lg">
+                                                                            <input type="checkbox" class="form-check-input" id="customCheckBox{{ $category->id }}" name="ingredients[{{ $category->id }}][id]" value="{{ $category->id }}">
+                                                                            <label class="form-check-label" for="customCheckBox{{ $category->id }}"></label>
+                                                                        </div>
+                                                                    </th>
+                                                                    <td>{{ $category->title }}</td>
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $category->id }}][free_ingredients]" id="free_ingredients" class="form-control" placeholder="">
+                                                                        </div>
                                                                     </td>
-                                                                    <td><input type="email" class="form-control form-control-sm" placeholder="col-form-label-sm"></td>
-                                                                    <td class="color-primary"><input type="email" class="form-control form-control-sm" placeholder="col-form-label-sm"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>2</th>
-                                                                    <td>Kolor Tea Shirt For Women</td>
-                                                                    <td><span class="badge badge-success">Tax</span>
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $category->id }}][min_ingredients]" id="min_ingredients" class="form-control" placeholder="">
+                                                                        </div>
                                                                     </td>
-                                                                    <td>January 30</td>
-                                                                    <td class="color-success">$55.32</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>3</th>
-                                                                    <td>Blue Backpack For Baby</td>
-                                                                    <td><span class="badge badge-danger">Extended</span>
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $category->id }}][max_ingredients]" id="max_ingredients" class="form-control" placeholder="">
+                                                                        </div>
                                                                     </td>
-                                                                    <td>January 25</td>
-                                                                    <td class="text-danger">$14.85</td>
                                                                 </tr>
+                                                                @endforeach
+
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
 
 
                                         <div class="row">
