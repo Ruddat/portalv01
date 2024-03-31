@@ -295,6 +295,7 @@
                                 <div class="strip">
                                     <figure>
                                         <span class="ribbon off">15% off</span>
+
                                         <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
                                         <a href="{{ route('detail-restaurant.index', ['restaurantId' => $restaurant->id]) }} " class="strip_info">                                            <small>Pizza, Burger</small>
                                             <div style="display: flex; align-items: center;">
@@ -332,7 +333,6 @@
 
 
 
-
 					</div>
 					<!-- /row -->
 
@@ -359,7 +359,41 @@
 
 
 
+<style>
+    /* Stil für das Produkt */
+.product {
+    position: relative;
+    width: 300px; /* Passen Sie die Breite nach Bedarf an */
+    height: 300px; /* Passen Sie die Höhe nach Bedarf an */
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow: hidden;
+}
 
+/* Stil für den neuen Text */
+.new-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff0000; /* Hintergrundfarbe des Textes */
+    color: #fff; /* Textfarbe */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    animation: fadeIn 1s ease-in-out; /* Animationsstil */
+}
+
+/* CSS-Animation für das Einblenden des neuen Textes */
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Start mit einer undurchsichtigen Opazität */
+    }
+    to {
+        opacity: 1; /* Enden mit einer vollständigen Opazität */
+    }
+}
+
+</style>
 
 
 

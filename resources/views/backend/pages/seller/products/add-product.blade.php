@@ -126,6 +126,60 @@
                                             <input type="hidden" name="bottle_id" id="bottleIdInput">
                                         </div>
 
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Responsive Table</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table header-border table-responsive-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Name</th>
+                                                                    <th>Kostenlose Zutaten</th>
+                                                                    <th>Pflichtzutat</th>
+                                                                    <th>Max. Zutaten</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($ingredientCategories as $category)
+                                                                <tr>
+                                                                    <th>
+                                                                        <div class="form-check custom-checkbox checkbox-success check-lg">
+                                                                            <input type="checkbox" class="form-check-input" id="customCheckBox{{ $category->id }}" name="ingredients[{{ $category->id }}][id]" value="{{ $category->id }}">
+                                                                            <label class="form-check-label" for="customCheckBox{{ $category->id }}"></label>
+                                                                        </div>
+                                                                    </th>
+                                                                    <td>{{ $category->title }}</td>
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $category->id }}][free_ingredients]" id="free_ingredients" class="form-control" placeholder="">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $category->id }}][min_ingredients]" id="min_ingredients" class="form-control" placeholder="">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $category->id }}][max_ingredients]" id="max_ingredients" class="form-control" placeholder="">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                @endforeach
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
 
                                         <div class="row">
                                             <div class="col-md-6">

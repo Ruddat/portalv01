@@ -9,15 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('mod_products_ingredients_prices', function (Blueprint $table) {
             $table->id();
-            $table->integer('parent')->comment('ingridient_id');
+            $table->unsignedBigInteger('parent')->comment('ingredient_id'); // Ändern Sie ggf. den Datentyp auf unsignedBigInteger
             $table->integer('size_id')->default(0);
             $table->integer('shop_id')->default(0);
             $table->double('price')->default(0);
           //  $table->dateTime('date');
+
+          $table->foreign('parent')->references('id')->on('mod_products_ingredients')->onDelete('cascade');
+
 
             // Indexes
             $table->index('parent');
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mod_product_ingredients_prices');
+        Schema::dropIfExists('mod_products_ingredients_prices');
     }
 };

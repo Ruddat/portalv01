@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
 use App\Http\Controllers\Backend\Seller\Products\ProductController;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
+use App\Http\Controllers\Backend\Seller\Ingredients\IngredientsController;
 use App\Http\Controllers\Backend\Seller\OrderOverview\OrderOverviewController;
 
 
@@ -80,6 +81,20 @@ Route::prefix('manage-categories')->name('manage-categories.')->middleware(['aut
     Route::post('/toggle-show-status', [CategoriesController::class, 'toggleShowStatus'])->name('toggle-show-status');
 
 });
+
+// Ingredients Routes
+Route::prefix('manage-ingredients')->name('manage-ingredients.')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+    Route::get('/', [IngredientsController::class, 'ingredientsIndex'])->name('ingredients-index');
+    Route::get('/add-ingredient', [IngredientsController::class, 'addIngredient'])->name('add-ingredient');
+    Route::post('/store-ingredient', [IngredientsController::class, 'storeIngredient'])->name('store-ingredient');
+    Route::get('/edit-ingredient', [IngredientsController::class, 'editIngredient'])->name('edit-ingredient');
+    Route::post('/update-ingredient', [IngredientsController::class, 'updateIngredient'])->name('update-ingredient');
+    Route::post('/toggle-ingredient-status', [IngredientsController::class, 'toggleIngredientStatus'])->name('toggle-ingredient-status');
+    Route::post('/toggle-show-status', [IngredientsController::class, 'toggleShowStatus'])->name('toggle-show-status');
+    Route::post('/toggle-show-in-list', [IngredientsController::class, 'toggleShowInList'])->name('toggle-show-in-list');
+    Route::post('/update-ordering', [IngredientsController::class, 'updateOrdering'])->name('update-ordering');
+});
+
 
 // Products Routes
 Route::prefix('manage-products')->name('manage-products.')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
