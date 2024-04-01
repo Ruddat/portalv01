@@ -76,7 +76,6 @@ class IngredientsTableComponent extends Component
     }
 
 
-
     public function deleteIngredient($mainCategoryId, $childId)
     {
         // Hier können Sie die Logik zum Löschen der Zutat implementieren
@@ -92,8 +91,6 @@ class IngredientsTableComponent extends Component
 
                // Erfolgreich gelöscht, eine Benachrichtigung anzeigen oder andere Aktionen ausführen
                session()->flash('success', 'Ingredient deleted successfully.');
-
-
 
         // dd('Loeschen ');
     }
