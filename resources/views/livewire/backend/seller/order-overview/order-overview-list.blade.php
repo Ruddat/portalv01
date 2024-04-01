@@ -73,7 +73,7 @@
 					<div class="col-xl-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Custom select</h4>
+                                <h4 class="card-title">Custom select1234</h4>
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
@@ -224,7 +224,7 @@
                                                 <td>
                                                 </td>
 
-                                                
+
                                                 <td>
                                                     <div class="d-flex">
                                                         <a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>

@@ -13,20 +13,23 @@ class OrderOverviewController extends Controller
 
     public function indexOrderOverview($shopId, Request $request)
     {
-    // Überprüfen, ob die 'shopId' vorhanden ist
-    if (!$shopId) {
-        // Wenn nicht, den Benutzer zur Startseite zurückleiten
-        return redirect()->route('home');
-    }
+// Überprüfen, ob die 'shopId' vorhanden ist
+if (!$shopId) {
+    // Wenn nicht, den Benutzer zur Startseite zurückleiten
+    return redirect()->route('home');
+}
 
-    // Überprüfen, ob die 'shopId' bereits in der Session gespeichert ist
-    if (!$request->session()->has('shopId')) {
-        // Wenn nicht, die 'shopId' in die Session schreiben
-        $request->session()->put('shopId', $shopId);
-    } else {
-        // Wenn ja, die 'shopId' aus der Session abrufen
-        $shopId = $request->session()->get('shopId');
-    }
+// Überprüfen, ob die 'shopId' bereits in der Session gespeichert ist
+if (!$request->session()->has('shopId') || $request->session()->get('shopId') != $shopId) {
+    // Wenn nicht oder wenn sie unterschiedlich sind, die 'shopId' in die Session schreiben oder aktualisieren
+    $request->session()->put('shopId', $shopId);
+}
+
+// 'shopId' aus der Session abrufen (entweder neu hinzugefügt oder aktualisiert)
+$shopId = $request->session()->get('shopId');
+
+
+//dd($request->session()->get('shopId'));
 
         $orders = ModOrders::where('parent', $shopId)->get();
 
@@ -186,9 +189,14 @@ public function ajaxGetOrdersByMonth(Request $request)
     $year = $request->input('yearSelect', date('Y'));
     $month = $request->input('monthSelect', date('n'));
 //     dd($year, $month);
+   // $currentShopId = $request->session()->get('currentShopId');
 
     $shopId = $request->session()->get('shopId');
-    // Erstellen eines Carbon-Objekts für den ersten Tag des ausgewählten Monats
+ //   $shopId = 501;
+
+ //$shopId = $request->query('shopId');
+
+   // Erstellen eines Carbon-Objekts für den ersten Tag des ausgewählten Monats
     $startDate = Carbon::create($year, $month, 1)->startOfMonth();
     // Erstellen eines Carbon-Objekts für den letzten Tag des ausgewählten Monats
     $endDate = Carbon::create($year, $month, 1)->endOfMonth();
