@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer('free_ingredients')->default(0);
             $table->integer('min_ingredients')->default(0);
             $table->integer('max_ingredients')->default(0);
-           // $table->dateTime('date');
+            $table->boolean('active')->default(false); // Aktivierungsstatus hinzugefügt
+            // $table->dateTime('date');
 
             // Indexes
             $table->index('ingredients_id');

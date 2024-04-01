@@ -80,7 +80,7 @@
                                        </div>
 
 
-                                       <div class="mb-3">
+                                       <div class="mb-3 col-md-2">
                                         <div class="form-group">
                                             <label for="product-basic-price" class="form-label">Basic price</label>
                                             <input type="text" name="base_price" class="form-control input-default" value="{{ old('base_price' , '0.00') }}" placeholder="00.00">
@@ -91,40 +91,40 @@
                                         </div>
                                     </div>
 
-                                    @if($currentProductSizes->isNotEmpty())
-                                    <div class="mb-3 col-md-2">
-                                        <label class="form-label">Main Size Prices</label>
-                                        @foreach($currentProductSizes as $size)
-                                            @if($size->parent == 0)
-                                                <div>
-                                                    <span>{{ $size->title }}:</span>
-                                                    @foreach($size->children as $price)
-                                                        <div>
-                                                            <!-- Hier den Text für die Größe einfügen -->
-                                                            <span>{{ $price->title }}</span>:
-                                                            <input type="text" name="product_price_{{ $price->id }}" class="form-control input-default" value="{{ old('product_price_'.$price->id, '0.00') }}" placeholder="00.00">
-                                                            <input type="hidden" name="product_hidden_field" value="product_price_{{ $price->id }}">
-                                                            @error('product_price_'.$price->id)
-                                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                @endif
                                 <hr>
-                                        <div class="input-group mb-3">
-                                            <label class="input-group-text mb-0">Bottles</label>
-                                            <select id="bottlesSelect" class="default-select form-control wide ms-0">
-                                                <option selected value="">Choose...</option>
-                                                @foreach ($bottles as $bottle)
-                                                    <option value="{{ $bottle->id }}">{{ $bottle->bottles_title }} - {{ $bottle->bottles_value }}</option>
+
+
+                                @if($currentProductSizes->isNotEmpty())
+                                <div class="row">
+                                    <div class="mb-3 col-md-2">
+                                    <label class="form-label"><strong>Main Size Prices</strong></label>
+                                    </div>
+                                    @foreach($currentProductSizes as $size)
+                                        @if($size->parent == 0)
+                                            <div  class="mb-3 col-md-12">
+                                                <label class="form-label">Category: {{ $size->title }}:</label>
+                                                <div class="row">
+                                                @foreach($size->children as $price)
+                                                    <div class="mb-3 col-md-2">
+
+                                                        <!-- Hier den Text für die Größe einfügen -->
+                                                        <label class="form-label">{{ $price->title }}</label>
+                                                        <input type="text" name="product_price_{{ $price->id }}" class="form-control input-default" value="{{ old('product_price_'.$price->id, '0.00') }}" placeholder="00.00">
+                                                        <input type="hidden" name="product_hidden_field" value="product_price_{{ $price->id }}">
+                                                        @error('product_price_'.$price->id)
+                                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
                                                 @endforeach
-                                            </select>
-                                            <input type="hidden" name="bottle_id" id="bottleIdInput">
-                                        </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
+
+                                    @endforeach
+                                </div>
+                            @endif
+                            <hr>
 
                                         <div class="col-lg-12">
                                             <div class="card">
@@ -148,7 +148,7 @@
                                                                 <tr>
                                                                     <th>
                                                                         <div class="form-check custom-checkbox checkbox-success check-lg">
-                                                                            <input type="checkbox" class="form-check-input" id="customCheckBox{{ $category->id }}" name="ingredients[{{ $category->id }}][id]" value="{{ $category->id }}">
+                                                                            <input type="checkbox" class="form-check-input" id="customCheckBox{{ $category->id }}" name="ingredients[{{ $category->id }}][active]" value="1" @if($category->active) checked @endif>
                                                                             <label class="form-check-label" for="customCheckBox{{ $category->id }}"></label>
                                                                         </div>
                                                                     </th>
@@ -179,6 +179,16 @@
                                         </div>
 
 
+                                        <div class="input-group mb-3">
+                                            <label class="input-group-text mb-0">Bottles</label>
+                                            <select id="bottlesSelect" class="default-select form-control wide ms-0">
+                                                <option selected value="">Choose...</option>
+                                                @foreach ($bottles as $bottle)
+                                                    <option value="{{ $bottle->id }}">{{ $bottle->bottles_title }} - {{ $bottle->bottles_value }}</option>
+                                                @endforeach
+                                            </select>
+                                            <input type="hidden" name="bottle_id" id="bottleIdInput">
+                                        </div>
 
 
                                         <div class="row">

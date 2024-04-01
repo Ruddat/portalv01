@@ -200,6 +200,7 @@ class ShopSearchController extends Controller
         if (!empty($result) && isset($result[0]['display_name'])) {
             $selectedLocation = $result[0]['display_name'];
             $request->session()->put('selectedLocation', $selectedLocation);
+            $request->session()->put('selectedName', $selectedLocation);
           //  $this->saveLocation($request);
 
        //   dd($request);
@@ -224,7 +225,8 @@ class ShopSearchController extends Controller
 
         // Standortinformationen an die Blade-Ansicht übergeben
 // Standortinformationen und Stadtnamen an die Blade-Ansicht übergeben
-return response()->json(['success' => true, 'message' => 'Geokoordinaten erfolgreich gespeichert', 'name' => $name ], 200);    }
+return response()->json(['success' => true, 'message' => 'Geokoordinaten erfolgreich gespeichert', 'name' => $name ], 200);
+    }
 
 
     /**
