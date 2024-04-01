@@ -40,7 +40,7 @@
                                     <div class="">
                                         <div class="fl tree-i tree-item"></div>
                                     </div>
-                                    <div class="p5">#{{ $mainCategoryId }}</div>
+                                    <div class="p5"><sub>#{{ $mainCategoryId }}</sub></div>
                                 </td>
                                 <td class="row_{{ $mainCategoryId }}">
                                     <div class="">
@@ -66,8 +66,14 @@
                                 </td>
                                 <td class="row_{{ $mainCategoryId }}" align="left">
                                     <div class="p5">
-                                        <span><a href="javascript:void(0);" class="me-4" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void(0);" data-bs-toggle="tooltip" data-placement="top" title="btn-close"><i class="fa-solid fa-xmark text-danger"></i></a></span>
-                                    </div>
+                                        <span><a href="javascript:void(0);" class="me-4" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a>
+
+                                            <a href="javascript:void(0);" data-bs-toggle="tooltip" data-placement="top" title="btn-close"><i class="fa-solid fa-xmark text-danger"></i></a></span>
+
+                                            <button wire:click="deleteCategoryWithIngredients({{ $mainCategoryId }})" class="delete-button">
+                                                <i class="fa-solid fa-xmark text-danger"></i>
+                                                </button>
+                                        </div>
                                 </td>
                             </tr>
                             @foreach ($mainCategoryData['children'] as $childId => $childData)

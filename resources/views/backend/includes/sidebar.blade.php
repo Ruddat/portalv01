@@ -113,9 +113,9 @@
 							<span class="nav-text">Drivers</span>
 						</a>
                         <ul aria-expanded="false">
-							<li><a href="deliver-main.html">Dashboard</a></li>
-							<li><a href="deliver-order.html">Orders</a></li>
-							<li><a href="feedback.html">Feedback</a></li>
+							<li><a href="#">Dashboard</a></li>
+							<li><a href="#">Orders</a></li>
+							<li><a href="#">Feedback</a></li>
 						</ul>
                     </li>
 
@@ -152,7 +152,11 @@
 
 
                     <li class="menu-title">Other</li>
-                    <li><a href="{{ route('seller.indexAction') }}">LieferandoSpider</a></li>
+                    <li><a href="{{ route('seller.indexAction') }}" class="" aria-expanded="false">
+                        <i class="bi bi-gear-wide"></i>
+                        <span class="nav-text">LieferandoSpider</span>
+                        </a>
+                    </li>
 
                     {{-- Bestellungen Aktiver Shop, zeige das entsprechende Menü --}}
                     <li class="menu-title">Bestellungen</li>
@@ -310,26 +314,7 @@
                             <li><a href="table-datatable-basic.html">Datatable</a></li>
                         </ul>
                     </li>
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-							<i class="bi bi-file-earmark-break"></i>
-							<span class="nav-text">Pages</span>
-						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="./page-login.html">Login</a></li>
-                            <li><a href="./page-register.html">Register</a></li>
-                            <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Error</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./page-error-400.html">Error 400</a></li>
-                                    <li><a href="./page-error-403.html">Error 403</a></li>
-                                    <li><a href="./page-error-404.html">Error 404</a></li>
-                                    <li><a href="./page-error-500.html">Error 500</a></li>
-                                    <li><a href="./page-error-503.html">Error 503</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./page-lock-screen.html">Lock Screen</a></li>
-                            <li><a href="./empty-page.html">Empty Page</a></li>
-                        </ul>
-                    </li>
+
                 </ul>
 				<div class="plus-box">
 					<div class="d-flex align-items-center">
@@ -339,8 +324,8 @@
 					<a href="javascript:void(0);" class="btn bg-white btn-sm">Upgrade</a>
 				</div>
 				<div class="copyright mt-0">
-					<p><strong>Food Desk - Online Food Delivery Admin Dashboard</strong> © 2022 All Rights Reserved</p>
-					<p class="fs-12">Made with <span class="heart"></span> by DexignLab</p>
+					<p><strong>Food Desk - Online Food Delivery</strong> © v{{ config('app.version', '1.0') }} - {{ \Carbon\Carbon::createFromDate(2023, 1, 12)->format('Y') }} bis {{ now()->format('Y') }} All Rights Reserved</p>
+					<p class="fs-12">Made with <span class="heart"></span> by Ingo Ruddat</p>
 				</div>
 			</div>
         </div>

@@ -336,7 +336,7 @@
 
 
 
-      @push('specific-scripts')
+      @push('specific-script')
 
 
 

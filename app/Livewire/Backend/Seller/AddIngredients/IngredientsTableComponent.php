@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\ModProductSizes;
 use App\Models\ModProductsIngredients;
 use Illuminate\Support\Facades\Session;
+use App\Models\ModProductIngredientsNodes;
 use App\Models\ModProductsIngredientsPrices;
 
 class IngredientsTableComponent extends Component
@@ -73,6 +74,26 @@ class IngredientsTableComponent extends Component
         }
 
         $this->categoriesWithChildrenAndPrices = $categoriesWithChildrenAndPrices;
+    }
+
+    public function deleteCategoryWithIngredients($mainCategoryId)
+    {
+        // Zuerst alle Zutaten löschen, die zur Hauptkategorie gehören
+        ModProductsIngredients::where('parent', $mainCategoryId)->delete();
+
+        // Dann die Preise der gelöschten Zutaten löschen
+        ModProductsIngredientsPrices::whereIn('size_id', function($query) use ($mainCategoryId) {
+            $query->select('id')->from('mod_products_ingredients')->where('parent', $mainCategoryId);
+        })->delete();
+
+        // Anschließend die Zuordnungen von Zutaten zu Kategorien löschen
+        ModProductIngredientsNodes::where('ingredients_id', $mainCategoryId)->delete();
+
+        // Schließlich die Hauptkategorie selbst löschen
+        ModProductsIngredients::where('id', $mainCategoryId)->delete();
+
+        // Erfolgreich gelöscht, eine Benachrichtigung anzeigen oder andere Aktionen ausführen
+        session()->flash('success', 'Category and its ingredients deleted successfully.');
     }
 
 
