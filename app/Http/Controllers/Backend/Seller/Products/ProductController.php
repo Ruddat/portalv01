@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Models\ModProductSizesPrices;
 use App\Models\ModProductsIngredients;
+use Illuminate\Support\Facades\Session;
 use App\Models\ModProductIngredientsNodes;
 
 
@@ -68,8 +69,6 @@ class ProductController extends Controller
             ->where('id', $currentCategory->sizes_category) // Hier wird die Kategorie-ID verwendet
             ->orderBy('ordering')
             ->get();
-
-
 //dd($currentCategory->sizes_category);
 
         // Abrufen aller Hauptkategorien für Zutaten
@@ -93,8 +92,6 @@ class ProductController extends Controller
         // Die Bottles, Additives, Allergene und aktuellen Produktgrößen an die View übergeben
         return view('backend.pages.seller.products.add-product', $data, compact('bottles', 'additives', 'shopId', 'menuId', 'categoryId', 'allergens', 'currentProductSizes'));
     }
-
-
 
     public function storeProduct(Request $request)
     {
@@ -177,6 +174,23 @@ foreach ($request->all() as $key => $value) {
 // Durchlaufen der Ingredients-Nodes und Speichern in die Datenbank
 if ($request->has('ingredients')) {
     foreach ($request->input('ingredients') as $categoryId => $ingredient) {
+        // Setzen Sie den active-Status basierend auf den Bedingungen
+       // $active = ($ingredient['free_ingredients'] > 0 || $ingredient['min_ingredients'] > 0 || $ingredient['max_ingredients'] > 0) ? true : false;
+
+// Setzen Sie den active-Status basierend auf den Bedingungen
+$active = false;
+
+// Wenn beim Erstellen eine Option ausgewählt, aber keine spezifischen Werte eingegeben wurden, setze active auf true
+if ($request->isMethod('post')) {
+    $active = ($ingredient['free_ingredients'] > 0 || $ingredient['min_ingredients'] > 0 || $ingredient['max_ingredients'] > 0) ? true : false;
+} else {
+    // Wenn beim Bearbeiten Optionen ausgewählt und spezifische Werte eingegeben wurden, aber vergessen wurde, das Kontrollkästchen zu aktivieren, setze active auf true
+    if ($ingredient['free_ingredients'] > 0 || $ingredient['min_ingredients'] > 0 || $ingredient['max_ingredients'] > 0) {
+        $active = true;
+    }
+}
+
+
         ModProductIngredientsNodes::create([
             'parent' => $productId,
             'shop_id' => $shopId,
@@ -184,6 +198,7 @@ if ($request->has('ingredients')) {
             'free_ingredients' => $ingredient['free_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
             'min_ingredients' => $ingredient['min_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
             'max_ingredients' => $ingredient['max_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
+            'active' => $active, // Setzen Sie den active-Status
         ]);
     }
 }
@@ -212,7 +227,7 @@ if ($request->has('ingredients')) {
 
 
 
-    public function editProduct(Request $request)
+    public function editProduct(Request $request) // TODO - Edit Product
     {
         // Abrufen der Shop-ID, Menu-ID, Kategorie-ID und Produkt-ID aus dem Request
         $shopId = $request->shopId;
@@ -234,8 +249,8 @@ if ($request->has('ingredients')) {
         $additives = ModAdditives::all();
         $allergens = ModAllergens::all();
 
-// Vorhandene Preise für das Produkt abrufen
-$productPrices = $product->productSizesPrices()->with('size')->get();
+        // Vorhandene Preise für das Produkt abrufen
+        $productPrices = $product->productSizesPrices()->with('size')->get();
 
 
 // ID der Zeile, deren Spaltenwert Sie abrufen möchten
@@ -243,9 +258,9 @@ $productPrices = $product->productSizesPrices()->with('size')->get();
 
 
 
-    // Überprüfen, ob die Kategorie gefunden wurde
+        // Überprüfen, ob die Kategorie gefunden wurde
 
-$currentCategory = ModCategory::findOrFail($categoryId);
+        $currentCategory = ModCategory::findOrFail($categoryId);
 
 
         // Abrufen der aktuellen Produktgrößen für die angegebene Kategorie
@@ -277,18 +292,104 @@ $currentCategory = ModCategory::findOrFail($categoryId);
             $selectedAllergens = [];
         }
 
-    // Die Bottles, Additives, Preise und Produkt an die View übergeben
-    return view('backend.pages.seller.products.edit-product', compact('shopId', 'selectedAllergens', 'selectedAdditives', 'menuId', 'categoryId', 'product', 'bottles', 'additives', 'allergens', 'productId', 'productPrices', 'sizes'));
+
+
+
+
+        // Shop-ID aus der aktuellen Sitzung abrufen
+$currentShopId = Session::get('currentShopId');
+
+
+
+// Überprüfen, ob bereits Nodes für das Produkt vorhanden sind
+$existingNodes = ModProductIngredientsNodes::where('parent', $productId)
+    ->where('shop_id', $currentShopId)
+    ->get();
+//dd($existingNodes);
+// Wenn keine Knoten vorhanden sind, Zutaten aus der Tabelle mod_products_ingredients abrufen
+if ($existingNodes->isEmpty()) {
+    // Holen Sie sich die Zutaten für das Produkt aus der Tabelle mod_products_ingredients
+    $productIngredients = ModProductsIngredients::where('shop_id', $currentShopId)
+        ->where('parent', 0)
+        ->get();
+
+
+//dd($productIngredients);
+
+    // Iterieren Sie über die Zutaten und erstellen Sie Knoten für die Anzeige
+    foreach ($productIngredients as $ingredient) {
+        ModProductIngredientsNodes::create([
+            'parent' => $productId,
+            'shop_id' => $currentShopId,
+            'ingredients_id' => $ingredient->id,
+            'free_ingredients' => 0, // Standardwerte setzen
+            'min_ingredients' => 0,
+            'max_ingredients' => 0,
+            'active' => false,
+        ]);
+    }
+
+    // Laden Sie die neu erstellten Knoten erneut
+    $existingNodes = ModProductIngredientsNodes::where('parent', $productId)
+        ->where('shop_id', $currentShopId)
+        ->get();
+}
+
+// Jetzt haben Sie entweder die vorhandenen Knoten oder neu erstellte Knoten für die Anzeige
+//dd($existingNodes);
+
+
+// Wenn vorhanden, die passenden Werte holen
+if ($existingNodes->isNotEmpty()) {
+    $ingredientNodes = [];
+    foreach ($existingNodes as $node) {
+        $ingredientNodes[$node->ingredients_id] = [
+            'free_ingredients' => $node->free_ingredients,
+            'min_ingredients' => $node->min_ingredients,
+            'max_ingredients' => $node->max_ingredients,
+            'active' => $node->active,
+        ];
+    }
+} else {
+    // Wenn nicht vorhanden, leere Werte setzen
+    $ingredientNodes = [];
+}
+
+
+
+
+//dd($ingredientNodes);
+
+        // Die Bottles, Additives, Preise und Produkt an die View übergeben
+        return view('backend.pages.seller.products.edit-product', compact(
+            'shopId',
+            'selectedAllergens',
+            'selectedAdditives',
+            'menuId',
+            'categoryId',
+            'product',
+            'bottles',
+            'additives',
+            'allergens',
+            'productId',
+            'productPrices',
+            'sizes',
+            'ingredientNodes'
+        ));
 
     }
 
 
 
+    /**
+    * Aktualisiert die Produktinformationen und zugehörige Nodes.
+    *
+    * @param  \Illuminate\Http\Request  $request  Die Anfrage mit den aktualisierten Produktinformationen
+    * @return \Illuminate\Http\RedirectResponse  Weiterleitung zur Liste der Produkte oder Fehlermeldung
+    */
     public function updateProduct(Request $request)
     {
-
-      //  dd($request->all());
-
+        // Produkt-ID aus der Anfrage abrufen
         $productId = $request->product_id;
 
         // Validierung der Formulardaten
@@ -298,15 +399,17 @@ $currentCategory = ModCategory::findOrFail($categoryId);
             // Weitere Validierungsregeln hier hinzufügen
         ];
 
+
         // Überprüfen, ob sich die Artikelnummer ändert
         if ($request->input('product_code') != $request->old('product_code')) {
             // Artikelnummer hat sich geändert, füge die Validierungsregel hinzu
             $rules['product_code'] = [new UniqueArticleNo($request->productId)];
         }
 
+        // Validierung durchführen
         $request->validate($rules);
 
-        // Abrufen der Shop-ID und Kategorie-ID aus dem Formular
+        // Shop-ID und Kategorie-ID aus der Anfrage abrufen
         $shopId = $request->input('shop_id');
         $categoryId = $request->input('category_id');
 
@@ -314,7 +417,6 @@ $currentCategory = ModCategory::findOrFail($categoryId);
         if (!$shopId || !$categoryId) {
             return back()->with('error', 'Shop ID or Category ID not provided.');
         }
-//dd($request->product_id, $request->all());
 
         // Produkt aus der Datenbank abrufen
         $product = ModProducts::findOrFail($request->product_id);
@@ -338,25 +440,21 @@ $currentCategory = ModCategory::findOrFail($categoryId);
         $product->additives_ids = json_encode($selectedAdditives); // Speichern Sie das Array als JSON
 
 
-// Durchlaufen der Eingaben und Speichern der Preise in die Datenbank
-foreach ($request->prices as $sizeId => $price) {
-    // Überprüfen, ob der Preis nicht null ist
-    if ($price !== null) {
-        ModProductSizesPrices::updateOrCreate(
-            ['parent' => $product->id, 'size_id' => $sizeId],
-            ['shop_id' => $request->shop_id, 'price' => $price]
-        );
-    } else {
-        // Preis ist null, Modellobjekt löschen
+        // Durchlaufen der Eingaben und Speichern der Preise in die Datenbank
+        foreach ($request->prices as $sizeId => $price) {
+        // Überprüfen, ob der Preis nicht null ist
+        if ($price !== null) {
+            ModProductSizesPrices::updateOrCreate(
+                ['parent' => $product->id, 'size_id' => $sizeId],
+                ['shop_id' => $request->shop_id, 'price' => $price]
+            );
+        } else {
+            // Preis ist null, Modellobjekt löschen
         ModProductSizesPrices::where('parent', $product->id)
             ->where('size_id', $sizeId)
             ->delete();
-    }
-}
-
-
-
-
+            }
+        }
 
         // Wenn ein neues Bild hochgeladen wurde oder das Bild entfernt werden soll
         if ($request->hasFile('product_image') || $request->has('remove_image')) {
@@ -389,6 +487,39 @@ foreach ($request->prices as $sizeId => $price) {
             }
         }
 
+
+
+        // Überprüfen, ob bereits Nodes für das Produkt vorhanden sind
+        $existingNodes = ModProductIngredientsNodes::where('parent', $productId)
+        ->where('shop_id', $shopId)
+        ->get();
+
+// Durchlaufen der Eingaben und Aktualisieren der vorhandenen Nodes oder Hinzufügen neuer Nodes
+foreach ($request->input('ingredients', []) as $nodeId => $nodeData) {
+    $existingNode = $existingNodes->firstWhere('ingredients_id', $nodeId);
+
+    if ($existingNode) {
+// Aktualisieren der vorhandenen Node
+$existingNode->update([
+    'free_ingredients' => $nodeData['free_ingredients'] ?? 0,
+    'min_ingredients' => $nodeData['min_ingredients'] ?? 0,
+    'max_ingredients' => $nodeData['max_ingredients'] ?? 0,
+    'active' => $nodeData['active'] ?? ($nodeData['free_ingredients'] || $nodeData['min_ingredients'] || $nodeData['max_ingredients']),
+]);
+    } else {
+        // Hinzufügen einer neuen Node, falls sie nicht vorhanden ist
+        ModProductIngredientsNodes::create([
+            'parent' => $productId,
+            'shop_id' => $shopId,
+            'ingredients_id' => $nodeId,
+            'free_ingredients' => $nodeData['free_ingredients'] ?? 0,
+            'min_ingredients' => $nodeData['min_ingredients'] ?? 0,
+            'max_ingredients' => $nodeData['max_ingredients'] ?? 0,
+            'active' => $nodeData['active'] ?? false,
+        ]);
+    }
+}
+
         // Produkt speichern
         if ($product->save()) {
             // Erfolgreich gespeichert
@@ -407,7 +538,7 @@ foreach ($request->prices as $sizeId => $price) {
 
 
 
-    public function deleteProduct(Request $request){
+    public function deleteProduct(Request $request){    // TODO - Delete Product
         $productId = $request->productId;
 
 //dd($productId);
@@ -429,6 +560,10 @@ ModProductSizesPrices::where('parent', $productId)->delete();
 
         // Produkt aus der Datenbank löschen
         $product->delete();
+
+        // Nodes des Produkts löschen
+        ModProductIngredientsNodes::where('parent', $productId)->delete();
+
 
         // Weiterleiten oder eine Bestätigungsnachricht anzeigen
         return redirect()->back()->with('success', ucfirst($product->product_title).' Product deleted successfully.');

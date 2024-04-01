@@ -11,7 +11,13 @@ class IngredientsController extends Controller
 
     public function ingredientsIndex()
     {
-        return view('backend.pages.seller.ingredients.ingredients-index');
+
+
+        $data = [
+            'pageTitle' => 'Liste aller Zutaten',
+             // Weitere Daten hier hinzufügen, falls erforderlich
+        ];
+        return view('backend.pages.seller.ingredients.ingredients-index', $data);
     }
 
 }

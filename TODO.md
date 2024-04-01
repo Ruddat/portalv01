@@ -1,5 +1,5 @@
 # ToDo-Liste
 
-- [ ] Aufgabe 1
+- [ ] Update Product
 - [x] Aufgabe 2 (erledigt)
 - [ ] Aufgabe 3

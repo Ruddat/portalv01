@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Seller\AddIngredients;
 use Livewire\Component;
 use App\Models\ModProductSizes;
 use App\Models\ModProductsIngredients;
+use Illuminate\Support\Facades\Session;
 use App\Models\ModProductsIngredientsPrices;
 
 class AddIngredientsComponent extends Component
@@ -26,6 +27,8 @@ class AddIngredientsComponent extends Component
     public $ingredienttitle;
     public $price;
     public $mainSizes = [];
+    public $currentShopId;
+
 
     protected $listeners = ['toggleForm'];
 
@@ -33,12 +36,22 @@ class AddIngredientsComponent extends Component
 
     public function mount()
     {
-        // Hole alle Haupt-Größenkategorien aus der Datenbank und formatiere sie für das Dropdown-Menü
-        $this->sizeOptions = ModProductSizes::where('parent', 0)->pluck('title', 'id')->toArray();
-        // Lade die verfügbaren Kategorien aus der Datenbank und speichere sie in der $categories-Variable
-        $this->categories = ModProductsIngredients::select('id', 'title')
+        // Shop-ID aus der Session abrufen
+        $currentShopId = Session::get('currentShopId');
+
+
+    // Hole alle Haupt-Größenkategorien aus der Datenbank und formatiere sie für das Dropdown-Menü
+    $this->sizeOptions = ModProductSizes::where('parent', 0)
+        ->where('shop_id', $currentShopId) // Hinzufügen der Bedingung für shop_id
+        ->pluck('title', 'id')
+        ->toArray();
+
+    // Lade die verfügbaren Kategorien aus der Datenbank und speichere sie in der $categories-Variable
+    $this->categories = ModProductsIngredients::select('id', 'title')
         ->where('parent', 0)
+        ->where('shop_id', $currentShopId) // Hinzufügen der Bedingung für shop_id
         ->get();
+
         // Lade die Kategorien aus der Datenbank
     //    $this->loadCategories();
     $this->mainSizes = [
@@ -78,10 +91,14 @@ class AddIngredientsComponent extends Component
             'sizes.required' => 'The sizes field is required.',
         ]);
 
+        // Shop-ID aus der Session abrufen
+        $currentShopId = Session::get('currentShopId');
+
+
         // Speichere die eingegebenen Daten in der Datenbank
         $ingredient = new ModProductsIngredients();
         $ingredient->parent = 0; // Setze den Wert entsprechend der Eltern-ID
-        $ingredient->shop_id = 501; // Setze den Wert entsprechend der Shop-ID
+        $ingredient->shop_id = $currentShopId; // Setze die Shop-ID
         $ingredient->code_nr = ''; // Füge einen Wert hinzu, falls erforderlich
         $ingredient->sizes_category = json_encode($this->sizes); // Konvertiere die Größen in JSON
         $ingredient->max_spices = 3; // Setze den Wert entsprechend deiner Anforderungen
@@ -109,6 +126,9 @@ class AddIngredientsComponent extends Component
 
     public function addIngredient()
     {
+
+        // ShopId from session data
+        $currentShopId = Session::get('currentShopId');
 
 
 
@@ -142,7 +162,7 @@ $ingredient = ModProductsIngredients::create([
     'base_price' => $basePrice,
     'published' => $this->active,
     'ordering' => 100000, // Integer-Wert ohne Anführungszeichen
-    'shop_id' => 501, // Integer-Wert ohne Anführungszeichen
+    'shop_id' => $currentShopId, // Integer-Wert ohne Anführungszeichen
 ]);
 
 
@@ -169,6 +189,7 @@ if ($ingredient) {
                     'parent' => $ingredient->id,
                     'size_id' => $sizeId,
                     'price' => $price,
+                    'shop_id' => $currentShopId,
                 ]);
             }
         }
@@ -211,9 +232,12 @@ if ($ingredient) {
 
     public function loadCategories()
     {
+        $currentShopId = Session::get('currentShopId');
+
         // Lade die Zutatenkategorien aus der Datenbank
-        $this->categories = ModProductsIngredients::select('id', 'title', 'sizes_category')
+        $this->categories = ModProductsIngredients::select('id', 'title', 'sizes_category', 'shop_id')
         ->where('parent', 0)
+        ->where('shop_id', $currentShopId) // Hinzufügen der Bedingung für shop_id
         ->get();
         // Überprüfen, ob eine Kategorie ausgewählt wurde
         if ($this->selectedCategory) {

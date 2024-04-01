@@ -117,6 +117,67 @@
 
                                         </div>
 
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Responsive Table</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table header-border table-responsive-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>Name</th>
+                                                                    <th>Kostenlose Zutaten</th>
+                                                                    <th>Pflichtzutat</th>
+                                                                    <th>Max. Zutaten</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($ingredientNodes as $ingredientId => $ingredient)
+                                                                @php
+                                                                // Die entsprechenden Zutatendaten abrufen
+                                                                $ingredientData = App\Models\ModProductsIngredients::where('shop_id', $shopId)
+                                                                                    ->find($ingredientId);
+                                                            @endphp
+                                                                <tr>
+                                                                    <th>
+                                                                        <div class="form-check custom-checkbox checkbox-success check-lg">
+                                                                            <input type="checkbox" class="form-check-input" id="customCheckBox{{ $ingredientId }}" name="ingredients[{{ $ingredientId }}][active]" value="1" {{ $ingredient['active'] ? 'checked' : '' }}>
+                                                                            <label class="form-check-label" for="customCheckBox{{ $ingredientId }}"></label>
+                                                                        </div>
+                                                                    </th>
+                                                                    <td>{{ $ingredientData->title }}</td> <!-- Anzeigen des Zutatennamens -->
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $ingredientId }}][free_ingredients]" id="free_ingredients" class="form-control" placeholder="{{ $ingredient['free_ingredients'] }}">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $ingredientId }}][min_ingredients]" id="min_ingredients" class="form-control" placeholder="{{ $ingredient['min_ingredients'] }}">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="mb-3 col-md-3">
+                                                                            <input type="number" name="ingredients[{{ $ingredientId }}][max_ingredients]" id="max_ingredients" class="form-control" placeholder="{{ $ingredient['max_ingredients'] }}">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+
+
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
 
 
                                         <div class="input-group mb-3">
