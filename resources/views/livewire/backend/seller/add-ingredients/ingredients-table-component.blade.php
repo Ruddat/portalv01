@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="p5">
                                         <strong>
-                                        {{ $mainCategoryData['main']->title }}
+                                            {!! wordwrap($mainCategoryData['main']->title, 25, "<br>\n", true) !!}
                                         </strong>
                                     </div>
                                 </td>
@@ -66,10 +66,11 @@
                                 </td>
                                 <td class="row_{{ $mainCategoryId }}" align="left">
                                     <div class="p5">
-                                        <span><a href="javascript:void(0);" class="me-4" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a>
+                                        <span>
 
-                                            <a href="javascript:void(0);" data-bs-toggle="tooltip" data-placement="top" title="btn-close"><i class="fa-solid fa-xmark text-danger"></i></a></span>
-
+                                            <a href="javascript:void(0);" class="me-4" data-bs-toggle="tooltip" data-placement="top" title="Edit" wire:click="editCategoryIngredientsName({{ $mainCategoryId }})"><i class="fa fa-pencil color-muted"></i>
+                                            </a>
+                                        </span>
                                             <button wire:click="deleteCategoryWithIngredients({{ $mainCategoryId }})" class="delete-button">
                                                 <i class="fa-solid fa-xmark text-danger"></i>
                                                 </button>

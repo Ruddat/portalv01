@@ -150,7 +150,7 @@ jQuery(document).ready(function(){
 			setTimeout(function(){
 				dlabSettingsOptions.version = 'light';
 				new dlabSettings(dlabSettingsOptions);
-			},1500)
+			},1000)
 		});
 
 

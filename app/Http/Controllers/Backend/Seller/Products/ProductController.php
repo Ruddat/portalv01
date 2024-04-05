@@ -63,6 +63,8 @@ class ProductController extends Controller
 
         $currentCategory = ModCategory::findOrFail($categoryId);
 
+   //   dd($currentCategory);
+
         // Abrufen der aktuellen Produktgrößen für die angegebene Kategorie
         $currentProductSizes = ModProductSizes::where('parent', 0)
             ->where('shop_id', $shopId)
@@ -70,7 +72,7 @@ class ProductController extends Controller
             ->orderBy('ordering')
             ->get();
 //dd($currentCategory->sizes_category);
-
+//dd($currentProductSizes);
         // Abrufen aller Hauptkategorien für Zutaten
         $ingredientCategories = ModProductsIngredients::where('parent', 0) // Annahme: Hauptkategorien haben parent = 0
         ->where('shop_id', $shopId) // Filtern nach Shop-ID
@@ -229,6 +231,8 @@ if ($request->isMethod('post')) {
 
     public function editProduct(Request $request) // TODO - Edit Product
     {
+        // Shop-ID aus der aktuellen Sitzung abrufen
+        $currentShopId = Session::get('currentShopId');
         // Abrufen der Shop-ID, Menu-ID, Kategorie-ID und Produkt-ID aus dem Request
         $shopId = $request->shopId;
         $menuId = $request->menuId;
@@ -236,9 +240,12 @@ if ($request->isMethod('post')) {
         $productId = $request->productId;
 
         // Überprüfen, ob alle erforderlichen IDs vorhanden sind
-        if (!$shopId || !$categoryId || !$productId) {
+        if (!$shopId || !$categoryId || !$productId || !$currentShopId) {
             // Hier kann eine Fehlerbehandlung durchgeführt werden, falls benötigt
-            return back()->with('error', 'Missing Shop ID, Menu ID, Category ID, or Product ID.');
+    //        return back()->with('error', 'Missing Shop ID, Menu ID, Category ID, or Product ID.');
+
+        return redirect()->route('seller.dashboard')->with('error', 'Missing Shop ID, Menu ID, Category ID, or Product ID.');
+
         }
 
         // Produkt aus der Datenbank abrufen
@@ -270,7 +277,7 @@ if ($request->isMethod('post')) {
             ->orderBy('ordering')
             ->get();
 
-        //dd($currentProductSizes);
+    //    dd($currentProductSizes);
 
         // Eine Liste aller Größen für das Produkt erstellen
         $sizes = ModProductSizes::where('parent', $currentCategory->sizes_category)->get();
@@ -298,26 +305,35 @@ if ($request->isMethod('post')) {
 
         // Shop-ID aus der aktuellen Sitzung abrufen
 $currentShopId = Session::get('currentShopId');
+//dd($currentShopId);
+//dd($sizes);
+//dd($productId);
+
+//$catId = ModProducts::where('id', $productId)->first()->category_id;
+$catId = $currentProductSizes->first()->id;
 
 
-
+//dd($catId);
 // Überprüfen, ob bereits Nodes für das Produkt vorhanden sind
 $existingNodes = ModProductIngredientsNodes::where('parent', $productId)
     ->where('shop_id', $currentShopId)
     ->get();
 //dd($existingNodes);
-// Wenn keine Knoten vorhanden sind, Zutaten aus der Tabelle mod_products_ingredients abrufen
-if ($existingNodes->isEmpty()) {
-    // Holen Sie sich die Zutaten für das Produkt aus der Tabelle mod_products_ingredients
-    $productIngredients = ModProductsIngredients::where('shop_id', $currentShopId)
-        ->where('parent', 0)
-        ->get();
-
-
+// Holen Sie sich die Zutaten für das Produkt aus der Tabelle mod_products_ingredients
+$productIngredients = ModProductsIngredients::where('shop_id', $currentShopId)
+    ->where(function ($query) use ($catId) {
+        $query->whereJsonContains('sizes_category', [(int)$catId])
+            ->orWhereJsonContains('sizes_category', [(string)$catId]);
+    })
+    ->where('parent', 0)
+    ->get();
 //dd($productIngredients);
-
-    // Iterieren Sie über die Zutaten und erstellen Sie Knoten für die Anzeige
-    foreach ($productIngredients as $ingredient) {
+// Iterieren Sie über die Zutaten und erstellen Sie Knoten, wenn sie nicht bereits existieren
+foreach ($productIngredients as $ingredient) {
+    // Überprüfen, ob der Knoten bereits existiert
+    $existingNode = $existingNodes->where('ingredients_id', $ingredient->id)->first();
+    if (!$existingNode) {
+        // Wenn der Knoten nicht existiert, erstellen Sie ihn
         ModProductIngredientsNodes::create([
             'parent' => $productId,
             'shop_id' => $currentShopId,
@@ -328,16 +344,15 @@ if ($existingNodes->isEmpty()) {
             'active' => false,
         ]);
     }
+}
 
+
+// Jetzt haben Sie entweder die vorhandenen Knoten oder neu erstellte Knoten für die Anzeige
+//dd($existingNodes);
     // Laden Sie die neu erstellten Knoten erneut
     $existingNodes = ModProductIngredientsNodes::where('parent', $productId)
         ->where('shop_id', $currentShopId)
         ->get();
-}
-
-// Jetzt haben Sie entweder die vorhandenen Knoten oder neu erstellte Knoten für die Anzeige
-//dd($existingNodes);
-
 
 // Wenn vorhanden, die passenden Werte holen
 if ($existingNodes->isNotEmpty()) {
@@ -493,29 +508,20 @@ if ($existingNodes->isNotEmpty()) {
         $existingNodes = ModProductIngredientsNodes::where('parent', $productId)
         ->where('shop_id', $shopId)
         ->get();
-
-// Durchlaufen der Eingaben und Aktualisieren der vorhandenen Nodes oder Hinzufügen neuer Nodes
+//dd($existingNodes);
+// Durchlaufen der Eingaben und Aktualisieren der vorhandenen Nodes
+//dd($request->input('ingredients', []));
 foreach ($request->input('ingredients', []) as $nodeId => $nodeData) {
+    // Überprüfen, ob die Node bereits vorhanden ist
     $existingNode = $existingNodes->firstWhere('ingredients_id', $nodeId);
 
     if ($existingNode) {
-// Aktualisieren der vorhandenen Node
-$existingNode->update([
-    'free_ingredients' => $nodeData['free_ingredients'] ?? 0,
-    'min_ingredients' => $nodeData['min_ingredients'] ?? 0,
-    'max_ingredients' => $nodeData['max_ingredients'] ?? 0,
-    'active' => $nodeData['active'] ?? ($nodeData['free_ingredients'] || $nodeData['min_ingredients'] || $nodeData['max_ingredients']),
-]);
-    } else {
-        // Hinzufügen einer neuen Node, falls sie nicht vorhanden ist
-        ModProductIngredientsNodes::create([
-            'parent' => $productId,
-            'shop_id' => $shopId,
-            'ingredients_id' => $nodeId,
-            'free_ingredients' => $nodeData['free_ingredients'] ?? 0,
-            'min_ingredients' => $nodeData['min_ingredients'] ?? 0,
-            'max_ingredients' => $nodeData['max_ingredients'] ?? 0,
-            'active' => $nodeData['active'] ?? false,
+        // Aktualisieren der vorhandenen Node
+        $existingNode->update([
+            'free_ingredients' => isset($nodeData['free_ingredients']) ? $nodeData['free_ingredients'] : $existingNode->free_ingredients,
+            'min_ingredients' => isset($nodeData['min_ingredients']) ? $nodeData['min_ingredients'] : $existingNode->min_ingredients,
+            'max_ingredients' => isset($nodeData['max_ingredients']) ? $nodeData['max_ingredients'] : $existingNode->max_ingredients,
+            'active' => isset($nodeData['active']) ? $nodeData['active'] : 0,
         ]);
     }
 }

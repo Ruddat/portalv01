@@ -23,6 +23,7 @@
                         <h3>{{ $product->product_code }} {{ $product->product_title }}</h3>
                         @if ($product->bottle)
                             <p>Pfand: {{ $product->bottle->bottles_value }}</p>
+
                         @endif
                         <p>{!! $product->product_description !!}</p>
                         @if (isset($minPrices[$product->id]))
@@ -30,7 +31,7 @@
                         @else
                             <strong>Preis nicht verfügbar</strong>
                         @endif
-
+                        <i class="la la-plus"></i>
                     </a>
 
                 </div>
@@ -102,10 +103,7 @@
             </div>
             <div class="footer">
                 <div class="row small-gutters">
-                    <div class="col-md-4">
-                        <button id="cancel-btn" type="reset" class="btn_1 outline full-width mb-mobile">Cancel</button>
-                    </div>
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <button id="add-to-cart-btn" type="reset" class="btn_1 full-width">Add to cart</button>
                     </div>
                 </div>
