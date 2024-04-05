@@ -1,20 +1,20 @@
 <div>
     <ul class="clearfix">
         @if ($content->count() > 0)
-        @foreach ($content as $id => $item)
-        <li>
-            <a href="wire:click="updateCartItem({{ $id }}, 'minus')""> {{ $item->get('quantity') }} x {{ $item->get('name') }} {{ $item->get('size') }} </a> <span>{{ $item->get('price') }}</span>
-            <button class="" wire:click="updateCartItem({{ $id }}, 'minus')"> - </button>
-            <button class="" wire:click="updateCartItem({{ $id }}, 'plus')"> + </button>
-            <button class="fs1" aria-hidden="true" data-icon="" wire:click="removeFromCart({{ $id }})" style="border: none;"><i class="fs1"></i></button>
-</br>
-            @foreach($item->get('options') as $option)
-                {{ htmlspecialchars($option) }}
+            @foreach ($content as $id => $item)
+                <li>
+                    <a wire:click="updateCartItem({{ $id }}, 'minus')">{{ $item->get('quantity') }} x {{ $item->get('name') }} {{ $item->get('size') }}</a> <span>{{ $item->get('price') }}</span>
+                    <button class="" wire:click="updateCartItem({{ $id }}, 'minus')"> - </button>
+                    <button class="" wire:click="updateCartItem({{ $id }}, 'plus')"> + </button>
+                    <button class="fs1" aria-hidden="true" data-icon="" wire:click="removeFromCart({{ $id }})" style="border: none;"><i class="fs1"></i></button>
+                    <br>
+                    @foreach($item->get('options') as $option)
+                        {{ htmlspecialchars($option) }}
+                    @endforeach
+                </li>
             @endforeach
+        </ul>
 
-        </li>
-        @endforeach
-    </ul>
         <ul class="clearfix">
             <li>Subtotal<span>${{ $total }}</span></li>
             <li>Delivery fee<span>$10</span></li>
@@ -26,6 +26,4 @@
         @else
         <p class="text-3xl text-center mb-2">cart is empty!</p>
         @endif
-
 </div>
-

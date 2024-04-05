@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\ModShop;
 use App\Models\ModCategory;
 use App\Models\ModProducts;
+use App\Models\DeliveryArea;
 use Illuminate\Http\Request;
 use App\Models\ModSellerVotes;
 use App\Models\ModProductSizes;
@@ -79,7 +80,51 @@ class ShopCardController extends Controller
 
                 $productsByCategory[$category->category_name] = $products;
             }
-//dd($restaurant);
+// Retrieve latitude and longitude from session
+$userLatitude = session('userLatitude');
+$userLongitude = session('userLongitude');
+
+// Holen der Lieferbereiche für den bestimmten Shop
+$deliveryAreas = DeliveryArea::where('shop_id', $restaurant->id)->get();
+
+// Überprüfen, ob Lieferbereiche für den Shop vorhanden sind
+if ($deliveryAreas->isNotEmpty()) {
+    // Initialisieren der Variablen für die kürzeste Entfernung und den entsprechenden Lieferbereich
+    $shortestDistance = PHP_INT_MAX; // Eine sehr große Zahl als Ausgangspunkt
+    $nearestDeliveryArea = null;
+
+    // Berechnen der Entfernung zwischen dem Kunden und jedem Lieferbereich
+    foreach ($deliveryAreas as $area) {
+        $distance = $this->calculateDistance($userLatitude, $userLongitude, $area->latitude, $area->longitude);
+        $distance = round($distance, 2); // Rundet den Wert auf zwei Dezimalstellen
+
+        // Überprüfen, ob die aktuelle Entfernung kürzer ist als die bisher kürzeste Entfernung
+        if ($distance < $shortestDistance) {
+            $shortestDistance = $distance;
+            $nearestDeliveryArea = $area;
+        }
+    }
+//dd($nearestDeliveryArea, $shortestDistance  );
+    // Überprüfen, ob der Benutzer innerhalb des Lieferbereichs liegt
+    if ($nearestDeliveryArea !== null && $shortestDistance < $nearestDeliveryArea->distance_km) {
+        echo "User is within delivery area: " . $nearestDeliveryArea->delivery_cost;
+        // Hier können Sie zusätzliche Aktionen ausführen, z.B. den Lieferpreis ermitteln
+    } else {
+        echo "User is not within any delivery area.";
+    }
+} else {
+    // Keine Lieferbereiche für den Shop gefunden
+    // Behandeln Sie den Fall entsprechend
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -274,6 +319,45 @@ class ShopCardController extends Controller
 
 
     }
+
+
+
+    /**
+     * Calculate the distance between two coordinates using the Haversine formula.
+     *
+     * @param float $lat1 Latitude of the first point
+     * @param float $lon1 Longitude of the first point
+     * @param float $lat2 Latitude of the second point
+     * @param float $lon2 Longitude of the second point
+     * @param string $unit Unit of measurement for the result (default is kilometers)
+     * @return float Distance between the two points
+     */
+    protected function calculateDistance($latitude1, $longitude1, $latitude2, $longitude2) {
+        // Berechnung der Entfernung zwischen zwei Koordinaten
+        // Hier können Sie Ihre spezifische Logik für die Entfernungsberechnung einfügen
+        // Zum Beispiel mit der Haversine-Formel oder einer geeigneten Bibliothek
+
+        // Beispielberechnung mit der Haversine-Formel:
+        $earthRadius = 6371; // Radius der Erde in Kilometern
+
+        $latitudeDifference = deg2rad($latitude2 - $latitude1);
+        $longitudeDifference = deg2rad($longitude2 - $longitude1);
+
+        $a = sin($latitudeDifference / 2) * sin($latitudeDifference / 2) +
+             cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) *
+             sin($longitudeDifference / 2) * sin($longitudeDifference / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        $distance = $earthRadius * $c; // Entfernung in Kilometern
+
+        return $distance;
+    }
+
+
+
+
+
+
 
 
 }

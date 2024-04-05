@@ -22,42 +22,35 @@ class CartService {
         $this->session = $session;
     }
 
-/**
- * Adds a new item to the cart.
- *
- * @param string $id
- * @param string $code
- * @param string $name
- * @param string $price
- * @param string $quantity
- * @param array $options
- * @return void
- */
-public function add($id, $name, $price, $size, $quantity, $options = []): void
-{
+    /**
+     * Adds a new item to the cart.
+     *
+     * @param string $id
+     * @param string $name
+     * @param string $price
+     * @param string $size
+     * @param string $quantity
+     * @param string $productCode
+     * @param array $options
+     * @return void
+     */
+    public function add($id, $name, $price, $size, $quantity, $productCode, $options = []): void
+    {
+        $cartItem = $this->createCartItem($name, $price, $quantity, $size, $productCode, $options);
+        $content = $this->getContent();
 
-   // $sizeArray = ['S', 'M', 'L'];
-   // $size = 'M';
+        if ($content->has($id)) {
+            // If the product already exists in the cart, update the existing line
+            $existingQuantity = $content->get($id)->get('quantity');
+            $cartItem->put('quantity', $existingQuantity + $quantity);
+        }
 
+        // Add the product (or updated line) to the cart content
+        $content->put($id, $cartItem);
 
-   // $sizeString = implode(', ', $sizeArray);
-
-    $cartItem = $this->createCartItem($name, $price, $quantity, $size, $options);
-
-    $content = $this->getContent();
-
-    if ($content->has($id)) {
-        // Falls das Produkt bereits im Warenkorb ist, aktualisieren Sie die vorhandene Zeile
-        $existingQuantity = $content->get($id)->get('quantity');
-        $cartItem->put('quantity', $existingQuantity + $quantity);
+        // Update the cart in the session storage
+        $this->session->put(self::DEFAULT_INSTANCE, $content);
     }
-
-    // Fügen Sie das Produkt (oder die aktualisierte Zeile) zum Warenkorbinhalt hinzu
-    $content->put($id, $cartItem);
-
-    // Aktualisieren Sie den Warenkorb im Sitzungsspeicher
-    $this->session->put(self::DEFAULT_INSTANCE, $content);
-}
 
     /**
      * Updates the quantity of a cart item.
@@ -155,34 +148,41 @@ public function add($id, $name, $price, $size, $quantity, $options = []): void
         return $this->session->has(self::DEFAULT_INSTANCE) ? $this->session->get(self::DEFAULT_INSTANCE) : collect([]);
     }
 
-/**
- * Creates a new cart item from given inputs.
- *
- * @param array $code
- * @param string $name
- * @param string $price
- * @param string $quantity
- * @param string $size
- * @param array $options
- * @return Illuminate\Support\Collection
- */
-protected function createCartItem(string $name, string $price, string $quantity, string $size, array $options): Collection
-{
-    $price = floatval($price);
-    $quantity = intval($quantity);
+    /**
+     * Creates a new cart item from given inputs.
+     *
+     * @param array $code
+     * @param string $name
+     * @param string $price
+     * @param string $quantity
+     * @param string $size
+     * @param string $productCode
+     * @param array $options
+     * @return Illuminate\Support\Collection
+     */
+    protected function createCartItem(string $name, string $price, string $quantity, string $size, string $productCode, array $options): Collection
+    {
+        $price = floatval($price);
+        $quantity = intval($quantity);
 
-    if ($quantity < self::MINIMUM_QUANTITY) {
-        $quantity = self::MINIMUM_QUANTITY;
+        if ($quantity < self::MINIMUM_QUANTITY) {
+            $quantity = self::MINIMUM_QUANTITY;
+        }
+
+        $cartItem = [
+            'name' => $name,
+            'price' => $price,
+            'quantity' => $quantity,
+            'size' => $size,
+        ];
+
+        // Fügen Sie die Optionen nur hinzu, wenn sie vorhanden sind
+        if (!is_null($options)) {
+            $cartItem['options'] = $options;
+        }
+
+        return collect($cartItem);
     }
-
-    return collect([
-        'name' => $name,
-        'price' => $price,
-        'quantity' => $quantity,
-        'size' => $size,
-        'options' => $options,
-    ]);
-}
 
     /**
      * Checks if the cart is empty.

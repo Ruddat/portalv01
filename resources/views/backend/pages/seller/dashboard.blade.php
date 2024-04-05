@@ -356,7 +356,7 @@
 
 
 
-      @push('specific-scripts')
+      @push('specific-script') 
 
       	<!-- Apex Chart -->
 	<script src="{{ asset('backend/vendor/apexchart/apexchart.js') }}"></script>

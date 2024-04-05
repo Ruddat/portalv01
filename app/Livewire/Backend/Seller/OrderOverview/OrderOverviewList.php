@@ -17,7 +17,7 @@ class OrderOverviewList extends Component
     public $ordersData;
     public $search = '';
     public $sortOption = 'recently'; // Standard-Sortierung
-    public $shopId; // Shop-ID
+   // public $shopId; // Shop-ID
     public $daysOfMonth;
     public $selectedYear; // Ausgewähltes Jahr
     public $selectedMonth; // Ausgewählter Monat
@@ -32,7 +32,9 @@ class OrderOverviewList extends Component
 
     public function mount($shopId)
     {
-        $this->shopId = $shopId;
+        $currentShopId = Session::get('currentShopId');
+
+        $this->shopId = $currentShopId;
         $this->loadOrders();
         $this->loadYears();
         $this->selectedYear = Carbon::now()->year;
@@ -144,6 +146,7 @@ class OrderOverviewList extends Component
 
     public function loadYears()
     {
+
         $firstOrderYear = ModOrders::where('parent', $this->shopId)->orderBy('created_at')->value('created_at');
 
         if($firstOrderYear) {

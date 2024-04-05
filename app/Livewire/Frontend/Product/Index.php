@@ -5,13 +5,15 @@ namespace App\Livewire\Frontend\Product;
 use App\Facades\Cart;
 use App\Models\ModShop;
 use Livewire\Component;
+use App\Models\ModBottles;
 use App\Models\ModCategory;
 use App\Models\ModProducts;
 use App\Services\CartService;
 use App\Models\ModProductSizes;
-use App\Models\ModProductSizesPrices;
-use App\Http\Controllers\Frontend\ShopCardController;
 use LivewireUI\Modal\ModalComponent;
+use App\Models\ModProductSizesPrices;
+use App\Models\ModProductIngredientsNodes;
+use App\Http\Controllers\Frontend\ShopCardController;
 
 
 class Index extends Component
@@ -32,6 +34,7 @@ class Index extends Component
         'add-to-cart' => 'addToCartWithOptions'
     ];
 
+    public $options = [];
 
     protected $cartService;
 
@@ -58,18 +61,11 @@ class Index extends Component
         $this->updateCart();
     }
 
-    public function addToCart($productId, $productName, $productPrice, $quantity)
+    public function addToCart($productId, $productName, $quantity)
     {
-
-
-    // Zuerst die Längen- und Breitengradwerte aus der Session holen
-    $userLatitude = session('userLatitude');
-    $userLongitude = session('userLongitude');
-  //  dd($userLatitude, $userLongitude);
-
         // Produkt aus der Datenbank abrufen
         $product = ModProducts::find($productId);
-//dd($product);
+
         // Überprüfen, ob das Produkt gefunden wurde
         if (!$product) {
             // Fehler behandeln, wenn das Produkt nicht gefunden wurde
@@ -77,51 +73,72 @@ class Index extends Component
             return;
         }
 
-        // Preis für das Produkt abrufen
-        $price = 0;
+        // Basispreis für das Produkt
+        $price = $product->base_price;
 
-        // Überprüfen, ob das Produkt mehrere Preise hat
-        $prices = ModProductSizesPrices::where('parent', $productId)->get();
-      //  dd($prices);
-        if ($prices->count() > 1) {
-            // Größen nur abrufen, wenn sie vorhanden sind
-            $category = ModCategory::find($product->category_id);
-            $sizesCategory = $category->sizes_category;
-            $sizes = ModProductSizes::where('parent', $sizesCategory)->get()->toArray();
-            // Daten für das Modal vorbereiten und anzeigen
-            $this->dispatch('show-options-modal', [
-                'productData' => [
-                    'productId' => $productId,
-                    'productName' => $product->product_title,
-                    'prices' => $prices->toArray(),
-                    'sizes' => $sizes,
-                    'quantity' => $quantity
-                ]
-            ]);
-            return;
-        } elseif ($prices->count() == 1) {
-            // Nur einen Preis gefunden
-            $price = $prices->first()->price;
-        } else {
-            // Keinen Preis gefunden
-            $this->dispatch('show-toast', 'Für dieses Produkt sind keine Preise verfügbar. Bitte kontaktieren Sie den Shop.', 'error');
+        // Optionen für das Produkt
+        $options = [];
+        $size = 'standard'; // Annahme: Standardgröße, wenn keine Größen verfügbar sind
+        $quantity = '1'; // Annahme: Standardgröß
+        $bottles = $product->bottles_id;
+        if ($options['bottles'] = $bottles) {
+
+            $bottlesPrices = ModBottles::where('id', $bottles)->first();
+        $options = [
+            'productName' => $bottlesPrices->bottles_title,
+            'price' => $bottlesPrices->bottles_value,
+            'size' => $size,
+            'quantity' => $quantity,
+        ];
+
+        }
+
+       // dd($options);
+        // Überprüfen, ob das Produkt Nodes (Optionen) hat und aktiv ist
+        $nodes = ModProductIngredientsNodes::where('parent', $productId)
+            ->where('active', true)
+            ->get();
+
+        if ($nodes->isNotEmpty()) {
+            // Produkt hat Optionen
+            // Hier können Sie die Logik implementieren, um das Modal vorzubereiten und die Optionen gemäß den Nodes zu verarbeiten
+            // Zum Beispiel: $this->prepareModalWithOptions($product, $nodes);
+            $this->prepareModalWithOptions($product, $nodes);
             return;
         }
-        // Produkt zum Warenkorb hinzu fuegen
-   //     dd($productId, $product->product_title, $price, $quantity);
 
-        $size = '';
-        // Definieren Sie die Optionen als Array
-        $options = [
-            'kaeserand' => 1,
-            'price' => $price,
+        // Überprüfen, ob das Produkt verschiedene Preise hat (Größen)
+        $prices = ModProductSizesPrices::where('parent', $productId)->get();
 
-    ];
+        if ($prices->isNotEmpty()) {
+            // Produkt hat verschiedene Größen
+            // Hier können Sie die Logik implementieren, um das Modal vorzubereiten und die Größen zu verarbeiten
+            // Zum Beispiel: $this->prepareModalWithSizes($product, $prices);
+            $this->prepareModalWithSizes($product, $prices);
+            return;
+        }
 
-       Cart::add($productId, $product->product_title, $price, $size, $quantity, $options);
+        // Produkt ohne Optionen und Größen
+        // Hier können Sie die Logik implementieren, um das Produkt ohne Optionen und Größen direkt zum Warenkorb hinzuzufügen
+
+
+      //  dd($productId, $productName, $price, $size, $quantity, $product->product_code, $options);
+        Cart::add($productId, $productName, $price, $size, $quantity, $product->product_code, $options);
 
         $this->dispatch('productAddedToCart');
     }
+
+    private function prepareModalWithOptions($product, $nodes)
+    {
+        // Hier die Logik implementieren, um das Modal mit den verfügbaren Optionen (Nodes) vorzubereiten
+    }
+
+    private function prepareModalWithSizes($product, $prices)
+    {
+        // Hier die Logik implementieren, um das Modal mit den verfügbaren Größen vorzubereiten
+    }
+
+
 
 
     /**
@@ -148,7 +165,7 @@ class Index extends Component
             'Kaeserand' => $selectedQuantity,
             'price' => 2.70,
             'size' => $selectedSize['title'],
-            'size_id' => $selectedSize['id'],
+         //   'size_id' => $selectedSize['id'],
             'product_code' => $productId,
         ];
 
@@ -157,7 +174,7 @@ class Index extends Component
         $sizeTitle = $selectedSize['title'];
 
 
-        Cart::add($extendedProductId, $productName, $selectedPrice, $sizeTitle, $selectedQuantity, $options);
+        Cart::add($extendedProductId, $productName, $selectedPrice, $sizeTitle, $selectedQuantity, $productId, $options);
 
         $this->dispatch('closeModal');
         $this->dispatch('show-toast', 'Produkt wurde zum Warenkorb hinzugefügt', 'success');
@@ -234,6 +251,10 @@ class Index extends Component
 
         return $sizeData;
     }
+
+
+
+
 
     private function getPriceForSize($prices, $sizeId) {
         foreach ($prices as $price) {

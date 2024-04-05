@@ -247,8 +247,12 @@
 	<script src="{{ asset('backend/vendor/chart.js/chart.bundle.min.js') }}"></script>
 	<script src="{{ asset('backend/vendor/swiper/js/swiper-bundle.min.js') }}"></script>
 	<script src="{{ asset('backend/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
+
+	<!-- Dashboard 1 -->
 	<script src="{{ asset('backend/js/dlabnav-init.js') }}"></script>
     <script src="{{ asset('backend/js/custom.js') }}"></script>
+
+
     <!-- Extra Assets -->
 
 

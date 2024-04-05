@@ -193,7 +193,7 @@ class CartOrderDetails extends Component
 
         $order = session()->get('shopping-cart');
 
-      //  dd($order);
+     //   dd($order);
 
 
     $this->createXml();
@@ -348,13 +348,13 @@ public function createXml()
 {
     $orderIDValue = Session::get('orderHash');
 
-  //  $articles = session()->get('shopping-cart');
+    $articles = session()->get('shopping-cart');
 
     //dd($orderHash);
    // $delivery_option = 'Lieferung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
 
     // Erstelle ein neues XML-Dokument
-    $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8" standalone="yes"?><WinOrder></WinOrder>');
+    $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8" standalone="yes"?><WinOrder></WinOrder>');
 
 
     // Füge <OrderList> hinzu
@@ -424,6 +424,7 @@ $orderID = $order->addChild('OrderID', $orderIDValue);
     $storeData->addChild('StoreId', $this->shopData->id); // Annahme: Die StoreId ist in $this->store_id gespeichert
     $storeData->addChild('StoreName', $this->shopData->title); // Annahme: Der StoreName ist in $this->store_name gespeichert
 
+//dd($articles);
 
 // Füge die Artikelinformationen hinzu, wenn Artikel vorhanden sind
 if (!empty($articles)) {
@@ -431,8 +432,10 @@ if (!empty($articles)) {
 
     foreach ($articles as $article) {
         $articleNode = $articleList->addChild('Article');
-        $articleNode->addChild('ArticleNo', '1');
-        $articleNode->addChild('ArticleName', $article['name']);
+   //     $articleNode->addChild('ArticleNo', $article['product_code']);
+   //     $articleNode->addChild('ArticleName', $article['name']);
+        $articleNode->addChild('ArticleName', htmlspecialchars($article['name'], ENT_XML1, 'UTF-8'));
+      //  $articleNode->addChild('ArticleName', utf8_encode($article['name']));
         $articleNode->addChild('ArticleSize', $article['size']);
         $articleNode->addChild('Count', $article['quantity']);
         $articleNode->addChild('Price', $article['price']);

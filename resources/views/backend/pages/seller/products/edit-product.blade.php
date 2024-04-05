@@ -135,11 +135,14 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                @dump($ingredientNodes);
+
                                                                 @foreach($ingredientNodes as $ingredientId => $ingredient)
                                                                 @php
                                                                 // Die entsprechenden Zutatendaten abrufen
                                                                 $ingredientData = App\Models\ModProductsIngredients::where('shop_id', $shopId)
                                                                                     ->find($ingredientId);
+
                                                             @endphp
                                                                 <tr>
                                                                     <th>

@@ -113,9 +113,9 @@
 							<span class="nav-text">Drivers</span>
 						</a>
                         <ul aria-expanded="false">
-							<li><a href="deliver-main.html">Dashboard</a></li>
-							<li><a href="deliver-order.html">Orders</a></li>
-							<li><a href="feedback.html">Feedback</a></li>
+							<li><a href="#">Dashboard</a></li>
+							<li><a href="#">Orders</a></li>
+							<li><a href="#">Feedback</a></li>
 						</ul>
                     </li>
 
@@ -134,59 +134,21 @@
 
 
                     {{-- Produkte Aktiver Shop, zeige das entsprechende Menü --}}
-                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-						<i class="bi bi-cart-plus"></i>
 
-							<span class="nav-text">{{ app(\App\Services\TranslationService::class)->trans('Products', app()->getLocale()) }}</span>
-						</a>
-                        <ul aria-expanded="false">
-							<li><a href="{{ route('seller.manage-categories.cats-subcats-list') }}">{{ app(\App\Services\TranslationService::class)->trans('Product Categories', app()->getLocale()) }}</a></li>
-							<li><a href="deliver-order.html">Orders</a></li>
-							<li><a href="feedback.html">Feedback</a></li>
-
-
-						</ul>
-                    </li>
 
                     @endif
 
 
                     <li class="menu-title">Other</li>
-                    <li><a href="{{ route('seller.indexAction') }}">LieferandoSpider</a></li>
+
 
                     {{-- Bestellungen Aktiver Shop, zeige das entsprechende Menü --}}
                     <li class="menu-title">Bestellungen</li>
-                    <li><a href="#" class="" aria-expanded="false">
-                        <i class="bi bi-gear-wide"></i>
-                        <span class="nav-text">Bestellübersicht</span>
-
-                    </a>
-                </li>
-                <li><a href="widget-basic.html" class="" aria-expanded="false">
-                    <i class="bi bi-gear-wide"></i>
-                    <span class="nav-text">Bewertungen</span>
-                    </a>
-                </li>
-                <li><a href="widget-basic.html" class="" aria-expanded="false">
-                    <i class="bi bi-gear-wide"></i>
-                    <span class="nav-text">Rechnungen</span>
-                    </a>
-                </li>
-
 
 
                     {{-- Karte Aktiver Shop, zeige das entsprechende Menü --}}
                     <li class="menu-title">Karte</li>
-                    <li><a href="widget-basic.html" class="" aria-expanded="false">
-                        <i class="bi bi-gear-wide"></i>
-                        <span class="nav-text">Größen</span>
-                    </a>
-                </li>
-                <li><a href="widget-basic.html" class="" aria-expanded="false">
-                    <i class="bi bi-gear-wide"></i>
-                    <span class="nav-text">Zutaten</span>
-                    </a>
-                </li>
+
 
 
 
@@ -233,103 +195,11 @@
 
 
 
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-							<i class="bi bi-pie-chart"></i>
-							<span class="nav-text">Charts</span>
-						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="./chart-flot.html">Flot</a></li>
-                            <li><a href="./chart-morris.html">Morris</a></li>
-                            <li><a href="./chart-chartjs.html">Chartjs</a></li>
-                            <li><a href="./chart-chartist.html">Chartist</a></li>
-                            <li><a href="./chart-sparkline.html">Sparkline</a></li>
-                            <li><a href="./chart-peity.html">Peity</a></li>
-                        </ul>
-                    </li>
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-							<i class="bi bi-star"></i>
-							<span class="nav-text">Bootstrap</span>
-						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="./ui-accordion.html">Accordion</a></li>
-                            <li><a href="./ui-alert.html">Alert</a></li>
-                            <li><a href="./ui-badge.html">Badge</a></li>
-                            <li><a href="./ui-button.html">Button</a></li>
-                            <li><a href="./ui-modal.html">Modal</a></li>
-                            <li><a href="./ui-button-group.html">Button Group</a></li>
-                            <li><a href="./ui-list-group.html">List Group</a></li>
-                            <li><a href="./ui-card.html">Cards</a></li>
-                            <li><a href="./ui-carousel.html">Carousel</a></li>
-                            <li><a href="./ui-dropdown.html">Dropdown</a></li>
-                            <li><a href="./ui-popover.html">Popover</a></li>
-                            <li><a href="./ui-progressbar.html">Progressbar</a></li>
-                            <li><a href="./ui-tab.html">Tab</a></li>
-                            <li><a href="./ui-typography.html">Typography</a></li>
-                            <li><a href="./ui-pagination.html">Pagination</a></li>
-                            <li><a href="./ui-grid.html">Grid</a></li>
 
-                        </ul>
-                    </li>
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-							<i class="bi bi-heart"></i>
-							<span class="nav-text">Plugins</span>
-						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="./uc-select2.html">Select 2</a></li>
-                            <li><a href="./uc-nestable.html">Nestedable</a></li>
-                            <li><a href="./uc-noui-slider.html">Noui Slider</a></li>
-                            <li><a href="./uc-sweetalert.html">Sweet Alert</a></li>
-                            <li><a href="./uc-toastr.html">Toastr</a></li>
-                            <li><a href="./map-jqvmap.html">Jqv Map</a></li>
-							<li><a href="./uc-lightgallery.html">Light Gallery</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="widget-basic.html" class="" aria-expanded="false">
-							<i class="bi bi-gear-wide"></i>
-							<span class="nav-text">Widget</span>
-						</a>
-					</li>
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-							<i class="bi bi-file-earmark-check"></i>
-							<span class="nav-text">Forms</span>
-						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="./form-element.html">Form Elements</a></li>
-                            <li><a href="./form-wizard.html">Wizard</a></li>
-                            <li><a href="./form-ckeditor.html">CkEditor</a></li>
-                            <li><a href="form-pickers.html">Pickers</a></li>
-                            <li><a href="form-validation.html">Form Validate</a></li>
-                        </ul>
-                    </li>
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-							<i class="bi bi-file-earmark-spreadsheet"></i>
-							<span class="nav-text">Table</span>
-						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="table-bootstrap-basic.html">Bootstrap</a></li>
-                            <li><a href="table-datatable-basic.html">Datatable</a></li>
-                        </ul>
-                    </li>
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-							<i class="bi bi-file-earmark-break"></i>
-							<span class="nav-text">Pages</span>
-						</a>
-                        <ul aria-expanded="false">
-                            <li><a href="./page-login.html">Login</a></li>
-                            <li><a href="./page-register.html">Register</a></li>
-                            <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Error</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./page-error-400.html">Error 400</a></li>
-                                    <li><a href="./page-error-403.html">Error 403</a></li>
-                                    <li><a href="./page-error-404.html">Error 404</a></li>
-                                    <li><a href="./page-error-500.html">Error 500</a></li>
-                                    <li><a href="./page-error-503.html">Error 503</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./page-lock-screen.html">Lock Screen</a></li>
-                            <li><a href="./empty-page.html">Empty Page</a></li>
-                        </ul>
-                    </li>
+
+
+
+
                 </ul>
 				<div class="plus-box">
 					<div class="d-flex align-items-center">
@@ -339,8 +209,8 @@
 					<a href="javascript:void(0);" class="btn bg-white btn-sm">Upgrade</a>
 				</div>
 				<div class="copyright mt-0">
-					<p><strong>Food Desk - Online Food Delivery Admin Dashboard</strong> © 2022 All Rights Reserved</p>
-					<p class="fs-12">Made with <span class="heart"></span> by DexignLab</p>
+					<p><strong>Food Desk - Online Food Delivery</strong> © v{{ config('app.version', '1.0') }} - {{ \Carbon\Carbon::createFromDate(2023, 1, 12)->format('Y') }} bis {{ now()->format('Y') }} All Rights Reserved</p>
+					<p class="fs-12">Made with <span class="heart"></span> by Ingo Ruddat</p>
 				</div>
 			</div>
         </div>
