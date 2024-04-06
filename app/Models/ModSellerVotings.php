@@ -35,4 +35,10 @@ class ModSellerVotings extends Model
     }
 
 
+    public function shopData()
+    {
+        return $this->belongsTo(ModOrders::class, 'shop_id', 'parent');
+    }
+
+
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Backend\Seller\SellerController;
 use App\Http\Controllers\Backend\Seller\DashboardController;
+use App\Http\Controllers\Backend\Seller\Review\ReviewController;
 use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
 use App\Http\Controllers\Backend\Seller\Products\ProductController;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
@@ -142,6 +143,15 @@ Route::get('/download-pdf/{shopId}/{orderId}', function ($shopId, $orderId) {
     $filePath = 'uploads/shops/' . $shopId . '/orders/' . $orderId . '_bestellbestaetigung.pdf';
     return Storage::download($filePath);
 })->name('download.pdf');
+
+
+// Review Overview
+Route::prefix('manage-rewiews')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+  //  Route::view('/reviews/{shopId}/overwiews', 'backend.pages.seller.reviewOverview.reviewsIndex')->name('reviews-overview');
+    Route::get('/reviews/{shopId}/overwiews', [ReviewController::class, 'sellerReviewsIndex'])->name('reviews-overview');
+ });
+
+
 
 
 });

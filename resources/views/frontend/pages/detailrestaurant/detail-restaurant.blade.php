@@ -393,12 +393,12 @@
                     <h4 class="add_bottom_15">Write a Reply for "{{ $restaurant->title }}"</h4>
                     <div class="form-group">
                         <label for="reply_title">Title of your Reply</label>
-                        <input class="form-control" id="reply_title" name="reply_title" type="text" placeholder="If you could say it in one sentence, what would you say?">
+                        <input class="form-control" id="reply_title-{{ $rating->id }}" name="reply_title" type="text" placeholder="If you could say it in one sentence, what would you say?">
                         @error('reply_title') <span class="error">{{ $message }}</span> @enderror
                     </div>
                     <div class="form-group">
                         <label for="reply_content">Your Reply</label>
-                        <textarea class="form-control" id="reply_content" name="reply_content" style="height: 180px;" placeholder="Write your review to help others learn about this online business"></textarea>
+                        <textarea class="form-control" id="reply_content-{{ $rating->id }}" name="reply_content-{{ $rating->id }}" style="height: 180px;" placeholder="Write your review to help others learn about this online business"></textarea>
                         @error('reply_content') <span class="error">{{ $message }}</span> @enderror
                     </div>
                     <button type="submit" class="btn_1">Submit Reply</button>
@@ -448,7 +448,86 @@
 <!-- HTML für das Formular -->
 
 <!-- vorhandenes Modal für Produktoptionen -->
+@if(isset($modalScript) && $modalScript)
 
+@push('specific-header')
+
+<link href="{{ asset('frontend/css/modal_popup.css') }}" rel="stylesheet">
+
+@endpush
+
+
+
+<div class="popup_wrapper">
+    <div class="popup_content newsletter_c">
+        <span class="popup_close"><i class="icon_close"></i></span>
+        <div class="row g-0">
+            <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center">
+                <figure><img src="{{ asset('frontend/img/newsletter_img.jpg') }}" alt=""></figure>
+            </div>
+            <div class="col-md-7">
+                <div class="content">
+                    <div class="wrapper">
+                        <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="162" height="35" alt="">
+                        <h3>Entschuldigung, außerhalb des Liefergebiets</h3>
+                        <p>Es tut uns leid, aber Ihre Adresse befindet sich außerhalb unseres Liefergebiets. Bitte überprüfen Sie Ihre Adresse oder kontaktieren Sie uns für weitere Informationen.</p>
+                        <p>Falls Sie weitere Fragen haben, stehen wir Ihnen gerne zur Verfügung.</p>
+                        <form action="#">
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Enter your email address">
+                            </div>
+                            <button type="submit" class="btn_1 mt-2 mb-4">Subscribe</button>
+                        </form>
+                        <div class="row opt_order">
+                            <div class="col-6">
+                                <label class="container_radio">Delivery
+                                    <input type="radio" value="option1" name="opt_order" checked="">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <label class="container_radio">Take away
+                                    <input type="radio" value="option1" name="opt_order">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+</div>
+
+
+@push('specific-scripts')
+
+<script>
+
+    (function($) {
+        "use strict";
+
+        // Popup up
+        setTimeout(function() {
+            $('.popup_wrapper').css('opacity', '1');
+        }, 500); // Entrance delay
+
+        $('.popup_wrapper');
+        $('.popup_close').click(function() { // Class for the close button
+            $('.popup_wrapper').fadeOut(300); // Hide the CTA div
+        });
+
+
+
+    })(window.jQuery);
+
+</script>
+
+@endpush
+
+
+@endif
 
 
 
@@ -485,18 +564,18 @@
     transform: scale(1.2); /* Vergrößere das Bild um 20% */
 }
 </style>
+
+
 @endpush
 
         @push('specific-scripts')
+
 
 
             <!-- SPECIFIC SCRIPTS -->
     <script src="{{ asset('frontend/js/sticky_sidebar.min.js') }}"></script>
     <script src="{{ asset('frontend/js/sticky-kit.min.js') }}"></script>
     <script src="{{ asset('frontend/js/specific_detail.js') }}"></script>
-
-
-
 
 <script>
     document.addEventListener('livewire:cartUpdated', function () {
@@ -576,6 +655,22 @@
         });
     });
     </script>
+
+
+
+
+
+
+@if(isset($modalScript) && $modalScript)
+
+
+
+@endif
+
+
+
+
+
 
         @endpush
 
