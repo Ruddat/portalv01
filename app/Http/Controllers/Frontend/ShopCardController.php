@@ -11,6 +11,7 @@ use App\Models\ModSellerVotes;
 use App\Models\ModProductSizes;
 use App\Models\ModSellerReplays;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\View;
 use App\Models\ModProductSizesPrices;
 use App\Models\ModSellerVotings; // Add the Voting model
 
@@ -84,43 +85,47 @@ class ShopCardController extends Controller
 $userLatitude = session('userLatitude');
 $userLongitude = session('userLongitude');
 
+
+// Holen des Standort vom Restaurant
+$shopLocation = ModShop::where('id', $restaurant->id)->first();
+
+$distance = $this->calculateDistance($userLatitude, $userLongitude, $shopLocation->lat, $shopLocation->lng);
+$distance = round($distance, 2);
+
+//dd($distance);
 // Holen der Lieferbereiche für den bestimmten Shop
-$deliveryAreas = DeliveryArea::where('shop_id', $restaurant->id)->get();
+$deliveryAreas = DeliveryArea::where('shop_id', $restaurant->id)
+    ->orderBy('distance_km', 'asc')
+    ->get();
 
-// Überprüfen, ob Lieferbereiche für den Shop vorhanden sind
-if ($deliveryAreas->isNotEmpty()) {
-    // Initialisieren der Variablen für die kürzeste Entfernung und den entsprechenden Lieferbereich
-    $shortestDistance = PHP_INT_MAX; // Eine sehr große Zahl als Ausgangspunkt
-    $nearestDeliveryArea = null;
+//dd($deliveryAreas);
 
-    // Berechnen der Entfernung zwischen dem Kunden und jedem Lieferbereich
-    foreach ($deliveryAreas as $area) {
-        $distance = $this->calculateDistance($userLatitude, $userLongitude, $area->latitude, $area->longitude);
-        $distance = round($distance, 2); // Rundet den Wert auf zwei Dezimalstellen
 
-        // Überprüfen, ob die aktuelle Entfernung kürzer ist als die bisher kürzeste Entfernung
-        if ($distance < $shortestDistance) {
-            $shortestDistance = $distance;
-            $nearestDeliveryArea = $area;
-        }
+$foundInDeliveryArea = false;
+foreach ($deliveryAreas as $area) {
+    // Überprüfen, ob die Entfernung des Benutzers innerhalb der maximalen Entfernung des Lieferbereichs liegt
+    if ($distance <= $area->distance_km) {
+        // Der Benutzer liegt innerhalb dieses Lieferbereichs
+        // Hier können Sie weitere Aktionen ausführen, wenn der Benutzer innerhalb des Lieferbereichs liegt
+
+        // Zum Beispiel, eine Bestellung zulassen, spezielle Nachrichten anzeigen usw.
+
+        // Für jetzt drucken wir nur eine Nachricht aus
+        echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
+        echo "Kosten" . $area->delivery_cost . " euro";
+        $foundInDeliveryArea = true;
+        $modalScript = false;
+        break; // Keine Notwendigkeit, andere Bereiche zu überprüfen, sobald ein Übereinstimmung gefunden wurde
     }
-//dd($nearestDeliveryArea, $shortestDistance  );
-    // Überprüfen, ob der Benutzer innerhalb des Lieferbereichs liegt
-    if ($nearestDeliveryArea !== null && $shortestDistance < $nearestDeliveryArea->distance_km) {
-        echo "User is within delivery area: " . $nearestDeliveryArea->delivery_cost;
-        // Hier können Sie zusätzliche Aktionen ausführen, z.B. den Lieferpreis ermitteln
-    } else {
-        echo "User is not within any delivery area.";
-    }
-} else {
-    // Keine Lieferbereiche für den Shop gefunden
-    // Behandeln Sie den Fall entsprechend
 }
 
+// Wenn der Benutzer nicht in einem Lieferbereich gefunden wurde
+if (!$foundInDeliveryArea) {
+   // echo "Der Benutzer liegt nicht innerhalb eines Lieferbereichs.";
 
+   $modalScript = true;
 
-
-
+}
 
 
 
@@ -137,6 +142,7 @@ if ($deliveryAreas->isNotEmpty()) {
                 'numberOfRatings' => $numberOfRatings, // Übergeben Sie die Anzahl der Bewertungen an die Blade-Vorlage
                 'overallRatingProgress' => $overallRatingProgress, // Übergeben Sie die Fortschrittsbalken für die Gesamtbewertung an die Blade-Vorlage
                 'ratings' => $ratings, // Übergeben Sie die Ratings an die Blade-Vorlage
+                'modalScript' => $modalScript, // Das Skript für das Modal übergeben
            //     'overallRatingSingle' => $ratingData['overallRatingSingle'], // Übergeben Sie die Gesamtbewertung für jede Kategorie an die Blade-Vorlage
 
             ]);

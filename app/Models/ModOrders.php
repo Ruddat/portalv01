@@ -10,4 +10,6 @@ class ModOrders extends Model
     use HasFactory;
     protected $guarded = [];
 
+
+
 }

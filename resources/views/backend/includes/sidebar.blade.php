@@ -97,6 +97,7 @@
                             <li><a href="#">Zahlungsmethoden</a></li>
                             <hr>
                             <li><a href="{{ route('seller.indexOrderOverview', ['shopId' => $shopId]) }}">Bestellübersicht</a></li>
+                            <li><a href="{{ route('seller.reviews-overview', ['shopId' => $shopId]) }}">Reviews</a></li>
                             <hr>
                             <li><a href="{{ route('seller.product-sizes', ['shop' => $shopId]) }}">Produktgroessen</a></li>
                             <li><a href="{{ route('seller.manage-ingredients.ingredients-index', ['shop' => $shopId]) }}">Zutaten</a></li>
