@@ -49,24 +49,20 @@ Route::prefix('seller')->name('seller.')->group(function(){
         });
 
 
-        // Openinghours Routes
-        Route::prefix('openinghours')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
-            Route::view('/worktimes', 'backend.pages.seller.worktimes.work-times')->name('worktimes');
-        });
-
         // DeliveryArea Routes
         Route::prefix('deliveryarea')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
         //    Route::view('/shops/{shop}/deliveryarea', 'backend/pages/shops/mod-liefergebiet')->name('deliveryarea');
             Route::get('/shops/{shop}/deliveryarea', [DashboardController::class, 'deliveryArea'])->name('deliveryarea');
         });
 
-// Shopdaten
-Route::prefix('shopdata')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
-    Route::view('/shops/{shop}/shopdata', 'backend/pages/seller/shopdata/mod-shopdaten')->name('shopData');
-    Route::get('/shop/{shop}/shopdata', [ShopDataController::class, 'restoData'])->name('restoData');
-    Route::post('/change-logo-pictures', [ShopDataController::class, 'changeLogoPictures'])->name('change-logo-pictures');
-    Route::post('/change-shop-restapi', [ShopDataController::class, 'changeShopDataRestApi'])->name('change-shop-restapi');
-});
+
+        // Shopdaten
+        Route::prefix('shopdata')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+            Route::view('/shops/{shop}/shopdata', 'backend/pages/seller/shopdata/mod-shopdaten')->name('shopData');
+            Route::get('/shop/{shop}/shopdata', [ShopDataController::class, 'restoData'])->name('restoData');
+            Route::post('/change-logo-pictures', [ShopDataController::class, 'changeLogoPictures'])->name('change-logo-pictures');
+            Route::post('/change-shop-restapi', [ShopDataController::class, 'changeShopDataRestApi'])->name('change-shop-restapi');
+        });
 
 // Categories Routes
 Route::prefix('manage-categories')->name('manage-categories.')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
@@ -150,6 +146,13 @@ Route::prefix('manage-rewiews')->middleware(['auth:seller', 'PreventBackHistory'
   //  Route::view('/reviews/{shopId}/overwiews', 'backend.pages.seller.reviewOverview.reviewsIndex')->name('reviews-overview');
     Route::get('/reviews/{shopId}/overwiews', [ReviewController::class, 'sellerReviewsIndex'])->name('reviews-overview');
  });
+
+
+        // Openinghours Routes
+        Route::prefix('openinghours')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+            Route::view('/worktimes', 'backend.pages.seller.worktimes.work-times')->name('worktimes');
+        });
+
 
 
 

@@ -278,7 +278,63 @@
 					</div>
 					<!-- /row -->
 
-					<div class="promo">
+
+					<div class="row">
+
+<hr>
+                        @if(count($restaurants) < 0)
+
+                        @foreach ($restaurants as $restaurant)
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+                                <div class="strip">
+                                    <figure>
+                                        <span class="ribbon off">15% off</span>
+                                        <span class="ribbon_sponsored on">Sponsored</span>
+                                        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
+                                        <a href="{{ route('detail-restaurant.index', ['restaurantId' => $restaurant->id]) }} " class="strip_info">                                            <small>Pizza, Burger</small>
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
+                                                <div class="item_title">
+                                                    <h3>{{ $restaurant->title }}</h3>
+                                                    <small>{{ $restaurant->street }}</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </figure>
+                                    <ul>
+                                        <li>
+                                            <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}" title="Takeaway">Takeaway</span>
+                                            <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}" title="Delivery">Delivery</span>
+                                            <strong class="icon-food_icon_shop fs2"> {{ number_format($restaurant->distance, 2) }} km</strong>
+                                        </li>
+                                        <li>
+                                            @if($restaurant->voting_average !== null)
+                                            <div class="score" title="Bewertung durchschnitt"><strong>{{ number_format($restaurant->voting_average, 1) }}</strong></div>
+                                        @else
+
+                                        @endif
+                                       </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            @endforeach
+                            <!-- /strip grid -->
+                        @else
+                        <p>Keine Sponsored Restaurants gefunden.</p>
+                    @endif
+
+
+
+
+
+					</div>
+
+
+
+
+
+
+                    <div class="promo">
 						<h3>Free Delivery for your first 14 days!</h3>
 						<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
 						<i class="icon-food_icon_delivery"></i>
@@ -302,7 +358,7 @@
                                                 <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
                                                 <div class="item_title">
                                                     <h3>{{ $restaurant->title }}</h3>
-                                                    <small>{{ $restaurant->street }} --- {{ number_format($restaurant->distance, 2) }} km</small>
+                                                    <small>{{ $restaurant->street }}</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -392,6 +448,54 @@
         opacity: 1; /* Enden mit einer vollständigen Opazität */
     }
 }
+
+.ribbon_sponsored {
+    color: #fff;
+    display: inline-block;
+    position: absolute;
+    top: 40px;
+    right: 15px;
+    font-weight: 500;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    padding: 2px 2px 2px 2px;
+    line-height: 1;
+    font-size: 12px;
+    font-size: 0.75rem;
+    z-index: 9;
+}
+
+
+
+.ribbon_sponsored.on {
+    background-color: #D63920;
+}
+
+
+.promo {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .promo i {
+        position: absolute;
+        left: -100%; /* Startposition auf der linken Seite, außerhalb des Bildschirms */
+        animation: moveIcon 6s linear forwards; /* Animation mit linearem Timing */
+        animation-delay: 0.5s /* Verzögerung von 1 Sekunde */
+    }
+
+    @keyframes moveIcon {
+        0% {
+            left: -100%; /* Startposition, außerhalb des Bildschirms */
+            top: 50%; /* Startposition in der Mitte des Containers */
+        }
+        100% {
+            left: 90%; /* Endposition, rechts außerhalb des Bildschirms */
+            top: calc(50% + 50px * sin(2 * pi * (1 - ((time - delay) / duration)))); /* Berechnung der Sinus-Bewegung */
+        }
+    }
 
 </style>
 

@@ -79,7 +79,7 @@
 
                     @if ($shopId)
                     {{-- Aktiver Shop, zeige das entsprechende Menü --}}
-                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="true">
                             <i class="bi bi-shop-window"></i>
                             <span class="nav-text"> {{ Str::limit(session('currentShopTitle'), 13) }}</span>
                             </a>
@@ -91,7 +91,7 @@
                             <li><a href="{{ route('seller.restoData', ['shop' => $shopId]) }}">Shopdaten</a></li>
                             <li><a href="#">Domains</a></li>
                             <li><a href="#">Logo & Design</a></li>
-                            <li><a href="{{ route('seller.deliveryarea', ['shop' => $shopId]) }}">Liefergebiet</a></li>
+                            <li> <a href="{{ route('seller.deliveryarea', ['shop' => $shopId]) }}">Liefergebiet</a></li>
                             <li><a href="{{ route('seller.worktimes') }}">Öffnungszeiten</a></li>
                             <li><a href="#">Aktionszeiten</a></li>
                             <li><a href="#">Zahlungsmethoden</a></li>
