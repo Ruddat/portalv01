@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('mod_custom_hours', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('mod_shop_id');
+            $table->unsignedBigInteger('shop_id');
             $table->date('custom_hours_date');
             $table->time('expiry_time');
             $table->timestamps();
 
-            $table->foreign('mod_shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
+            $table->foreign('shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
         });
     }
 

@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('mod_open_hours', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('mod_shop_id');
+            $table->unsignedBigInteger('shop_id');
             $table->string('day_of_week');
             $table->time('open_time');
             $table->time('close_time');
+            $table->boolean('is_closed')->default(false);
             $table->timestamps();
 
-            $table->foreign('mod_shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
+            $table->foreign('shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
         });
     }
 

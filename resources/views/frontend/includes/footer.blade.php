@@ -143,4 +143,5 @@
         </div>
     </div>
 </footer>
+@cookieconsentview
 <!--/footer-->

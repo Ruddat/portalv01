@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 class ReviewController extends Controller
 {
-    public function sellerReviewsIndex(Request $request, $shopId)
+    public function sellerReviewsIndex(Request $request, $shopId) // TODO - ReviewController anpassen
     {
 
 

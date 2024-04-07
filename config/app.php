@@ -178,7 +178,7 @@ return [
         App\Providers\TranslationServiceProvider::class,
         App\Providers\CartFacadeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-
+        App\Providers\CookiesServiceProvider::class,
     ])->toArray(),
 
     /*
