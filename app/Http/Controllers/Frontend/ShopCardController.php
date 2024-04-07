@@ -18,10 +18,12 @@ use App\Models\ModSellerVotings; // Add the Voting model
 
 class ShopCardController extends Controller
 {
-    //
-
-
-
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $restaurantId
+     * @return \Illuminate\Http\Response
+     */
     public function index($restaurantId)
     {
         // Restaurant anhand der ID finden
@@ -81,57 +83,46 @@ class ShopCardController extends Controller
 
                 $productsByCategory[$category->category_name] = $products;
             }
-// Retrieve latitude and longitude from session
-$userLatitude = session('userLatitude');
-$userLongitude = session('userLongitude');
-
-
-// Holen des Standort vom Restaurant
-$shopLocation = ModShop::where('id', $restaurant->id)->first();
-
-$distance = $this->calculateDistance($userLatitude, $userLongitude, $shopLocation->lat, $shopLocation->lng);
-$distance = round($distance, 2);
-
-//dd($distance);
-// Holen der Lieferbereiche für den bestimmten Shop
-$deliveryAreas = DeliveryArea::where('shop_id', $restaurant->id)
-    ->orderBy('distance_km', 'asc')
-    ->get();
-
-//dd($deliveryAreas);
-
-
-$foundInDeliveryArea = false;
-foreach ($deliveryAreas as $area) {
-    // Überprüfen, ob die Entfernung des Benutzers innerhalb der maximalen Entfernung des Lieferbereichs liegt
-    if ($distance <= $area->distance_km) {
-        // Der Benutzer liegt innerhalb dieses Lieferbereichs
-        // Hier können Sie weitere Aktionen ausführen, wenn der Benutzer innerhalb des Lieferbereichs liegt
-
-        // Zum Beispiel, eine Bestellung zulassen, spezielle Nachrichten anzeigen usw.
-
-        // Für jetzt drucken wir nur eine Nachricht aus
-        echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
-        echo "Kosten" . $area->delivery_cost . " euro";
-        $foundInDeliveryArea = true;
-        $modalScript = false;
-        break; // Keine Notwendigkeit, andere Bereiche zu überprüfen, sobald ein Übereinstimmung gefunden wurde
-    }
-}
-
-// Wenn der Benutzer nicht in einem Lieferbereich gefunden wurde
-if (!$foundInDeliveryArea) {
-   // echo "Der Benutzer liegt nicht innerhalb eines Lieferbereichs.";
-
-   $modalScript = true;
-
-}
 
 
 
+            // Retrieve latitude and longitude from session // TODO - Shop Sperren fuer lieferungen // TODO - Lieferkosten berechnen
+            $userLatitude = session('userLatitude');
+            $userLongitude = session('userLongitude');
 
+            // Holen des Standort vom Restaurant
+            $shopLocation = ModShop::where('id', $restaurant->id)->first();
+            $distance = $this->calculateDistance($userLatitude, $userLongitude, $shopLocation->lat, $shopLocation->lng);
+            $distance = round($distance, 2);
 
+            // Holen der Lieferbereiche für den bestimmten Shop
+            $deliveryAreas = DeliveryArea::where('shop_id', $restaurant->id)
+            ->orderBy('distance_km', 'asc')
+            ->get();
 
+            // Überprüfen, ob der Benutzer innerhalb eines Lieferbereichs liegt
+            $foundInDeliveryArea = false;
+            foreach ($deliveryAreas as $area) {
+                // Überprüfen, ob die Entfernung des Benutzers innerhalb der maximalen Entfernung des Lieferbereichs liegt
+                if ($distance <= $area->distance_km) {
+
+                    // Der Benutzer liegt innerhalb dieses Lieferbereichs
+                    // Hier können Sie weitere Aktionen ausführen, wenn der Benutzer innerhalb des Lieferbereichs liegt
+                    // Zum Beispiel, eine Bestellung zulassen, spezielle Nachrichten anzeigen usw.
+                    // Für jetzt drucken wir nur eine Nachricht aus
+                    echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
+                    echo "Kosten" . $area->delivery_cost . " euro";
+                    $foundInDeliveryArea = true;
+                    $modalScript = false;
+                    break; // Keine Notwendigkeit, andere Bereiche zu überprüfen, sobald ein Übereinstimmung gefunden wurde
+                }
+            }
+
+            // Wenn der Benutzer nicht in einem Lieferbereich gefunden wurde
+            if (!$foundInDeliveryArea) {
+                // echo "Der Benutzer liegt nicht innerhalb eines Lieferbereichs.";
+                $modalScript = true;
+            }
 
             // Restaurant gefunden, geben Sie die Detailansicht zurück
             return view('frontend.pages.detailrestaurant.detail-restaurant', [
@@ -152,31 +143,33 @@ if (!$foundInDeliveryArea) {
         }
     }
 
-    // Methode zur Bestimmung des richtigen Preises für ein Produkt
-    public function getProductPrice($productId)
-    {
-        // Basispreis des Produkts abrufen
-        $basePrice = ModProducts::find($productId)->base_price;
+/**
+ * Methode zur Bestimmung des richtigen Preises für ein Produkt.
+ *
+ * @param int $productId Die ID des Produkts.
+ * @return float Der Preis des Produkts.
+ */
+public function getProductPrice($productId)
+{
+    // Basispreis des Produkts abrufen
+    $basePrice = ModProducts::find($productId)->base_price;
 
-
-        // Wenn ein Basispreis vorhanden ist und größer als 0 ist, diesen zurückgeben
-        if ($basePrice > 0) {
+    // Wenn ein Basispreis vorhanden ist und größer als 0 ist, diesen zurückgeben
+    if ($basePrice > 0) {
         return $basePrice;
-        }
-
-
-        // Ansonsten den günstigsten Preis der Produktgrößen zurückgeben
-        $productSizesPrices = ModProductSizesPrices::where('parent', $productId)->pluck('price')->toArray();
-
-
-        // Wenn Produktgrößen-Preise vorhanden sind, den günstigsten Preis zurückgeben
-        if (!empty($productSizesPrices)) {
-            return min($productSizesPrices);
-        }
-
-        // Falls keine Preise gefunden werden, Standardwert oder Null zurückgeben
-        return 0;
     }
+
+    // Ansonsten den günstigsten Preis der Produktgrößen zurückgeben
+    $productSizesPrices = ModProductSizesPrices::where('parent', $productId)->pluck('price')->toArray();
+
+    // Wenn Produktgrößen-Preise vorhanden sind, den günstigsten Preis zurückgeben
+    if (!empty($productSizesPrices)) {
+        return min($productSizesPrices);
+    }
+
+    // Falls keine Preise gefunden werden, Standardwert oder Null zurückgeben
+    return 0;
+}
 
 
 
