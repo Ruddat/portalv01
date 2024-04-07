@@ -92,7 +92,7 @@
                             <li><a href="#">Domains</a></li>
                             <li><a href="#">Logo & Design</a></li>
                             <li> <a href="{{ route('seller.deliveryarea', ['shop' => $shopId]) }}">Liefergebiet</a></li>
-                            <li><a href="{{ route('seller.worktimes') }}">Öffnungszeiten</a></li>
+                            <li><a href="{{ route('seller.worktimes-list', ['shopId' => $shopId]) }}">Öffnungszeiten</a></li>
                             <li><a href="#">Aktionszeiten</a></li>
                             <li><a href="#">Zahlungsmethoden</a></li>
                             <hr>
