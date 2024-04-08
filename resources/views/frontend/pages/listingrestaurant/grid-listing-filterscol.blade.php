@@ -375,7 +375,7 @@
 
 
 
-                                    <p>Restaurant '{{ $restaurant->title }}' is {{ $restaurantStatus[$restaurant->id] }}</p>
+                                    <p>{{ $restaurantStatus[$restaurant->id] }}</p>
 
 
 

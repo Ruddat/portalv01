@@ -14,7 +14,6 @@
 
         @include('frontend.includes.header-in-clearfix')
 
-
 		<div class="hero_in detail_page background-image" data-background="url({{ asset('frontend/img/hero_general_2.jpg') }})">
 			<div class="wrapper opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
                 <div class="container">
