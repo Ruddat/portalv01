@@ -39,8 +39,8 @@ return [
     'cookie' => [
         'name' => Str::slug(env('APP_NAME', 'laravel'), '_').'_cookie_consent',
         'duration' => (60 * 24 * 365),
-       // 'domain' => null,
-       'domain' => '.mydomain.com', // notice the leading "."
+        'domain' => null,
+
     ],
 
     /*

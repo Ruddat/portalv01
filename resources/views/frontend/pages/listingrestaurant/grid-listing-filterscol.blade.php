@@ -317,6 +317,11 @@
                                     </ul>
                                 </div>
                             </div>
+
+                            @foreach ($restaurant->openingHours as $openingHour)
+                            <li>{{ $openingHour->day_of_week }}: {{ $openingHour->open_time }} - {{ $openingHour->close_time }}</li>
+                        @endforeach
+
                             @endforeach
                             <!-- /strip grid -->
                         @else
@@ -362,8 +367,24 @@
                                                 </div>
                                             </div>
                                         </a>
+
+
+
                                     </figure>
-                                    <ul>
+
+
+
+
+                                    <p>{{ $restaurantStatus[$restaurant->id] }}</p>
+
+
+
+
+
+
+
+
+                                <ul>
                                         <li>
                                             <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}" title="Takeaway">Takeaway</span>
                                             <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}" title="Delivery">Delivery</span>
@@ -379,6 +400,8 @@
                                     </ul>
                                 </div>
                             </div>
+
+
                             @endforeach
                             <!-- /strip grid -->
                         @else

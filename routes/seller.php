@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\Seller\DashboardController;
 use App\Http\Controllers\Backend\Seller\Review\ReviewController;
 use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
 use App\Http\Controllers\Backend\Seller\Products\ProductController;
+use App\Http\Controllers\Backend\Seller\Worktimes\WorktimesController;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
 use App\Http\Controllers\Backend\Seller\Ingredients\IngredientsController;
@@ -150,7 +151,8 @@ Route::prefix('manage-rewiews')->middleware(['auth:seller', 'PreventBackHistory'
 
         // Openinghours Routes
         Route::prefix('openinghours')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
-            Route::view('/worktimes', 'backend.pages.seller.worktimes.work-times')->name('worktimes');
+           // Route::view('/worktimes', 'backend.pages.seller.worktimes.opening-hours')->name('worktimes');
+            Route::get('/worktimes/{shopId}/list', [WorktimesController::class, 'index'])->name('worktimes-list');
         });
 
 

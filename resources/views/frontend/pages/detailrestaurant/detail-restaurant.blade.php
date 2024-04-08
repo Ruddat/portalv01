@@ -14,14 +14,16 @@
 
         @include('frontend.includes.header-in-clearfix')
 
-
 		<div class="hero_in detail_page background-image" data-background="url({{ asset('frontend/img/hero_general_2.jpg') }})">
 			<div class="wrapper opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
+                <div class="container">
+                    <div class="neon-sign">
+                        <span class="open-text">Open</span>
+                      </div>
+                    <div class="main_info">
 
-				<div class="container">
-					<div class="main_info">
-						<div class="row">
-							<div class="col-xl-4 col-lg-5 col-md-6">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-5 col-md-6">
                                 <div class="head">
                                     <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 100px; border-radius: 10px;">
 
@@ -563,6 +565,75 @@
 .zoom-effect:hover img {
     transform: scale(1.2); /* Vergrößere das Bild um 20% */
 }
+
+
+
+
+
+
+
+
+
+.neon-sign {
+  display: inline-block;
+  position: relative;
+  padding: 10px;
+  border: 3px solid rgba(255, 255, 255, 0.33); /* Roter Rahmen */
+  border-radius: 20px; /* Abgerundete Ecken */
+  transform: rotate(-6deg);
+  animation: turnOnBorder 0.24s forwards step-end,
+    flickerBorder calc(var(--animation-time) * 16) infinite step-end 1s;
+    margin-right: 20px; /* Abstand vom rechten Rand */
+}
+
+.open-text {
+  font-family: 'Arial', sans-serif;
+  font-size: 48px;
+  color: #fff;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.open-text:before,
+.open-text:after {
+  content: 'Open';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.open-text:before {
+    color: #0f0;
+ /* Blauer Neon-Effekt */
+  z-index: -1;
+  animation: neon-animation 1.5s ease-in-out infinite alternate;
+}
+
+.open-text:after {
+  color: #fff;
+  z-index: -2;
+}
+
+@keyframes neon-animation {
+  from {
+    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0, 0 0 50px #0f0, 0 0 60px #0f0, 0 0 70px #0f0;
+  }
+  to {
+    text-shadow: 0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0, 0 0 20px #0f0, 0 0 25px #0f0, 0 0 30px #0f0, 0 0 35px #0f0;
+  }
+}
+
+
+
+
+
+
+
+
+
+
 </style>
 
 
@@ -669,7 +740,22 @@
 
 
 
+<script>
+    const setProperty = (duration) => {
+  document.documentElement.style.setProperty(
+    "--animation-time",
+    duration + "s"
+  );
+};
 
+const changeAnimationTime = () => {
+  const animationDuration = Math.random();
+  setProperty(animationDuration);
+};
+
+setInterval(changeAnimationTime, 1000);
+
+</script>
 
 
         @endpush
