@@ -16,8 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('shop_id');
             $table->foreign('shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
             $table->string('day_of_week'); // Wochentag
-            $table->time('open_time'); // Öffnungszeit
-            $table->time('close_time'); // Schließzeit
+            $table->time('open_time')->nullable(); // Öffnungszeit
+            $table->time('close_time')->nullable(); // Schließzeit
+            $table->boolean('is_open')->default(false); // Status des Öffnungsbuttons (geschlossen)
             // Weitere Spalten hier hinzufügen, falls benötigt
             $table->timestamps();
         });

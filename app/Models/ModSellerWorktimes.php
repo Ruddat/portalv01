@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ModSellerWorktimes extends Model
 {
     use HasFactory;
+
+
+    protected $guarded = [];
+
+    
 }
