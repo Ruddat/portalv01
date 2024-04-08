@@ -20,7 +20,6 @@
         "roach-php/laravel": "^3.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-permission": "^6.3",
-        "spatie/opening-hours": "^3.0",
         "stichoza/google-translate-php": "^5.1",
         "twbs/bootstrap": "^5.3",
         "whitecube/laravel-cookie-consent": "^1.2"

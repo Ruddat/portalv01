@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use DateTime;
+use Carbon\Carbon;
+
 use App\Models\ModShop;
 use Illuminate\Http\Request;
 
 use App\Models\ModSearchPlaces;
+use App\Models\ModSellerWorktimes;
 use Illuminate\Support\Facades\DB;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
@@ -129,6 +132,80 @@ class ShopSearchController extends Controller
                 ->paginate($this->perPage);
              }
 
+
+// Ein leeres Array erstellen, um die Meldungen für jedes Restaurant zu speichern
+$restaurantStatus = [];
+
+// Aktuelle Zeit mit der richtigen Zeitzone erstellen
+$currentDateTime = Carbon::now('Europe/Berlin');
+
+// Durch die Restaurants iterieren
+foreach ($restaurants as $restaurant) {
+    // Öffnungszeiten für das aktuelle Restaurant abrufen
+    $openingHours = ModSellerWorktimes::where('shop_id', $restaurant->id)->get();
+
+    // Überprüfen, ob Öffnungszeiten vorhanden sind
+    if ($openingHours->isNotEmpty()) {
+        // Öffnungsstatus für den aktuellen Tag berechnen und dem Restaurantobjekt anhängen
+        $currentDayOfWeek = strtolower($currentDateTime->format('l'));
+
+        $currentOpenStatus = [];
+
+        // Iteriere über die Öffnungszeiten für den aktuellen Tag
+        foreach ($openingHours as $hour) {
+            if ($hour->day_of_week === $currentDayOfWeek) {
+                $currentOpenStatus[] = [
+                    'isOpen' => $hour->is_open == 1,
+                    'times' => [
+                        'start' => $hour->open_time ? Carbon::parse($hour->open_time) : null,
+                        'end' => $hour->close_time ? Carbon::parse($hour->close_time) : null,
+                    ],
+                ];
+            }
+        }
+
+        // Überprüfen, ob das Restaurant geöffnet ist und die entsprechende Meldung generieren
+        if (!empty($currentOpenStatus)) {
+            $isOpen = false;
+
+            // Durch die aktuellen Öffnungszeiten iterieren
+            foreach ($currentOpenStatus as $status) {
+                $openingTimes = $status['times'];
+
+                // Überprüfen, ob das Restaurant geöffnet ist
+                if ($openingTimes['start'] && $openingTimes['end']) {
+                    if ($currentDateTime->between($openingTimes['start'], $openingTimes['end'])) {
+                        $isOpen = true;
+                        break;
+                    }
+                }
+            }
+
+            // Meldung generieren
+            if ($isOpen) {
+                $restaurantStatus[$restaurant->id] = "open";
+            } else {
+                $restaurantStatus[$restaurant->id] = "closed";
+            }
+        } else {
+            // Wenn keine Öffnungszeiten für das Restaurant vorhanden sind
+            $restaurantStatus[$restaurant->id] = "no opening hours available";
+        }
+    } else {
+        // Wenn keine Öffnungszeiten für das Restaurant vorhanden sind
+        $restaurantStatus[$restaurant->id] = "no opening hours available";
+    }
+}
+
+
+
+
+
+
+
+//dd($restaurant);
+
+
             // Die aktuellen Abfrageparameter für die Pagination beibehalten
             $restaurants->appends($request->only(['query', 'distance']));
             // Stadtnamen aus der Session abrufen
@@ -140,7 +217,8 @@ class ShopSearchController extends Controller
                 'userLatitude' => $userLatitude,
                 'userLongitude' => $userLongitude,
                 'selectedDistance' => $selectedDistance,
-                'findCityName' => $findCityName
+                'findCityName' => $findCityName,
+                'restaurantStatus' => $restaurantStatus
 
 
             ]);
@@ -222,6 +300,79 @@ class ShopSearchController extends Controller
             ->having('distance', '<', $selectedDistance)
             ->orderBy('distance')
             ->paginate($this->perPage);
+
+
+
+
+// Ein leeres Array erstellen, um die Meldungen für jedes Restaurant zu speichern
+$restaurantStatus = [];
+
+// Aktuelle Zeit mit der richtigen Zeitzone erstellen
+$currentDateTime = Carbon::now('Europe/Berlin');
+
+// Durch die Restaurants iterieren
+foreach ($restaurants as $restaurant) {
+    // Öffnungszeiten für das aktuelle Restaurant abrufen
+    $openingHours = ModSellerWorktimes::where('shop_id', $restaurant->id)->get();
+
+    // Überprüfen, ob Öffnungszeiten vorhanden sind
+    if ($openingHours->isNotEmpty()) {
+        // Öffnungsstatus für den aktuellen Tag berechnen und dem Restaurantobjekt anhängen
+        $currentDayOfWeek = strtolower($currentDateTime->format('l'));
+
+        $currentOpenStatus = [];
+        $nextOpenStatus = [];
+        foreach ($openingHours as $hour) {
+            if ($hour->day_of_week === $currentDayOfWeek) {
+                // Wenn die Öffnungszeit in der Zukunft liegt, wird sie als nächste Öffnungszeit betrachtet
+                if ($currentDateTime->lte(Carbon::parse($hour->open_time))) {
+                    $nextOpenStatus = [
+                        'isOpen' => true,
+                        'times' => [
+                            'start' => Carbon::parse($hour->open_time),
+                            'end' => Carbon::parse($hour->close_time),
+                        ],
+                    ];
+                }
+                // Die aktuelle Öffnungszeit wird verwendet, wenn sie nicht in der Zukunft liegt
+                else {
+                    $currentOpenStatus = [
+                        'isOpen' => $hour->is_open == 1,
+                        'times' => [
+                            'start' => Carbon::parse($hour->open_time),
+                            'end' => Carbon::parse($hour->close_time),
+                        ],
+                    ];
+                }
+            }
+        }
+
+        // Überprüfen, ob das Restaurant geöffnet ist und die entsprechende Meldung generieren
+        if (!empty($currentOpenStatus)) {
+            $isOpen = $currentOpenStatus['isOpen'];
+            $openingTimes = $currentOpenStatus['times'];
+
+            // Meldung generieren
+            if ($isOpen) {
+                $restaurantStatus[$restaurant->id] = "open until {$openingTimes['end']->format('H:i')}";
+            } else {
+                $restaurantStatus[$restaurant->id] = "closed";
+            }
+        } elseif (!empty($nextOpenStatus)) {
+            // Wenn das Restaurant geschlossen ist, aber eine nächste Öffnungszeit vorhanden ist
+            $nextOpeningTimes = $nextOpenStatus['times'];
+            $restaurantStatus[$restaurant->id] = "closed. Next opening: {$nextOpeningTimes['start']->format('H:i')}";
+        } else {
+            // Wenn keine Öffnungszeiten für das Restaurant vorhanden sind
+            $restaurantStatus[$restaurant->id] = "no opening hours available";
+        }
+    } else {
+        // Wenn keine Öffnungszeiten für das Restaurant vorhanden sind
+        $restaurantStatus[$restaurant->id] = "no opening hours available";
+    }
+}
+
+
 
         // Standortinformationen an die Blade-Ansicht übergeben
 // Standortinformationen und Stadtnamen an die Blade-Ansicht übergeben
