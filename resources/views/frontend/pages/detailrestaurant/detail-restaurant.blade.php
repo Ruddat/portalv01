@@ -573,24 +573,21 @@
 
 
 
-
-
-
 .neon-sign {
   display: inline-block;
   position: relative;
-  padding: 10px;
-  border: 3px solid rgba(255, 255, 255, 0.33); /* Roter Rahmen */
-  border-radius: 20px; /* Abgerundete Ecken */
+  padding: 5px; /* Kleinere Polsterung */
+  border: 2px solid rgba(255, 255, 255, 0.33); /* Roter Rahmen */
+  border-radius: 15px; /* Kleinere abgerundete Ecken */
   transform: rotate(-6deg);
   animation: turnOnBorder 0.24s forwards step-end,
     flickerBorder calc(var(--animation-time) * 16) infinite step-end 1s;
-    margin-right: 20px; /* Abstand vom rechten Rand */
+  margin-right: 20px; /* Abstand vom rechten Rand */
 }
 
 .open-text {
   font-family: 'Arial', sans-serif;
-  font-size: 48px;
+  font-size: 36px; /* Kleinere Schriftgröße */
   color: #fff;
   text-transform: uppercase;
   position: relative;
@@ -607,8 +604,7 @@
 }
 
 .open-text:before {
-    color: #0f0;
- /* Blauer Neon-Effekt */
+  color: #0f0; /* Blauer Neon-Effekt */
   z-index: -1;
   animation: neon-animation 1.5s ease-in-out infinite alternate;
 }
@@ -620,13 +616,12 @@
 
 @keyframes neon-animation {
   from {
-    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0, 0 0 50px #0f0, 0 0 60px #0f0, 0 0 70px #0f0;
+    text-shadow: 0 0 8px #0f0, 0 0 16px #0f0, 0 0 24px #0f0, 0 0 32px #0f0, 0 0 40px #0f0, 0 0 48px #0f0, 0 0 56px #0f0;
   }
   to {
-    text-shadow: 0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0, 0 0 20px #0f0, 0 0 25px #0f0, 0 0 30px #0f0, 0 0 35px #0f0;
+    text-shadow: 0 0 4px #0f0, 0 0 8px #0f0, 0 0 12px #0f0, 0 0 16px #0f0, 0 0 20px #0f0, 0 0 24px #0f0, 0 0 28px #0f0;
   }
 }
-
 
 
 

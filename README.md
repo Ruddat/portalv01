@@ -9,7 +9,7 @@ Dieses Projekt ist ein Online-Bestellportal für Pizza, Sushi und Burger, das al
 - [Verwendung](#verwendung)
 - [Beitragende](#beitragende)
 - [Lizenz](#lizenz)
-
+- [Extern](#extern)
 ## Überblick
 
 - <strong>Benutzerregistrierung und -anmeldung:</strong> Benutzer können sich anmelden oder ein Konto erstellen, um auf das Bestellportal zuzugreifen.
@@ -33,6 +33,14 @@ Dieses Projekt ist ein Online-Bestellportal für Pizza, Sushi und Burger, das al
 ## Lizens
 
 Dieses Projekt is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## Extern
+
+- <strong>Plugins:</strong>
+- https://apexcharts.com/
+- https://github.com/whitecube/laravel-cookie-consent
+
 
 ## Installation
 
