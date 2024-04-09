@@ -125,6 +125,9 @@ class Index extends Component
       //  dd($productId, $productName, $price, $size, $quantity, $product->product_code, $options);
         Cart::add($productId, $productName, $price, $size, $quantity, $product->product_code, $options);
 
+       $this->dispatch('toast', message: 'Produkt wurde zum Warenkorb hinzugefügt', notify:'success' );
+
+
         $this->dispatch('productAddedToCart');
     }
 

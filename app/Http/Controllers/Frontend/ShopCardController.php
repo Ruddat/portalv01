@@ -283,7 +283,7 @@ public function getProductPrice($productId)
     public function reply(request $request) // TODO - Clientabfrage machen ob client angemeldet ist sonst zum Login. Client Name dann eintragen
     {
 
-
+    //    dd($request->all());
 
         // Validate the incoming data
         $request->validate([
@@ -299,7 +299,7 @@ public function getProductPrice($productId)
             'reply_content.string' => 'The reply content must be a string.',
         ]);
 
-     //   dd($request->all());
+   //     dd($request->all());
 
 
         // update ModSellerReplays
@@ -310,12 +310,11 @@ public function getProductPrice($productId)
         $reply->reply_content = $request->reply_content;
         $reply->save();
 
-
         // Return a success response
-        return back()->with('success', 'Reply saved successfully.');
-        return response()->json(['success' => false, 'message' => 'You have already voted with the same vote type for this order.']);
-        return response()->json(['success' => true, 'message' => 'Reply saved successfully.']);
-
+        return redirect()->back()->with('toast', [
+            'message' => 'Reply saved successfully.',
+            'notify' => 'success'
+        ]);
 
     }
 

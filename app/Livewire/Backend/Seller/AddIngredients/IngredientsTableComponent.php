@@ -162,7 +162,7 @@ class IngredientsTableComponent extends Component
     }
 
 
-    public function updateIngredientName() 
+    public function updateIngredientName()
     {
     // Validiere die Eingaben
     $validatedData = $this->validate([
@@ -188,22 +188,14 @@ class IngredientsTableComponent extends Component
         // Speichern Sie die Änderungen
         $ingredient->save();
 
-
-
-
-
         $this->editMode = false;
 
-
-//dd($this->request);
-
-
-
         // Erfolgsmeldung anzeigen
-        session()->flash('success', 'Zutat erfolgreich aktualisiert.');
+        $this->dispatch('toast', message: 'Zutat erfolgreich aktualisiert!', notify:'info' );
 
         // Zurück zur vorherigen Seite
         return redirect()->back();
+
     }
 
 

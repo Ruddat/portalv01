@@ -22,6 +22,12 @@ class OrderController extends Controller
     if (Cart::isEmpty()) {
         // Wenn der Warenkorb leer ist, zeige eine Meldung an und bleibe auf derselben Seite
       //  session()->flash('info', 'Der Seller wurde nicht gefunden.');
+       // Erfolgsmeldung anzeigen
+       return redirect()->back()->with('toast', [
+        'message' => 'Ihr Warenkorb ist leer!',
+        'notify' => 'warning'
+    ]);
+
         return back()->with('info', 'Ihr Warenkorb ist leer.');
     }
 

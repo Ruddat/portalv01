@@ -17,15 +17,16 @@
 		<div class="hero_in detail_page background-image" data-background="url({{ asset('frontend/img/hero_general_2.jpg') }})">
 			<div class="wrapper opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
                 <div class="container">
-                    <div class="neon-sign">
-                        <span class="open-text">Open</span>
-                      </div>
                     <div class="main_info">
 
                         <div class="row">
                             <div class="col-xl-4 col-lg-5 col-md-6">
                                 <div class="head">
                                     <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 100px; border-radius: 10px;">
+
+                                    <div class="neon-sign">
+                                        <span class="open-text">Open</span>
+                                      </div>
 
                                 <div class="score"><span>
                                     @if ($overallRating !== null)
@@ -40,6 +41,7 @@
                             </div>
 								<h1>{{ $restaurant->title }}</h1>
 								{{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a href="https://www.google.com/maps/dir/{{ $restaurant->lat }},{{ $restaurant->lng }}/{{ urlencode($restaurant->title) }}" target="_blank">Get directions to {{ $restaurant->title }}</a>
+
 
 							</div>
 							<div class="col-xl-8 col-lg-7 col-md-6 position-relative">
@@ -400,7 +402,7 @@
                     </div>
                     <div class="form-group">
                         <label for="reply_content">Your Reply</label>
-                        <textarea class="form-control" id="reply_content-{{ $rating->id }}" name="reply_content-{{ $rating->id }}" style="height: 180px;" placeholder="Write your review to help others learn about this online business"></textarea>
+                        <textarea class="form-control" id="reply_content" name="reply_content" style="height: 180px;" placeholder="Write your review to help others learn about this online business"></textarea>
                         @error('reply_content') <span class="error">{{ $message }}</span> @enderror
                     </div>
                     <button type="submit" class="btn_1">Submit Reply</button>

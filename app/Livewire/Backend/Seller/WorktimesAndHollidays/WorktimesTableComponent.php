@@ -155,8 +155,11 @@ class WorktimesTableComponent extends Component
          //   dd($this->openingHours[$day]['times'][1]);
             $this->updateDatabase($day);
             // Nach dem Entfernen die Daten neu laden
-            $this->loadWorktimes();
+       //     $this->loadWorktimes();
         }
+
+        return $this->dispatch('toast', message: 'Worktimes deleted successfully', notify:'info' );
+
 
     }
 
@@ -338,27 +341,8 @@ foreach ($this->openingHours as $day => $data) {
 }
 
 
+return $this->dispatch('toast', message: 'Worktimes updated successfully', notify:'success' );
 
-
-
-
-
-// Validierungsregeln und Nachrichten zurückgeben
-return [
-    'rules' => $rules,
-    'messages' => $messages,
-];
-
-
-
-
-
-
-        // Hier können Sie die Logik zum Speichern der Worktimes implementieren
-        // Zum Beispiel könnten Sie die Daten in der $openingHours Variable speichern
-
-        // Zeigen Sie eine Erfolgsmeldung oder eine Weiterleitung an, nachdem die Daten gespeichert wurden
-        session()->flash('message', 'Worktimes successfully saved.');
     }
 
 

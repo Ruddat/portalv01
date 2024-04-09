@@ -121,7 +121,8 @@ class AddIngredientsComponent extends Component
         $this->loadCategories();
 
         // Optional: Feedback anzeigen, dass das Speichern erfolgreich war
-        session()->flash('success', 'Ingredient successfully saved!');
+        return $this->dispatch('toast', message: 'Ingredient Description successfully saved!', notify:'success' );
+
     }
 
     public function addIngredient()
@@ -165,14 +166,6 @@ $ingredient = ModProductsIngredients::create([
     'shop_id' => $currentShopId, // Integer-Wert ohne Anführungszeichen
 ]);
 
-
-
-
-
-//dd($this->mainSizes);
-
-
-// Neues Array für die Preise initialisieren
 // Neues Array für die Preise initialisieren
 $prices = [];
 
@@ -199,10 +192,13 @@ if ($ingredient) {
 
 
         // Optional: Feedback anzeigen, dass das Speichern erfolgreich war
-        session()->flash('success', 'Zutat erfolgreich gespeichert!');
+
+
         $this->loadCategories();
         // Zurücksetzen der Eingabefelder nach dem Speichern
         $this->resetFormFields();
+        // Optional: Feedback anzeigen, dass das Speichern erfolgreich war
+        return $this->dispatch('toast', message: 'Zutat erfolgreich gespeichert!', notify:'success' );
     }
 
 

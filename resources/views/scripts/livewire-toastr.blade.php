@@ -1,21 +1,12 @@
-
-<!-- COMMON SCRIPTS -->
-<script src="{{ asset('frontend/js/common_scripts.min.js') }}"></script>
-<script src="{{ asset('frontend/js/common_func.js') }}"></script>
-
-@stack('specific-scripts')
+@push('toastr-css')
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@endpush
 
 
 
-<script type="text/javascript">
-    var url = "{{ route('change.lang') }}";
-    $(".change_lang").change(function() {
-        window.location.href = url + "?lang=" + $(this).val();
-    });
-</script>
-
-
-
+@push('toastr-scripts')
+    <!-- Scripts -->
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
@@ -90,32 +81,4 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     </script>
 
-<script>
-    $(document).ready(function(){
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        };
-    });
-
-    document.addEventListener("livewire:init", () => {
-        Livewire.on("toast", (event) => {
-            toastr[event.notify](event.message);
-        });
-    });
-
-</script>
-
-@livewireScripts
+@endpush

@@ -24,8 +24,6 @@
     @include('frontend.includes.modal.sign-in-modal')
     @include('frontend.includes.scripts.scripts-global')
 
-
-
 </body>
 
 </html>

@@ -31,7 +31,7 @@
 }
 
 .icon_pin {
-    background: url('{{ asset('frontend/img/location_7508941.png') }}') no-repeat;
+
     width: 24px; /* Passe die Breite nach Bedarf an */
     height: 24px; /* Passe die Höhe nach Bedarf an */
     display: inline-block;
@@ -42,7 +42,6 @@
 .custom-button {
     width: 38px; /* Breite des Symbols */
     height: 38px; /* Höhe des Symbols */
-    background: url('{{ asset('frontend/img/Location-user-01.svg') }}') no-repeat center center; /* Hintergrundbild für das Symbol */
     border: none; /* Kein Rahmen */
     cursor: pointer; /* Zeige den Mauszeiger als Zeiger an */
     padding: 0; /* Kein Innenabstand */
@@ -112,7 +111,9 @@
                                     </ul>
                                 </div>
 
-                                <button class="custom-button" id="btn1" type="loc_button" onclick="getLocation()" aria-label="Custom Button" ontouchstart=""></button>
+                                <button class="custom-button" id="btn1" type="loc_button" onclick="getLocation()" aria-label="Custom Button" ontouchstart="">
+                                    <i class="feather-map-pin h4 icofont-3x text-success"></i>
+                                </button>
 
 </div>
                     </div>
@@ -124,6 +125,12 @@
         <!-- /hero_single -->
 
 
+
+        <p>Sobald Sie auf den Button klicken, werden Ihre Koordinaten ermittelt.</p>
+        <button
+        id="los">Los! <i class="feather-map-pin h4 icofont-3x text-success"></i></button>
+            <p id="ausgabe"></p>
+            <i class="feather-map h4 icofont-3x text-success"></i>
 
 
 
@@ -567,7 +574,43 @@ function showToast(message) {
     </script>
 
 
+<script>
+	var button = document.getElementById('los');
+	button.addEventListener('click', ermittlePosition);
+	var ausgabe = document.getElementById('ausgabe');
 
+	function ermittlePosition() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(zeigePosition, zeigeFehler);
+		} else {
+			ausgabe.innerHTML = 'Ihr Browser unterstützt keine Geolocation.';
+		}
+	}
+
+	function zeigePosition(position) {
+		ausgabe.innerHTML = "Ihre Koordinaten sind:<br> Breite: " + position.coords.latitude +
+			"<br>Länge: " + position.coords.longitude + '<br>Genaugikeit: ' + position.coords
+			.accuracy;
+	}
+
+	function zeigeFehler(error) {
+		switch (error.code) {
+		case error.PERMISSION_DENIED:
+			ausgabe.innerHTML = "Benutzer lehnte Standortabfrage ab."
+			break;
+		case error.POSITION_UNAVAILABLE:
+			ausgabe.innerHTML = "Standortdaten sind nicht verfügbar."
+			break;
+		case error.TIMEOUT:
+			ausgabe.innerHTML = "Die Standortabfrage dauerte zu lange (Time-out)."
+			break;
+		case error.UNKNOWN_ERROR:
+			ausgabe.innerHTML = "unbekannter Fehler."
+			break;
+		}
+	}
+
+</script>
 
 
         @endpush

@@ -7,9 +7,8 @@
 
 <body>
 
+
     @stack('specific-header')
-
-
 
     <main>
 
@@ -26,7 +25,7 @@
     @include('frontend.includes.scripts.scripts-global')
 
 
-
 </body>
 
 </html>
+
