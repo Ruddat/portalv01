@@ -25,7 +25,7 @@
 
 
 
-                    <livewire:backend.seller.worktimes-and-hollidays.holly-days-table-component />
+                    <livewire:backend.seller.worktimes-and-hollidays.holi-days-table-component />
 
                     <livewire:backend.seller.worktimes-and-hollidays.worktimes-table-component />
 

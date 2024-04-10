@@ -16,6 +16,8 @@
                 <form wire:submit.prevent="saveHollyDay">
                 <div class="mb-3 col-md-6">
                     <input wire:model="selectedDate" type="date" class="form-control" id="selectedDate" name="selectedDate" spellcheck="false" data-ms-editor="true">
+                    @error('selectedDate') <span class="text-danger">{{ $message }}</span> @enderror
+
                 </div>
                 <div class="mb-3 col-md-6">
                     <select class="form-control" wire:model="selectedMessage">
@@ -42,9 +44,13 @@
             @if($isOpen)
                 <div class="mb-3 col-md-6">
                     <input wire:model="startTime" type="time" class="form-control" placeholder="Start Time">
+                    @error('startTime') <span class="text-danger">{{ $message }}</span> @enderror
+
                 </div>
                 <div class="mb-3 col-md-6">
                     <input wire:model="endTime" type="time" class="form-control" placeholder="End Time">
+                    @error('endTime') <span class="text-danger">{{ $message }}</span> @enderror
+
                 </div>
             @endif
             @if($showAddForm || $showTimeFields)
@@ -77,11 +83,11 @@
                        @foreach($holidays as $index => $holiday)
                            <tr>
                                <td>{{ $index + 1 }}</td>
-                               <td>{{ $holiday->hollyday_date }}</td>
+                               <td>{{ \Carbon\Carbon::parse($holiday->holiday_date)->format('d. M Y') }}</td>
                                <td>{{ $holiday->is_open ? 'Open' : 'Closed' }}</td>
-                               <td>{{ $holiday->open_time }}</td>
-                               <td>{{ $holiday->close_time }}</td>
-                               <td>{{ $holiday->holiday_message }}</td>
+                               <td>{{ $holiday->open_time ?: '---' }}</td>
+                               <td>{{ $holiday->close_time ?: '---' }}</td>
+                               <td>{{ $holiday->holiday_message ?: '---' }}</td>
                                <td>
                                    <button class="btn btn-secondary" wire:click="removeHollyDay({{ $holiday->id }})">Remove</button>
                                </td>
