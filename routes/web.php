@@ -7,6 +7,7 @@ use App\Http\Controllers\GoogleTranslateController;
 use App\Http\Controllers\Frontend\ShopCardController;
 use App\Http\Controllers\Frontend\Card\CardController;
 use App\Http\Controllers\Frontend\ShopSearchController;
+use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 
 
 /*
@@ -31,6 +32,11 @@ use App\Http\Controllers\Frontend\ShopSearchController;
 
     Route::view('/life-tracking/{orderHash}', 'frontend.lifetracking.life-tracking')->name('life-tracking');
     Route::view('/restaurantvoting/{orderHash}', 'frontend.votingsrestaurant.restaurant-voting')->name('votings-restaurant');
+
+    // WinOrder SOAP routes
+    Route::post('/winorder/get-new-orders', [WinOrderSOAPController::class, 'getNewOrders']);
+    Route::post('/winorder/send-tracking-status', [WinOrderSOAPController::class, 'sendTrackingStatus']);
+    Route::post('/winorder/call-soap-service', [WinOrderSOAPController::class, 'callSoapService'])->name('call.soap.service');
 
 
 
