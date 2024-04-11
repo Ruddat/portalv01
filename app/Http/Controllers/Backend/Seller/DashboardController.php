@@ -44,6 +44,8 @@ class DashboardController extends Controller
     {
         // Hier kannst du Logik implementieren, um Daten abzurufen oder zu verarbeiten
         $currentShopId = $request->query('id');
+        $ShopId = $request->query('id');
+
         $id = $request->query('id'); // Annahme: Falls es eine andere ID gibt
         $shop = ModShop::find($currentShopId);
 
@@ -59,6 +61,7 @@ class DashboardController extends Controller
             'currentShopId' => $currentShopId,
             'id' => $id,
             'shop' => $shop,
+           // 'shopid' => $shopId,
             // Weitere Daten hier hinzufügen, falls erforderlich
         ]);
     }

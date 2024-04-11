@@ -200,9 +200,6 @@ foreach ($restaurants as $restaurant) {
 
 
 
-
-
-
 //dd($restaurant);
 
 

@@ -26,6 +26,15 @@ class ShopCardController extends Controller
      */
     public function index($restaurantId)
     {
+
+
+    // Überprüfen, ob die Session-Variablen vorhanden sind
+    if (!session()->has('userLatitude') || !session()->has('userLongitude')) {
+        // Session-Variablen nicht vorhanden, leite zur Startseite zurück mit einer Meldung
+        return redirect()->route('home')->with('error', 'Die Standortdaten sind nicht verfügbar. Bitte erlauben Sie den Zugriff auf Ihren Standort.');
+
+    }
+
         // Restaurant anhand der ID finden
         $restaurant = ModShop::findOrFail($restaurantId);
 

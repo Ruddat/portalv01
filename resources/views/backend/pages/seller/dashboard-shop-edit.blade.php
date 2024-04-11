@@ -98,179 +98,192 @@
 
 
                     <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                        <div class="widget-stat card bg-secondary overflow-hidden">
-                            <div class="card-body p-4">
-                                <a href="{{ route('seller.restoData', ['shop' => $shop]) }}">
-                                <div class="media">
-                                    <span class="me-3">
-                                        <i class="la la-store-alt"></i>
-                                    </span>
-                                    <div class="media-body text-white">
-                                        <p class="mb-1">Shopdaten</p>
-                                        <h3 class="text-white">28</h3>
-                                        <div class="progress mb-2 bg-primary">
-                                            <div class="progress-bar progress-animated bg-white" style="width: 76%"></div>
-                                        </div>
-                                        <small>76% Fertig</small>
-                                    </div>
-                                </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-						<div class="widget-stat card">
-							<div class="card-body p-4">
-                                <a href="{{ route('seller.restoData', ['shop' => $shop]) }}">
-								<div class="media ai-icon">
-									<span class="me-3 bgl-primary text-primary">
-										<!-- <i class="ti-user"></i> -->
-										<svg id="icon-customers" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
-											<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-											<circle cx="12" cy="7" r="4"></circle>
-										</svg>
-									</span>
-									<div class="media-body">
-										<p class="mb-1">Patient</p>
-										<h4 class="mb-0">3280</h4>
-										<span class="badge badge-primary">+3.5%</span>
-									</div>
-								</div>
-                                </a>
-							</div>
-						</div>
-                    </div>
-
-
-
-                    <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-                        <div class="widget-stat card overflow-hidden">
-                            <div class="card-body p-4">
-                                <a href="{{ route('seller.deliveryarea', ['shop' => $shop]) }}">
-                                <div class="media">
-                                    <span class="me-3 bgl-info text-success">
-                                        <i class="la la-map-marker-alt"></i>
-                                    </span>
-                                    <div class="media-body text-white">
-                                        <p class="mb-1">Liefergebiet</p>
-                                        <h3 class="text-white">28</h3>
-                                        <div class="progress mb-2 bg-primary">
-                                            <div class="progress-bar progress-animated bg-white" style="width: 76%"></div>
-                                        </div>
-                                        <small>76% Fertig</small>
-                                    </div>
-                                </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-					<div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
 						<div class="widget-stat card">
 							<div class="card-body  p-4">
+                                <a href="{{ route('seller.restoData', ['shop' => $shop]) }}">
 								<div class="media">
 									<span class="me-3 bgl-success text-success">
-										<i class="la la-users"></i>
+										<i class="la la-store-alt"></i>
 									</span>
 									<div class="media-body">
-										<p class="mb-1">Total Students</p>
-										<h3>3280x</h3>
+										<h3 class="mb-1">Shopdaten</h3>
+										<p>Shopinfo - Impressum</p>
 										<div class="progress mb-2 bg-white">
                                             <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
                                         </div>
-										<small>80% Increase in 20 Days</small>
+										<small>80% komplett</small>
 									</div>
 								</div>
+                            </a>
 							</div>
 						</div>
                     </div>
 
-					<div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-						<div class="widget-stat card bg-warning">
-							<div class="card-body p-4">
+                    <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+						<div class="widget-stat card">
+							<div class="card-body  p-4">
+                                <a href="{{ route('seller.deliveryarea', ['shop' => $shop]) }}">
 								<div class="media">
-									<span class="me-3">
-										<i class="la la-user"></i>
+									<span class="me-3 bgl-success text-success">
+										<i class="la la-map-marker-alt"></i>
 									</span>
-									<div class="media-body text-white">
-										<p class="mb-1">New Students</p>
-										<h3 class="text-white">245</h3>
-										<div class="progress mb-2 bg-primary">
-                                            <div class="progress-bar progress-animated bg-white" style="width: 50%"></div>
+									<div class="media-body">
+										<h3 class="mb-1">Liefergebiet</h3>
+										<p>Nach Entfehrnung oder Ort</p>
+										<div class="progress mb-2 bg-white">
+                                            <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
                                         </div>
-										<small>50% Increase in 25 Days</small>
+										<small>80% komplett</small>
 									</div>
 								</div>
+                            </a>
 							</div>
 						</div>
                     </div>
 
-					<div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-						<div class="widget-stat card bg-warning">
-							<div class="card-body p-4">
+
+
+
+
+                    <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+						<div class="widget-stat card">
+							<div class="card-body  p-4">
+                                <a href="{{ route('seller.worktimes-list', ['shopId' => $currentShopId]) }}">
 								<div class="media">
-									<span class="me-3">
-										<i class="la la-business-time"></i>
-									</span>
-									<div class="media-body text-white">
-										<p class="mb-1">New Students</p>
-										<h3 class="text-white">245</h3>
-										<div class="progress mb-2 bg-primary">
-                                            <div class="progress-bar progress-animated bg-white" style="width: 50%"></div>
+									<span class="me-3 bgl-success text-success">
+                                        <i class="lar la-clock"></i>
+                                    </span>
+									<div class="media-body">
+										<h3 class="mb-1">Öffnungszeiten</h3>
+										<p>Öffnungszeiten</p>
+										<div class="progress mb-2 bg-white">
+                                            <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
                                         </div>
-										<small>50% Increase in 25 Days</small>
+										<small>80% komplett</small>
 									</div>
 								</div>
+                            </a>
 							</div>
 						</div>
                     </div>
 
-					<div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-						<div class="widget-stat card bg-secondary overflow-hidden">
-							<div class="card-body p-4">
+                    <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+						<div class="widget-stat card">
+							<div class="card-body  p-4">
+                                <a href="{{ route('seller.deliveryarea', ['shop' => $shop]) }}">
 								<div class="media">
-									<span class="me-3">
-										<i class="la la-store-alt"></i>
+									<span class="me-3 bgl-success text-success">
+										<i class="las la-money-check"></i>
 									</span>
-									<div class="media-body text-white">
-										<p class="mb-1">Total Course</p>
-										<h3 class="text-white">28</h3>
-										<div class="progress mb-2 bg-primary">
-                                            <div class="progress-bar progress-animated bg-white" style="width: 76%"></div>
+									<div class="media-body">
+										<h3 class="mb-1">Zahlungsarten</h3>
+										<p>Bar / Ec-Karte</p>
+										<div class="progress mb-2 bg-white">
+                                            <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
                                         </div>
-										<small>76% Increase in 20 Days</small>
+										<small>80% komplett</small>
 									</div>
 								</div>
+                            </a>
 							</div>
 						</div>
                     </div>
 
+<hr>
 
-    <!-- Den Link um die Karte herum hinzufügen -->
-        <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
-            <div class="widget-stat card bg-secondary overflow-hidden">
-                <div class="card-body p-4">
-                    <a href="{{ route('seller.restoData', ['shop' => $shop]) }}">
-                    <div class="media">
-                        <span class="me-3">
-                            <i class="la la-store-alt"></i>
-                        </span>
-                        <div class="media-body text-white">
-                            <p class="mb-1">Total Course</p>
-                            <h3 class="text-white">28</h3>
-                            <div class="progress mb-2 bg-primary">
-                                <div class="progress-bar progress-animated bg-white" style="width: 76%"></div>
-                            </div>
-                            <small>76% Increase in 20 Days</small>
-                        </div>
+<div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+    <div class="widget-stat card">
+        <div class="card-body  p-4">
+            <a href="{{ route('seller.indexOrderOverview', ['shopId' => $currentShopId]) }}">
+            <div class="media">
+                <div class="icon-bx style-2 d-inline-block text-center mb-3">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M33.7872 10.0495H33.4681C33.0851 10.0495 32.766 10.2361 32.5106 10.485C31.1064 12.289 29.3191 14.0309 27.0213 15.8349C26.766 16.0838 26.5745 16.3948 26.5745 16.7681V32.818C26.5745 33.4401 27.0851 34 27.7872 34H33.7872C34.4255 34 35 33.5023 35 32.818V11.1693C35 10.5472 34.4894 10.0495 33.7872 10.0495ZM23.5745 17.639C23.1915 17.4524 22.6809 17.4524 22.2979 17.7012C20.4468 18.9454 18.4681 20.0652 16.4255 21.1227C16.0426 21.3093 15.7872 21.7448 15.7872 22.1803V32.818C15.7872 33.4401 16.2979 34 17 34H23C23.6383 34 24.2128 33.5023 24.2128 32.818V18.6966C24.2128 18.2611 23.9574 17.8256 23.5745 17.639ZM12.8511 22.4291C12.5319 22.2425 12.0851 22.1803 11.7021 22.3669C9.7234 23.2378 7.74468 23.9843 5.82979 24.5442C5.31915 24.6686 5 25.1663 5 25.664V32.818C5 33.4401 5.51064 34 6.21277 34H12.2128C12.8511 34 13.4255 33.5023 13.4255 32.818V23.4245C13.4255 23.0512 13.1702 22.6779 12.8511 22.4291ZM27.6596 12.8489L28.2979 7.93439C28.3617 7.3123 27.9149 6.69021 27.2766 6.628L22.234 6.00591C21.5957 5.9437 20.9574 6.37916 20.8936 7.00126C20.8298 7.62335 21.2766 8.24544 21.9149 8.30765L24.0213 8.55648C21.0851 11.2315 14.5745 16.5815 5.95745 19.3187C5.31915 19.5053 5 20.1896 5.19149 20.8117C5.38298 21.3093 5.82979 21.6204 6.34043 21.6204C6.46809 21.6204 6.59574 21.6204 6.7234 21.5582C15.7234 18.6966 22.4255 13.2222 25.5532 10.2983L25.234 12.4757C25.1702 13.0977 25.617 13.7198 26.2553 13.782C26.3191 13.782 26.383 13.782 26.383 13.782C27.0213 13.8443 27.5957 13.4088 27.6596 12.8489Z" fill="#FC8019"></path>
+                    </svg>
+                </div>
+                    <div class="media-body">
+                    <h3 class="mb-1">Bestellübersicht</h3>
+                    <p></p>
+                    <div class="progress mb-2 bg-white">
+                        <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
                     </div>
-                    </a>
+                    <small>80% komplett</small>
                 </div>
             </div>
+        </a>
         </div>
+    </div>
+</div>
+
+<div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+    <div class="widget-stat card">
+        <div class="card-body  p-4">
+            <a href="{{ route('seller.reviews-overview', ['shopId' => $currentShopId]) }}">
+            <div class="media">
+                <div class="icon-bx d-inline-block text-center bg-info me-sm-4 me-2">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.6 9.8999C5.1 9.8999 0.625 14.3749 0.625 19.8749C0.625 25.3749 5.1 29.8499 10.6 29.8499C16.1 29.8499 20.575 25.3749 20.575 19.8749C20.55 14.3499 16.1 9.8999 10.6 9.8999Z" fill="white"></path>
+                    <path d="M21.4 2.6748C17.9 2.6748 14.825 4.4998 13.05 7.2248C14.075 7.4248 15.025 7.7498 15.95 8.1748C17.25 6.5998 19.2 5.5998 21.4 5.5998C25.3 5.5998 28.45 8.7498 28.45 12.6498C28.45 15.8248 26.325 18.5248 23.45 19.3998C23.45 19.5498 23.475 19.6998 23.475 19.8498C23.475 20.7248 23.375 21.5998 23.225 22.4248C27.875 21.5748 31.375 17.4998 31.375 12.6248C31.375 7.1498 26.9 2.6748 21.4 2.6748Z" fill="white"></path>
+                    </svg>
+                </div>
+                <div class="media-body">
+                    <h3 class="mb-1">Reviews</h3>
+                    <p></p>
+                    <div class="progress mb-2 bg-white">
+                        <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
+                    </div>
+                    <small>80% komplett</small>
+                </div>
+            </div>
+        </a>
+        </div>
+    </div>
+</div>
+
+<div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+    <div class="widget-stat card">
+        <div class="card-body  p-4">
+            <a href="{{ route('seller.deliveryarea', ['shop' => $shop]) }}">
+            <div class="media">
+                <span class="me-3 bgl-success text-success">
+                    <i class="las la-money-check"></i>
+                </span>
+                <div class="media-body">
+                    <h3 class="mb-1">Zahlungsarten</h3>
+                    <p>Bar / Ec-Karte</p>
+                    <div class="progress mb-2 bg-white">
+                        <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
+                    </div>
+                    <small>80% komplett</small>
+                </div>
+            </div>
+        </a>
+        </div>
+    </div>
+</div>
+
+<div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+    <div class="widget-stat card">
+        <div class="card-body  p-4">
+            <a href="{{ route('seller.deliveryarea', ['shop' => $shop]) }}">
+            <div class="media">
+                <span class="me-3 bgl-success text-success">
+                    <i class="las la-money-check"></i>
+                </span>
+                <div class="media-body">
+                    <h3 class="mb-1">Zahlungsarten</h3>
+                    <p>Bar / Ec-Karte</p>
+                    <div class="progress mb-2 bg-white">
+                        <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
+                    </div>
+                    <small>80% komplett</small>
+                </div>
+            </div>
+        </a>
+        </div>
+    </div>
+</div>
+
 
 
 

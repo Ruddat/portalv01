@@ -1,8 +1,9 @@
 <div>
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Opening Hours</h4>
+            <div class="card-header d-block">
+                <h4 class="card-title">{{ app(\App\Services\TranslationService::class)->trans('Regular opening hours', app()->getLocale()) }}</h4>
+                <p class="mb-0 subtitle">{{ app(\App\Services\TranslationService::class)->trans('You can update the regular opening hours of your restaurant. Please select a day of the week below and fill out the opening hours of your restaurant.', app()->getLocale()) }}</p>
             </div>
             <div class="card-body">
                 <form wire:submit.prevent="saveWorktimes">
