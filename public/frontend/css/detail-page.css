@@ -233,21 +233,18 @@
   text-transform: uppercase;
 }
 .box_order .main ul li a {
-  padding-left: 25px;
+  padding-left: 4px;
   color: #444;
   display: inline-block;
   position: relative;
 }
-.box_order .main ul li a:before {
-  font-family: "ElegantIcons";
-  content: "\4f";
-  font-size: 16px;
-  font-size: 1rem;
-  position: absolute;
+.box_order .main ul li a::before {
   left: 0;
   top: 2px;
   line-height: 1;
 }
+
+
 .box_order .main ul li a:hover {
   color: #e74747;
 }

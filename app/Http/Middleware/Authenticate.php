@@ -21,7 +21,7 @@ class Authenticate extends Middleware
             } elseif($request->is('client/*')){
                 return route('client.login');
             } else {
-                return route('seller.login'); // Standard-Anmeldeseite für alle anderen Routen
+                return route('index'); // Standard-Anmeldeseite für alle anderen Routen
             }
         }
 

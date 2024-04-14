@@ -10,6 +10,7 @@ use App\Models\ModCategory;
 use App\Models\ModProducts;
 use App\Services\CartService;
 use App\Models\ModProductSizes;
+use Illuminate\Support\Facades\DB;
 use LivewireUI\Modal\ModalComponent;
 use App\Models\ModProductSizesPrices;
 use App\Models\ModProductIngredientsNodes;
@@ -18,7 +19,7 @@ use App\Http\Controllers\Frontend\ShopCardController;
 
 class Index extends Component
 {
-    public $restaurant, $productsByCategory, $categories, $minPrices;
+    public $restaurant, $productsByCategory, $categories, $minPrices, $sizesWithPrices;
     public $product;
     public $quantity;
     public $productId;
@@ -31,12 +32,18 @@ class Index extends Component
     protected $content;
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
-        'add-to-cart' => 'addToCartWithOptions'
+        'add-to-cart-option' => 'addToCartOption',
     ];
+
+
+    public $selectedPrice;
+    public $selectedIngredients;
+    public $data;
 
     public $options = [];
 
     protected $cartService;
+
 
 
     /**
@@ -60,6 +67,245 @@ class Index extends Component
         $this->minPrices = $this->calculateMinPrices();
         $this->updateCart();
     }
+
+
+
+    public function addToCartNew($productId, $productName, $selectedPrice, $selectedSize, $selectedQuantity)
+    {
+        // Produkt aus der Datenbank abrufen
+        $product = ModProducts::find($productId);
+
+        // Überprüfen, ob das Produkt gefunden wurde
+        if (!$product) {
+            // Fehler behandeln, wenn das Produkt nicht gefunden wurde
+            $this->dispatch('toast', message: 'Das Produkt konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.', notify:'error' );
+
+            return;
+        }
+
+
+        // Optionen für das Produkt abrufen
+        $options = DB::table('mod_product_ingredients_nodes')->where('parent', $productId)->get();
+
+        // Überprüfen, ob das Produkt Optionen hat
+        if ($options->isNotEmpty()) {
+            // Wenn das Produkt Optionen hat, geben Sie eine Meldung aus
+            $this->prepareProductOptions($productId, $selectedSize, $selectedPrice, $productName, $product);
+            // $this->dispatch('toast', message: 'Dieses Produkt hat Optionen. Bitte wählen Sie eine Option aus.', notify:'success' );
+            return;
+        }
+
+        // Wenn das Produkt keine Optionen hat, fügen Sie es mit dem Basispreis zum Warenkorb hinzu
+        $price = $product->base_price;
+        // Hier können weitere Logiken zur Preisberechnung implementiert werden, wenn nötig
+
+        //dd($selectedSize);
+        $uniqueIdentifier = rand(100000, 999999);
+        $extendedProductId = $productId . '' . $uniqueIdentifier;
+        $sizeTitle = $selectedSize;
+
+
+    // Optionen für das Produkt
+    $options = [];
+
+    $quantity = '1'; // Annahme: Standardgröß
+    $bottles = $product->bottles_id;
+     if ($options['bottles'] = $bottles) {
+        $sizeTitle = 'standard'; // Annahme: Standardgröße, wenn keine Größen verfügbar sind
+        $bottlesPrices = ModBottles::where('id', $bottles)->first();
+        $options = [
+            'productName' => $bottlesPrices->bottles_title,
+            'price' => $bottlesPrices->bottles_value,
+            'size' => $sizeTitle,
+             'quantity' => $quantity,
+            ];
+     }
+
+    Cart::add($extendedProductId, $productName, $selectedPrice, $sizeTitle, $selectedQuantity, $productId, $options);
+
+    // Erfolgsmeldung anzeigen
+    $this->dispatch('toast', message: 'Das Produkt wurde zum Warenkorb hinzugefügt.', notify:'success' );
+
+    // Ereignis auslösen, um die Benutzeroberfläche zu aktualisieren
+    $this->dispatch('productAddedToCart');
+
+    }
+
+
+    public function prepareProductOptions($productId, $selectedSize, $selectedPrice, $productName, $product)
+    {
+        // Optionen für das Produkt abrufen
+        $options = DB::table('mod_product_ingredients_nodes')
+        ->where('parent', $productId)
+        ->where('active', true) // Annahme: 'active' ist die Spalte, die den aktiven Zustand angibt
+        ->get();
+
+        // Überprüfen, ob das Produkt Optionen hat
+        if ($options->isNotEmpty()) {
+            // Produkt hat Optionen
+
+    // Initialisiere das Array für die vorbereiteten Zutaten
+    $preparedIngredients = [];
+
+// Für jede Option die entsprechende Überschrift (Kategorie) abrufen
+foreach ($options as $option) {
+    // Überschrift (Kategorie) für die Zutat abrufen
+    $heading = DB::table('mod_products_ingredients')
+                    ->where('id', $option->ingredients_id)
+                    ->where('parent', 0) // Hier die ID für die Überschrift
+                    ->orderByDesc('ordering')
+                    ->first();
+
+    // Zutaten für diese Überschrift abrufen
+    $ingredients = DB::table('mod_products_ingredients')
+                    ->where('parent', $heading->id)
+                    ->get();
+
+    // Hier kannst du die Zutaten weiterverarbeiten, z. B. in ein Array speichern
+    $preparedIngredients[$heading->title] = [];
+
+// hier in `mod_product_sizes_prices` die size_id anhand von $selectedPrice finden
+$sizeId = DB::table('mod_product_sizes_prices')
+            ->where('price', $selectedPrice)
+            ->value('size_id');
+
+// Für jede Zutat den entsprechenden Preis abrufen
+foreach ($ingredients as $ingredient) {
+    // Preise für diese Zutat abrufen
+    $prices = DB::table('mod_products_ingredients_prices')
+                ->where('parent', $ingredient->id)
+                ->where('size_id', $sizeId)
+                ->get();
+
+    // Hier kannst du die Preise weiterverarbeiten, z. B. in ein Array speichern
+    $preparedPrices = [];
+
+    foreach ($prices as $price) {
+        // Hier kannst du den Preis weiterverarbeiten, z. B. in ein Array speichern
+        $preparedPrices[] = $price->price;
+    }
+
+    // Die Zutat und die zugehörigen Preise dem Array hinzufügen
+    $preparedIngredients[$heading->title][$ingredient->title] = $preparedPrices;
+}
+
+}
+
+
+                // Hier das Modal für die Zutat und ihre Preise vorbereiten
+// Übergebe die vorbereiteten Daten an die Funktion zur Modal-Vorbereitung
+    $this->prepareProductModal($productId, $selectedPrice, $selectedSize, $preparedIngredients, $productName, $product);
+
+
+
+// Überschriften (Kategorien), Zutaten und zugehörige Preise vorbereiten
+//dd('Überschriften, Zutaten und Preise:', $preparedIngredients);
+
+
+
+            // Wenn das Produkt Optionen hat, geben Sie eine Meldung aus
+        //    $this->dispatch('toast', message: 'Dieses Produkt hat Optionen. Bitte wählen Sie eine Option aus.', notify:'success' );
+            return;
+        }
+
+        // Optionen nicht vorhanden, Preise und Modal vorbereiten
+        $ingredients = DB::table('mod_products_ingredients')
+                        ->where('parent', $productId)
+                        ->get();
+
+        // Überprüfen, ob Zutaten gefunden wurden
+        if ($ingredients->isNotEmpty()) {
+
+        } else {
+
+        //dd($selectedSize);
+        $uniqueIdentifier = rand(100000, 999999);
+        $extendedProductId = $productId . '' . $uniqueIdentifier;
+        $sizeTitle = $selectedSize;
+
+
+    // Optionen für das Produkt
+    $options = [];
+    $size = 'standard'; // Annahme: Standardgröße, wenn keine Größen verfügbar sind
+    $quantity = '1'; // Annahme: Standardgröß
+     $bottles = $product->bottles_id;
+     if ($options['bottles'] = $bottles) {
+        $bottlesPrices = ModBottles::where('id', $bottles)->first();
+        $options = [
+            'productName' => $bottlesPrices->bottles_title,
+            'price' => $bottlesPrices->bottles_value,
+            'size' => $size,
+             'quantity' => $quantity,
+            ];
+     }
+
+
+     Cart::add($extendedProductId, $productName, $selectedPrice, $selectedSize, $quantity, $productId, $options);
+//dd($extendedProductId, $productName, $selectedPrice, $selectedSize, $productId, $options);
+            // Produkt ohne Optionen und keine Zutaten gefunden
+ //           Cart::add($extendedProductId, $productName, $selectedPrice, $sizeTitle, $selectedQuantity, $productId, $options);
+
+            // Keine Optionen und keine Zutaten gefunden
+            $this->dispatch('toast', message: 'Es sind keine Optionen für dieses Produkt verfügbar.', notify:'info' );
+            $this->dispatch('productAddedToCart');
+
+            return;
+        }
+    }
+
+
+
+    public function prepareProductModal($productId, $selectedPrice, $selectedSize, $preparedIngredients)
+    {
+        // Hier kannst du das Modal öffnen und die vorbereiteten Daten übergeben
+
+        $product = DB::table('mod_products')
+                    ->where('id', $productId)
+                   ->first();
+
+        // Zum Beispiel:
+        $this->dispatch('open-product-modal', [
+            'productId' => $productId,
+            'productName' => $product->product_title,
+            'selectedPrice' => $selectedPrice,
+            'selectedSize' => $selectedSize,
+            'preparedIngredients' => $preparedIngredients,
+        ]);
+    }
+
+
+    public function addToCartOption($productId, $selectedSize, $selectedPrice, $selectedIngredients)
+    {
+        // Zugriff auf die übergebenen Daten
+    //    $this->selectedSize = 'selectedSize';
+    //    $this->selectedPrice = $data['selectedPrice'];
+   //     $this->selectedIngredients = $data['selectedIngredients'];
+
+
+
+dd($productId, $selectedSize, $selectedPrice, $selectedIngredients);
+        // Hier kannst du die Logik implementieren, um das Produkt mit den ausgewählten Optionen zum Warenkorb hinzuzufügen
+        // Zum Beispiel: $this->addToCartWithOptions($productId, $productName, $selectedPrice, $selectedSize, $selectedQuantity);
+
+
+dd('bin hier');
+
+        // Fügen Sie hier die Logik zum Hinzufügen zum Warenkorb hinzu
+    }
+
+
+
+
+
+
+    /**
+     * Add a new item to the cart.
+     *
+     * @param  int  $productId
+     * @param  string  $productName
+     * @param  int  $quantity
+     * @return void
+     */
 
     public function addToCart($productId, $productName, $quantity)
     {

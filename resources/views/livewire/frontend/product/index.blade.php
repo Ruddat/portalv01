@@ -14,34 +14,104 @@
         <div class="row">
 
             @foreach($productsByCategory[$category->category_name] as $product)
-            <div class="col-md-6">
-                <div class="product-card">
-                    <a href="#" wire:click.prevent="addToCart('{{ $product->id }}', '{{ addslashes($product->product_title) }}', '{{ $minPrices[$product->id] }}', 1)" class="menu_item" data-product-title="{{ $product->product_title }}">
-                        <figure class="zoom-effect">
-                            <img src="{{ $product->product_image_url }}" data-src="{{ $product->product_image_url }}" alt="thumb - {{ $product->product_title }}" class="lazy">
-                        </figure>
-                        <h3>{{ $product->product_code }} {{ $product->product_title }}</h3>
-                        @if ($product->bottle)
-                            <p>Pfand: {{ $product->bottle->bottles_value }}</p>
 
-                        @endif
-                        <p>{!! $product->product_description !!}</p>
-                        @if (isset($minPrices[$product->id]))
-                            <strong>ab €{{ $minPrices[$product->id] }}</strong>
-                        @else
-                            <strong>Preis nicht verfügbar</strong>
-                        @endif
-                        <i class="la la-plus"></i>
-                    </a>
 
+            <div class="col-xs-12 col-md-12">
+                <!-- Produkt -->
+                <div class="product-content product-wrap clearfix">
+
+                    <div class="row">
+                        @if(!empty($product->product_image))
+                        <div class="col-md-3 col-sm-12 col-xs-12">
+                            <div class="product-image">
+                                <figure class="zoom-effect">
+                                    <img src="{{ $product->product_image_url }}" data-src="{{ $product->product_image_url }}" alt="thumb - {{ $product->product_title }}" class="lazy">
+                                    <span class="tag2 hot">
+                                        HOT
+                                    </span>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-xs-12">
+                    @else
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                    @endif
+
+                            <div class="product-detail">
+                                <h5 class="name">
+                                 {{ $product->product_code }} {{ $product->product_title }} <i class="hot-icon"></i>&#x1f331;<i class="vegan-icon"></i><i class="halal-icon"></i>
+                                </h5>
+                            </div>
+                            <div class="description">
+                                <p>{!! $product->product_description !!}</p>
+
+                            </div>
+                            <div class="product-info smart-form">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 price-container">
+
+
+                                        <!-- Preisboxen -->
+@if($sizesWithPrices->isNotEmpty())
+    @php $hasProductPrices = $sizesWithPrices->where('parent', $product->id)->isNotEmpty(); @endphp
+    @if($hasProductPrices)
+        @foreach($sizesWithPrices as $size)
+            @if ($size->parent === $product->id)
+                <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $size->price }}, '{{ $size->size }}', 1)" role="button" class="price-box add-to-cart animated-box" title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
+                    <span class="price-box-title">{{ $size->size }}</span>
+                    <span class="price-box-price">{{ $size->price }}&nbsp;€</span>
                 </div>
-            </div>
+            @endif
         @endforeach
+    @else
+        @if($product->base_price)
+        <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, '{{ $size->size }}', 1)" role="button" class="price-box add-to-cart animated-box" title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
+
+        @if ($product->bottle)
+            <span class="price-box-title">+Pfand: {{ $product->bottle->bottles_value }}</span>
+        @endif
+            <span class="price-box-price">{{ $product->base_price }}&nbsp;€</span>
+        </div>
+        @else
+            <div>
+                <strong>Preis nicht verfügbar</strong>
+            </div>
+        @endif
+    @endif
+@else
+    <div>
+        <strong>Preis nicht verfügbar</strong>
+    </div>
+@endif
+
+
+
+                                        <!-- Preisboxen -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ende Produkt -->
+            </div>
+
+
+
+
+        @endforeach
+
+
+
+
+
+
+
 
         </div>
     </section>
   @endforeach
-
 
         <!-- Modal item order -->
         <div id="modal-dialog" class="zoom-anim-dialog mfp-hide">
@@ -58,48 +128,9 @@
                     <!-- Hier werden die Größen dynamisch eingefügt -->
                 </ul>
 
-                <h5>Choose your crust</h5>
-                <ul class="clearfix">
-                    <li>
-                        <label class="container_radio">Thin crust<span>+ $3.30</span>
-                            <input type="radio" value="option1" name="options_2">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="container_radio">Thick crust<span>+ $5.30</span>
-                            <input type="radio" value="option2" name="options_2">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="container_radio">Cheese crust<span>+ $8.30</span>
-                            <input type="radio" value="option3" name="options_2">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
+                <h5 id="ingredients-list"></h5>
 
-                <h5>Extra Ingredients</h5>
-                <ul class="clearfix">
-                    <li>
-                        <label class="container_check">Extra Tomato<span>+ $4.30</span>
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="container_check">Extra Peppers<span>+ $2.50</span>
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="container_check">Extra Ham<span>+ $4.30</span>
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                </ul>
+
             </div>
             <div class="footer">
                 <div class="row small-gutters">
@@ -112,101 +143,125 @@
             </div>
             <!-- /Modal item order -->
 
+
+
+
+
+
+
+
+
   @script
-<script type="text/javascript">
 
-Livewire.on('show-options-modal', (productDataArray) => {
-    // Zugriff auf das innere Objekt innerhalb des Arrays
-    const productData = productDataArray[0].productData;
 
-    // Produktinformationen
-    const productId = productData.productId;
-    const productName = productData.productName;
-    const productQuantity = 1;
 
-    // Aktualisieren Sie den Produktnamen im Modal
-    $('#product-name').text(productName);
 
-    // Anzeigen der Größen im Modal
-    const sizeList = $('#size-list');
-    sizeList.empty(); // Leeren Sie die Größenliste zuerst
+  <script>
+    Livewire.on('open-product-modal', (productData) => {
+        const productId = productData[0].productId;
+        const productName = productData[0].productName;
+        const selectedPrice = productData[0].selectedPrice;
+        const selectedSize = productData[0].selectedSize;
+        const preparedIngredients = productData[0].preparedIngredients;
 
-    productData.sizes.forEach((size, index) => {
-        const sizeItem = $('<li>');
+        // Aktualisiere den Produktnamen im Modal
+        $('#product-name').text(productName);
+        // Zeige die ausgewählte Größe und den Preis im Modal an
+        $('#selected-size').text(selectedSize);
+        $('#selected-price').text(selectedPrice);
 
-        const label = $('<label>').addClass('container_radio').text(size.title);
-        const span = $('<span>').text(`+ $${getPriceForSize(productData.prices, size.id)}`);
-        const input = $('<input>').attr({ type: 'radio', value: index, name: 'size_options' });
+        // Leere die Zutatenliste zuerst
+        const ingredientsList = $('#ingredients-list');
+        ingredientsList.empty();
 
-        // Markieren Sie die erste Größe als ausgewählt
-        if (index === 0) {
-            input.attr('checked', true);
-        }
+        // Durchlaufe die Zutatenkategorien und füge sie der Liste hinzu
+        Object.keys(preparedIngredients).forEach(category => {
+            // Erstelle das h5-Element für die Kategorieüberschrift
+            const categoryTitle = $('<h5>').text(category);
+            ingredientsList.append(categoryTitle);
 
-        const checkmark = $('<span>').addClass('checkmark');
+            // Erstelle die ul-Element für die Zutaten in dieser Kategorie
+            const ulElement = $('<ul>').addClass('clearfix');
+            ingredientsList.append(ulElement);
 
-        label.append(span, input, checkmark);
-        sizeItem.append(label);
-        sizeList.append(sizeItem);
+            // Durchlaufe die Zutaten in dieser Kategorie und füge sie der Liste hinzu
+            Object.keys(preparedIngredients[category]).forEach(ingredient => {
+                const prices = preparedIngredients[category][ingredient];
+
+                // Erstelle das li-Element für jede Zutat
+                const listItem = $('<li>');
+
+                // Erstelle das label-Element für die Zutat
+                const label = $('<label>').addClass('container_check').text(`${ingredient} + $${prices[0]}`);
+
+                // Erstelle das input-Element für die Zutat
+                const input = $('<input>').attr({ type: 'checkbox' });
+
+                // Erstelle das span-Element für die Checkmark
+                const checkmark = $('<span>').addClass('checkmark');
+
+                // Füge das input und checkmark zum label hinzu
+                label.append(input, checkmark);
+
+                // Füge das label zur listItem hinzu
+                listItem.append(label);
+
+                // Füge das listItem zur ul-Element hinzu
+                ulElement.append(listItem);
+            });
+        });
+
+        // Öffnen Sie das Modal
+        $.magnificPopup.open({
+            items: {
+                src: '#modal-dialog' // ID des Modals
+            },
+            type: 'inline',
+            closeBtnInside: false,
+            fixedContentPos: true,
+            fixedBgPos: true,
+            overflowY: 'auto',
+            preloader: false,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
+        });
     });
 
-    // Öffnen Sie das Modal
-    $.magnificPopup.open({
-        items: {
-            src: '#modal-dialog' // ID des Modals
-        },
-        type: 'inline',
-        closeBtnInside: true,
-        fixedContentPos: true,
-        fixedBgPos: true,
-        overflowY: 'auto',
-        preloader: false,
-        removalDelay: 300,
-        mainClass: 'my-mfp-zoom-in'
+// Eventlistener für den "Add to Cart" Button hinzufügen
+$(document).off('click', '#add-to-cart-btn').on('click', '#add-to-cart-btn', function() {
+    // Daten sammeln
+    const selectedSize = $('#selected-size').text();
+    const selectedPrice = $('#selected-price').text();
+    const selectedIngredients = [];
+    const productId = [];
+
+    
+    // Für jede ausgewählte Checkbox den Namen der Zutat extrahieren
+    $('input[type=checkbox]:checked').each(function() {
+        const ingredientName = $(this).parent().text().trim().split('+')[0].trim();
+        selectedIngredients.push(ingredientName);
     });
 
-// Eventlistener für den "Add to cart" Button hinzufügen
-$('#add-to-cart-btn').on('click', function() {
-    // Abrufen der ausgewählten Größe
-    const selectedSizeIndex = $('input[name="size_options"]:checked').val();
-    const selectedSize = productData.sizes[selectedSizeIndex];
+    Livewire.dispatch('add-to-cart-option', {
+    productId: productId,
+    selectedSize: selectedSize,
+    selectedPrice: selectedPrice,
+    selectedIngredients: selectedIngredients
+});
 
-    // Abrufen der ausgewählten Menge
-    const selectedQuantity = $('#quantity').val();
-
-    // Abrufen des Preises für die ausgewählte Größe
-    const selectedPrice = getPriceForSize(productData.prices, selectedSize.id);
-
-    // Livewire-Event auslösen und Daten als Array übergeben
-    Livewire.dispatch('add-to-cart', [productId, productName, selectedPrice, selectedSize, selectedQuantity]);
 
     // Schließen Sie das Modal
     $.magnificPopup.close();
 });
-
-    // Eventlistener für den "Cancel" Button hinzufügen
-    $('#cancel-btn').on('click', function() {
-        // Schließen Sie das Modal
-        Livewire.dispatch('closeModal');
-    });
-});
-
-
-// Funktion, um den Preis für eine bestimmte Größe zu erhalten
-function getPriceForSize(prices, sizeId) {
-    // Durchlaufen Sie die Preise und finden Sie den Preis für die angegebene Größe
-    for (let i = 0; i < prices.length; i++) {
-        if (prices[i].size_id === sizeId) {
-            return prices[i].price;
-        }
-    }
-    // Rückgabe eines Standardwerts, falls der Preis nicht gefunden wird
-    return 'N/A';
-}
-
-
-
 </script>
+
+
+
+
+
+
+
+
  @endscript
 
 </div>
