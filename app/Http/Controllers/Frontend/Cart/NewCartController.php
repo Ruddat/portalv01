@@ -1,22 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Frontend\Cart;
 
 use App\Models\ModShop;
 use App\Models\ModCategory;
 use App\Models\ModProducts;
 use App\Models\DeliveryArea;
 use Illuminate\Http\Request;
-use App\Models\ModSellerVotes;
-use App\Models\ModProductSizes;
 use App\Models\ModSellerReplays;
+use App\Models\ModSellerVotings;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\View;
 use App\Models\ModProductSizesPrices;
-use App\Models\ModSellerVotings; // Add the Voting model
 
-
-class ShopCardController extends Controller
+class NewCartController extends Controller
 {
     /**
      * Display the specified resource.
@@ -49,6 +46,14 @@ class ShopCardController extends Controller
                             ->orderBy('ordering')
                             ->get();
 
+
+                            $sizesWithPrices = DB::table('mod_product_sizes')
+                            ->join('mod_product_sizes_prices', 'mod_product_sizes.id', '=', 'mod_product_sizes_prices.size_id')
+                            ->select('mod_product_sizes.title as size', 'mod_product_sizes_prices.price', 'mod_product_sizes_prices.parent')
+                            ->where('mod_product_sizes.shop_id', $restaurant->id)
+                            ->get();
+
+//dd($sizesWithPrices);
             // Berechnen Sie die Gesamtbewertung für das Restaurant
          //   $overallRating = $this->calculateOverallRating($restaurant->id);
         // Berechnen Sie die Gesamtbewertung für das Restaurant
@@ -133,8 +138,10 @@ class ShopCardController extends Controller
                 $modalScript = true;
             }
 
+//dd($productsByCategory);
+
             // Restaurant gefunden, geben Sie die Detailansicht zurück
-            return view('frontend.pages.detailrestaurant.detail-restaurant', [
+            return view('frontend.pages.detailrestaurant.detail-restaurant-2', [
                 'restaurant' => $restaurant,
                 'categories' => $categories,
                 'productsByCategory' => $productsByCategory, // Übergeben Sie die Produkte nach Kategorien an die Blade-Vorlage
@@ -143,6 +150,7 @@ class ShopCardController extends Controller
                 'overallRatingProgress' => $overallRatingProgress, // Übergeben Sie die Fortschrittsbalken für die Gesamtbewertung an die Blade-Vorlage
                 'ratings' => $ratings, // Übergeben Sie die Ratings an die Blade-Vorlage
                 'modalScript' => $modalScript, // Das Skript für das Modal übergeben
+                'sizesWithPrices' => $sizesWithPrices,
            //     'overallRatingSingle' => $ratingData['overallRatingSingle'], // Übergeben Sie die Gesamtbewertung für jede Kategorie an die Blade-Vorlage
 
             ]);

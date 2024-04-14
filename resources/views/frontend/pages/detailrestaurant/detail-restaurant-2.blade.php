@@ -20,28 +20,40 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-5 col-md-6">
                                 <div class="head">
-                                    <div class="score"><span>Superb<em>350 Reviews</em></span><strong>8.9</strong></div>
-                                </div>
-                                <h1>Pizzeria da Alfredo</h1>
-                                ITALIAN - 27 Old Gloucester St, 4530 - <a
-                                    href="https://www.google.com/maps/dir//Assistance+%E2%80%93+H%C3%B4pitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+H%C3%B4pitaux+de+Paris+(AP-HP)+-+Si%C3%A8ge!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361"
-                                    target="blank">Get directions</a>
+                                    <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 100px; border-radius: 10px;">
+
+                                    <div class="neon-sign">
+                                        <span class="open-text">Open</span>
+                                      </div>
+
+                                <div class="score"><span>
+                                    @if ($overallRating !== null)
+                                    @php
+                                        $ratingText = ($overallRating >= 8.5) ? 'Best' : (($overallRating >= 7) ? 'Superb' : (($overallRating >= 5) ? 'Good' : 'Average'));
+                                    @endphp
+                                    <div>{{ $ratingText }}</div>
+                                @else
+                                    <div>No reviews yet</div>
+                                @endif
+                            <em>{{ $numberOfRatings }} Reviews</em></span><strong>{{ number_format($overallRating, 1) }}</strong></div>
                             </div>
-                            <div class="col-xl-8 col-lg-7 col-md-6 position-relative">
-                                <div class="buttons clearfix">
-                                    <span class="magnific-gallery">
-                                        <a href="{{ asset('frontend/img/detail_1.jpg') }}" class="btn_hero"
-                                            title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>View
-                                            photos</a>
-                                        <a href="{{ asset('frontend/img/detail_2.jpg') }}" title="Photo title"
-                                            data-effect="mfp-zoom-in"></a>
-                                        <a href="{{ asset('frontend/img/detail_3.jpg') }}" title="Photo title"
-                                            data-effect="mfp-zoom-in"></a>
-                                    </span>
-                                    <a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>Wishlist</a>
-                                </div>
-                            </div>
-                        </div>
+								<h1>{{ $restaurant->title }}</h1>
+								{{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a href="https://www.google.com/maps/dir/{{ $restaurant->lat }},{{ $restaurant->lng }}/{{ urlencode($restaurant->title) }}" target="_blank">Get directions to {{ $restaurant->title }}</a>
+
+
+							</div>
+							<div class="col-xl-8 col-lg-7 col-md-6 position-relative">
+								<div class="buttons clearfix">
+									<span class="magnific-gallery">
+										<a href="{{ asset('frontend/img/detail_1.jpg') }}" class="btn_hero" title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>View photos</a>
+										<a href="{{ asset('frontend/img/detail_2.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"></a>
+										<a href="{{ asset('frontend/img/detail_3.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"></a>
+									</span>
+									<a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>Wishlist</a>
+                                    <a href="#0" class="btn_hero wishlist"><i class="icon_info"></i>Info</a>
+								</div>
+							</div>
+						</div>
                         <!-- /row -->
                     </div>
                     <!-- /main_info -->
@@ -53,13 +65,10 @@
         <nav class="secondary_nav sticky_horizontal">
             <div class="container">
                 <ul id="secondary_nav">
-                    <li><a href="#section-1">Starters</a></li>
-                    <li><a href="#section-2">Main Courses</a></li>
-                    <li><a href="#section-3">Desserts</a></li>
-                    <li><a href="#section-4">Drinks</a></li>
-                    <li><a href="#section-3">Desserts</a></li>
-                    <li><a href="#section-4">Drinks</a></li>
-                    <li><a href="#section-5"><i class="icon_chat_alt"></i>Reviews</a></li>
+                    @foreach($categories as $category)
+                        <li><a href="#section-{{ $category->id }}">{{ $category->category_name }}</a></li>
+                    @endforeach
+                    <li><a href="#section-20"><i class="icon_chat_alt"></i>Reviews</a></li>
                 </ul>
             </div>
             <span></span>
@@ -70,6 +79,9 @@
             <div class="container margin_detail">
                 <div class="row">
                     <div class="col-lg-8 list_menu">
+
+                        <livewire:frontend.product.index :restaurant="$restaurant" :categories="$categories" :sizesWithPrices="$sizesWithPrices" :productsByCategory="$productsByCategory" />
+
                         <section id="section-1">
                             <h4>Starters</h4>
                             <div class="table_wrapper">
@@ -189,11 +201,14 @@
     background-color: #dc3545;
     color: #fff;
     display: flex;
+    width: 66px;
+    height: 66px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: transform 0.5s ease;
     transform: border-radius 2.5s ease;
+    background: linear-gradient(to bottom, #fd4558, #c82333);
 }
 
 .price-box:hover {
@@ -208,7 +223,7 @@
 }
 
 .price-box-price {
-    font-size: 16px;
+    font-size: small;
 }
 
 @media (max-width: 767px) {
@@ -222,120 +237,69 @@
     }
 }
 
+
+
+.zoom-effect {
+    border-radius: 10px; /* Füge abgerundete Ecken hinzu */
+}
+
+.zoom-effect img {
+    transition: transform 0.3s ease; /* Füge eine Transitions-Eigenschaft hinzu, um den Übergang weich zu gestalten */
+}
+
+.zoom-effect:hover img {
+    transform: scale(1.2); /* Vergrößere das Bild um 20% */
+}
+
+.hot-icon::before {
+    content: "Hot";
+    background-color: #ff0000; /* Startfarbe */
+    color: #ffffff; /* Textfarbe */
+    padding: 4px 8px; /* Innenabstand */
+    border-radius: 4px; /* Abgerundete Ecken */
+    font-weight: bold; /* Fetter Text */
+    animation: flicker 1s infinite alternate; /* Animationsdefinition */
+}
+
+@keyframes flicker {
+    0% { background-color: #ff0000; } /* Startfarbe */
+    100% { background-color: #ff4500; } /* Endfarbe */
+}
+
+/* CSS */
+.vegan-icon::before {
+    content: "V";
+    font-size: 16px; /* Symbolgröße */
+    color: #008000; /* Farbe für vegan */
+    font-weight: bold; /* Fetter Text */
+}
+
+
+.halal-icon::before {
+    content: "H";
+    font-size: 16px; /* Symbolgröße */
+    color: #008000; /* Farbe für Halal */
+    font-weight: bold; /* Fetter Text */
+    border-radius: 50%; /* Runde Form */
+    background-color: #ffffff; /* Hintergrundfarbe des Kreises */
+    display: inline-flex; /* Inline-Element verwenden */
+    justify-content: center; /* Zentrierung des Inhalts horizontal */
+    align-items: center; /* Zentrierung des Inhalts vertikal */
+    width: 24px; /* Breite des Kreises */
+    height: 24px; /* Höhe des Kreises */
+}
+
+
+
+
                                     </style>
 
-                                    <div class="col-xs-12 col-md-12">
-                                        <!-- product -->
-                                        <div class="product-content product-wrap clearfix">
-                                            <div class="row">
-                                                    <div class="col-md-3 col-sm-12 col-xs-12">
-                                                        <div class="product-image">
-                                                            <img src="https://www.bootdey.com/image/194x228/87CEFA" alt="194x228" class="img-responsive">
-                                                            <span class="tag2 hot">
-                                                                HOT
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-9 col-sm-12 col-xs-12">
-                                                    <div class="product-deatil fa-2x">
-                                                            <h5 class="name">
-                                                                <a href="#">
-                                                                    Product Name Title Here <i class="feather-star"></i>&#x1f331;
-                                                                </a>
-                                                            </h5>
-                                                    </div>
-                                                    <div class="description">
-                                                        <p>Proin in ullamcorper lorem. Maecenas eu ipsum </p>
-                                                    </div>
-                                                    <div class="product-info smart-form">
-                                                        <div class="row">
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 price-container">
-
-                                                                <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                    <span class="price_box_title">Single ca. 20cm</span>
-                                                                    <span class="price_box_price">11,90&nbsp;€</span>
-                                                                </div>
-                                                                <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                    <span class="price_box_title">Single ca. 26cm</span>
-                                                                    <span class="price_box_price">11,90&nbsp;€</span>
-                                                                </div>
-                                                                <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                    <span class="price_box_title">Single ca. 32cm</span>
-                                                                    <span class="price_box_price">11,90&nbsp;€</span>
-                                                                </div>
-                                                                <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                    <span class="price_box_title">Single ca. 40cm</span>
-                                                                    <span class="price_box_price">11,90&nbsp;€</span>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- end product -->
-                                    </div>
 
 
 
 
-                                <div class="col-xs-12 col-md-12">
-                                    <!-- product -->
-                                    <div class="product-content product-wrap clearfix">
-                                        <div class="row">
-                                                <div class="col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="product-image">
-                                                        <img src="https://www.bootdey.com/image/194x228/87CEFA" alt="194x228" class="img-responsive">
-                                                        <span class="tag2 hot">
-                                                            HOT
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-9 col-sm-12 col-xs-12">
-                                                <div class="product-deatil">
-                                                        <h5 class="name">
-                                                            <a href="#">
-                                                                Product Name Title Here <i class="feather-star"></i>&#x1f331; <i class="fa-solid fa-pepper-hot"></i> <span>Category</span><i class="feather-star"></i><i class="feather-star"></i>
-                                                            </a>
-                                                        </h5>
 
 
-                                                </div>
-                                                <div class="description">
-                                                    <p>Proin in ullamcorper lorem. Maecenas eu ipsum </p>
-                                                </div>
-                                                <div class="product-info smart-form">
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 price-container">
-
-                                                            <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                <span class="price_box_title">Single ca. 20cm</span>
-                                                                <span class="price_box_price">11,90&nbsp;€</span>
-                                                            </div>
-                                                            <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                <span class="price_box_title">Single ca. 26cm</span>
-                                                                <span class="price_box_price">11,90&nbsp;€</span>
-                                                            </div>
-                                                            <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                <span class="price_box_title">Single ca. 32cm</span>
-                                                                <span class="price_box_price">11,90&nbsp;€</span>
-                                                            </div>
-                                                            <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                <span class="price_box_title">Single ca. 40cm</span>
-                                                                <span class="price_box_price">11,90&nbsp;€</span>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end product -->
-                                </div>
 
 
                                 <div class="col-xs-12 col-md-12">
@@ -416,9 +380,9 @@
 <style>
 
 .product-content {
-    border: 1px solid #dfe5e9;
-    margin-bottom: 20px;
-    margin-top: 12px;
+    border: 0.5px solid #dfe5e9;
+    margin-bottom: 4px;
+    margin-top: 4px;
     background: #fff;
     padding: 4px;
         -webkit-box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
@@ -433,8 +397,9 @@
     position: relative;
     image-rendering: -webkit-optimize-contrast;
     flex-direction: column;
-    width: 120px;
+    width: auto;
     height: auto;
+    align-items: center;
 }
 
 
@@ -495,8 +460,9 @@
 }
 
 .product-content .product-info {
-    padding: 11px 19px 10px 20px
+    padding: 2px 8px 4px 20px;
 }
+
 
 .product-content .product-info a.add-to-cart {
     color: #2f383d;
@@ -998,6 +964,16 @@
                                                 <a href="#0"><i class="icon_plus_alt2"></i></a>
                                             </td>
                                         </tr>
+
+                                        <div class="col-md-6">
+                                            <a class="menu_item modal_dialog" href="#modal-dialog">
+                                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-9.jpg') }}" alt="thumb" class="lazy"></figure>
+                                                <h3>15. Mineral Water</h3>
+                                                <p>Fuisset mentitum deleniti sit ea.</p>
+                                                <strong>$1.40</strong>
+                                            </a>
+                                        </div>
+
                                         <tr>
                                             <td class="d-md-flex align-items-center">
                                                 <figure>
@@ -1191,134 +1167,116 @@
                     </div>
                     <!-- /col -->
 
-                    <div class="col-lg-4" id="sidebar_fixed">
-                        <div class="box_order mobile_fixed">
-                            <div class="head">
-                                <h3>Order Summary</h3>
-                                <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
-                            </div>
-                            <!-- /head -->
-                            <div class="main">
-                                <ul class="clearfix">
-                                    <li><a href="#0">1x Enchiladas</a><span>$11</span></li>
-                                    <li><a href="#0">2x Burrito</a><span>$14</span></li>
-                                    <li><a href="#0">1x Chicken</a><span>$18</span></li>
-                                    <li><a href="#0">2x Corona Beer</a><span>$9</span></li>
-                                    <li><a href="#0">2x Cheese Cake</a><span>$11</span></li>
-                                </ul>
-                                <ul class="clearfix">
-                                    <li>Subtotal<span>$56</span></li>
-                                    <li>Delivery fee<span>$10</span></li>
-                                    <li class="total">Total<span>$66</span></li>
-                                </ul>
-                                <div class="row opt_order">
-                                    <div class="col-6">
-                                        <label class="container_radio">Delivery
-                                            <input type="radio" value="option1" name="opt_order" checked>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-6">
-                                        <label class="container_radio">Take away
-                                            <input type="radio" value="option1" name="opt_order">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="dropdown day">
-                                    <a href="#" data-bs-toggle="dropdown">Day <span id="selected_day"></span></a>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-menu-content">
-                                            <h4>Which day delivered?</h4>
-                                            <div class="radio_select chose_day">
-                                                <ul>
-                                                    <li>
-                                                        <input type="radio" id="day_1" name="day"
-                                                            value="Today">
-                                                        <label for="day_1">Today<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="day_2" name="day"
-                                                            value="Tomorrow">
-                                                        <label for="day_2">Tomorrow<em>-40%</em></label>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- /people_select -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /dropdown -->
-                                <div class="dropdown time">
-                                    <a href="#" data-bs-toggle="dropdown">Time <span id="selected_time"></span></a>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-menu-content">
-                                            <h4>Lunch</h4>
-                                            <div class="radio_select add_bottom_15">
-                                                <ul>
-                                                    <li>
-                                                        <input type="radio" id="time_1" name="time"
-                                                            value="12.00am">
-                                                        <label for="time_1">12.00<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_2" name="time"
-                                                            value="08.30pm">
-                                                        <label for="time_2">12.30<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_3" name="time"
-                                                            value="09.00pm">
-                                                        <label for="time_3">1.00<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_4" name="time"
-                                                            value="09.30pm">
-                                                        <label for="time_4">1.30<em>-40%</em></label>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- /time_select -->
-                                            <h4>Dinner</h4>
-                                            <div class="radio_select">
-                                                <ul>
-                                                    <li>
-                                                        <input type="radio" id="time_5" name="time"
-                                                            value="08.00pm">
-                                                        <label for="time_1">20.00<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_6" name="time"
-                                                            value="08.30pm">
-                                                        <label for="time_2">20.30<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_7" name="time"
-                                                            value="09.00pm">
-                                                        <label for="time_3">21.00<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_8" name="time"
-                                                            value="09.30pm">
-                                                        <label for="time_4">21.30<em>-40%</em></label>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- /time_select -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /dropdown -->
-                                <div class="btn_1_mobile">
-                                    <a href="order.html" class="btn_1 gradient full-width mb_5">Order Now</a>
-                                    <div class="text-center"><small>No money charged on this steps</small></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /box_order -->
-                        <div class="btn_reserve_fixed"><a href="#0" class="btn_1 gradient full-width">View
-                                Basket</a></div>
-                    </div>
+		            <div class="col-lg-4" id="sidebar_fixed">
+		                <div class="box_order mobile_fixed">
+		                    <div class="head">
+		                        <h3>{{ app(\App\Services\TranslationService::class)->trans('Order Summary', app()->getLocale()) }}</h3>
+		                        <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
+
+		                    </div>
+		                    <!-- /head -->
+		                    <div class="main">
+                                <livewire:frontend.card.cart-component />
+
+		                        <div class="row opt_order">
+		                            <div class="col-6">
+		                                <label class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Delivery', app()->getLocale()) }}
+		                                    <input type="radio" value="option1" name="opt_order" checked>
+		                                    <span class="checkmark"></span>
+		                                </label>
+		                            </div>
+		                            <div class="col-6">
+		                                <label class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Selbstabholen', app()->getLocale()) }}
+		                                    <input type="radio" value="option1" name="opt_order">
+		                                    <span class="checkmark"></span>
+		                                </label>
+		                            </div>
+		                        </div>
+		                        <div class="dropdown day">
+		                            <a href="#" data-bs-toggle="dropdown">Day <span id="selected_day"></span></a>
+		                            <div class="dropdown-menu">
+		                                <div class="dropdown-menu-content">
+		                                    <h4>Which day delivered?</h4>
+		                                    <div class="radio_select chose_day">
+		                                        <ul>
+		                                            <li>
+		                                                <input type="radio" id="day_1" name="day" value="Today">
+		                                                <label for="day_1">Today<em>-40%</em></label>
+		                                            </li>
+		                                            <li>
+		                                                <input type="radio" id="day_2" name="day" value="Tomorrow">
+		                                                <label for="day_2">Tomorrow<em>-40%</em></label>
+		                                            </li>
+		                                        </ul>
+		                                    </div>
+		                                    <!-- /people_select -->
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <!-- /dropdown -->
+		                        <div class="dropdown time">
+		                            <a href="#" data-bs-toggle="dropdown">Time <span id="selected_time"></span></a>
+		                            <div class="dropdown-menu">
+		                                <div class="dropdown-menu-content">
+		                                    <h4>Lunch</h4>
+		                                    <div class="radio_select add_bottom_15">
+		                                        <ul>
+		                                            <li>
+		                                                <input type="radio" id="time_1" name="time" value="12.00am">
+		                                                <label for="time_1">12.00<em>-40%</em></label>
+		                                            </li>
+		                                            <li>
+		                                                <input type="radio" id="time_2" name="time" value="08.30pm">
+		                                                <label for="time_2">12.30<em>-40%</em></label>
+		                                            </li>
+		                                            <li>
+		                                                <input type="radio" id="time_3" name="time" value="09.00pm">
+		                                                <label for="time_3">1.00<em>-40%</em></label>
+		                                            </li>
+		                                            <li>
+		                                                <input type="radio" id="time_4" name="time" value="09.30pm">
+		                                                <label for="time_4">1.30<em>-40%</em></label>
+		                                            </li>
+		                                        </ul>
+		                                    </div>
+		                                    <!-- /time_select -->
+		                                    <h4>Dinner</h4>
+		                                    <div class="radio_select">
+		                                        <ul>
+		                                            <li>
+		                                                <input type="radio" id="time_5" name="time" value="08.00pm">
+		                                                <label for="time_1">20.00<em>-40%</em></label>
+		                                            </li>
+		                                            <li>
+		                                                <input type="radio" id="time_6" name="time" value="08.30pm">
+		                                                <label for="time_2">20.30<em>-40%</em></label>
+		                                            </li>
+		                                            <li>
+		                                                <input type="radio" id="time_7" name="time" value="09.00pm">
+		                                                <label for="time_3">21.00<em>-40%</em></label>
+		                                            </li>
+		                                            <li>
+		                                                <input type="radio" id="time_8" name="time" value="09.30pm">
+		                                                <label for="time_4">21.30<em>-40%</em></label>
+		                                            </li>
+		                                        </ul>
+		                                    </div>
+		                                    <!-- /time_select -->
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <!-- /dropdown -->
+		                        <div class="btn_1_mobile">
+		                            <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}" class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</a>
+		                            <div class="text-center"><small>{{ app(\App\Services\TranslationService::class)->trans('No money charged on this steps', app()->getLocale()) }}</small></div>
+		                        </div>
+		                    </div>
+		                </div>
+		                <!-- /box_order -->
+		                <div class="btn_reserve_fixed"><a href="#0" class="btn_1 gradient full-width">{{ app(\App\Services\TranslationService::class)->trans('View Basket', app()->getLocale()) }}</a></div>
+		            </div>
+
+
                 </div>
                 <!-- /row -->
             </div>
@@ -1483,72 +1441,6 @@
 
         <div id="message">Item added to cart</div><!-- Add to cart message -->
 
-        <!-- Modal item order -->
-        <div id="modal-dialog" class="zoom-anim-dialog mfp-hide">
-            <div class="small-dialog-header">
-                <h3>Cheese Quesadilla</h3>
-            </div>
-            <div class="content">
-                <h5>Quantity</h5>
-                <div class="numbers-row">
-                    <input type="text" value="1" id="qty_1" class="qty2 form-control" name="quantity">
-                </div>
-                <h5>Size</h5>
-                <ul class="clearfix">
-                    <li>
-                        <label class="container_radio">Medium<span>+ $3.30</span>
-                            <input type="radio" value="option1" name="options_1">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="container_radio">Large<span>+ $5.30</span>
-                            <input type="radio" value="option2" name="options_1">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="container_radio">Extra Large<span>+ $8.30</span>
-                            <input type="radio" value="option3" name="options_1">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                </ul>
-                <h5>Extra Ingredients</h5>
-                <ul class="clearfix">
-                    <li>
-                        <label class="container_check">Extra Tomato<span>+ $4.30</span>
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="container_check">Extra Peppers<span>+ $2.50</span>
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="container_check">Extra Ham<span>+ $4.30</span>
-                            <input type="checkbox">
-                            <span class="checkmark"></span>
-                        </label>
-                    </li>
-                </ul>
-            </div>
-            <div class="footer">
-                <div class="row small-gutters">
-                    <div class="col-md-4">
-                        <button type="reset" class="btn_1 outline full-width mb-mobile">Cancel</button>
-                    </div>
-                    <div class="col-md-8">
-                        <button type="reset" class="btn_1 full-width">Add to cart</button>
-                    </div>
-                </div>
-                <!-- /Row -->
-            </div>
-        </div>
-        <!-- /Modal item order -->
 
 
 
@@ -1559,3 +1451,88 @@
             <script src="{{ asset('frontend/js/specific_detail.js') }}"></script>
         @endpush
     @endsection
+@if(isset($modalScript) && $modalScript)
+
+@push('specific-header')
+
+<link href="{{ asset('frontend/css/modal_popup.css') }}" rel="stylesheet">
+
+@endpush
+
+
+
+<div class="popup_wrapper">
+    <div class="popup_content newsletter_c">
+        <span class="popup_close"><i class="icon_close"></i></span>
+        <div class="row g-0">
+            <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center">
+                <figure><img src="{{ asset('frontend/img/newsletter_img.jpg') }}" alt=""></figure>
+            </div>
+            <div class="col-md-7">
+                <div class="content">
+                    <div class="wrapper">
+                        <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="162" height="35" alt="">
+                        <h3>Entschuldigung, außerhalb des Liefergebiets</h3>
+                        <p>Es tut uns leid, aber Ihre Adresse befindet sich außerhalb unseres Liefergebiets. Bitte überprüfen Sie Ihre Adresse oder kontaktieren Sie uns für weitere Informationen.</p>
+                        <p>Falls Sie weitere Fragen haben, stehen wir Ihnen gerne zur Verfügung.</p>
+                        <form action="#">
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="Enter your email address">
+                            </div>
+                            <button type="submit" class="btn_1 mt-2 mb-4">Subscribe</button>
+                        </form>
+                        <div class="row opt_order">
+                            <div class="col-6">
+                                <label class="container_radio">Delivery
+                                    <input type="radio" value="option1" name="opt_order" checked="">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <label class="container_radio">Take away
+                                    <input type="radio" value="option1" name="opt_order">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- row -->
+    </div>
+</div>
+
+
+@push('specific-scripts')
+
+<script>
+
+    (function($) {
+        "use strict";
+
+        // Popup up
+        setTimeout(function() {
+            $('.popup_wrapper').css('opacity', '1');
+        }, 500); // Entrance delay
+
+        $('.popup_wrapper');
+        $('.popup_close').click(function() { // Class for the close button
+            $('.popup_wrapper').fadeOut(300); // Hide the CTA div
+        });
+
+
+
+    })(window.jQuery);
+
+</script>
+
+
+
+
+
+
+@endpush
+
+
+@endif

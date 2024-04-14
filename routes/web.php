@@ -7,6 +7,7 @@ use App\Http\Controllers\GoogleTranslateController;
 use App\Http\Controllers\Frontend\ShopCardController;
 use App\Http\Controllers\Frontend\Card\CardController;
 use App\Http\Controllers\Frontend\ShopSearchController;
+use App\Http\Controllers\Frontend\Cart\NewCartController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 
 
@@ -38,7 +39,10 @@ use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
     Route::post('/winorder/send-tracking-status', [WinOrderSOAPController::class, 'sendTrackingStatus']);
     Route::post('/winorder/call-soap-service', [WinOrderSOAPController::class, 'callSoapService'])->name('call.soap.service');
 
-
+    // Frontend routes CartController methods
+    Route::get('/detail-restaurant-2/{restaurantId}', [NewCartController::class, 'index'])->name('detail-restaurant-2.index');
+    Route::post('/vote', [NewCartController::class, 'vote'])->name('vote-restaurant.vote');
+    Route::post('/reply', [NewCartController::class, 'reply'])->name('vote-restaurant.reply');
 
 //Route::get('/', function () {
 //    return view('welcome');

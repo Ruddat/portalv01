@@ -24,10 +24,7 @@
 	// Drodown options prevent close
 	$('.dropdown-options .dropdown-menu').on("click", function(e) { e.stopPropagation(); });
 
-	// Remove items order sum
-	$('.main ul li a').on('click', function(c) {
-	    $(this).parent().fadeOut('slow', function(c) {});
-	});
+
 
 	// Close Dropdown options on add cart button click + add to cart message
 	$(".dropdown-menu a.btn_1").on('click', function() {
@@ -54,7 +51,7 @@
 	        removalDelay: 500, //delay removal by X to allow out-animation
 	        callbacks: {
 	            beforeOpen: function() {
-	                // just a hack that adds mfp-anim class to markup 
+	                // just a hack that adds mfp-anim class to markup
 	                this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
 	                this.st.mainClass = this.st.el.attr('data-effect');
 	            }
@@ -109,4 +106,4 @@
     $button.parent().find("input").val(newVal);
   });
 
-})(window.jQuery); 
+})(window.jQuery);
