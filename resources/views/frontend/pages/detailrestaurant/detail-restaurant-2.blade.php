@@ -82,297 +82,109 @@
 
                         <livewire:frontend.product.index :restaurant="$restaurant" :categories="$categories" :sizesWithPrices="$sizesWithPrices" :productsByCategory="$productsByCategory" />
 
-                        <section id="section-1">
-                            <h4>Starters</h4>
-                            <div class="table_wrapper">
 
+                        <style>
 
-                                <div class="container">
+                            .price-box {
+                                padding: 10px;
+                                border: 1px solid #ccc;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                background-color: #dc3545;
+                                color: #fff;
+                                display: flex;
+                                width: 66px;
+                                height: 66px;
+                                flex-direction: column;
+                                align-items: center;
+                                justify-content: center;
+                                transition: transform 0.5s ease;
+                                transform: border-radius 2.5s ease;
+                                background: linear-gradient(to bottom, #fd4558, #c82333);
+                            }
 
+                            .price-box:hover {
+                                transform: translateY(-5px);
+                                border-radius: 20%; /* Rund machen beim Schweben */
+                            }
 
-                                    <div class="col-xs-12 col-md-12">
-                                        <!-- Produkt -->
-                                        <div class="product-content product-wrap clearfix">
-                                            <div class="row">
-                                                <div class="col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="product-image">
-                                                        <img src="https://www.bootdey.com/image/194x228/87CEFA" alt="194x228" class="img-responsive">
-                                                        <span class="tag2 hot">
-                                                            HOT
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-9 col-sm-12 col-xs-12">
-                                                    <div class="product-detail">
-                                                        <h5 class="name">
-                                                            <a href="#">
-                                                                Product Name Title Here <i class="feather-star"></i>&#x1f331;
-                                                            </a>
-                                                        </h5>
-                                                    </div>
-                                                    <div class="description">
-                                                        <p>Proin in ullamcorper lorem. Maecenas eu ipsum </p>
-                                                    </div>
-                                                    <div class="product-info smart-form">
-                                                        <div class="row">
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 price-container">
-                                                                <!-- Preisboxen -->
-                                                                <div role="button" class="price-box add-to-cart animated-box" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                    <span class="price-box-title">Single ca. 20cm</span>
-                                                                    <span class="price-box-price">11,90&nbsp;€</span>
-                                                                </div>
-                                                                <div role="button" class="price-box add-to-cart animated-box" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                    <span class="price-box-title">Single ca. 26cm</span>
-                                                                    <span class="price-box-price">11,90&nbsp;€</span>
-                                                                </div>
-                                                                <div role="button" class="price-box add-to-cart animated-box" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                    <span class="price-box-title">Single ca. 32cm</span>
-                                                                    <span class="price-box-price">11,90&nbsp;€</span>
-                                                                </div>
-                                                                <div role="button" class="price-box add-to-cart animated-box" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                    <span class="price-box-title">Single ca. 40cm</span>
-                                                                    <span class="price-box-price">11,90&nbsp;€</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Ende Produkt -->
-                                    </div>
+                            .price-box-title {
+                                font-weight: lighter;
+                                text-align: center;
+                                font-size: xx-small;
+                            }
 
-                                    <div class="col-xs-12 col-md-12">
-                                        <!-- Produkt -->
-                                        <div class="product-content product-wrap clearfix">
-                                            <div class="row">
-                                                <div class="col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="product-image">
-                                                        <img src="https://www.bootdey.com/image/194x228/87CEFA" alt="194x228" class="img-responsive">
-                                                        <span class="tag2 hot">
-                                                            HOT
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-9 col-sm-12 col-xs-12">
-                                                    <div class="product-detail">
-                                                        <h5 class="name">
-                                                            <a href="#">
-                                                                Product Name Title Here <i class="feather-star"></i>&#x1f331;
-                                                            </a>
-                                                        </h5>
-                                                    </div>
-                                                    <div class="description">
-                                                        <p>Proin in ullamcorper lorem. Maecenas eu ipsum </p>
-                                                    </div>
-                                                    <!-- Preisboxen -->
-                                                    <div class="price-container">
-                                                        <div role="button" class="price-box add-to-cart animated-box" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                            <span class="price-box-title">Single ca. 20cm</span>
-                                                            <span class="price-box-price">11,90&nbsp;€</span>
-                                                        </div>
-                                                        <div role="button" class="price-box add-to-cart animated-box" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                            <span class="price-box-title">Single ca. 26cm</span>
-                                                            <span class="price-box-price">11,90&nbsp;€</span>
-                                                        </div>
-                                                        <div role="button" class="price-box add-to-cart animated-box" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                            <span class="price-box-title">Single ca. 32cm</span>
-                                                            <span class="price-box-price">11,90&nbsp;€</span>
-                                                        </div>
-                                                        <div role="button" class="price-box add-to-cart animated-box" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                            <span class="price-box-title">Single ca. 40cm</span>
-                                                            <span class="price-box-price">11,90&nbsp;€</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Ende Produkt -->
-                                    </div>
+                            .price-box-price {
+                                font-size: small;
+                            }
 
+                            @media (max-width: 767px) {
+                                .product-content .row {
+                                    flex-direction: column;
+                                }
 
-                                    <style>
-
-.price-box {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #dc3545;
-    color: #fff;
-    display: flex;
-    width: 66px;
-    height: 66px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.5s ease;
-    transform: border-radius 2.5s ease;
-    background: linear-gradient(to bottom, #fd4558, #c82333);
-}
-
-.price-box:hover {
-    transform: translateY(-5px);
-    border-radius: 20%; /* Rund machen beim Schweben */
-}
-
-.price-box-title {
-    font-weight: lighter;
-    text-align: center;
-    font-size: xx-small;
-}
-
-.price-box-price {
-    font-size: small;
-}
-
-@media (max-width: 767px) {
-    .product-content .row {
-        flex-direction: column;
-    }
-
-    .product-content .col-md-3,
-    .product-content .col-md-9 {
-        width: 100%;
-    }
-}
+                                .product-content .col-md-3,
+                                .product-content .col-md-9 {
+                                    width: 100%;
+                                }
+                            }
 
 
 
-.zoom-effect {
-    border-radius: 10px; /* Füge abgerundete Ecken hinzu */
-}
+                            .zoom-effect {
+                                border-radius: 10px; /* Füge abgerundete Ecken hinzu */
+                            }
 
-.zoom-effect img {
-    transition: transform 0.3s ease; /* Füge eine Transitions-Eigenschaft hinzu, um den Übergang weich zu gestalten */
-}
+                            .zoom-effect img {
+                                transition: transform 0.3s ease; /* Füge eine Transitions-Eigenschaft hinzu, um den Übergang weich zu gestalten */
+                            }
 
-.zoom-effect:hover img {
-    transform: scale(1.2); /* Vergrößere das Bild um 20% */
-}
+                            .zoom-effect:hover img {
+                                transform: scale(1.2); /* Vergrößere das Bild um 20% */
+                            }
 
-.hot-icon::before {
-    content: "Hot";
-    background-color: #ff0000; /* Startfarbe */
-    color: #ffffff; /* Textfarbe */
-    padding: 4px 8px; /* Innenabstand */
-    border-radius: 4px; /* Abgerundete Ecken */
-    font-weight: bold; /* Fetter Text */
-    animation: flicker 1s infinite alternate; /* Animationsdefinition */
-}
+                            .hot-icon::before {
+                                content: "Hot";
+                                background-color: #ff0000; /* Startfarbe */
+                                color: #ffffff; /* Textfarbe */
+                                padding: 4px 8px; /* Innenabstand */
+                                border-radius: 4px; /* Abgerundete Ecken */
+                                font-weight: bold; /* Fetter Text */
+                                animation: flicker 1s infinite alternate; /* Animationsdefinition */
+                            }
 
-@keyframes flicker {
-    0% { background-color: #ff0000; } /* Startfarbe */
-    100% { background-color: #ff4500; } /* Endfarbe */
-}
+                            @keyframes flicker {
+                                0% { background-color: #ff0000; } /* Startfarbe */
+                                100% { background-color: #ff4500; } /* Endfarbe */
+                            }
 
-/* CSS */
-.vegan-icon::before {
-    content: "V";
-    font-size: 16px; /* Symbolgröße */
-    color: #008000; /* Farbe für vegan */
-    font-weight: bold; /* Fetter Text */
-}
+                            /* CSS */
+                            .vegan-icon::before {
+                                content: "V";
+                                font-size: 16px; /* Symbolgröße */
+                                color: #008000; /* Farbe für vegan */
+                                font-weight: bold; /* Fetter Text */
+                            }
 
 
-.halal-icon::before {
-    content: "H";
-    font-size: 16px; /* Symbolgröße */
-    color: #008000; /* Farbe für Halal */
-    font-weight: bold; /* Fetter Text */
-    border-radius: 50%; /* Runde Form */
-    background-color: #ffffff; /* Hintergrundfarbe des Kreises */
-    display: inline-flex; /* Inline-Element verwenden */
-    justify-content: center; /* Zentrierung des Inhalts horizontal */
-    align-items: center; /* Zentrierung des Inhalts vertikal */
-    width: 24px; /* Breite des Kreises */
-    height: 24px; /* Höhe des Kreises */
-}
+                            .halal-icon::before {
+                                content: "H";
+                                font-size: 16px; /* Symbolgröße */
+                                color: #008000; /* Farbe für Halal */
+                                font-weight: bold; /* Fetter Text */
+                                border-radius: 50%; /* Runde Form */
+                                background-color: #ffffff; /* Hintergrundfarbe des Kreises */
+                                display: inline-flex; /* Inline-Element verwenden */
+                                justify-content: center; /* Zentrierung des Inhalts horizontal */
+                                align-items: center; /* Zentrierung des Inhalts vertikal */
+                                width: 24px; /* Breite des Kreises */
+                                height: 24px; /* Höhe des Kreises */
+                            }
 
 
 
 
-                                    </style>
-
-
-
-
-
-
-
-
-
-                                <div class="col-xs-12 col-md-12">
-                                    <!-- product -->
-                                    <div class="product-content product-wrap clearfix">
-                                        <div class="row">
-                                                <div class="col-md-3 col-sm-12 col-xs-12">
-                                                    <div class="product-image">
-                                                        <img src="https://www.bootdey.com/image/194x228/87CEFA" alt="194x228" class="img-responsive">
-                                                        <span class="tag2 hot">
-                                                            HOT
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-9 col-sm-12 col-xs-12">
-                                                <div class="product-deatil fa-2x">
-                                                        <h5 class="name">
-                                                            <a href="#">
-                                                                Product Name Title Here <i class="feather-star"></i>&#x1f331; <i class="fa-solid fa-pepper-hot"></i> <span>Category</span><i class="feather-star"></i><i class="feather-star"></i>
-                                                            </a>
-                                                        </h5>
-
-                                                        <span class="hot">12</span>
-                                                </div>
-                                                <div class="description">
-                                                    <p>Proin in ullamcorper lorem. Maecenas eu ipsum </p>
-                                                </div>
-                                                <div class="product-info smart-form">
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12 col-xs-12 price-container">
-
-                                                            <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                <span class="price_box_title">Single ca. 20cm</span>
-                                                                <span class="price_box_price">11,90&nbsp;€</span>
-                                                            </div>
-                                                            <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                <span class="price_box_title">Single ca. 26cm</span>
-                                                                <span class="price_box_price">11,90&nbsp;€</span>
-                                                            </div>
-                                                            <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                <span class="price_box_title">Single ca. 32cm</span>
-                                                                <span class="price_box_price">11,90&nbsp;€</span>
-                                                            </div>
-                                                            <div role="button" class="price_box add-to-cart" title="Pizza Urknall in den Warenkorb legen und in Braunschweig Westring bestellen" onclick="addToCart({productID: 31, location:'#'})">
-                                                                <span class="price_box_title">Single ca. 40cm</span>
-                                                                <span class="price_box_price">11,90&nbsp;€</span>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end product -->
-                                </div>
-
-
-
-                                </div>
-
-
-                                   </tbody>
-                                </table>
-                            </div>
-                        </section>
-                        <!-- /section -->
-
-
-
-
-
+                                                                </style>
 
 
 
@@ -757,413 +569,6 @@
 
 
 
-
-
-
-
-                        <section id="section-2">
-                            <h4>Main Courses</h4>
-                            <div class="table_wrapper">
-                                <table class="table table-borderless cart-list menu-gallery">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Item
-                                            </th>
-                                            <th>
-                                                Price
-                                            </th>
-                                            <th>
-                                                Order
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-5.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>5. Cheese Quesadilla</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$12.00</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-6.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>6. Chorizo & Cheese</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$24.71</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_3.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-7.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>7. Beef Taco</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$8.70</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_4.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-8.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>8. Minced Beef Double Layer</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$6.30</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-9.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>9. Piri Piri Chicken</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$7.40</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-10.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>10. Burrito Al Pastor</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$7.70</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-                        <!-- /section -->
-
-                        <section id="section-3">
-                            <h4>Desserts</h4>
-                            <div class="table_wrapper">
-                                <table class="table table-borderless cart-list menu-gallery">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Item
-                                            </th>
-                                            <th>
-                                                Price
-                                            </th>
-                                            <th>
-                                                Order
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-17.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>11. Chocolate Fudge Cake</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$24.71</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-
-                                        <div class="col-md-6">
-                                            <a class="menu_item modal_dialog" href="#modal-dialog">
-                                                <figure><img src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}" data-src="{{ asset('frontend/img/menu-thumb-9.jpg') }}" alt="thumb" class="lazy"></figure>
-                                                <h3>15. Mineral Water</h3>
-                                                <p>Fuisset mentitum deleniti sit ea.</p>
-                                                <strong>$1.40</strong>
-                                            </a>
-                                        </div>
-
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-18.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>12. Cheesecake</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$7.50</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_3.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-19.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>19. Apple Pie & Custard</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$9.70</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_4.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-20.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>14. Profiteroles</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$12.00</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-                        <!-- /section -->
-
-                        <section id="section-4">
-                            <h4>Drinks</h4>
-                            <div class="table_wrapper">
-                                <table class="table table-borderless cart-list menu-gallery">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Item
-                                            </th>
-                                            <th>
-                                                Price
-                                            </th>
-                                            <th>
-                                                Order
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_1.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-15.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>15. Coca Cola</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$4.71</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_2.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-16.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>16. Beer Corona</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$7.50</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_3.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-17.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>17. Red Wine</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$9.70</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="d-md-flex align-items-center">
-                                                <figure>
-                                                    <a href="{{ asset('frontend/img/menu_item_large_4.jpg') }}"
-                                                        title="Photo title" data-effect="mfp-zoom-in"><img
-                                                            src="{{ asset('frontend/img/menu-thumb-placeholder.jpg') }}"
-                                                            data-src="{{ asset('frontend/img/menu-thumb-18.jpg') }}"
-                                                            alt="thumb" class="lazy"></a>
-                                                </figure>
-                                                <div class="flex-md-column">
-                                                    <h4>18. White Wine</h4>
-                                                    <p>
-                                                        Fuisset mentitum deleniti sit ea.
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <strong>$12.00</strong>
-                                            </td>
-                                            <td class="options">
-                                                <a href="#0"><i class="icon_plus_alt2"></i></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-                        <!-- /section -->
                     </div>
                     <!-- /col -->
 
