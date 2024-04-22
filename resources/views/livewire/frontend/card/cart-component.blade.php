@@ -14,13 +14,35 @@
                         wire:click="updateCartItem({{ $id }}, 'plus')"></button>
                     <button class="custom-cart-button" aria-hidden="true" data-icon="&#x51;"
                         wire:click="removeFromCart({{ $id }})" style="border: none;"></button>
-                    <p>
 
-                        @foreach ($item->get('options') as $option)
-                            {{ htmlspecialchars($option) }}
+
+
+                        @if ($item->get('options'))
+                        <span class="text-gray-500">Toppings:</span>
+                        @php
+                            $toppingCounts = [];
+                        @endphp
+                        @foreach ($item->get('options') as $topping)
+                            @php
+                                // Überprüfen, ob der Topping bereits in der Zählvariable vorhanden ist
+                                if (array_key_exists($topping['productName'], $toppingCounts)) {
+                                    // Wenn ja, erhöhen Sie die Anzahl
+                                    $toppingCounts[$topping['productName']]++;
+                                } else {
+                                    // Andernfalls fügen Sie den Topping der Zählvariable hinzu und setzen die Anzahl auf 1
+                                    $toppingCounts[$topping['productName']] = 1;
+                                }
+                            @endphp
                         @endforeach
 
-                    </p>
+                        @foreach ($toppingCounts as $toppingName => $count)
+                            <span class="text-gray-500">{{ $count }}x{{ $toppingName }}</span>
+                        @endforeach
+                    @endif
+
+
+
+
 
                 </li>
             @endforeach

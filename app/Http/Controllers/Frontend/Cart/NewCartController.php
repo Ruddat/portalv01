@@ -49,10 +49,32 @@ class NewCartController extends Controller
 
                             $sizesWithPrices = DB::table('mod_product_sizes')
                             ->join('mod_product_sizes_prices', 'mod_product_sizes.id', '=', 'mod_product_sizes_prices.size_id')
-                            ->select('mod_product_sizes.title as size', 'mod_product_sizes_prices.price', 'mod_product_sizes_prices.parent')
+                            ->select('mod_product_sizes.title as size', 'mod_product_sizes_prices.price', 'mod_product_sizes_prices.size_id', 'mod_product_sizes_prices.parent')
                             ->where('mod_product_sizes.shop_id', $restaurant->id)
                             ->get();
+//dd($sizesWithPrices);
+            // Berechnen Sie die Gesamtbewertung für das Restaurant
+         //   $overallRating = $this->calculateOverallRating($restaurant->id);
+        // Berechnen Sie die Gesamtbewertung für das Restaurant
+        $ratingData = $this->calculateOverallRating($restaurant->id);
+        $overallRating = $ratingData['overallRating'];
+        $numberOfRatings = $ratingData['numberOfRatings'];
+        // Setzen Sie `$overallRatingProgress` auf null, wenn keine Bewertungen vorhanden sind
+        $overallRatingProgress = $ratingData['overallRatingProgress'] ?? null;
 
+        // Ratings des Restaurants abrufen
+     //   $ratings = ModSellerVotings::where('shop_id', $restaurantId)->get();
+        // Bewertungen des Restaurants abrufen
+      //  $ratings = ModSellerVotings::where('shop_id', $restaurantId)->get();
+        $ratings = ModSellerVotings::where('shop_id', $restaurantId)->paginate(10);
+     //   $ratings = $ratingData['ratings'];
+     //dd($ratings);
+
+        // Für jede Bewertung die Anzahl von Likes und Dislikes abrufen und als zusätzliche Attribute hinzufügen
+        foreach ($ratings as $rating) {
+            $rating->likes_count = $rating->votes()->where('type', 'like')->count();
+            $rating->dislikes_count = $rating->votes()->where('type', 'dislike')->count();
+        }
 //dd($sizesWithPrices);
             // Berechnen Sie die Gesamtbewertung für das Restaurant
          //   $overallRating = $this->calculateOverallRating($restaurant->id);
@@ -126,6 +148,7 @@ class NewCartController extends Controller
                     // Für jetzt drucken wir nur eine Nachricht aus
                     echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
                     echo "Kosten" . $area->delivery_cost . " euro";
+                    echo "Frei ab" . $area->free_delivery_threshold . " euro";
                     $foundInDeliveryArea = true;
                     $modalScript = false;
                     break; // Keine Notwendigkeit, andere Bereiche zu überprüfen, sobald ein Übereinstimmung gefunden wurde

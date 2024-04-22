@@ -1,6 +1,6 @@
 @extends('frontend.layouts.default')
 @section('content')
-    <!-- seitenabhengig css -->
+    {{-- seitenabhengig css --}}
     @push('specific-css')
         <link href="{{ asset('frontend/css/detail-page.css') }}" rel="stylesheet">
     @endpush
@@ -8,10 +8,6 @@
     <body data-spy="scroll" data-bs-target="#secondary_nav" data-offset="75">
 
         @include('frontend.includes.header-in-clearfix')
-
-
-
-
         <div class="hero_in detail_page background-image"
             data-background="url({{ asset('frontend/img/hero_general_2.jpg') }})">
             <div class="wrapper opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
@@ -20,40 +16,55 @@
                         <div class="row">
                             <div class="col-xl-4 col-lg-5 col-md-6">
                                 <div class="head">
-                                    <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 100px; border-radius: 10px;">
+                                    <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
+                                        style="max-width: 100px; border-radius: 10px;">
 
                                     <div class="neon-sign">
                                         <span class="open-text">Open</span>
-                                      </div>
+                                    </div>
 
-                                <div class="score"><span>
-                                    @if ($overallRating !== null)
-                                    @php
-                                        $ratingText = ($overallRating >= 8.5) ? 'Best' : (($overallRating >= 7) ? 'Superb' : (($overallRating >= 5) ? 'Good' : 'Average'));
-                                    @endphp
-                                    <div>{{ $ratingText }}</div>
-                                @else
-                                    <div>No reviews yet</div>
-                                @endif
-                            <em>{{ $numberOfRatings }} Reviews</em></span><strong>{{ number_format($overallRating, 1) }}</strong></div>
+                                    <div class="score"><span>
+                                            @if ($overallRating !== null)
+                                                @php
+                                                    $ratingText =
+                                                        $overallRating >= 8.5
+                                                            ? 'Best'
+                                                            : ($overallRating >= 7
+                                                                ? 'Superb'
+                                                                : ($overallRating >= 5
+                                                                    ? 'Good'
+                                                                    : 'Average'));
+                                                @endphp
+                                                <div>{{ $ratingText }}</div>
+                                            @else
+                                                <div>No reviews yet</div>
+                                            @endif
+                                            <em>{{ $numberOfRatings }} Reviews</em>
+                                        </span><strong>{{ number_format($overallRating, 1) }}</strong></div>
+                                </div>
+                                <h1>{{ $restaurant->title }}</h1>
+                                {{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a
+                                    href="https://www.google.com/maps/dir/{{ $restaurant->lat }},{{ $restaurant->lng }}/{{ urlencode($restaurant->title) }}"
+                                    target="_blank">Get directions to {{ $restaurant->title }}</a>
+
+
                             </div>
-								<h1>{{ $restaurant->title }}</h1>
-								{{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a href="https://www.google.com/maps/dir/{{ $restaurant->lat }},{{ $restaurant->lng }}/{{ urlencode($restaurant->title) }}" target="_blank">Get directions to {{ $restaurant->title }}</a>
-
-
-							</div>
-							<div class="col-xl-8 col-lg-7 col-md-6 position-relative">
-								<div class="buttons clearfix">
-									<span class="magnific-gallery">
-										<a href="{{ asset('frontend/img/detail_1.jpg') }}" class="btn_hero" title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>View photos</a>
-										<a href="{{ asset('frontend/img/detail_2.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"></a>
-										<a href="{{ asset('frontend/img/detail_3.jpg') }}" title="Photo title" data-effect="mfp-zoom-in"></a>
-									</span>
-									<a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>Wishlist</a>
+                            <div class="col-xl-8 col-lg-7 col-md-6 position-relative">
+                                <div class="buttons clearfix">
+                                    <span class="magnific-gallery">
+                                        <a href="{{ asset('frontend/img/detail_1.jpg') }}" class="btn_hero"
+                                            title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>View
+                                            photos</a>
+                                        <a href="{{ asset('frontend/img/detail_2.jpg') }}" title="Photo title"
+                                            data-effect="mfp-zoom-in"></a>
+                                        <a href="{{ asset('frontend/img/detail_3.jpg') }}" title="Photo title"
+                                            data-effect="mfp-zoom-in"></a>
+                                    </span>
+                                    <a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>Wishlist</a>
                                     <a href="#0" class="btn_hero wishlist"><i class="icon_info"></i>Info</a>
-								</div>
-							</div>
-						</div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- /row -->
                     </div>
                     <!-- /main_info -->
@@ -65,7 +76,7 @@
         <nav class="secondary_nav sticky_horizontal">
             <div class="container">
                 <ul id="secondary_nav">
-                    @foreach($categories as $category)
+                    @foreach ($categories as $category)
                         <li><a href="#section-{{ $category->id }}">{{ $category->category_name }}</a></li>
                     @endforeach
                     <li><a href="#section-20"><i class="icon_chat_alt"></i>Reviews</a></li>
@@ -80,606 +91,140 @@
                 <div class="row">
                     <div class="col-lg-8 list_menu">
 
-                        <livewire:frontend.product.index :restaurant="$restaurant" :categories="$categories" :sizesWithPrices="$sizesWithPrices" :productsByCategory="$productsByCategory" />
-
-
-                        <style>
-
-                            .price-box {
-                                padding: 10px;
-                                border: 1px solid #ccc;
-                                border-radius: 8px;
-                                cursor: pointer;
-                                background-color: #dc3545;
-                                color: #fff;
-                                display: flex;
-                                width: 66px;
-                                height: 66px;
-                                flex-direction: column;
-                                align-items: center;
-                                justify-content: center;
-                                transition: transform 0.5s ease;
-                                transform: border-radius 2.5s ease;
-                                background: linear-gradient(to bottom, #fd4558, #c82333);
-                            }
-
-                            .price-box:hover {
-                                transform: translateY(-5px);
-                                border-radius: 20%; /* Rund machen beim Schweben */
-                            }
-
-                            .price-box-title {
-                                font-weight: lighter;
-                                text-align: center;
-                                font-size: xx-small;
-                            }
-
-                            .price-box-price {
-                                font-size: small;
-                            }
-
-                            @media (max-width: 767px) {
-                                .product-content .row {
-                                    flex-direction: column;
-                                }
-
-                                .product-content .col-md-3,
-                                .product-content .col-md-9 {
-                                    width: 100%;
-                                }
-                            }
-
-
-
-                            .zoom-effect {
-                                border-radius: 10px; /* Füge abgerundete Ecken hinzu */
-                            }
-
-                            .zoom-effect img {
-                                transition: transform 0.3s ease; /* Füge eine Transitions-Eigenschaft hinzu, um den Übergang weich zu gestalten */
-                            }
-
-                            .zoom-effect:hover img {
-                                transform: scale(1.2); /* Vergrößere das Bild um 20% */
-                            }
-
-                            .hot-icon::before {
-                                content: "Hot";
-                                background-color: #ff0000; /* Startfarbe */
-                                color: #ffffff; /* Textfarbe */
-                                padding: 4px 8px; /* Innenabstand */
-                                border-radius: 4px; /* Abgerundete Ecken */
-                                font-weight: bold; /* Fetter Text */
-                                animation: flicker 1s infinite alternate; /* Animationsdefinition */
-                            }
-
-                            @keyframes flicker {
-                                0% { background-color: #ff0000; } /* Startfarbe */
-                                100% { background-color: #ff4500; } /* Endfarbe */
-                            }
-
-                            /* CSS */
-                            .vegan-icon::before {
-                                content: "V";
-                                font-size: 16px; /* Symbolgröße */
-                                color: #008000; /* Farbe für vegan */
-                                font-weight: bold; /* Fetter Text */
-                            }
-
-
-                            .halal-icon::before {
-                                content: "H";
-                                font-size: 16px; /* Symbolgröße */
-                                color: #008000; /* Farbe für Halal */
-                                font-weight: bold; /* Fetter Text */
-                                border-radius: 50%; /* Runde Form */
-                                background-color: #ffffff; /* Hintergrundfarbe des Kreises */
-                                display: inline-flex; /* Inline-Element verwenden */
-                                justify-content: center; /* Zentrierung des Inhalts horizontal */
-                                align-items: center; /* Zentrierung des Inhalts vertikal */
-                                width: 24px; /* Breite des Kreises */
-                                height: 24px; /* Höhe des Kreises */
-                            }
-
-
-
-
-                                                                </style>
-
-
-
-
-<style>
-
-.product-content {
-    border: 0.5px solid #dfe5e9;
-    margin-bottom: 4px;
-    margin-top: 4px;
-    background: #fff;
-    padding: 4px;
-        -webkit-box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.37);
-}
-
-
-.product-content .product-image {
-    display: flex;
-    margin: 0;
-    overflow: hidden;
-    position: relative;
-    image-rendering: -webkit-optimize-contrast;
-    flex-direction: column;
-    width: auto;
-    height: auto;
-    align-items: center;
-}
-
-
-.product-content .product-detail {
-    border-bottom: 1px solid #dfe5e9;
-    padding-bottom: 17px;
-    padding-left: 16px;
-    padding-top: 16px;
-    position: relative;
-    background: #fff
-}
-
-.product-content .product-detail h5 a {
-    color: #2f383d;
-    font-size: 15px;
-    line-height: 19px;
-    text-decoration: none;
-    padding-left: 0;
-    margin-left: 0
-}
-
-.product-content .product-detail h5 a span {
-    color: #9aa7af;
-    display: block;
-    font-size: 13px
-}
-
-.product-content .product-detail span.tag1 {
-    border-radius: 50%;
-    color: #3d0808;
-    font-size: 15px;
-    height: 50px;
-    padding: 13px 0;
-    position: absolute;
-    right: 10px;
-    text-align: center;
-    top: 10px;
-    width: 50px
-}
-
-.product-content .product-deatil span.sale {
-    background-color: #21c2f8
-}
-
-.product-content .product-deatil span.discount {
-    background-color: #71e134
-}
-
-.product-content .product-deatil span.hot {
-    background-color: #fa9442
-}
-
-.product-content .description {
-    font-size: 12.5px;
-    line-height: 20px;
-    padding: 10px 14px 16px 19px;
-    background: #fff
-}
-
-.product-content .product-info {
-    padding: 2px 8px 4px 20px;
-}
-
-
-.product-content .product-info a.add-to-cart {
-    color: #2f383d;
-    font-size: 13px;
-    padding-left: 16px
-}
-
-.product-content name.a {
-    padding: 5px 10px;
-    margin-left: 16px
-}
-
-.product-info.smart-form .btn {
-    padding: 6px 12px;
-    margin-left: 12px;
-    margin-top: -10px
-}
-
-.product-entry .product-detail {
-    border-bottom: 1px solid #dfe5e9;
-    padding-bottom: 17px;
-    padding-left: 16px;
-    padding-top: 16px;
-    position: relative
-}
-
-.product-entry .product-detail h5 a {
-    color: #2f383d;
-    font-size: 15px;
-    line-height: 19px;
-    text-decoration: none
-}
-
-.product-entry .product-detail h5 a span {
-    color: #9aa7af;
-    display: block;
-    font-size: 13px
-}
-
-
-
-.product-block .product-deatil p.price-container span,
-.product-content .product-deatil p.price-container span,
-.product-entry .product-deatil p.price-container span,
-.shipping table tbody tr td p.price-container span,
-.shopping-items table tbody tr td p.price-container span {
-    color: #21c2f8;
-    font-family: Lato, sans-serif;
-    font-size: 24px;
-    line-height: 20px
-}
-
-.product-info.smart-form .rating label {
-    margin-top: 0
-}
-
-.product-wrap .product-image span.tag2 {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    padding: 10px 0;
-    color: #fff;
-    font-size: 11px;
-    text-align: center
-}
-
-.product-wrap .product-image span.sale {
-    background-color: #57889c
-}
-
-.product-wrap .product-image span.hot {
-    background-color: #a90329
-}
-
-.shop-btn {
-    position: relative
-}
-
-
-.description-tabs {
-    padding: 30px 0 5px!important
-}
-
-.description-tabs .tab-content {
-    padding: 10px 0
-}
-
-.product-detail {
-    padding: 30px 30px 50px
-}
-
-.product-detail hr+.description-tabs {
-    padding: 0 0 5px!important
-}
-
-.product-detail .carousel-control.left,
-.product-detail .carousel-control.right {
-    background: none!important
-}
-
-.product-detail .glyphicon {
-    color: #3276b1
-}
-
-.product-deatil .product-image {
-    border-right: 0px solid #fff !important
-}
-
-.product-detail .name {
-    margin-top: 0;
-    margin-bottom: 0
-}
-
-.product-detail .name small {
-    display: block
-}
-
-.product-detail .name a {
-    margin-left: 0
-}
-
-.product-deatil .price-container {
-    font-size: 24px;
-    margin: 0;
-    font-weight: 300
-}
-
-.product-deatil .price-container small {
-    font-size: 12px
-}
-
-.product-deatil .fa-2x {
-    font-size: 16px!important
-}
-
-.product-detail .fa-2x>h5 {
-    font-size: 12px;
-    margin: 0
-}
-
-.product-deatil .fa-2x+a,
-.product-deatil .fa-2x+a+a {
-    font-size: 13px
-}
-
-.product-deatil .certified {
-    margin-top: 10px
-}
-
-.product-deatil .certified ul {
-    padding-left: 0
-}
-
-.product-deatil .certified ul li:not(first-child) {
-    margin-left: -3px
-}
-
-.product-deatil .certified ul li {
-    display: inline-block;
-    background-color: #f9f9f9;
-    padding: 13px 19px
-}
-
-.product-deatil .certified ul li:first-child {
-    border-right: none
-}
-
-.product-deatil .certified ul li a {
-    text-align: left;
-    font-size: 12px;
-    color: #6d7a83;
-    line-height: 16px;
-    text-decoration: none
-}
-
-.product-deatil .certified ul li a span {
-    display: block;
-    color: #21c2f8;
-    font-size: 13px;
-    font-weight: 700;
-    text-align: center
-}
-
-.product-deatil .message-text {
-    width: calc(100% - 70px)
-}
-
-
-@media only screen and (min-width:1024px) {
-    .product-content div[class*=col-md-4] {
-        padding-right: 0
-    }
-    .product-content div[class*=col-md-8] {
-        padding: 0 13px 0 0
-    }
-    .product-wrap div[class*=col-md-5] {
-        padding-right: 0
-    }
-    .product-wrap div[class*=col-md-7] {
-        padding: 0 13px 0 0
-    }
-    .product-content .product-image {
-        border-right: 1px solid #dfe5e9
-    }
-    .product-content .product-info {
-        position: relative
-    }
-}
-
-
-
-
-
-.price-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    }
-
-
-    .price_box {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #fff;
-    width: 66px;
-    height: 66px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: border-radius 0.3s ease;
-    flex-direction: column;
-    background: linear-gradient(to bottom, #fd4558, #c82333);
-}
-
-.price_box:hover {
-    border-radius: 50%; /* Rund machen beim Schweben */
-
-}
-
-.price_box:hover .price_box_price {
-    animation-name: wobble;
-    animation-duration: 0.5s;
-    animation-timing-function: ease;
-    animation-iteration-count: 1; /* Animation nur einmal abspielen */
-}
-
-@keyframes wobble {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(5px); }
-    50% { transform: translateX(-5px); }
-    75% { transform: translateX(3px); }
-    100% { transform: translateX(0); }
-}
-
-.price_box_title {
-    font-weight: lighter;
-    text-align: center;
-    font-size: xx-small;
-}
-
-.price_box_price {
-    font-weight: bold;
-    text-align: center;
-    font-family: auto;
-}
-
-</style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                        <livewire:frontend.product.index :restaurant="$restaurant" :categories="$categories" :sizesWithPrices="$sizesWithPrices"
+                            :productsByCategory="$productsByCategory" />
 
                     </div>
                     <!-- /col -->
 
-		            <div class="col-lg-4" id="sidebar_fixed">
-		                <div class="box_order mobile_fixed">
-		                    <div class="head">
-		                        <h3>{{ app(\App\Services\TranslationService::class)->trans('Order Summary', app()->getLocale()) }}</h3>
-		                        <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
+                    <div class="col-lg-4" id="sidebar_fixed">
+                        <div class="box_order mobile_fixed">
+                            <div class="head">
+                                <h3>{{ app(\App\Services\TranslationService::class)->trans('Order Summary', app()->getLocale()) }}
+                                </h3>
+                                <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
 
-		                    </div>
-		                    <!-- /head -->
-		                    <div class="main">
+                            </div>
+                            <!-- /head -->
+                            <div class="main">
                                 <livewire:frontend.card.cart-component />
 
-		                        <div class="row opt_order">
-		                            <div class="col-6">
-		                                <label class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Delivery', app()->getLocale()) }}
-		                                    <input type="radio" value="option1" name="opt_order" checked>
-		                                    <span class="checkmark"></span>
-		                                </label>
-		                            </div>
-		                            <div class="col-6">
-		                                <label class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Selbstabholen', app()->getLocale()) }}
-		                                    <input type="radio" value="option1" name="opt_order">
-		                                    <span class="checkmark"></span>
-		                                </label>
-		                            </div>
-		                        </div>
-		                        <div class="dropdown day">
-		                            <a href="#" data-bs-toggle="dropdown">Day <span id="selected_day"></span></a>
-		                            <div class="dropdown-menu">
-		                                <div class="dropdown-menu-content">
-		                                    <h4>Which day delivered?</h4>
-		                                    <div class="radio_select chose_day">
-		                                        <ul>
-		                                            <li>
-		                                                <input type="radio" id="day_1" name="day" value="Today">
-		                                                <label for="day_1">Today<em>-40%</em></label>
-		                                            </li>
-		                                            <li>
-		                                                <input type="radio" id="day_2" name="day" value="Tomorrow">
-		                                                <label for="day_2">Tomorrow<em>-40%</em></label>
-		                                            </li>
-		                                        </ul>
-		                                    </div>
-		                                    <!-- /people_select -->
-		                                </div>
-		                            </div>
-		                        </div>
-		                        <!-- /dropdown -->
-		                        <div class="dropdown time">
-		                            <a href="#" data-bs-toggle="dropdown">Time <span id="selected_time"></span></a>
-		                            <div class="dropdown-menu">
-		                                <div class="dropdown-menu-content">
-		                                    <h4>Lunch</h4>
-		                                    <div class="radio_select add_bottom_15">
-		                                        <ul>
-		                                            <li>
-		                                                <input type="radio" id="time_1" name="time" value="12.00am">
-		                                                <label for="time_1">12.00<em>-40%</em></label>
-		                                            </li>
-		                                            <li>
-		                                                <input type="radio" id="time_2" name="time" value="08.30pm">
-		                                                <label for="time_2">12.30<em>-40%</em></label>
-		                                            </li>
-		                                            <li>
-		                                                <input type="radio" id="time_3" name="time" value="09.00pm">
-		                                                <label for="time_3">1.00<em>-40%</em></label>
-		                                            </li>
-		                                            <li>
-		                                                <input type="radio" id="time_4" name="time" value="09.30pm">
-		                                                <label for="time_4">1.30<em>-40%</em></label>
-		                                            </li>
-		                                        </ul>
-		                                    </div>
-		                                    <!-- /time_select -->
-		                                    <h4>Dinner</h4>
-		                                    <div class="radio_select">
-		                                        <ul>
-		                                            <li>
-		                                                <input type="radio" id="time_5" name="time" value="08.00pm">
-		                                                <label for="time_1">20.00<em>-40%</em></label>
-		                                            </li>
-		                                            <li>
-		                                                <input type="radio" id="time_6" name="time" value="08.30pm">
-		                                                <label for="time_2">20.30<em>-40%</em></label>
-		                                            </li>
-		                                            <li>
-		                                                <input type="radio" id="time_7" name="time" value="09.00pm">
-		                                                <label for="time_3">21.00<em>-40%</em></label>
-		                                            </li>
-		                                            <li>
-		                                                <input type="radio" id="time_8" name="time" value="09.30pm">
-		                                                <label for="time_4">21.30<em>-40%</em></label>
-		                                            </li>
-		                                        </ul>
-		                                    </div>
-		                                    <!-- /time_select -->
-		                                </div>
-		                            </div>
-		                        </div>
-		                        <!-- /dropdown -->
-		                        <div class="btn_1_mobile">
-		                            <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}" class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</a>
-		                            <div class="text-center"><small>{{ app(\App\Services\TranslationService::class)->trans('No money charged on this steps', app()->getLocale()) }}</small></div>
-		                        </div>
-		                    </div>
-		                </div>
-		                <!-- /box_order -->
-		                <div class="btn_reserve_fixed"><a href="#0" class="btn_1 gradient full-width">{{ app(\App\Services\TranslationService::class)->trans('View Basket', app()->getLocale()) }}</a></div>
-		            </div>
+                                <div class="row opt_order">
+                                    <div class="col-6">
+                                        <label
+                                            class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Delivery', app()->getLocale()) }}
+                                            <input type="radio" value="option1" name="opt_order" checked>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label
+                                            class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Selbstabholen', app()->getLocale()) }}
+                                            <input type="radio" value="option1" name="opt_order">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="dropdown day">
+                                    <a href="#" data-bs-toggle="dropdown">Day <span id="selected_day"></span></a>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-menu-content">
+                                            <h4>Which day delivered?</h4>
+                                            <div class="radio_select chose_day">
+                                                <ul>
+                                                    <li>
+                                                        <input type="radio" id="day_1" name="day" value="Today">
+                                                        <label for="day_1">Today<em>-40%</em></label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" id="day_2" name="day"
+                                                            value="Tomorrow">
+                                                        <label for="day_2">Tomorrow<em>-40%</em></label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- /people_select -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /dropdown -->
+                                <div class="dropdown time">
+                                    <a href="#" data-bs-toggle="dropdown">Time <span id="selected_time"></span></a>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-menu-content">
+                                            <h4>Lunch</h4>
+                                            <div class="radio_select add_bottom_15">
+                                                <ul>
+                                                    <li>
+                                                        <input type="radio" id="time_1" name="time"
+                                                            value="12.00am">
+                                                        <label for="time_1">12.00<em>-40%</em></label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" id="time_2" name="time"
+                                                            value="08.30pm">
+                                                        <label for="time_2">12.30<em>-40%</em></label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" id="time_3" name="time"
+                                                            value="09.00pm">
+                                                        <label for="time_3">1.00<em>-40%</em></label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" id="time_4" name="time"
+                                                            value="09.30pm">
+                                                        <label for="time_4">1.30<em>-40%</em></label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+
+                                            <!-- /time_select -->
+                                            <h4>Dinner</h4>
+                                            <div class="radio_select">
+                                                <ul>
+                                                    <li>
+                                                        <input type="radio" id="time_5" name="time"
+                                                            value="08.00pm">
+                                                        <label for="time_1">20.00<em>-40%</em></label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" id="time_6" name="time"
+                                                            value="08.30pm">
+                                                        <label for="time_2">20.30<em>-40%</em></label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" id="time_7" name="time"
+                                                            value="09.00pm">
+                                                        <label for="time_3">21.00<em>-40%</em></label>
+                                                    </li>
+                                                    <li>
+                                                        <input type="radio" id="time_8" name="time"
+                                                            value="09.30pm">
+                                                        <label for="time_4">21.30<em>-40%</em></label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- /time_select -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /dropdown -->
+                                <div class="btn_1_mobile">
+                                    <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}"
+                                        class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</a>
+                                    <div class="text-center">
+                                        <small>{{ app(\App\Services\TranslationService::class)->trans('No money charged on this steps', app()->getLocale()) }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /box_order -->
+                        <div class="btn_reserve_fixed"><a href="#0"
+                                class="btn_1 gradient full-width">{{ app(\App\Services\TranslationService::class)->trans('View Basket', app()->getLocale()) }}</a>
+                        </div>
+                    </div>
 
 
                 </div>
@@ -692,14 +237,30 @@
         <div class="container margin_30_20">
             <div class="row">
                 <div class="col-lg-8 list_menu">
-                    <section id="section-5">
+                    <section id="section-20">
                         <h4>Reviews</h4>
                         <div class="row add_bottom_30 d-flex align-items-center reviews">
                             <div class="col-md-3">
                                 <div id="review_summary">
-                                    <strong>8.5</strong>
-                                    <em>Superb</em>
-                                    <small>Based on 4 reviews</small>
+                                    <strong>{{ number_format($overallRating, 1) }}</strong>
+                                    <em><em>
+                                            @if ($overallRating !== null)
+                                                @php
+                                                    $ratingText =
+                                                        $overallRating >= 8.5
+                                                            ? 'Best'
+                                                            : ($overallRating >= 7
+                                                                ? 'Superb'
+                                                                : ($overallRating >= 5
+                                                                    ? 'Good'
+                                                                    : 'Average'));
+                                                @endphp
+                                                <div>{{ $ratingText }}</div>
+                                            @else
+                                                <div>No reviews yet</div>
+                                            @endif
+                                        </em></em>
+                                    <small>Based on {{ $numberOfRatings }} reviews</small>
                                 </div>
                             </div>
                             <div class="col-md-9 reviews_sum_details">
@@ -709,22 +270,30 @@
                                         <div class="row">
                                             <div class="col-xl-10 col-lg-9 col-9">
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 90%"
-                                                        aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: {{ $overallRatingProgress ? $overallRatingProgress->foodQualityTotal * 10 : 0 }}%"
+                                                        aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->foodQualityTotal * 10 : 0 }}"
+                                                        aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-2 col-lg-3 col-3"><strong>9.0</strong></div>
+                                            <div class="col-xl-2 col-lg-3 col-3">
+                                                <strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->foodQualityTotal, 1) : 'N/A' }}</strong>
+                                            </div>
                                         </div>
                                         <!-- /row -->
                                         <h6>Service</h6>
                                         <div class="row">
                                             <div class="col-xl-10 col-lg-9 col-9">
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 95%"
-                                                        aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: {{ $overallRatingProgress ? $overallRatingProgress->serviceTotal * 10 : 0 }}%"
+                                                        aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->serviceTotal * 10 : 0 }}"
+                                                        aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-2 col-lg-3 col-3"><strong>9.5</strong></div>
+                                            <div class="col-xl-2 col-lg-3 col-3">
+                                                <strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->serviceTotal, 1) : 'N/A' }}</strong>
+                                            </div>
                                         </div>
                                         <!-- /row -->
                                     </div>
@@ -733,110 +302,160 @@
                                         <div class="row">
                                             <div class="col-xl-10 col-lg-9 col-9">
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 60%"
-                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: {{ $overallRatingProgress ? $overallRatingProgress->deliveryTimeTotal * 10 : 0 }}%"
+                                                        aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->deliveryTimeTotal * 10 : 0 }}"
+                                                        aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-2 col-lg-3 col-3"><strong>6.0</strong></div>
+                                            <div class="col-xl-2 col-lg-3 col-3">
+                                                <strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->deliveryTimeTotal, 1) : 'N/A' }}</strong>
+                                            </div>
                                         </div>
                                         <!-- /row -->
                                         <h6>Price</h6>
                                         <div class="row">
                                             <div class="col-xl-10 col-lg-9 col-9">
                                                 <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 60%"
-                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar" role="progressbar"
+                                                        style="width: {{ $overallRatingProgress ? $overallRatingProgress->priceTotal * 10 : 0 }}%"
+                                                        aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->priceTotal * 10 : 0 }}"
+                                                        aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-2 col-lg-3 col-3"><strong>6.0</strong></div>
+                                            <div class="col-xl-2 col-lg-3 col-3">
+                                                <strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->priceTotal, 1) : 'N/A' }}</strong>
+                                            </div>
                                         </div>
                                         <!-- /row -->
                                     </div>
                                 </div>
                                 <!-- /row -->
                             </div>
+
+
                         </div>
                         <!-- /row -->
                         <div id="reviews">
-                            <div class="review_card">
-                                <div class="row">
-                                    <div class="col-md-2 user_info">
-                                        <figure><img src="{{ asset('frontend/img/avatar4.jpg') }}" alt="">
-                                        </figure>
-                                        <h5>Lukas</h5>
-                                    </div>
-                                    <div class="col-md-10 review_content">
-                                        <div class="clearfix add_bottom_15">
-                                            <span class="rating">8.5<small>/10</small> <strong>Rating
-                                                    average</strong></span>
-                                            <em>Published 54 minutes ago</em>
+                            @foreach ($ratings->reverse() as $rating)
+                                <div class="review_card">
+                                    <div class="row">
+                                        <div class="col-md-2 user_info">
+                                            <figure><img src="{{ asset('uploads/images/default/avatar_3.jpg') }}"
+                                                    alt=""></figure>{{ $rating->gender }}
+                                            <h5>{{ $rating->order->surname }}</h5>
                                         </div>
-                                        <h4>"Great Location!!"</h4>
-                                        <p>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea. Et
-                                            nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has
-                                            ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his. Tollit
-                                            molestie suscipiantur his et.</p>
-                                        <ul>
-                                            <li><a href="#0"><i class="icon_like"></i><span>Useful</span></a></li>
-                                            <li><a href="#0"><i class="icon_dislike"></i><span>Not useful</span></a>
-                                            </li>
-                                            <li><a href="#0"><i class="arrow_back"></i> <span>Reply</span></a></li>
-                                        </ul>
+
+                                        <div class="col-md-10 review_content">
+                                            <div class="clearfix add_bottom_15">
+                                                <?php
+                                                $averageRating = ($rating->food_quality + $rating->service + $rating->price + $rating->punctuality) / 4;
+                                                ?>
+                                                <span
+                                                    class="rating">{{ $averageRating ? number_format($averageRating, 1) : 'N/A' }}<small>/10</small>
+                                                    <strong>Rating average</strong></span>
+                                                <em>Published {{ $rating->created_at->diffForHumans() }}</em>
+                                            </div>
+                                            <h4>"{{ $rating->review_title }}"</h4>
+                                            <p>{{ $rating->review_content }}</p>
+                                            <ul>
+                                                <!-- Like Symbol -->
+                                                <li>
+                                                    <a href="#" class="like-btn"
+                                                        data-restaurant-id="{{ $restaurant->id }}"
+                                                        data-order-id="{{ $rating->order_id }}">
+                                                        <i class="icon_like"></i>
+                                                        <span>Useful {{ $rating->likes_count }}</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- Dislike Symbol -->
+                                                <li>
+                                                    <a href="#" class="dislike-btn"
+                                                        data-restaurant-id="{{ $restaurant->id }}"
+                                                        data-order-id="{{ $rating->order_id }}">
+                                                        <i class="icon_dislike"></i>
+                                                        <span>Not useful {{ $rating->dislikes_count }}</span>
+                                                    </a>
+                                                </li>
+
+                                                <!-- Button zum Öffnen des Modals -->
+                                                <li>
+                                                    <!-- Reply-Link -->
+                                                    <a href="#" class="reply-link" data-toggle="collapse"
+                                                        data-target="#replyForm{{ $rating->id }}" aria-expanded="false"
+                                                        aria-controls="replyForm{{ $rating->id }}">
+                                                        <i class="arrow_back"></i>
+                                                        <span>Reply</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <!-- Erfolgsmeldung für jedes Rating -->
+                                            <div class="vote-message" style="display: none;">Danke für Ihr Voting!</div>
+                                        </div>
                                     </div>
+
+                                    {{-- Reply-Formular --}}
+
+
+                                    <div class="collapse" id="replyForm{{ $rating->id }}">
+                                        <div class="box_general write_review">
+                                            <form action="{{ route('vote-restaurant.reply') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="rating_id" value="{{ $rating->id }}">
+                                                <h4 class="add_bottom_15">Write a Reply for "{{ $restaurant->title }}"
+                                                </h4>
+                                                <div class="form-group">
+                                                    <label for="reply_title">Title of your Reply</label>
+                                                    <input class="form-control" id="reply_title-{{ $rating->id }}"
+                                                        name="reply_title" type="text"
+                                                        placeholder="If you could say it in one sentence, what would you say?">
+                                                    @error('reply_title')
+                                                        <span class="error">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="reply_content">Your Reply</label>
+                                                    <textarea class="form-control" id="reply_content" name="reply_content" style="height: 180px;"
+                                                        placeholder="Write your review to help others learn about this online business"></textarea>
+                                                    @error('reply_content')
+                                                        <span class="error">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <button type="submit" class="btn_1">Submit Reply</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- /row -->
+                                    @foreach ($rating->replies->reverse() ?? [] as $reply)
+                                        <div class="row reply">
+                                            <div class="col-md-2 user_info">
+                                                <figure><img src="{{ asset('frontend/img/avatar.jpg') }}" alt="">
+                                                </figure>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="review_content">
+                                                    <strong>Reply from {{ $reply->reply_author }}</strong>
+                                                    <em>Published {{ $reply->created_at->diffForHumans() }}</em>
+                                                    <p><br>{{ $reply->reply_title }}<br></p>
+                                                    <p>{{ $reply->reply_content }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /reply -->
+                                    @endforeach
+
+
                                 </div>
-                                <!-- /row -->
-                            </div>
+                            @endforeach
+
                             <!-- /review_card -->
-                            <div class="review_card">
-                                <div class="row">
-                                    <div class="col-md-2 user_info">
-                                        <figure><img src="{{ asset('frontend/img/avatar1.jpg') }}" alt="">
-                                        </figure>
-                                        <h5>Marika</h5>
-                                    </div>
-                                    <div class="col-md-10 review_content">
-                                        <div class="clearfix add_bottom_15">
-                                            <span class="rating">9.0<small>/10</small> <strong>Rating
-                                                    average</strong></span>
-                                            <em>Published 11 Oct. 2019</em>
-                                        </div>
-                                        <h4>"Really great dinner!!"</h4>
-                                        <p>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea. Et
-                                            nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has
-                                            ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his. Tollit
-                                            molestie suscipiantur his et.</p>
-                                        <ul>
-                                            <li><a href="#0"><i class="icon_like"></i><span>Useful</span></a></li>
-                                            <li><a href="#0"><i class="icon_dislike"></i><span>Not useful</span></a>
-                                            </li>
-                                            <li><a href="#0"><i class="arrow_back"></i> <span>Reply</span></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- /row -->
-                                <div class="row reply">
-                                    <div class="col-md-2 user_info">
-                                        <figure><img src="{{ asset('frontend/img/avatar.jpg') }}" alt="">
-                                        </figure>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <div class="review_content">
-                                            <strong>Reply from Foogra</strong>
-                                            <em>Published 3 minutes ago</em>
-                                            <p><br>Hi Monika,<br><br>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros
-                                                eirmod scaevola sea. Et nec tantas accusamus salutatus, sit commodo veritus
-                                                te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut.
-                                                Viderer petentium cu his. Tollit molestie suscipiantur his et.<br><br>Thanks
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /reply -->
+                            <div class="d-flex">
+                                {!! $ratings->links() !!}
                             </div>
-                            <!-- /review_card -->
+
                         </div>
                         <!-- /reviews -->
-                        <div class="text-end"><a href="leave-review.html" class="btn_1 gradient">Leave a Review</a></div>
                     </section>
                     <!-- /section -->
                 </div>
@@ -856,88 +475,162 @@
             <script src="{{ asset('frontend/js/specific_detail.js') }}"></script>
         @endpush
     @endsection
-@if(isset($modalScript) && $modalScript)
-
-@push('specific-header')
-
-<link href="{{ asset('frontend/css/modal_popup.css') }}" rel="stylesheet">
-
-@endpush
+    @if (isset($modalScript) && $modalScript)
+        @push('specific-header')
+            <link href="{{ asset('frontend/css/modal_popup.css') }}" rel="stylesheet">
+        @endpush
 
 
 
-<div class="popup_wrapper">
-    <div class="popup_content newsletter_c">
-        <span class="popup_close"><i class="icon_close"></i></span>
-        <div class="row g-0">
-            <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center">
-                <figure><img src="{{ asset('frontend/img/newsletter_img.jpg') }}" alt=""></figure>
-            </div>
-            <div class="col-md-7">
-                <div class="content">
-                    <div class="wrapper">
-                        <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="162" height="35" alt="">
-                        <h3>Entschuldigung, außerhalb des Liefergebiets</h3>
-                        <p>Es tut uns leid, aber Ihre Adresse befindet sich außerhalb unseres Liefergebiets. Bitte überprüfen Sie Ihre Adresse oder kontaktieren Sie uns für weitere Informationen.</p>
-                        <p>Falls Sie weitere Fragen haben, stehen wir Ihnen gerne zur Verfügung.</p>
-                        <form action="#">
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Enter your email address">
-                            </div>
-                            <button type="submit" class="btn_1 mt-2 mb-4">Subscribe</button>
-                        </form>
-                        <div class="row opt_order">
-                            <div class="col-6">
-                                <label class="container_radio">Delivery
-                                    <input type="radio" value="option1" name="opt_order" checked="">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="col-6">
-                                <label class="container_radio">Take away
-                                    <input type="radio" value="option1" name="opt_order">
-                                    <span class="checkmark"></span>
-                                </label>
+        <div class="popup_wrapper">
+            <div class="popup_content newsletter_c">
+                <span class="popup_close"><i class="icon_close"></i></span>
+                <div class="row g-0">
+                    <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center">
+                        <figure><img src="{{ asset('frontend/img/newsletter_img.jpg') }}" alt=""></figure>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="content">
+                            <div class="wrapper">
+                                <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="162" height="35"
+                                    alt="">
+                                <h3>Entschuldigung, außerhalb des Liefergebiets</h3>
+                                <p>Es tut uns leid, aber Ihre Adresse befindet sich außerhalb unseres Liefergebiets.
+                                    Bitte überprüfen Sie Ihre Adresse oder kontaktieren Sie uns für weitere
+                                    Informationen.</p>
+                                <p>Falls Sie weitere Fragen haben, stehen wir Ihnen gerne zur Verfügung.</p>
+                                <form action="#">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control"
+                                            placeholder="Enter your email address">
+                                    </div>
+                                    <button type="submit" class="btn_1 mt-2 mb-4">Subscribe</button>
+                                </form>
+                                <div class="row opt_order">
+                                    <div class="col-6">
+                                        <label class="container_radio">Delivery
+                                            <input type="radio" value="option1" name="opt_order" checked="">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="container_radio">Take away
+                                            <input type="radio" value="option1" name="opt_order">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                {{-- row --}}
             </div>
         </div>
-        <!-- row -->
-    </div>
-</div>
 
 
-@push('specific-scripts')
+        @push('specific-scripts')
+            <script>
+                (function($) {
+                    "use strict";
+
+                    // Popup up
+                    setTimeout(function() {
+                        $('.popup_wrapper').css('opacity', '1');
+                    }, 500); // Entrance delay
+
+                    $('.popup_wrapper');
+                    $('.popup_close').click(function() { // Class for the close button
+                        $('.popup_wrapper').fadeOut(300); // Hide the CTA div
+                    });
+
+
+
+                })(window.jQuery);
+            </script>
+
 
 <script>
-
-    (function($) {
-        "use strict";
-
-        // Popup up
-        setTimeout(function() {
-            $('.popup_wrapper').css('opacity', '1');
-        }, 500); // Entrance delay
-
-        $('.popup_wrapper');
-        $('.popup_close').click(function() { // Class for the close button
-            $('.popup_wrapper').fadeOut(300); // Hide the CTA div
+    $(document).ready(function() {
+        // Like-Button klicken
+        $('.like-btn').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var restaurantId = btn.data('restaurant-id');
+            var type = 'like';
+            vote(restaurantId, type, btn);
         });
 
+        // Dislike-Button klicken
+        $('.dislike-btn').click(function(e) {
+            e.preventDefault();
+            var btn = $(this);
+            var restaurantId = btn.data('restaurant-id');
+            var type = 'dislike';
+            vote(restaurantId, type, btn);
+        });
+
+        // Funktion für die Ajax-Anfrage
+        function vote(restaurantId, type, btn) {
+            $.ajax({
+                type: 'POST',
+                url: '/vote',
+                data: {
+                    restaurant_id: restaurantId,
+                    order_id: btn.data('order-id'),
+                    type: type,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    // Erfolgsmeldung verarbeiten
+                    console.log(response);
+                    if (response.success) {
+                        // Erfolgreich abgestimmt, aktualisieren Sie die Anzeige der Anzahl der Stimmen und den Zustand des Buttons
+                        var voteType = type === 'like' ? 'Useful' : 'Not useful';
+                        var currentVotesText = btn.find('span').text(); // Textinhalt extrahieren
+                        var matches = currentVotesText.match(/\d+/); // Den Wert der Stimmen mit einem regulären Ausdruck extrahieren
+                        if (matches && matches.length > 0) {
+                            var currentVotes = parseInt(matches[0]); // Extrahierten Wert in eine Ganzzahl konvertieren
+                            currentVotes++; // Inkrementieren Sie die Anzahl der Stimmen
+                            btn.find('span').text(voteType + ' ' + currentVotes); // Aktualisieren Sie die Anzeige der Anzahl der Stimmen
+                            // Zeigen Sie die Erfolgsmeldung an
+                            btn.closest('.review_content').find('.vote-message').show();
+                        } else {
+                            console.error('Unable to extract current votes count');
+                        }
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Fehlermeldung verarbeiten
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    });
+    </script>
 
 
-    })(window.jQuery);
+<script>
+    // JavaScript für das Ein- und Ausblenden des Reply-Formulars
+    $(document).ready(function() {
+        $('.reply-link').click(function(e) {
+            e.preventDefault();
+            var targetId = $(this).data('target');
+            $(targetId).collapse('toggle');
+        });
+    });
+    </script>
 
-</script>
+
+        @endpush
+    @endif
 
 
 
 
 
 
-@endpush
 
 
-@endif
+
+        </div>
