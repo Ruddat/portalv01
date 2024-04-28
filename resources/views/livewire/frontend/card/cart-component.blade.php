@@ -14,21 +14,61 @@
                         wire:click="updateCartItem({{ $id }}, 'plus')"></button>
                     <button class="custom-cart-button" aria-hidden="true" data-icon="&#x51;"
                         wire:click="removeFromCart({{ $id }})" style="border: none;"></button>
-                    <p>
 
-                        @foreach ($item->get('options') as $option)
-                            {{ htmlspecialchars($option) }}
+
+
+                        @if ($item->get('options'))
+                        <div class="ingredients">Toppings:</div>
+
+                        @php
+                            $toppingCounts = [];
+                        @endphp
+                        <ul>
+                        @foreach ($item->get('options') as $topping)
+                            @php
+                                // Überprüfen, ob der Topping bereits in der Zählvariable vorhanden ist
+                                if (array_key_exists($topping['productName'], $toppingCounts)) {
+                                    // Wenn ja, erhöhen Sie die Anzahl
+                                    $toppingCounts[$topping['productName']]++;
+                                } else {
+                                    // Andernfalls fügen Sie den Topping der Zählvariable hinzu und setzen die Anzahl auf 1
+                                    $toppingCounts[$topping['productName']] = 1;
+                                }
+                            @endphp
                         @endforeach
 
-                    </p>
+                        @foreach ($toppingCounts as $toppingName => $count)
+                            <li class="text-red-500">{{ $count }}x{{ $toppingName }}</li>
+                        @endforeach
+
+                        </ul>
+
+                        @endif
+
+
+
+
 
                 </li>
             @endforeach
     </ul>
 
     <ul class="clearfix">
-        <li>Subtotal<span>${{ $total }}</span></li>
-        <li>Delivery fee<span>$10</span></li>
+        <li>{{ app(\App\Services\TranslationService::class)->trans('Subtotal', app()->getLocale()) }}<span>${{ $total }}</span></li>
+        @if ($deliveryFee > 0)
+        <li>{{ app(\App\Services\TranslationService::class)->trans('Liefergebühr', app()->getLocale()) }}
+            <span>{{ $deliveryFee }}</span></li>
+        @endif
+        @if ($discount > 0)
+        <li>{{ app(\App\Services\TranslationService::class)->trans('discount') }}</li>
+        <span>{{ $discount }}</span>
+        @endif
+        @if ($deposit > 0)
+        <li>{{ app(\App\Services\TranslationService::class)->trans('Pfand', app()->getLocale()) }}
+            <span>{{ $deposit }}</span>
+        </li>
+        @endif
+
         <li class="total">Total<span>${{ $total }}</span></li>
     </ul>
 
@@ -37,5 +77,12 @@
 @else
     <p class="text-3xl text-center mb-2">cart is empty!</p>
     @endif
+
+    <style>
+        .box_order .ingredients {
+        float: left;
+    }
+    </style>
+
 
 </div>

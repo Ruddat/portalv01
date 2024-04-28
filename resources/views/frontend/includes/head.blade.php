@@ -1,6 +1,6 @@
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ get_settings()->site_meta_description }}">
     <meta name="keywords" content="{{ get_settings()->site_meta_keywords }}">
     <meta name="author" content="Ingo Ruddat">
