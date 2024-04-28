@@ -18,10 +18,12 @@
 
 
                         @if ($item->get('options'))
-                        <span class="text-gray-500">Toppings:</span>
+                        <div class="ingredients">Toppings:</div>
+
                         @php
                             $toppingCounts = [];
                         @endphp
+                        <ul>
                         @foreach ($item->get('options') as $topping)
                             @php
                                 // Überprüfen, ob der Topping bereits in der Zählvariable vorhanden ist
@@ -36,9 +38,12 @@
                         @endforeach
 
                         @foreach ($toppingCounts as $toppingName => $count)
-                            <span class="text-gray-500">{{ $count }}x{{ $toppingName }}</span>
+                            <li class="text-red-500">{{ $count }}x{{ $toppingName }}</li>
                         @endforeach
-                    @endif
+
+                        </ul>
+
+                        @endif
 
 
 
@@ -49,8 +54,21 @@
     </ul>
 
     <ul class="clearfix">
-        <li>Subtotal<span>${{ $total }}</span></li>
-        <li>Delivery fee<span>$10</span></li>
+        <li>{{ app(\App\Services\TranslationService::class)->trans('Subtotal', app()->getLocale()) }}<span>${{ $total }}</span></li>
+        @if ($deliveryFee > 0)
+        <li>{{ app(\App\Services\TranslationService::class)->trans('Liefergebühr', app()->getLocale()) }}
+            <span>{{ $deliveryFee }}</span></li>
+        @endif
+        @if ($discount > 0)
+        <li>{{ app(\App\Services\TranslationService::class)->trans('discount') }}</li>
+        <span>{{ $discount }}</span>
+        @endif
+        @if ($deposit > 0)
+        <li>{{ app(\App\Services\TranslationService::class)->trans('Pfand', app()->getLocale()) }}
+            <span>{{ $deposit }}</span>
+        </li>
+        @endif
+
         <li class="total">Total<span>${{ $total }}</span></li>
     </ul>
 
@@ -59,5 +77,12 @@
 @else
     <p class="text-3xl text-center mb-2">cart is empty!</p>
     @endif
+
+    <style>
+        .box_order .ingredients {
+        float: left;
+    }
+    </style>
+
 
 </div>

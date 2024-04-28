@@ -11,6 +11,9 @@ class CartComponent extends Component
     public $cart;
     protected $total;
     protected $content;
+    protected $deposit;
+    protected $deliveryFee;
+    protected $discount;
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
     ];
@@ -30,6 +33,9 @@ class CartComponent extends Component
         return view('livewire.frontend.card.cart-component', [
             'total' => $this->total,
             'cart' => $this->cart,
+            'deposit' => $this->deposit,
+            'deliveryFee' => $this->deliveryFee,
+            'discount' => $this->discount,
             'content' => $this->content,
         ]);
     }

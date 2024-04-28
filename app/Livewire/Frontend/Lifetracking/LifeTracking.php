@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend\Lifetracking;
 
 use Livewire\Component;
+use App\Models\ModOrders;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Session;
 
@@ -11,25 +12,50 @@ class LifeTracking extends Component
     public $orderHash;
     protected $cartService;
 
-
+    public $latitude;
+    public $longitude;
 
     public function orderNow()
     {
         // Hier wird die Bestellung durchgeführt
         // Nachdem die Bestellung erfolgreich abgeschlossen wurde, rufe die clear-Methode des CartService auf
-        $this->cartService->clear();
+//dd($this->orderHash);
+        $order = ModOrders::where('hash', $this->orderHash)->first();
+
+    //    dd($order);
+
+//        $this->cartService->clear();
     }
+
+
+    public function simulateTracking()
+    {
+        // Hier simulieren wir die Aktualisierung der Position des Benutzers
+        // In einem echten Szenario würdest du die Position vom GPS-Gerät des Benutzers erhalten
+
+        // Zufällige Änderungen an der Position des Benutzers (für Demonstration)
+        $this->latitude += rand(-1, 1) * 0.01;
+        $this->longitude += rand(-1, 1) * 0.01;
+
+        // Aktualisiere die Position auf der Karte
+        $this->dispatch('updatePosition', ['latitude' => $this->latitude, 'longitude' => $this->longitude]);
+    }
+
 
 
     public function render()
     {
         $this->orderNow();
 
-        return view('livewire.frontend.lifetracking.life-tracking');
+        return view('livewire.frontend.lifetracking.new-life-tracking');
     }
 
     public function mount($orderHash, CartService $cartService)
     {
+
+                // Setze die anfängliche Position des Benutzers (hier einfach ein Beispielwert)
+                $this->latitude = 51.505;
+                $this->longitude = -0.09;
 
         $this->cartService = $cartService;
 

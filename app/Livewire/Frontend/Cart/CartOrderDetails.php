@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use NominatimLaravel\Content\Nominatim;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Whitecube\LaravelCookieConsent\Cookie;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Redirect as Redirector;
 
@@ -58,7 +60,7 @@ class CartOrderDetails extends Component
             // Überprüfen, ob der Warenkorb leer ist
             $order = session()->get('shopping-cart');
 
-          //  dd($order);
+         //  dd($order);
    // if (empty($order) || !Session::has('newOrderNumber')) {
     if (empty($order)) {
     return redirect()->back()->with('error', 'Der Warenkorb ist leer oder die Sitzung ist abgelaufen.');
@@ -100,6 +102,13 @@ class CartOrderDetails extends Component
         ]);
 
       //   dd($validatedData);
+
+// Konvertiere die Formulardaten in JSON
+$jsonData = json_encode($validatedData);
+
+// Speichere die Formulardaten als Cookie im Browser des Benutzers
+ // Speichere die Formulardaten als Cookie im Browser des Benutzers
+ $response = Response::make('')->withCookie(cookie('form_data', $jsonData, 60 * 24 * 30)); // Gültig für 30 Tage
 
         // Kombiniere die Teile der Adresse aus dem Livewire-Daten-Array
         $street = $this->full_address;
@@ -177,7 +186,7 @@ class CartOrderDetails extends Component
         'price_bottles' => '0.00', // Beispielwert
         'price_payment' => '0.00', // Beispielwert
         'price_tips' => '0.00', // Beispielwert
-        'price_total' => '72.90', // Beispielwert
+        'price_total' => '12.90', // Beispielwert
         'eshop_discount' => '0.00', // Beispielwert
         'cart_in_session' => '0', // Beispielwert
         'coupon_code' => '', // Beispielwert

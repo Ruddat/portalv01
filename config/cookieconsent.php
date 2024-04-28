@@ -43,6 +43,11 @@ return [
 
     ],
 
+    'categories' => [
+        App\CookieCategories\AdressCookieCategory::class, // Ihre benutzerdefinierte Kategorieklasse hier hinzufügen
+    ],
+
+
     /*
     |--------------------------------------------------------------------------
     | Legal page configuration

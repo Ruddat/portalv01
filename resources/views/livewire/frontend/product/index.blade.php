@@ -85,7 +85,7 @@
                                                     @endforeach
                                                 @else
                                                     @if ($product->base_price)
-                                                        <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, '{{ $size->size }}', 1)"
+                                                        <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, {{ $size->size_id }}, '{{ $size->size }}', 1)"
                                                             role="button" class="price-box add-to-cart animated-box"
                                                             title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
 
@@ -152,48 +152,54 @@
                     <strong>Zutaten nach Wunsch (pro Artikel):</strong>
 {{-- Iteriere über ausgewählte Zutaten und füge Flash-Effekt hinzu --}}
 <div style="height: 200px; overflow-y: auto;">
-<div class="extra-ingredients-box row">
-    @foreach ($selectedIngredients as $ingredient)
-    <div class="col-lg-3 col-md-3 col-sm-3 mb-2">
-        <div class="ingredient-container" wire:key="{{ $ingredient['id'] }}">
-            <div class="topping-box">
-                {{ $ingredient['title'] }}
-                <!-- Überprüfen Sie, ob die Zutat mehr als einmal ausgewählt wurde, und zeigen Sie die Anzahl an -->
-                @if (isset($ingredient['quantity']) && $ingredient['quantity'] > 1)
-                    ({{ $ingredient['quantity'] }}x)
-                @endif
-                <!-- Hier fügen Sie das Pluszeichen für jede Zutat hinzu -->
-                <span wire:click="incrementQuantity('{{ $ingredient['id'] }}', '{{ $product->id }}')" onclick="flashElement(this.parentNode.parentNode)"><i class="feather-plus"></i></span>
-                <!-- Hier fügen Sie das Minuszeichen für jede Zutat hinzu -->
-                <span wire:click="decrementQuantity('{{ $ingredient['id'] }}', '{{ $product->id }}')" onclick="flashElement(this.parentNode.parentNode)"><i class="feather-minus"></i></span>
-                {{-- Remove --}}
-                <span wire:click="removeIngredient('{{ $ingredient['id'] }}', '{{ $product->id }}')" onclick="flashElement(this.parentNode.parentNode)"><i class="feather-x"></i></span>
-                <!-- Zeigen Sie den Preis der Zutat an -->
-                @if (isset($ingredient['price']))
-                    @php
-                    // Berechnen Sie den Preis für diese Zutat
-                    $subtotal = $ingredient['price'] * ($ingredient['quantity'] ?? 1);
-                    @endphp
-                    ({{ number_format($subtotal, 2, ',', '.') }}€)
-                @endif
+    <div class="extra-ingredients-box row">
+        {{-- Ausgewählte Zutaten --}}
+        @php
+            // Gruppieren von Zutaten nach Namen und Berechnen von Gesamtmenge und Gesamtpreis
+            $groupedIngredients = collect($selectedIngredients)->groupBy('title')->map(function ($group) {
+                return [
+                    'title' => $group[0]['title'],
+                    'id' => $group[0]['id'], // ID hinzugefügt
+                    'quantity' => count($group),
+                    'price' => $group[0]['price'] * count($group)
+                ];
+            });
+        @endphp
+
+        @foreach ($groupedIngredients as $ingredient)
+            <div class="col-lg-3 col-md-3 col-sm-3 mb-2">
+                <div class="ingredient-container" wire:key="{{ $ingredient['id'] }}">
+                    <div class="topping-box">
+                        {{ $ingredient['title'] }}
+                        @if ($ingredient['quantity'] > 1)
+                            ({{ $ingredient['quantity'] }}x)
+                        @endif
+                        <span wire:click="incrementQuantity('{{ $ingredient['id'] }}', '{{ $product->id }}')" onclick="flashElement(this.parentNode.parentNode)"><i class="feather-plus"></i></span>
+                        <span wire:click="decrementQuantity('{{ $ingredient['id'] }}', '{{ $product->id }}')" onclick="flashElement(this.parentNode.parentNode)"><i class="feather-minus"></i></span>
+                        <span wire:click="removeIngredient('{{ $ingredient['id'] }}', '{{ $product->id }}')" onclick="flashElement(this.parentNode.parentNode)"><i class="feather-x"></i></span>
+                        @if (isset($ingredient['price']))
+                            ({{ number_format($ingredient['price'], 2, ',', '.') }}€)
+                        @endif
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-@endforeach
-<hr>
+        @endforeach
 
-@foreach ($freeIngredients as $ingredient)
-    <div class="col-lg-3 col-md-3 col-sm-3 mb-2">
-        <!-- Hier können Sie die Eigenschaften jedes Elements im $freeIngredients-Array ausgeben -->
-        <p>{{ $ingredient['title'] }}
-        <!-- Überprüfen Sie, ob der Preis null ist und zeigen Sie entsprechend "Gratis" an -->
-       {{ $ingredient['price'] > 0 ? 'Gratis' : number_format($ingredient['price'], 2, ',', '.') . '€' }}</p>
-        <!-- Fügen Sie weitere Eigenschaften hinzu, je nachdem, was jedes Element im Array repräsentiert -->
-    </div>
-@endforeach
+        <hr>
 
+        {{-- Kostenlose Zutaten --}}
+        @foreach ($freeIngredients as $ingredient)
+            <div class="col-lg-3 col-md-3 col-sm-3 mb-2">
+                <p>{{ $ingredient['title'] }}
+                    {{ $ingredient['price'] > 0 ? 'Gratis' : number_format($ingredient['price'], 2, ',', '.') . '€' }}</p>
+            </div>
+        @endforeach
+    </div>
 </div>
-</div>
+
+
+
+
                 </fieldset>
 
                 @php
@@ -203,11 +209,12 @@
                 foreach ($selectedIngredients as $ingredient) {
                     // Wenn die Zutat einen Preis hat und nicht als kostenlos markiert ist
                     if (isset($ingredient['price']) && is_numeric($ingredient['price']) && $ingredient['price'] > 0 && (!isset($ingredient['is_free']) || !$ingredient['is_free'])) {
-                        // Fügen Sie den Preis der Zutat zum Gesamtpreis hinzu
-                        $totalPrice += (float) $ingredient['price'] * ($ingredient['quantity'] ?? 1);
+                        // Fügen Sie den Preis der Zutat multipliziert mit der Anzahl hinzu
+                        $totalPrice += (float) $ingredient['price'];
+                   //     dd($totalPrice);
                     }
                 }
-                @endphp
+            @endphp
 
 <div class="cart-select-container d-flex flex-row">
     <div class="cart-button-box flex-grow-1 d-flex justify-content-between align-items-center" id="cart-button-box">
@@ -257,30 +264,47 @@
 
                     @foreach ($getIngredientData as $ingredient)
                     @php
-                    $minPrice = min(array_column($ingredient['ingredients'], 'price'));
-                    $quantity = $ingredient['free_ingredients'] ? $ingredient['free_ingredients'] . 'x' : '';
-                    $gratis = $ingredient['free_ingredients'] > 0 ? 'Gratis ' . $quantity : 'ab ' . number_format($minPrice, 2, ',', '.') . '€';
-                    $requiredQuantity = $ingredient['min_ingredients'] > 0 ? ' (' . $ingredient['min_ingredients'] . ' erforderlich)' : '';
+                        $minPrice = $ingredient['free_ingredients'] ? 0 : min(array_column($ingredient['ingredients'], 'price'));
+                        $quantity = $ingredient['free_ingredients'] ? $ingredient['free_ingredients'] . 'x' : '';
+                        $gratis = $ingredient['free_ingredients'] > 0 ? 'Gratis ' . $quantity : 'ab ' . number_format($minPrice, 2, ',', '.') . '€';
 
+                        // Überprüfen, ob ein Limit für die maximale Anzahl von Zutaten pro Kategorie festgelegt ist
+                        $isMaxSet = $ingredient['max_ingredients'] > 0;
 
-                    // Überprüfen, ob ein Limit für die maximale Anzahl von Zutaten festgelegt ist
-                    $isMaxSet = $ingredient['max_ingredients'] > 0;
-///dd($isMaxSet);
-                    // Überprüfen, ob die maximale Anzahl erreicht wurde (nur wenn ein Limit festgelegt ist)
-                    $isMaxReached = $isMaxSet && count($selectedIngredients) >= $ingredient['max_ingredients'];
+                        // Zählen Sie die Anzahl der ausgewählten Zutaten pro Kategorie
+                        $selectedCount = $this->countSelectedIngredients($ingredient);
+
+                        // Überprüfen, ob die maximale Anzahl erreicht wurde (nur wenn ein Limit festgelegt ist)
+                        $isMaxReached = $isMaxSet && $selectedCount >= $ingredient['max_ingredients'];
+
+                        // Überprüfen, ob die aktuelle Zutat kostenlose Zutaten hat
+                        $hasFreeIngredients = $ingredient['free_ingredients'] > 0;
+
+                        // Überprüfen, ob die aktuelle Zutat bereits ausgewählt wurde
+                        $isIngredientSelected = in_array($ingredient['ingredient_id'], $openIngredients);
+
+                        // Überprüfen, ob die Kategorie deaktiviert werden soll, wenn das maximale Limit erreicht ist
+                        $isCategoryDisabled = $isMaxSet && $isMaxReached;
+
+                        // Berechnen der Anzahl der noch erforderlichen Zutaten
+                        $remainingRequiredQuantity = max(0, $ingredient['min_ingredients'] - $selectedCount);
+                        $requiredQuantity = $remainingRequiredQuantity > 0 ? ' (' . $remainingRequiredQuantity . ' erforderlich)' : '';
                     @endphp
 
-                    @unless($isMaxReached)
+                    @if (!$isCategoryDisabled)
                         <button class="btn btn-square btn-light text-start @if($isOpen) open @endif" type="button" wire:click="toggleIngredient('{{ $ingredient['ingredient_id'] }}')" data-bs-toggle="collapse" data-bs-target="#collapse{{ $ingredient['ingredient_id'] }}" aria-expanded="true" aria-controls="collapse{{ $ingredient['ingredient_id'] }}">
-                            {{ $ingredient['heading'] }} - {{ $gratis }}<span style="color: {{ $this->disableAddToCartButton && $ingredient['min_ingredients'] > 0 ? 'red' : '' }}">{{ $requiredQuantity }}</span>
+                            {{ $ingredient['heading'] }} - {{ $gratis }}
+
+                            <span style="color: {{ $this->disableAddToCartButton && $ingredient['min_ingredients'] > 0 ? 'red' : '' }}">{{ $requiredQuantity }}</span>
                         </button>
 
-                        <div class="collapse @if(in_array($ingredient['ingredient_id'], $openIngredients)) show @endif" aria-labelledby="ingredient-heading{{ $ingredient['ingredient_id'] }}" id="collapse{{ $ingredient['ingredient_id'] }}">
+                        <div class="collapse @if($isIngredientSelected) show @endif" aria-labelledby="ingredient-heading{{ $ingredient['ingredient_id'] }}" id="collapse{{ $ingredient['ingredient_id'] }}">
                             <div class="card card-body row">
-                                @foreach ($ingredient['ingredients'] as $subIngredient)
+                                @forelse ($ingredient['ingredients'] as $subIngredient)
                                     <div class="col-lg-4 col-md-4 col-sm-6 mb-2">
-                                        <div class="collapse-body-text" wire:click="selectIngredient('{{ $subIngredient['id'] }}', '{{ $product->id }}' )">
-                                            <div class="d-flex align-items-center"><img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt="">
+                                        <div class="collapse-body-text" wire:click="selectIngredient('{{ $subIngredient['id'] }}', '{{ $productId }}', '{{ $ingredient['node_id'] }}' )">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt="">
                                                 <span class="w-space-no">
                                                     {{ $subIngredient['title'] }} -
                                                     @if ($ingredient['free_ingredients'])
@@ -292,11 +316,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="col">
+                                        Keine Optionen verfügbar
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
-                    @endunless
+                    @endif
                 @endforeach
+
+
+
+
 
 
 
