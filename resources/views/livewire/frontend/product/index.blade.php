@@ -141,7 +141,7 @@
     <div class="overlay">
         <div class="overlay-content">
 
-            <div class="overlay-header col-12">
+            <div class="overlay-header">
                 <div class="close-btn" wire:click="closeOverlay"><i class="feather-x-circle"></i></div>
                 <div class="small-dialog-header">
                     <h3 id="product-name">{{ $productTitle }} {{ $productSize }} {{ number_format($productPrice, 2, ',', '.') }} €</h3>
@@ -151,7 +151,7 @@
                 <fieldset class="extra-ingredients" @if (empty($selectedIngredients) && empty($freeIngredients)) style="display: none;" @endif>
                     <strong>Zutaten nach Wunsch (pro Artikel):</strong>
 {{-- Iteriere über ausgewählte Zutaten und füge Flash-Effekt hinzu --}}
-<div style="height: 200px; overflow-y: auto;">
+<div>
     <div class="extra-ingredients-box row">
         {{-- Ausgewählte Zutaten --}}
         @php
@@ -379,7 +379,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
     background-color: rgba(0, 0, 0, 0.5); /* Hintergrundfarbe mit Transparenz */
     z-index: 99999; /* Stellen Sie sicher, dass das Overlay über allem anderen liegt */
     display: flex;
@@ -451,10 +451,13 @@
 
 .extra-ingredients {
     /* Stile für zusätzliche Zutaten */
+
 }
 
 .extra-ingredients-box {
     /* Stile für das Behälterfeld der zusätzlichen Zutaten */
+overflow-y: auto;
+    max-height: 200px;
 }
 
 .ingredient-container {
@@ -485,6 +488,11 @@
 
 .overlay-ingredients {
     /* Stile für die Zutaten im Overlay */
+    position: relative;
+    height: auto;
+    margin: 20px auto;
+    overflow-x: auto;
+
 }
 
 .ingredient-box {
@@ -534,6 +542,7 @@
     /* Stile für Produktinformationen */
     color: darkgrey;
     line-height: normal;
+
 }
 
 i.feather-shopping-bag {
@@ -601,6 +610,13 @@ button.btn.btn-warning.text-end {
     border-radius: 10px; /* Abrundung der Ecken */
 }
 
+
+@media screen and (max-width: 600px) {
+    .overlay-content {
+        width: 80%;
+        /* Andere Stile für kleine Bildschirme */
+    }
+}
 
 </style>
 
