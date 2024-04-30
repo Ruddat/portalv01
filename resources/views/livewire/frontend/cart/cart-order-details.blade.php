@@ -12,7 +12,7 @@
                             <h3>{{ app(\App\Services\TranslationService::class)->trans('Personal Details -  Ihre Bestellung', app()->getLocale()) }}</h3>
                         </div>
                     </div>
-                    <!-- /head -->
+                    {{-- /head --}}
                     <div class="main">
 
                         <div class="row opt_order">
@@ -87,7 +87,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Email Address</label>
+                                    <label>{{ app(\App\Services\TranslationService::class)->trans('Email Address', app()->getLocale()) }}</label>
                                     <input wire:model="email" class="form-control" placeholder="Email Address">
                                     @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
@@ -113,18 +113,18 @@
                             @error('full_address') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <div class="row">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <label>City</label>
-                                    <input wire:model="city" class="form-control" placeholder="City">
-                                    @error('city') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Postal Code</label>
                                     <input wire:model="postal_code" class="form-control" placeholder="0123">
                                     @error('postal_code') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input wire:model="city" class="form-control" placeholder="City">
+                                    @error('city') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                         </div>
@@ -201,6 +201,22 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        @props(['options' => "{dateFormat:'Y-m-d H:i', altFormat:'F j, Y H:i', altInput:true, enableTime: true, time_24hr: true }"])
+
+                        <div wire:ignore>
+                            <input
+                                x-data
+                                x-init="flatpickr($refs.input, {{ $options }} );"
+                                x-ref="input"
+                                type="text"
+                                data-input
+                                {{ $attributes->merge(['class' => 'block w-full disabled:bg-gray-200 p-2 border border-gray-300 rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 sm:text-sm sm:leading-5']) }}
+                            />
+                        </div>
+
+
 
 
 		                        <!-- /dropdown -->
@@ -337,7 +353,26 @@
         <pre>{{ $xml }}</pre>
     </div>
 
+
+
+
+
 </div>
+
+
+
+
+@once
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
+
+@push('head_scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
+@endonce
+
+
 
 <script>
     // Funktion, um die Formulardaten in einem Cookie zu speichern

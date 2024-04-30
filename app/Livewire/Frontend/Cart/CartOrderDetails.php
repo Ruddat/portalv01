@@ -44,6 +44,8 @@ class CartOrderDetails extends Component
     public $newOrderNumber;
     public $OrderNumber;
     public $orderHash;
+    public $selectedTime;
+
 
     public function mount($restaurantId)
     {
@@ -51,6 +53,33 @@ class CartOrderDetails extends Component
         $this->shopData = ModShop::findOrFail($restaurantId);
      //   $this->createXml();
         $this->ipAddress = $_SERVER['REMOTE_ADDR'];
+
+        $addressData = Session::get('address_data');
+
+      //  dd($addressData);
+        // Überprüfe, ob die Daten vorhanden sind
+        if ($addressData) {
+            // Verwende die Sessiondaten hier weiter
+            $this->userAddress = $addressData;
+            $this->selectedOption = $addressData['selectedOption'] ?? '';
+            $this->company = $addressData['company'] ?? '';
+            $this->department = $addressData['department'] ?? '';
+
+            $this->first_name = $addressData['first_name'] ?? '';
+            $this->last_name = $addressData['last_name'] ?? '';
+
+            $this->email = $addressData['email'] ?? '';
+            $this->phone = $addressData['phone'] ?? '';
+            $this->full_address = $addressData['full_address'] ?? '';
+            $this->city = $addressData['city'] ?? '';
+            $this->postal_code = $addressData['postal_code'] ?? '';
+            $this->payment_method = $addressData['payment_method'] ?? '';
+            $this->opt_news_coupons = $addressData['opt_news_coupons'] ?? false;
+            $this->opt_save_data = $addressData['opt_save_data'] ?? false;
+            $this->order_comment = $addressData['order_comment'] ?? '';
+            $this->description_of_way = $addressData['description_of_way'] ?? '';
+
+        }
 
     }
 
@@ -109,6 +138,12 @@ $jsonData = json_encode($validatedData);
 // Speichere die Formulardaten als Cookie im Browser des Benutzers
  // Speichere die Formulardaten als Cookie im Browser des Benutzers
  $response = Response::make('')->withCookie(cookie('form_data', $jsonData, 60 * 24 * 30)); // Gültig für 30 Tage
+
+ Session::put('address_data', $validatedData);
+
+ $addressData = Session::get('address_data');
+//dd($addressData);
+
 
         // Kombiniere die Teile der Adresse aus dem Livewire-Daten-Array
         $street = $this->full_address;
@@ -585,9 +620,13 @@ public function generateQrCode()
 
     public function render()
     {
+        // Adressdaten aus der Session abrufen, falls vorhanden
+        $addressData = Session::get('address_data', []);
+//dd($addressData);
         return view('livewire.frontend.cart.cart-order-details', [
             'shopData' => $this->shopData,
             'xml' => $this->xml,
+            'addressData' => $addressData, // Adressdaten an die Ansicht übergeben
         ]);
     }
 }

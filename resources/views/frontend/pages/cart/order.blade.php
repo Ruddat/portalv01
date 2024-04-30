@@ -27,9 +27,13 @@
 
 
 
+<!-- CSS für Flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<!-- JavaScript für Flatpickr -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
         @push('specific-scripts')
-
 
 
 
