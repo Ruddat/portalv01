@@ -12,7 +12,7 @@
                             <h3>{{ app(\App\Services\TranslationService::class)->trans('Personal Details -  Ihre Bestellung', app()->getLocale()) }}</h3>
                         </div>
                     </div>
-                    <!-- /head -->
+                    {{-- /head --}}
                     <div class="main">
 
                         <div class="row opt_order">
@@ -87,7 +87,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Email Address</label>
+                                    <label>{{ app(\App\Services\TranslationService::class)->trans('Email Address', app()->getLocale()) }}</label>
                                     <input wire:model="email" class="form-control" placeholder="Email Address">
                                     @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
@@ -113,18 +113,18 @@
                             @error('full_address') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <div class="row">
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <label>City</label>
-                                    <input wire:model="city" class="form-control" placeholder="City">
-                                    @error('city') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Postal Code</label>
                                     <input wire:model="postal_code" class="form-control" placeholder="0123">
                                     @error('postal_code') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input wire:model="city" class="form-control" placeholder="City">
+                                    @error('city') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                         </div>
@@ -201,6 +201,22 @@
                                 </div>
                             </div>
                         </div>
+
+
+                        @props(['options' => "{dateFormat:'Y-m-d H:i', altFormat:'F j, Y H:i', altInput:true, enableTime: true, time_24hr: true }"])
+
+                        <div wire:ignore>
+                            <input
+                                x-data
+                                x-init="flatpickr($refs.input, {{ $options }} );"
+                                x-ref="input"
+                                type="text"
+                                data-input
+                                {{ $attributes->merge(['class' => 'block w-full disabled:bg-gray-200 p-2 border border-gray-300 rounded-md focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 sm:text-sm sm:leading-5']) }}
+                            />
+                        </div>
+
+
 
 
 		                        <!-- /dropdown -->
@@ -337,65 +353,24 @@
         <pre>{{ $xml }}</pre>
     </div>
 
+
+
+
+
 </div>
 
-<script>
-    // Funktion, um die Formulardaten in einem Cookie zu speichern
-    function saveFormDataToCookie() {
-        // Formulardaten aus den Feldern lesen
-        var formData = {
-            'name': document.getElementById('name').value,
-            'email': document.getElementById('email').value,
-            'phone': document.getElementById('phone').value,
-            'address': document.getElementById('address').value,
-            'city': document.getElementById('city').value,
-            'postalCode': document.getElementById('postalCode').value
-            // Hier weitere Felder hinzufügen, falls erforderlich
-        };
 
-        // Cookie-Dauer in Tagen festlegen (hier 28 Tage = 4 Wochen)
-        var expiryDays = 28;
 
-        // Datum für das Ablaufdatum des Cookies erstellen
-        var expiryDate = new Date();
-        expiryDate.setTime(expiryDate.getTime() + (expiryDays * 24 * 60 * 60 * 1000));
 
-        // Formulardaten als JSON in einem Cookie speichern
-        document.cookie = 'formData=' + JSON.stringify(formData) + '; expires=' + expiryDate.toUTCString() + '; path=/';
-    }
+@once
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@endpush
 
-    // Funktion aufrufen, um die Formulardaten beim Laden der Seite zu speichern
-    window.onload = function() {
-        saveFormDataToCookie();
-    };
-</script>
+@push('head_scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@endpush
+@endonce
 
-<script>
-    // Funktion, um die Formulardaten aus dem Cookie zu lesen
-    function getFormDataFromCookie() {
-        // Cookie lesen
-        var cookies = document.cookie.split(';');
-        var formDataCookie = null;
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Überprüfen, ob das Cookie den Namen 'formData' hat
-            if (cookie.indexOf('form_data=') === 0) {
-                // Formulardaten aus dem Cookie extrahieren
-                formDataCookie = decodeURIComponent(cookie.substring('form_data='.length));
-                break;
-            }
-        }
-        return formDataCookie ? JSON.parse(formDataCookie) : null;
-    }
 
-    // Funktion aufrufen, um die Formulardaten aus dem Cookie zu lesen und anzuzeigen
-    window.onload = function() {
-        var formData = getFormDataFromCookie();
-        if (formData) {
-            // Formulardaten gefunden, hier kannst du sie verwenden oder anzeigen
-            console.log('Formulardaten gefunden:', formData);
-        } else {
-            console.log('Keine Formulardaten im Cookie gefunden.');
-        }
-    };
-</script>
+
