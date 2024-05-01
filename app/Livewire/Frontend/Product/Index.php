@@ -523,7 +523,7 @@ if (!$allergenIds && !$additiveIds) {
         $this->productSize = $productSize->title;
         $this->productId = $productId;
        // $getIngredientData = $getIngredientPrice;
-       $this->getIngredientData = $getIngredientPrice;
+        $this->getIngredientData = $getIngredientPrice;
         $this->allergens = $allergens;
         $this->additives = $additives;
 
@@ -776,7 +776,7 @@ public function incrementQuantity($ingredientId, $productId)
             break;
         }
     }
- //   $this->checkRequiredIngredientsSelected($this->getIngredientData);
+  //  $this->checkRequiredIngredientsSelected($this->getIngredientData);
 
     $this->updateTotalPrice();
 }
@@ -798,6 +798,8 @@ public function incrementQuantity($ingredientId, $productId)
  */
 public function decrementQuantity($ingredientId, $productId)
 {
+
+   // dd($ingredientId);
     foreach ($this->selectedIngredients as $key => &$ingredient) {
         if ($ingredient['id'] == $ingredientId) {
             if (isset($ingredient['quantity']) && $ingredient['quantity'] > 1) {
@@ -806,7 +808,7 @@ public function decrementQuantity($ingredientId, $productId)
                 // Zutat entfernen
                 unset($this->selectedIngredients[$key]);
                 // Passende Node zurücksetzen
-             ///   $this->resetMatchingNode($ingredientId, $productId);
+                $this->resetMatchingNode($ingredientId, $productId);
             }
             break;
         }

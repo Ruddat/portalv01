@@ -141,8 +141,7 @@ $jsonData = json_encode($validatedData);
 
  Session::put('address_data', $validatedData);
 
- $addressData = Session::get('address_data');
-//dd($addressData);
+
 
 
         // Kombiniere die Teile der Adresse aus dem Livewire-Daten-Array
@@ -622,7 +621,6 @@ public function generateQrCode()
     {
         // Adressdaten aus der Session abrufen, falls vorhanden
         $addressData = Session::get('address_data', []);
-//dd($addressData);
         return view('livewire.frontend.cart.cart-order-details', [
             'shopData' => $this->shopData,
             'xml' => $this->xml,

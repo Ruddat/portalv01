@@ -379,7 +379,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* Hintergrundfarbe mit Transparenz */
     z-index: 99999; /* Stellen Sie sicher, dass das Overlay über allem anderen liegt */
     display: flex;
@@ -393,7 +393,7 @@
 .overlay-content {
     /* Stile für den Overlay-Inhalt */
     position: relative;
-    height: auto;
+    height: 100%;
     margin: 20px auto;
     overflow-y: auto;
     background-color: white;
@@ -408,7 +408,7 @@
 
 .overlay-header {
     /* Stile für den Header des Overlays */
-    position: sticky;
+    position: relative;
     top: 0;
     background-color: #ffffff;
     /* Hintergrundfarbe des Headers */
@@ -456,7 +456,6 @@
 
 .extra-ingredients-box {
     /* Stile für das Behälterfeld der zusätzlichen Zutaten */
-overflow-y: auto;
     max-height: 200px;
 }
 
@@ -491,7 +490,6 @@ overflow-y: auto;
     position: relative;
     height: auto;
     margin: 20px auto;
-    overflow-x: auto;
 
 }
 
