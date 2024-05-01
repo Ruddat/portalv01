@@ -497,6 +497,13 @@
     /* Stile für den Behälter der Zutaten */
 }
 
+
+.btn.btn-square.btn-light.text-start {
+  font-size: medium;
+  display: grid;
+}
+
+
 .topping-box {
     line-height: normal;
     text-wrap: pretty;
@@ -583,7 +590,7 @@ i.feather-shopping-bag:hover {
 button.btn.btn-warning.text-end {
     content: '';
     display: block;
-    width: 90%;
+    width: auto;
     background-color: #e60004;
     border: none;
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.3);
@@ -611,7 +618,7 @@ button.btn.btn-warning.text-end {
 
 @media screen and (max-width: 600px) {
     .overlay-content {
-        width: 80%;
+        width: 90%;
         /* Andere Stile für kleine Bildschirme */
     }
 }
