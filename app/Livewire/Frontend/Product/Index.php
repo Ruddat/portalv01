@@ -151,6 +151,7 @@ if ($bottles) {
     if ($bottlesPrices) {
         // Füge die Produktoptionen zum $options-Array hinzu
         $options[] = [
+            'productCode' => 'deposit',
             'productName' => $bottlesPrices->bottles_title,
             'price' => $bottlesPrices->bottles_value,
             'size' => $size,
@@ -162,8 +163,25 @@ if ($bottles) {
 }
 
 
-//dd($options);
+// 1. Daten aus mod_products abrufen
+$product = DB::table('mod_products')->where('id', $productId)->first();
 
+if ($product) {
+    // 2. Kategorie anhand der category_id finden
+    $category = DB::table('mod_categories')->where('id', $product->category_id)->first();
+
+    if ($category) {
+        // 3. Überprüfe, ob sizes_category null ist
+        if ($category->sizes_category === null) {
+            // Größe ist null, ersetze den Inhalt von $sizeTitle->title durch "Standard"
+            $sizeTitle->title = "Standard";
+        }
+    }
+}
+
+
+    //dd($options);
+   // dd($extendedProductId, $productName, $selectedPrice, $sizeTitle->title, $selectedQuantity, $productId, $options);
         // Produkt zum Warenkorb hinzufügen
         Cart::add($extendedProductId, $productName, $selectedPrice, $sizeTitle->title, $selectedQuantity, $productId, $options);
 
@@ -399,7 +417,7 @@ dd($productId, $selectedSize, $selectedPrice, $productName);
         $extendedProductId = $productId . '' . $uniqueIdentifier;
         $sizeTitle = ModProductSizes::where('id', $selectedSize)->first();
 
-    //    dd($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity, $extendedProductId);
+      //  dd($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity, $extendedProductId);
 
 
   //dd($options);
@@ -439,6 +457,8 @@ dd($productId, $selectedSize, $selectedPrice, $productName);
         // Annahme: Standardgröße
         $quantity = '1';
 
+   //     dd($this->selectedIngredients, $this->freeIngredients);
+
 // Verarbeiten der ausgewählten Zutaten
 foreach ($this->selectedIngredients as $ingredient) {
     // Überprüfen, ob die Zutat eine Menge größer als 1 hat
@@ -446,6 +466,7 @@ foreach ($this->selectedIngredients as $ingredient) {
         // Wenn die Menge größer als 1 ist, fügen Sie die Zutat entsprechend oft zu den Optionen hinzu
         for ($i = 0; $i < $ingredient['quantity']; $i++) {
             $options[] = [
+                'productCode' => $ingredient['id'],
                 'productName' => $ingredient['title'],
                 'price' => $ingredient['price'],
                 'size' => $size, // Hier könnten Sie die Größe basierend auf der Zutat anpassen, falls erforderlich
@@ -455,6 +476,7 @@ foreach ($this->selectedIngredients as $ingredient) {
     } else {
         // Wenn die Menge 1 ist, fügen Sie die Zutat einfach einmal zu den Optionen hinzu
         $options[] = [
+            'productCode' => $ingredient['id'],
             'productName' => $ingredient['title'],
             'price' => $ingredient['price'],
             'size' => $size, // Hier könnten Sie die Größe basierend auf der Zutat anpassen, falls erforderlich
@@ -468,6 +490,7 @@ foreach ($this->selectedIngredients as $ingredient) {
             // Hier können Sie ähnlich wie bei den ausgewählten Zutaten die kostenlosen Zutaten verarbeiten und zu den Optionen hinzufügen
             // Beispiel:
             $options[] = [
+                'productCode' => $ingredient['id'],
                 'productName' => $ingredient['title'],
                 'price' => 0, // Annahme: Kostenlose Zutaten haben einen Preis von 0
                 'size' => $size, // Hier könnten Sie die Größe basierend auf der Zutat anpassen, falls erforderlich
@@ -510,6 +533,7 @@ if (!$allergenIds && !$additiveIds) {
 }
 
     $productSize = ModProductSizes::where('id', $selectedSize)->first();
+//dd($productSize);
 
     // Überprüfen, ob das Produkt gefunden wurde
     if ($product) {
@@ -519,7 +543,7 @@ if (!$allergenIds && !$additiveIds) {
         $this->productPrice = $selectedPrice;
         $this->productName = $productName;
         $this->selectedSize = $productSize->title;
-        $this->selectedSizeId = $selectedSize;
+        $this->selectedSizeId = $productSize->id;
         $this->productSize = $productSize->title;
         $this->productId = $productId;
        // $getIngredientData = $getIngredientPrice;

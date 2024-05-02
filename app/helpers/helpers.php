@@ -30,6 +30,11 @@ if( !function_exists('send_mail')){
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = $mailConfig['mail_subject'];
     $mail->Body    = $mailConfig['mail_body'];
+
+
+            // Setze die Zeichenkodierung
+            $mail->CharSet = 'UTF-8';
+            
     if ($mail->send()) {
         return true;
     } else {

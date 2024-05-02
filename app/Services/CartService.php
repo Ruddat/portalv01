@@ -170,6 +170,7 @@ class CartService {
         }
 
         $cartItem = [
+            'code' => $productCode,
             'name' => $name,
             'price' => $price,
             'quantity' => $quantity,
