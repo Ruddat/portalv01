@@ -605,7 +605,7 @@ $order = [
     'order_number' => $orderForEmail->order_nr,
     'created_at' => $orderForEmail->created_at,
 //    'items' => json_decode($orderForEmail->order_json_data)->OrderList->Order->ArticleList->Article, // Annahme: Die Artikel sind im JSON-Format gespeichert
-    'items' => isset(json_decode($orderForEmail->order_json_data)->OrderList->Order->ArticleList->Article) ? json_decode($orderForEmail->order_json_data)->OrderList->Order->ArticleList->Article : [], // Prüfen Sie, ob der Schlüssel existiert
+ //   'items' => isset(json_decode($orderForEmail->order_json_data)->OrderList->Order->ArticleList->Article) ? json_decode($orderForEmail->order_json_data)->OrderList->Order->ArticleList->Article : [], // Prüfen Sie, ob der Schlüssel existiert
 
     'total' => $orderForEmail->price_total,
     'currency' => 'EUR', // Annahme: Die Währung ist festgelegt
@@ -631,23 +631,22 @@ $customer = [
 
 $orderData = json_decode($orderForEmail->order_json_data);
 
-// Überprüfen, ob die erwarteten Daten vorhanden sind
+// Überprüfe, ob die Daten in der erwarteten Struktur vorliegen
 if (isset($orderData->OrderList->Order->ArticleList->Article)) {
-    $orderItemsData = $orderData->OrderList->Order->ArticleList->Article;
-
-    // Überprüfen, ob es sich um ein einzelnes Objekt oder ein Array von Objekten handelt
-    if (is_array($orderItemsData)) {
-        // Wenn es sich um ein Array handelt, verwenden Sie es direkt
-        $orderItems = ['items' => $orderItemsData];
+    // Überprüfe, ob es sich um ein einzelnes Objekt oder ein Array von Objekten handelt
+    if (is_array($orderData->OrderList->Order->ArticleList->Article)) {
+        // Wenn es sich um ein Array handelt, verwende es direkt
+        $orderItems = ['items' => $orderData->OrderList->Order->ArticleList->Article];
     } else {
         // Wenn es sich um ein einzelnes Objekt handelt, wandle es in ein Array um
-        $orderItems = ['items' => [$orderItemsData]];
+        $orderItems = ['items' => [$orderData->OrderList->Order->ArticleList->Article]];
     }
 } else {
-    // Wenn die erwarteten Daten nicht vorhanden sind, setzen Sie die Artikel auf ein leeres Array
+    // Setze die Artikel auf ein leeres Array, wenn der Schlüssel nicht existiert oder die Daten fehlen
     $orderItems = ['items' => []];
 }
 
+//dd($orderItems);
 
     // Erzeuge die Verifizierungs-URL für den Verkäufer
     $trackingUrl = route('life-tracking', ['orderHash' => $orderHash]);

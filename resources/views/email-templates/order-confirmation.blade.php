@@ -110,22 +110,19 @@
 
             <div class="order-items">
                 <h2>Gekaufte Artikel</h2>
-                @foreach ($orderData->OrderList->Order->ArticleList->Article as $item)
-                    <p>- <strong>{{ $item->ArticleName }} {{ $item->ArticleSize }} ({{ $item->Count }}x) -
-                            {{ $item->Price }} {{ $order['currency'] }}</strong></p>
-                    @if (!empty($item->SubArticleList) && is_object($item->SubArticleList->SubArticle))
-                        <ul>
-                            <li>{{ $item->SubArticleList->SubArticle->ArticleName }}</li>
-                        </ul>
-                    @elseif (!empty($item->SubArticleList) && is_array($item->SubArticleList->SubArticle))
-                        <ul>
-                            @foreach ($item->SubArticleList->SubArticle as $subArticle)
-                                <li>{{ $subArticle->ArticleName }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
+                @foreach ($orderItems['items'] as $item)
+                <p>- <strong>{{ $item->ArticleName }} {{ $item->ArticleSize }} ({{ $item->Count }}x) -
+                    {{ $item->Price }} {{ $order['currency'] }}</strong></p>
+                    @if (!empty($item->SubArticleList) && is_array($item->SubArticleList->SubArticle))
+                    <ul>
+                        @foreach ($item->SubArticleList->SubArticle as $subArticle)
+                            <li>{{ $subArticle->ArticleName }}</li>
+                        @endforeach
+                    </ul>
+                @endif
                 @endforeach
             </div>
+
             <p><strong>Gesamtbetrag:</strong> {{ $order['total'] }} {{ $order['currency'] }}</p>
             <p><strong>Zahlungsart:</strong> {{ $order['payment_type'] }}</p>
             <p>Vielen Dank für Ihre Bestellung bei {{ $order['shop_name'] }}.</p>
