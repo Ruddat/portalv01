@@ -22,7 +22,8 @@
         }
 
         .header {
-            background-color: #FF0000; /* Rot für den Kopf */
+            background-color: #FF0000;
+            /* Rot für den Kopf */
             color: #FFFFFF;
             padding: 10px;
             text-align: center;
@@ -30,7 +31,8 @@
         }
 
         .content {
-            background-color: #FFFFFF; /* Weißer Hintergrund für den Inhalt */
+            background-color: #FFFFFF;
+            /* Weißer Hintergrund für den Inhalt */
             padding: 20px;
             border-radius: 0 0 5px 5px;
         }
@@ -44,7 +46,8 @@
         }
 
         .order-items {
-            background-color: #F0F0F0; /* Leicht grauer Kasten für die Bestellungsliste */
+            background-color: #F0F0F0;
+            /* Leicht grauer Kasten für die Bestellungsliste */
             padding: 10px;
             border-radius: 5px;
         }
@@ -65,7 +68,10 @@
             .container {
                 width: 100% !important;
             }
-            .header, .content, .footer {
+
+            .header,
+            .content,
+            .footer {
                 padding: 10px !important;
             }
         }
@@ -78,7 +84,9 @@
             <img src="pfad/zum/logo.png" alt="Logo vom {{ $order['shop_name'] }}" style="max-width: 100px;">
             <h1>Hallo Herr {{ $customer['name'] }},</h1>
             <p>Wir haben Ihre Bestellung erhalten.</p>
-            <p>Ihr Tracking-Link lautet: <a href="{{ $trackingUrl }}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">Tracking anzeigen</a></p>
+            <p>Ihr Tracking-Link lautet: <a href="{{ $trackingUrl }}"
+                    style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">Tracking
+                    anzeigen</a></p>
 
         </div>
         <div class="content">
@@ -102,8 +110,9 @@
 
             <div class="order-items">
                 <h2>Gekaufte Artikel</h2>
-                @foreach ($order['items'] as $item)
-                    <p>- <strong>{{ $item->ArticleName }} {{ $item->ArticleSize }} ({{ $item->Count }}x) - {{ $item->Price }} {{ $order['currency'] }}</strong></p>
+                @foreach ($orderData->OrderList->Order->ArticleList->Article as $item)
+                    <p>- <strong>{{ $item->ArticleName }} {{ $item->ArticleSize }} ({{ $item->Count }}x) -
+                            {{ $item->Price }} {{ $order['currency'] }}</strong></p>
                     @if (!empty($item->SubArticleList) && is_object($item->SubArticleList->SubArticle))
                         <ul>
                             <li>{{ $item->SubArticleList->SubArticle->ArticleName }}</li>
@@ -117,8 +126,6 @@
                     @endif
                 @endforeach
             </div>
-
-
             <p><strong>Gesamtbetrag:</strong> {{ $order['total'] }} {{ $order['currency'] }}</p>
             <p><strong>Zahlungsart:</strong> {{ $order['payment_type'] }}</p>
             <p>Vielen Dank für Ihre Bestellung bei {{ $order['shop_name'] }}.</p>

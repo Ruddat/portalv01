@@ -629,6 +629,25 @@ $customer = [
 ];
 
 
+$orderData = json_decode($orderForEmail->order_json_data);
+
+// Überprüfen, ob die erwarteten Daten vorhanden sind
+if (isset($orderData->OrderList->Order->ArticleList->Article)) {
+    $orderItemsData = $orderData->OrderList->Order->ArticleList->Article;
+
+    // Überprüfen, ob es sich um ein einzelnes Objekt oder ein Array von Objekten handelt
+    if (is_array($orderItemsData)) {
+        // Wenn es sich um ein Array handelt, verwenden Sie es direkt
+        $orderItems = ['items' => $orderItemsData];
+    } else {
+        // Wenn es sich um ein einzelnes Objekt handelt, wandle es in ein Array um
+        $orderItems = ['items' => [$orderItemsData]];
+    }
+} else {
+    // Wenn die erwarteten Daten nicht vorhanden sind, setzen Sie die Artikel auf ein leeres Array
+    $orderItems = ['items' => []];
+}
+
 
     // Erzeuge die Verifizierungs-URL für den Verkäufer
     $trackingUrl = route('life-tracking', ['orderHash' => $orderHash]);
@@ -637,7 +656,9 @@ $customer = [
         $data = [
             'order' => $order,
             'customer' => $customer,
-            'trackingUrl' => $trackingUrl
+            'trackingUrl' => $trackingUrl,
+            'orderData' => $orderData, // Korrekter Schlüssel
+            'orderItems' => $orderItems,
                 ];
 //dd($data);
 
