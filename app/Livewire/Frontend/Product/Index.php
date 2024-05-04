@@ -852,7 +852,7 @@ public function removeIngredient($ingredientId, $productId)
             unset($this->selectedIngredients[$key]);
             // Passende Node zurücksetzen
             $this->resetMatchingNode($ingredientId, $productId);
-            $this->disableAddToCartButton = true;
+         //   $this->disableAddToCartButton = true;
 
             break;
         }

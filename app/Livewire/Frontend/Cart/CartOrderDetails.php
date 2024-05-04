@@ -241,7 +241,7 @@ $jsonData = json_encode($validatedData);
 
     $this->createXml();
 
-    $this->generateNewPDF();
+    $this->generateNewPDF($orderHash);
 
     $this->generateNewClient($validatedData);
 
@@ -302,11 +302,16 @@ public function generateNewClient($data)
 
 
 
-public function generateNewPdf()
+public function generateNewPdf($orderHash)
 {
 
     $newOrderNumber = $this->newOrderNumber;
 
+
+    // Kaufdaten aus der Datenbank abrufen
+    $orderForPdf = ModOrders::where('hash', $orderHash)->first();
+
+//dd($orderForPdf);
 
     // Kundeninformationen aus dem Formular erhalten
     $customerData = [
@@ -330,10 +335,19 @@ public function generateNewPdf()
 
     // Shopinformationen aus der Datenbank
     $orderData = [
-        'Bestellung' => 'Lieferung',
+        'Bestellung' => $orderForPdf->shipping_type,
         'Zeitpunkt' => 'sofort',
         'Zahlungsart' => $this->payment_method,
-      ];
+        'Kommentar' => $orderForPdf->order_comment,
+    ];
+
+    $orderItems = [
+        'items' => isset(json_decode($orderForPdf->order_json_data)->OrderList->Order->ArticleList->Article) ? json_decode($orderForPdf->order_json_data)->OrderList->Order->ArticleList->Article : [], // Prüfen ob der Schlüssel existiert
+
+    ];
+
+//dd($orderItems);
+
 
     $payment_method = $this->payment_method; // Beispielwert
 
@@ -364,7 +378,7 @@ public function generateNewPdf()
 
     //$pdf = Pdf::loadView('pdf.order', ['data' => $data]);
 
-    $pdf = PDF::loadView('pdf.order', compact('customerData', 'qrcode', 'shopData', 'orderData', 'payment_method', 'newOrderNumber', 'data'));
+    $pdf = PDF::loadView('pdf.order', compact('customerData', 'qrcode', 'shopData', 'orderData', 'orderItems', 'payment_method', 'newOrderNumber', 'data'));
 
     // Holen Sie die Shop-ID aus dem $shopData-Array
     $shopId = $this->shopData['id'];
