@@ -52,7 +52,7 @@
                 <td class="w-half">
                     <div><h2>Bestellung:</h2></div>
                     <div>
-                        @foreach($orderData as $key => $value)
+                        @foreach($orderInfos as $key => $value)
                             @if (!empty($value))
                               {{ ucfirst($key) }}:<strong> {{ $value }}</strong><br>
                             @endif
@@ -100,41 +100,51 @@
                 <th>Artikel + Zutaten</th>
                 <th>Summe</th>
             </tr>
-        @php
-        $totalPrice = 0; // Initialisieren Sie die Gesamtsumme
-    @endphp
+            @php
+                $totalPrice = 0; // Initialisieren Sie die Gesamtsumme
+            @endphp
 
-    @foreach($orderItems['items'] as $item)
-        @php
-            $totalPrice += $item->Price; // Addieren Sie den Preis jedes Artikels zur Gesamtsumme
-        @endphp
-        <tr class="items">
-            <td>{{ $item->ArticleNo }}</td>
-            <td>{{ $item->ArticleName }} ({{ $item->ArticleSize }})</td>
-            <td>{{ number_format($item->Price, 2, '.', '') }}</td>
-        </tr>
-        @if (!empty($item->SubArticleList) && is_array($item->SubArticleList->SubArticle))
-            @foreach ($item->SubArticleList->SubArticle as $subArticle)
-                <tr class="subitems">
-                    <td></td>
-                    <td>-- {{ $subArticle->ArticleName }}</td>
+@foreach($orderItems['items'] as $item)
+                <tr class="items">
+
+                    @php
+                     //   dd($item);
+                    @endphp
+
+                    <td>{{ $item->ArticleNo }}</td>
+                    <td>{{ $item->ArticleName }} ({{ $item->ArticleSize }})</td>
                     <td>
-                        @if(is_array($subArticle->Price))
-                            Gratis
-                        @else
-                            {{ number_format($subArticle->Price, 2, '.', '') }}
+                        @if(isset($item->Price))
+                            {{ number_format($item->Price, 2, '.', '') }}
                             @php
-                                $totalPrice += $subArticle->Price; // Addieren Sie den Preis jedes Subartikels zur Gesamtsumme
+                                $totalPrice += $item->Price; // Addieren Sie den Preis jedes Artikels zur Gesamtsumme
                             @endphp
+                        @else
+                            Gratis
                         @endif
                     </td>
                 </tr>
+                @if (!empty($item->SubArticleList) && is_array($item->SubArticleList->SubArticle))
+                    @foreach ($item->SubArticleList->SubArticle as $subArticle)
+                        <tr class="subitems">
+                            <td></td>
+                            <td>-- {{ $subArticle->ArticleName }}</td>
+                            <td>
+                                @if(isset($subArticle->Price) && is_numeric($subArticle->Price))
+                                {{ number_format($subArticle->Price, 2, '.', '') }}
+                                @php
+                                    $totalPrice += $subArticle->Price; // Addieren Sie den Preis jedes Subartikels zur Gesamtsumme
+                                @endphp
+                            @else
+                                Gratis
+                            @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
             @endforeach
-        @endif
-    @endforeach
         </table>
     </div>
-
 
     <div class="total">
         Total: ${{ number_format($totalPrice, 2, '.', '') }} Euro <!-- Zeigen Sie die Gesamtsumme -->

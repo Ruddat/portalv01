@@ -334,20 +334,33 @@ public function generateNewPdf($orderHash)
     ];
 
     // Shopinformationen aus der Datenbank
-    $orderData = [
+    $orderInfos = [
         'Bestellung' => $orderForPdf->shipping_type,
         'Zeitpunkt' => 'sofort',
         'Zahlungsart' => $this->payment_method,
         'Kommentar' => $orderForPdf->order_comment,
     ];
 
-    $orderItems = [
-        'items' => isset(json_decode($orderForPdf->order_json_data)->OrderList->Order->ArticleList->Article) ? json_decode($orderForPdf->order_json_data)->OrderList->Order->ArticleList->Article : [], // Prüfen ob der Schlüssel existiert
+    $orderData = json_decode($orderForPdf->order_json_data);
 
-    ];
+    // Überprüfe, ob die Daten in der erwarteten Struktur vorliegen
+    if (isset($orderData->OrderList->Order->ArticleList->Article)) {
+        // Überprüfe, ob es sich um ein einzelnes Objekt oder ein Array von Objekten handelt
+        if (is_array($orderData->OrderList->Order->ArticleList->Article)) {
+            // Wenn es sich um ein Array handelt, verwende es direkt
+            $orderItems = ['items' => $orderData->OrderList->Order->ArticleList->Article];
+        } else {
+            // Wenn es sich um ein einzelnes Objekt handelt, wandle es in ein Array um
+            $orderItems = ['items' => [$orderData->OrderList->Order->ArticleList->Article]];
+        }
+    } else {
+        // Setze die Artikel auf ein leeres Array, wenn der Schlüssel nicht existiert oder die Daten fehlen
+        $orderItems = ['items' => []];
+    }
 
-//dd($orderItems);
+//dd($orderData, $orderItems);
 
+//dd($orderItems['items']);
 
     $payment_method = $this->payment_method; // Beispielwert
 
@@ -378,7 +391,7 @@ public function generateNewPdf($orderHash)
 
     //$pdf = Pdf::loadView('pdf.order', ['data' => $data]);
 
-    $pdf = PDF::loadView('pdf.order', compact('customerData', 'qrcode', 'shopData', 'orderData', 'orderItems', 'payment_method', 'newOrderNumber', 'data'));
+    $pdf = PDF::loadView('pdf.order', compact('customerData', 'qrcode', 'shopData', 'orderData', 'orderInfos', 'orderItems', 'payment_method', 'newOrderNumber', 'data'));
 
     // Holen Sie die Shop-ID aus dem $shopData-Array
     $shopId = $this->shopData['id'];
