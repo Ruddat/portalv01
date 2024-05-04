@@ -19,7 +19,12 @@
 	<title>{{ get_settings()->site_name }}</title>
 
 	<!-- FAVICONS ICON -->
-	<link rel="shortcut icon" type="image/png" href="/images/site/{{ get_settings()->site_favicon }}" />
+    @if(!empty(get_settings()->site_favicon))
+    <link rel="shortcut icon" type="image/png" href="/images/site/{{ get_settings()->site_favicon }}" />
+    @else
+    <link rel="shortcut icon" type="image/png" href="{{ asset('frontend/img/favicon.ico') }}" />
+    @endif
+
 
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">
@@ -45,7 +50,7 @@
 	<link href="{{ asset('backend/css/style.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+
 
     @stack('specific-css')
 

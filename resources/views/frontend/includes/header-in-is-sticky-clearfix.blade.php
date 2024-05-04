@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div id="logo">
             <a href="index.html">
-                <img src="img/logo_sticky.svg" width="140" height="35" alt="">
+                <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="140" height="35" alt="">
             </a>
         </div>
         <div class="layer"></div><!-- Opacity Mask Menu Mobile -->

@@ -2,7 +2,14 @@
     <div class="container">
         <div id="logo">
             <a href="{{ url('/') }}">
+                @if(!empty(get_settings()->site_logo))
                 <img src="/images/site/{{ get_settings()->site_logo }}" width="162" height="35" alt="">
+            @else
+                <img src="{{ asset('frontend/img/logo_sticky.svg') }}" width="162" height="35" alt="Default Logo">
+            @endif
+
+
+
             </a>
         </div>
         <div class="layer"></div><!-- Opacity Mask Menu Mobile -->
