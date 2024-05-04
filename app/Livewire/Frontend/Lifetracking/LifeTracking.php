@@ -17,10 +17,14 @@ class LifeTracking extends Component
 
     public function orderNow()
     {
-        // Hier wird die Bestellung durchgeführt
-        // Nachdem die Bestellung erfolgreich abgeschlossen wurde, rufe die clear-Methode des CartService auf
-//dd($this->orderHash);
-        $order = ModOrders::where('hash', $this->orderHash)->first();
+    // Hier wird die Bestellung durchgeführt
+    // Nachdem die Bestellung erfolgreich abgeschlossen wurde, rufe die clear-Methode des CartService auf
+    $order = ModOrders::where('hash', $this->orderHash)->first();
+
+    // Extrahiere Breitengrad und Längengrad aus der Order
+    $latitude = $order->shipping_lat;
+    $longitude = $order->shipping_lng;
+
 
     //    dd($order);
 
@@ -47,15 +51,20 @@ class LifeTracking extends Component
     {
         $this->orderNow();
 
-        return view('livewire.frontend.lifetracking.new-life-tracking');
+        return view('livewire.frontend.lifetracking.life-tracking');
     }
 
     public function mount($orderHash, CartService $cartService)
     {
 
+            // Hier kannst du die Werte aus der Datenbank abrufen und zuweisen
+    $order = ModOrders::where('hash', $orderHash)->first();
+    $this->latitude = $order->shipping_lat;
+    $this->longitude = $order->shipping_lng;
+
                 // Setze die anfängliche Position des Benutzers (hier einfach ein Beispielwert)
-                $this->latitude = 51.505;
-                $this->longitude = -0.09;
+             //   $this->latitude = 51.505;
+             //   $this->longitude = -0.09;
 
         $this->cartService = $cartService;
 

@@ -100,25 +100,46 @@
                 <th>Artikel + Zutaten</th>
                 <th>Summe</th>
             </tr>
-            <tr class="items">
-                @foreach($data as $item)
+        @php
+        $totalPrice = 0; // Initialisieren Sie die Gesamtsumme
+    @endphp
+
+    @foreach($orderItems['items'] as $item)
+        @php
+            $totalPrice += $item->Price; // Addieren Sie den Preis jedes Artikels zur Gesamtsumme
+        @endphp
+        <tr class="items">
+            <td>{{ $item->ArticleNo }}</td>
+            <td>{{ $item->ArticleName }} ({{ $item->ArticleSize }})</td>
+            <td>{{ number_format($item->Price, 2, '.', '') }}</td>
+        </tr>
+        @if (!empty($item->SubArticleList) && is_array($item->SubArticleList->SubArticle))
+            @foreach ($item->SubArticleList->SubArticle as $subArticle)
+                <tr class="subitems">
+                    <td></td>
+                    <td>-- {{ $subArticle->ArticleName }}</td>
                     <td>
-                        {{ $item['quantity'] }}
+                        @if(is_array($subArticle->Price))
+                            Gratis
+                        @else
+                            {{ number_format($subArticle->Price, 2, '.', '') }}
+                            @php
+                                $totalPrice += $subArticle->Price; // Addieren Sie den Preis jedes Subartikels zur Gesamtsumme
+                            @endphp
+                        @endif
                     </td>
-                    <td>
-                        {{ $item['description'] }}
-                    </td>
-                    <td>
-                        {{ $item['price'] }}
-                    </td>
-                @endforeach
-            </tr>
+                </tr>
+            @endforeach
+        @endif
+    @endforeach
         </table>
     </div>
 
+
     <div class="total">
-        Total: $129.00 USD
+        Total: ${{ number_format($totalPrice, 2, '.', '') }} Euro <!-- Zeigen Sie die Gesamtsumme -->
     </div>
+
 
     <div class="footer margin-top">
         <div>Thank you</div>

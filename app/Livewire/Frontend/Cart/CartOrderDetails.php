@@ -241,9 +241,11 @@ $jsonData = json_encode($validatedData);
 
     $this->createXml();
 
-    $this->generateNewPDF();
+    $this->generateNewPDF($orderHash);
 
     $this->generateNewClient($validatedData);
+
+    $this->generateConfirmationEmail($orderHash);
 
     // Hier wird zur Livewire-Komponente `LifeTracking` weitergeleitet
     // und der $orderHash als Parameter übergeben
@@ -300,11 +302,16 @@ public function generateNewClient($data)
 
 
 
-public function generateNewPdf()
+public function generateNewPdf($orderHash)
 {
 
     $newOrderNumber = $this->newOrderNumber;
 
+
+    // Kaufdaten aus der Datenbank abrufen
+    $orderForPdf = ModOrders::where('hash', $orderHash)->first();
+
+//dd($orderForPdf);
 
     // Kundeninformationen aus dem Formular erhalten
     $customerData = [
@@ -328,10 +335,19 @@ public function generateNewPdf()
 
     // Shopinformationen aus der Datenbank
     $orderData = [
-        'Bestellung' => 'Lieferung',
+        'Bestellung' => $orderForPdf->shipping_type,
         'Zeitpunkt' => 'sofort',
         'Zahlungsart' => $this->payment_method,
-      ];
+        'Kommentar' => $orderForPdf->order_comment,
+    ];
+
+    $orderItems = [
+        'items' => isset(json_decode($orderForPdf->order_json_data)->OrderList->Order->ArticleList->Article) ? json_decode($orderForPdf->order_json_data)->OrderList->Order->ArticleList->Article : [], // Prüfen ob der Schlüssel existiert
+
+    ];
+
+//dd($orderItems);
+
 
     $payment_method = $this->payment_method; // Beispielwert
 
@@ -362,7 +378,7 @@ public function generateNewPdf()
 
     //$pdf = Pdf::loadView('pdf.order', ['data' => $data]);
 
-    $pdf = PDF::loadView('pdf.order', compact('customerData', 'qrcode', 'shopData', 'orderData', 'payment_method', 'newOrderNumber', 'data'));
+    $pdf = PDF::loadView('pdf.order', compact('customerData', 'qrcode', 'shopData', 'orderData', 'orderItems', 'payment_method', 'newOrderNumber', 'data'));
 
     // Holen Sie die Shop-ID aus dem $shopData-Array
     $shopId = $this->shopData['id'];
@@ -475,7 +491,7 @@ if (!empty($articles)) {
 
     foreach ($articles as $article) {
         $articleNode = $articleList->addChild('Article');
-   //     $articleNode->addChild('ArticleNo', $article['product_code']);
+        $articleNode->addChild('ArticleNo', $article['code']);
    //     $articleNode->addChild('ArticleName', $article['name']);
         $articleNode->addChild('ArticleName', htmlspecialchars($article['name'], ENT_XML1, 'UTF-8'));
       //  $articleNode->addChild('ArticleName', utf8_encode($article['name']));
@@ -483,21 +499,31 @@ if (!empty($articles)) {
         $articleNode->addChild('Count', $article['quantity']);
         $articleNode->addChild('Price', $article['price']);
 
-        if (isset($article['sub_articles'])) {
+        //<Deposit>0.08</Deposit>
+
+
+        if (isset($article['options'])) {
             $subArticleList = $articleNode->addChild('SubArticleList');
-            foreach ($article['sub_articles'] as $subArticle) {
-                $subArticleNode = $subArticleList->addChild('SubArticle');
-                $subArticleNode->addChild('ArticleNo', $subArticle['article_no']);
-                $subArticleNode->addChild('ArticleName', $subArticle['article_name']);
-                $subArticleNode->addChild('Count', $subArticle['count']);
-                $subArticleNode->addChild('Price', $subArticle['price']);
-                $subArticleNode->addChild('Partition', $subArticle['partition']);
-            }
+//dd($subArticleList);
+foreach ($article['options'] as $subArticle) {
+    // Überprüfe, ob der Produktcode 'deposit' ist
+    if ($subArticle['productCode'] === 'deposit') {
+        // Füge den Preis als Einzahlung zum Hauptartikel hinzu
+        $articleNode->addChild('Deposit', $subArticle['price']);
+    } else {
+        // Füge den Subartikel hinzu, wenn der Produktcode nicht 'deposit' ist
+        $subArticleNode = $subArticleList->addChild('SubArticle');
+        $subArticleNode->addChild('ArticleNo', $subArticle['productCode']);
+        $subArticleNode->addChild('ArticleName', $subArticle['productName']);
+        $subArticleNode->addChild('Count', $subArticle['quantity']);
+        $subArticleNode->addChild('Price', $subArticle['price']);
+    }
+}
         }
     }
 }
 
-
+//dd($articleList);
 
     // Konvertiere das XML-Dokument in eine Zeichenkette und speichere es in der Eigenschaft $xml
     $this->xml = $xml->asXML();
@@ -555,14 +581,88 @@ if ($existingOrder) {
 }
 
 
+public function generateConfirmationEmail($orderHash)
+{
+
+// Kaufdaten aus der Datenbank abrufen
+$orderForEmail = ModOrders::where('hash', $orderHash)->first();
+
+// Verkäufer-Daten zusammenstellen
+$order = [
+    'order_number' => $orderForEmail->order_nr,
+    'created_at' => $orderForEmail->created_at,
+//    'items' => json_decode($orderForEmail->order_json_data)->OrderList->Order->ArticleList->Article, // Annahme: Die Artikel sind im JSON-Format gespeichert
+    'items' => isset(json_decode($orderForEmail->order_json_data)->OrderList->Order->ArticleList->Article) ? json_decode($orderForEmail->order_json_data)->OrderList->Order->ArticleList->Article : [], // Prüfen Sie, ob der Schlüssel existiert
+
+    'total' => $orderForEmail->price_total,
+    'currency' => 'EUR', // Annahme: Die Währung ist festgelegt
+    'payment_type' => $orderForEmail->payment_type,
+    'shop_name' => $orderForEmail->shop_name,
+    // Füge weitere Felder hinzu, falls erforderlich
+];
+
+//dd($order);
+
+// Buyer-Daten zusammenstellen
+$customer = [
+    'name' => $orderForEmail->name,
+    'email' => $orderForEmail->email,
+    'phone' => $orderForEmail->phone,
+    'address' => $orderForEmail->shipping_street . ', ' . $orderForEmail->shipping_house_no,
+    'city' => $orderForEmail->shipping_city,
+    'zip' => $orderForEmail->shipping_zip,
+    'country' => $orderForEmail->shipping_country_code,
+    // Füge weitere Felder hinzu, falls erforderlich
+];
+
+
+
+    // Erzeuge die Verifizierungs-URL für den Verkäufer
+    $trackingUrl = route('life-tracking', ['orderHash' => $orderHash]);
+
+        // Daten für die E-Mail-Vorlage zusammenstellen
+        $data = [
+            'order' => $order,
+            'customer' => $customer,
+            'trackingUrl' => $trackingUrl
+                ];
+//dd($data);
+
+
+
+        // E-Mail-Vorlage rendern
+        $order_email_body = view('email-templates.order-confirmation', $data)->render();
+
+//dd($order_email_body);
+
+
+
+// E-Mail-Konfiguration zusammenstellen
+$mailConfig = [
+    'mail_from_email' => custom_env('MAIL_FROM_ADDRESS'),
+    'mail_from_name' => custom_env('MAIL_FROM_NAME'),
+    'mail_recipient_email' => $customer['email'], // Verwende die E-Mail-Adresse des Kunden als Empfänger
+    'mail_recipient_name' => $customer['name'], // Verwende den Namen des Kunden als Empfängername
+    'mail_subject' => 'Bestellbestätigung', // Setze den Betreff der E-Mail
+    'mail_body' => $order_email_body // Verwende den gerenderten Inhalt der Bestellbestätigung
+];
+        //dd($data, $mailConfig);
+
+                if(sendEmail($mailConfig)){
+                    session()->flash('success', 'Your email has been verified.');
+                    return;
+                    //    return view('backend.pages.seller.auth.email-verificaton', $data);
+                //    return redirect()->route('admin.forgot-password');
+
+            }else{
+                session()->flash('fail', 'Something went wrong');
+                return;
+            }
 
 
 
 
-
-
-
-
+}
 
 
 

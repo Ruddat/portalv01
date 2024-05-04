@@ -85,13 +85,18 @@
                                                     @endforeach
                                                 @else
                                                     @if ($product->base_price)
-                                                        <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, {{ $size->size_id }}, '{{ $size->size }}', 1)"
+                                                           <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, '{{ $size->size_id }}', '0', 1)"
                                                             role="button" class="price-box add-to-cart animated-box"
                                                             title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
 
                                                             @if ($product->bottle)
                                                                 <span class="price-box-title">+Pfand:
                                                                     {{ $product->bottle->bottles_value }}</span>
+                                                                    @php
+                                                                    //    dd($product->bottle->bottles_value);
+                                                                    //    <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, {{ $size->size_id }}, '{{ $size->size }}', 1)"
+
+                                                                    @endphp
                                                             @endif
                                                             <span
                                                                 class="price-box-price">{{ $product->base_price }}&nbsp;€</span>
@@ -227,8 +232,11 @@
         <input type="number" class="js_addtocart_qty addtocart_qty left" value="1" min="1" maxlength="2" style="display:none">
 
         <button type="button"
-        class="btn btn-warning text-end"
-        wire:click="addToCartProduct({{ $product->id }}, '{{ $productTitle }}', {{ $totalPrice }}, {{ $size->size_id }}, '{{ $productSize }}', 1)"
+        class="text-end"
+        @php
+        //    dd($selectedSizeId)
+        @endphp
+        wire:click="addToCartProduct({{ $productId }}, '{{ $productTitle }}', {{ $totalPrice }}, {{ $selectedSizeId }}, '{{ $productSize }}', 1)"
         @if($disableAddToCartButton) disabled @endif>
     <span class="btn-icon-start text-primary">
         <i class="feather-shopping-bag"></i>
@@ -566,8 +574,10 @@ i.feather-shopping-bag:hover {
     background-color: whitesmoke;
     margin-bottom: 10px;
     border-radius: 2px;
-    box-shadow: 1px;
     margin-top: 8px;
+    overflow-y: auto;
+    max-height: 180px;
+    font-size: small;
 }
 
 .flash {
@@ -614,6 +624,24 @@ button.btn.btn-warning.text-end {
     padding: 20px; /* Innenabstand */
     border-radius: 10px; /* Abrundung der Ecken */
 }
+
+button.text-end {
+    background-color: red;
+    color: white;
+    border: 0px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Schatten hinzufügen */
+    transition: box-shadow 0.3s ease; /* Übergangseffekt für den Schatten */
+
+    /* Hover-Effekt */
+}
+button.text-end:hover {
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.3); /* Ändern Sie den Schatten beim Hover */
+    transform: translateY(-2px); /* Heben Sie den Button leicht an */
+}
+
+
 
 
 @media screen and (max-width: 600px) {

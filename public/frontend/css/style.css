@@ -4,7 +4,7 @@ Theme URI: http://www.ansonika.com/fooyes/
 Author: Ansonika
 Author URI: http://themeforest.net/user/Ansonika/
 
-[Table of contents] 
+[Table of contents]
 
 0. ICONS
 
@@ -2637,7 +2637,7 @@ ul#top_menu li a.login:before {
 
 .hero_in.detail_page {
   width: 100%;
-  height: 450px;
+  height: 350px;
   position: relative;
   overflow: hidden;
   color: #fff;
@@ -2652,7 +2652,7 @@ ul#top_menu li a.login:before {
 }
 @media (max-width: 767px) {
   .hero_in.detail_page {
-    height: 400px;
+    height: 300px;
   }
 }
 .hero_in.detail_page .container {

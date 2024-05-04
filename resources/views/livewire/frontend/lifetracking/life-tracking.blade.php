@@ -15,7 +15,8 @@
 
 
                 <section class="section bg-white osahan-track-order-page position-relative zn-1">
-                <iframe class="position-absolute w-100 border-0" src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d13696.650704896498!2d75.82434255!3d30.8821099!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1555184720550!5m2!1sen!2sin" height="676" allowfullscreen=""></iframe>
+                    <iframe class="position-absolute w-100 border-0" src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d13696.650704896498!2d{{ $longitude - 0.1 }}!3d{{ $latitude }}!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1555184720550!5m2!1sen!2sin" height="676" allowfullscreen=""></iframe>
+
                 <div class="container py-5 position-absolute z-0 start-0 end-0">
                 <div class="row d-flex align-items-center">
                 <div class="col-md-6 text-center pb-4">
@@ -84,63 +85,6 @@
                 </div>
                 </div>
                 </section>
-
-                <div class="container slider_restaurant py-5 border-top">
-                <div class="trending-slider slick-initialized slick-slider">
-                <div class="slick-list draggable"><div class="slick-track" style="opacity: 1; width: 1092px; transform: translate3d(0px, 0px, 0px);"><div class="osahan-slider-item px-1 slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" style="width: 364px;" tabindex="0">
-                <div class="list-card bg-white h-100 d-flex align-items-center rounded overflow-hidden position-relative shadow-sm">
-                <div class="list-card-image">
-                <a href="restaurant.html" tabindex="0">
-                <img alt="#" src="img/trending1.png" class="img-fluid item-img">
-                </a>
-                </div>
-                <div class="p-3 position-relative">
-                <div class="list-card-body">
-                <h6 class="mb-1"><a href="restaurant.html" class="text-black" tabindex="0">Dave's Bar-B-Que</a>
-                </h6>
-                <p class="text-gray mb-2">963 Madyson Drive Suite 679</p>
-                <p class="text-warning mb-0"><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i></p>
-                </div>
-                </div>
-                </div>
-                </div><div class="osahan-slider-item px-1 slick-slide slick-active" data-slick-index="1" aria-hidden="false" style="width: 364px;" tabindex="0">
-                <div class="list-card bg-white h-100 d-flex align-items-center rounded overflow-hidden position-relative shadow-sm">
-                <div class="list-card-image">
-                <a href="restaurant.html" tabindex="0">
-                <img alt="#" src="img/trending2.png" class="img-fluid item-img">
-                </a>
-                </div>
-                <div class="p-3 position-relative">
-                <div class="list-card-body">
-                <h6 class="mb-1"><a href="restaurant.html" class="text-black" tabindex="0">Thai Famous Cuisine</a></h6>
-                <p class="text-gray mb-2">980 Syria Drive Suite 680</p>
-                <p class="text-warning mb-0"><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i></p>
-                </div>
-                </div>
-                </div>
-                </div><div class="osahan-slider-item px-1 slick-slide slick-active" data-slick-index="2" aria-hidden="false" style="width: 364px;" tabindex="0">
-                <div class="list-card bg-white h-100 d-flex align-items-center rounded overflow-hidden position-relative shadow-sm">
-                <div class="list-card-image">
-                <a href="restaurant.html" tabindex="0">
-                <img alt="#" src="img/trending3.png" class="img-fluid item-img">
-                </a>
-                </div>
-                <div class="p-3 position-relative">
-                <div class="list-card-body">
-                <h6 class="mb-1"><a href="restaurant.html" class="text-black" tabindex="0">The osahan Restaurant
-                </a>
-                </h6>
-                <p class="text-gray mb-2">560 Africa Drive Suite 560</p>
-                <p class="text-warning mb-0"><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i><i class="feather-star"></i></p>
-                </div>
-                </div>
-                </div>
-                </div></div></div>
-
-
-                </div>
-                </div>
-
 
                 </div>
 
@@ -227,7 +171,7 @@
 		        	<div class="box_order_form">
 		                <div class="head text-center">
 		                    <h3>Pizzeria da Alfredo</h3>
-		                    27 Old Gloucester St, 4530 - <a href="https://www.google.com/maps/dir//Assistance+%E2%80%93+H%C3%B4pitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+H%C3%B4pitaux+de+Paris+(AP-HP)+-+Si%C3%A8ge!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361" target="blank">Get directions</a>
+		                    27 Old Gloucester St, 4530 - <a href="https://www.google.com/maps/dir/{{ $latitude }},{{ $longitude }}" target="_blank">Get directions</a>
 		                </div>
 		                <!-- /head -->
 		                <div class="main">

@@ -310,7 +310,8 @@ $currentShopId = Session::get('currentShopId');
 //dd($productId);
 
 //$catId = ModProducts::where('id', $productId)->first()->category_id;
-$catId = $currentProductSizes->first()->id;
+if ($currentProductSizes->isNotEmpty()) {
+    $catId = $currentProductSizes->first()->id;
 
 
 //dd($catId);
@@ -327,6 +328,9 @@ $productIngredients = ModProductsIngredients::where('shop_id', $currentShopId)
     })
     ->where('parent', 0)
     ->get();
+
+
+
 //dd($productIngredients);
 // Iterieren Sie über die Zutaten und erstellen Sie Knoten, wenn sie nicht bereits existieren
 foreach ($productIngredients as $ingredient) {
@@ -346,6 +350,10 @@ foreach ($productIngredients as $ingredient) {
     }
 }
 
+} else {
+
+
+}
 
 // Jetzt haben Sie entweder die vorhandenen Knoten oder neu erstellte Knoten für die Anzeige
 //dd($existingNodes);
