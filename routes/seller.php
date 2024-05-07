@@ -106,6 +106,7 @@ Route::prefix('manage-products')->name('manage-products.')->middleware(['auth:se
     Route::post('/toggle-show-status', [ProductController::class, 'toggleShowStatus'])->name('toggle-show-status');
     Route::post('/toggle-show-in-list', [ProductController::class, 'toggleShowInList'])->name('toggle-show-in-list');
     Route::post('/update-ordering', [ProductController::class, 'updateOrdering'])->name('update-ordering');
+    Route::post('/process-product-image', [ProductController::class, 'processProductImage'])->name('process-product-image');
 });
 
 

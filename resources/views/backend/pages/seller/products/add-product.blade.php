@@ -2,9 +2,9 @@
 @section('pageTitle', isset($pageTitle) ? app(\App\Services\TranslationService::class)->trans($pageTitle, app()->getLocale()) : app(\App\Services\TranslationService::class)->trans('Page title here....', app()->getLocale()))
 @section('content')
 
-        <!--**********************************
+        {{--**********************************
             Content body start
-        ***********************************-->
+        ***********************************--}}
         <div class="content-body">
             <div class="container">
 				<div class="row page-titles">
@@ -63,21 +63,26 @@
 
                                         <div class="setting-img d-flex align-items-center mb-4">
                                             <div class="avatar-upload d-flex align-items-center">
-                                               <div class=" change position-relative d-flex">
-                                                   <div class="avatar-preview">
-                                                       <div id="productImagePreview" style="background-image: url({{ asset('backend/images/no-img-avatar.png') }});">
-                                                       </div>
-                                                   </div>
-                                                   <div class="change-btn d-flex align-items-center flex-wrap">
-                                                       <input type="file" class="form-control" id="productImageUpload" name="product_image" accept=".png, .jpg, .jpeg">
-                                                       <label for="productImageUpload" class="dlab-upload">Choose File</label>
-                                                       <a href="javascript:void(0)" class="btn remove-img ms-2">Remove</a>
+                                                <div class="change position-relative d-flex">
+                                                    <div class="avatar-preview">
+                                                        <div id="productImagePreview" style="background-image: url({{ asset('backend/images/no-img-avatar.png') }});">
+                                                        </div>
                                                     </div>
-                                               </div>
+                                                    <a href="javascript:;" onclick="event.preventDefault(); document.getElementById('productImageUpload').click();">
+                                                        <i class="fa fa-pencil"></i>
+                                                    </a>
+                                                    <input type="file" class="d-none" style="opacity: 0" id="productImageUpload" name="productImageUpload" accept=".png, .jpg, .jpeg">
 
-                                           </div>
 
-                                       </div>
+                                                    <div class="change-btn d-flex align-items-center flex-wrap">
+                                                        <!-- Ändere den Namen des Eingabefelds, um es klarer zu machen -->
+                                                        <input type="file" class="form-control" id="newProductImageUpload" name="new_product_image" accept=".png, .jpg, .jpeg">
+                                                        <label for="productImageUpload" class="dlab-upload">Choose File</label>
+                                                        <a href="javascript:void(0)" class="btn remove-img ms-2">Remove</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
                                        <div class="mb-3 col-md-2">
@@ -252,9 +257,9 @@
                 </div>
             </div>
         </div>
-        <!--**********************************
+        {{--**********************************
             Content body end
-        ***********************************-->
+        ***********************************--}}
 
 
 
@@ -273,6 +278,51 @@
     @endpush
 
     @push('specific-scripts')
+
+
+    <script>
+        // Überprüfe, ob jQuery geladen wurde
+        if (typeof jQuery != 'undefined') {
+            // Warte, bis das Dokument vollständig geladen ist
+            $(document).ready(function() {
+                // Initialisiere Kropify
+                $('input[type="file"][id="productImageUpload"]').Kropify({
+                    preview: '#productImagePreview', // Stelle sicher, dass du das richtige Vorschau-Element angibst
+                    viewMode: 1,
+                    aspectRatio: 1,
+                    cancelButtonText: 'Cancel',
+                    resetButtonText: 'Reset',
+                    cropButtonText: 'Crop & update',
+                    maxSize: 10485760,
+                    showLoader: true,
+                    processURL: '{{ route("seller.manage-products.process-product-image") }}', // Setze die Prozess-URL auf die neue Route
+                    processUpload: true, // Erlaube automatisches Hochladen nach dem Zuschneiden
+                    success: function(data) {
+                        if(data.status == 1) {
+                            toastr.success(data.msg);
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                        // Diese Funktion wird ausgeführt, wenn das Bild erfolgreich zugeschnitten und verarbeitet wurde
+                        console.log('Bild verarbeitet:', data);
+                        // Verwende die verarbeiteten Bilddaten nach Bedarf
+                    },
+                    errors: function(error, text) {
+                        // Diese Funktion wird ausgeführt, wenn ein Fehler auftritt
+                        console.error('Fehler:', text);
+                    }
+                });
+            });
+        } else {
+            // Gib eine Fehlermeldung aus, wenn jQuery nicht gefunden wird
+            console.error('jQuery ist nicht geladen.');
+        }
+    </script>
+
+
+
+    <!-- CKEditor CDN Link -->
+
 	<script src="{{ asset('backend/vendor/ckeditor/ckeditor.js')}}"></script>
 
     <!-- JavaScript, um den CKEditor zu initialisieren und den Inhalt anzuzeigen -->
@@ -300,37 +350,7 @@
 </script>
 
 
-<script>
-    $(document).ready(function() {
-        // Funktion zum Anzeigen des ausgewählten Bilds im Vorschaubereich
-        function showImagePreview(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#productImagePreview').css('background-image', 'url(' + e.target.result + ')');
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
 
-        // Hinzufügen des 'change' -Ereignisses zum Input-Feld
-        $('#productImageUpload').on('change', function() {
-            showImagePreview(this);
-            console.log('Bild hochgeladen:', this.files[0].name); // Debugging-Ausgabe
-        });
-
-        // Hinzufügen des 'click' -Ereignisses zum "Remove" -Link
-        $('.remove-img').on('click', function() {
-            $('#productImageUpload').val(''); // Leeren des Input-Felds
-            $('#productImagePreview').css('background-image', 'url({{ asset("backend/images/no-img-avatar.png") }})'); // Zurücksetzen der Vorschau auf das Standardbild
-            console.log('Bild entfernt'); // Debugging-Ausgabe
-        });
-
-        // Debugging-Ausgabe des ausgewählten Flaschenwerts
-        var selectedBottle = $('#bottlesSelect').val();
-        console.log('Ausgewählte Flasche:', selectedBottle);
-    });
-</script>
 
 <script>
     $(document).ready(function() {

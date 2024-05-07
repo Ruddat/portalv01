@@ -68,7 +68,7 @@ class ModProducts extends Model
         if ($this->product_image) {
             return asset('uploads/shops/' . $shopId . '/images/products/' . $this->product_image);
         } else {
-            return asset('/images/default/small/shopping-cart.png'); // Hier solltest du den Pfad zum Standardbild anpassen
+            return asset('images/default/product/dummy_product.jpg'); // Hier solltest du den Pfad zum Standardbild anpassen
         }
     }
 

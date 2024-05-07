@@ -5,16 +5,20 @@ namespace App\Http\Controllers\Backend\Seller\Products;
 use App\Models\ModBottles;
 use App\Models\ModCategory;
 use App\Models\ModProducts;
+use Illuminate\Support\Str;
 use App\Models\ModAdditives;
 use App\Models\ModAllergens;
 use Illuminate\Http\Request;
 use App\Rules\UniqueArticleNo;
+use Mberecall\Kropify\Kropify;
 use App\Models\ModProductSizes;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Models\ModProductSizesPrices;
+use Intervention\Image\Facades\Image;
 use App\Models\ModProductsIngredients;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ModProductIngredientsNodes;
 
 
@@ -143,6 +147,63 @@ class ProductController extends Controller
         $product->allergens_ids = json_encode($request->input('allergens'));
         // Speichern der ausgewählten Zusatzstoffe als JSON
         $product->additives_ids = json_encode($request->input('additives'));
+
+
+
+
+
+        // Hole die Bildinformationen aus der Sitzungsvariable
+        $imageInfo = session()->get('temporary_image_info');
+
+        // Überprüfe, ob die Bildinformationen vorhanden sind und das Objekt nicht null ist
+        if ($imageInfo !== null) {
+            // Verarbeite das Bild weiter, z. B.
+            $imageName = $imageInfo->getName; // Methode aufrufen, um den Dateinamen zu erhalten
+            $imageSize = $imageInfo->getSize; // Methode aufrufen, um die Dateigröße zu erhalten
+            $imageWidth = $imageInfo->getWidth; // Methode aufrufen, um die Breite zu erhalten
+            $imageHeight = $imageInfo->getHeight; // Methode aufrufen, um die Höhe zu erhalten
+
+            // Setze den Pfad zum temporären Bild
+            $tempPath = public_path('uploads/temp/' . $imageName);
+
+    // Definiere den Zielordner für das neue Bild
+    $destinationPath = public_path('uploads/shops/' . $shopId . '/images/products/');
+
+    // Neu generierter Dateiname für das Bild
+    $newFilename = Str::slug($product->product_title) . '_' . date('YmdHis') . '.' . pathinfo($imageName, PATHINFO_EXTENSION);
+
+    // Verwende Intervention Image, um das Bild zu rezisen
+    $resizedImage = Image::make($tempPath)->resize(290, 170);
+
+    // Speichere das rezisierte Bild im Zielordner
+    $resizedImage->save($destinationPath . $newFilename);
+
+    // Lösche das temporäre Bild
+    unlink($tempPath);
+
+    // Speichere den Dateinamen des neuen Bildes in der Datenbank
+    $product->product_image = $newFilename; // Produktbild setzen
+
+    // Speichere das Produkt
+ //   $product->save();
+
+    // Lösche die Bildinformationen aus der Sitzungsvariable
+    session()->forget('temporary_image_info');
+
+} else {
+    // Fehlerbehandlung, wenn keine Bildinformationen vorhanden sind
+}
+
+
+
+//dd($imageInfo);
+
+
+
+
+
+
+
         $product->save();
 
         // Produkt-ID des gerade gespeicherten Produkts
@@ -208,19 +269,7 @@ if ($request->isMethod('post')) {
 
 
 
-        // Speichern des Produktbildes, falls vorhanden
-        if ($request->hasFile('product_image')) {
-            $path = 'uploads/shops/' . $shopId . '/images/products/';
-            $file = $request->file('product_image');
-            $filename = time() . '_' . $file->getClientOriginalName();
 
-            if ($file->move(public_path($path), $filename)) {
-                $product->product_image = $filename;
-                $product->save();
-            } else {
-                return redirect()->back()->with('error', 'Error uploading product image');
-            }
-        }
 
         // Weiterleiten oder eine Bestätigungsnachricht anzeigen
         return redirect()->back()->with('success', ucfirst($product->product_title) . ' product created successfully.');
@@ -604,5 +653,71 @@ ModProductSizesPrices::where('parent', $productId)->delete();
             return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
+
+    public function processProductImage(Request $request)
+    {
+        // Überprüfe, ob eine Datei hochgeladen wurde
+        if ($request->hasFile('productImageUpload')) {
+            // Dateiname generieren
+            $filename = $request->file('productImageUpload')->getClientOriginalName();
+
+            // Überprüfe, ob der temporäre Ordner existiert, andernfalls erstelle ihn
+            $tempFolder = 'uploads/temp/';
+            if (!Storage::exists($tempFolder)) {
+                Storage::makeDirectory($tempFolder);
+                // Setze die Zugriffsrechte für den temporären Ordner
+                Storage::setVisibility($tempFolder, 'public');
+            }
+
+            $file = $request->file('productImageUpload');
+            $filename = time() . '_' . $file->getClientOriginalName(); // Eindeutigen Dateinamen generieren
+            $imagePath = 'uploads/temp/';
+
+            // Hier wird das Bild auf 325x325 Pixel skaliert und gespeichert
+          //  Image::make($file)
+                //->resize(325, 325)
+            //    ->save($imagePath . $filename);
+
+       // Bilddatei hochladen und verarbeiten
+       $uploadedImage = Kropify::getFile($file,$filename)
+        //->maxWoH(325)
+       ->save($imagePath);
+
+
+       // Hole die Bildinformationen
+
+       $imageInfo = Kropify::getInfo();
+// Speichere die Bildinformationen in der Sitzungsvariable
+session()->put('temporary_image_info', $imageInfo);
+
+
+            // Bilddaten abrufen
+            $infos = pathinfo($imagePath . $filename);
+            $infos = Kropify::getInfo();
+            // Protokolliere den Pfad des temporären Bildes
+            \Log::info('Temporäres Bild gespeichert: ' . $tempFolder . $filename);
+
+            // Hier könntest du weitere Verarbeitungsschritte durchführen, falls benötigt
+            // Gib die verarbeiteten Bilddaten zurück
+            return response()->json([
+                'status' => '1',
+                'success' => true,
+                'infos' => $infos,
+                'msg' => 'Your Product Picture has been uploaded successfully.',
+                'processed_image' => Storage::url($tempFolder . $filename) // Verwende die URL des temporären Bildes
+            ]);
+        } else {
+            // Fehlermeldung zurückgeben, wenn keine Datei hochgeladen wurde
+            return response()->json([
+                'success' => false,
+                'message' => 'No image uploaded.',
+                'msg' => 'Something went wrong. Please try again.',
+            ], 400); // HTTP-Statuscode 400 für "Bad Request"
+        }
+    }
+
+
+
+
 
 }

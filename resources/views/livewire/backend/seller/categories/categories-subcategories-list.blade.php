@@ -49,7 +49,9 @@
                                             <td><strong>{{ $item->id }}</strong></td>
                                             <td>
                                                 <div class="avatar mr-2">
+                                                    <a href="{{ route('seller.manage-products.products-list', ['shopId' => $item->shop_id, 'menuId' => 600, 'categoryId' => $item->id]) }}">
                                                     <img src="{{ $item->category_image_url }}" width="120" height="50" alt="">
+                                                    </a>
                                                 </div>
                                             </td>
                                             <td>

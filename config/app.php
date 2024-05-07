@@ -179,6 +179,7 @@ return [
         App\Providers\CartFacadeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         App\Providers\CookiesServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -197,6 +198,7 @@ return [
         'GoogleTranslate' => Stichoza\GoogleTranslate\GoogleTranslate::class,
         'Cart'=> App\Facades\Cart::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

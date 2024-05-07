@@ -86,6 +86,12 @@ class Index extends Component
         $this->cartService = $cartService;
         $this->selectedSize = null;
 
+        // Annahme: $allIngredientIds enthält alle Zutaten-IDs aus deiner Datenquelle
+        $allIngredientIds = [/* Hier kommen deine Zutaten-IDs */];
+
+        // Setze alle Zutaten als geöffnet
+        $this->openIngredients = $allIngredientIds;
+
         // Calculate and store minimum prices for each product
         $this->minPrices = $this->calculateMinPrices();
         $this->updateCart();
