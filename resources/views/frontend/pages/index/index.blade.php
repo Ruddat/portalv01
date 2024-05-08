@@ -65,18 +65,18 @@
             }
 
             /* Stil für den Toast-Container */
-            .toast-container {
-                position: fixed;
-                top: 40px;
-                /* Ändere die Position des Toasts oben */
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: rgba(0, 0, 0, 0.7);
-                color: white;
-                padding: 10px 20px;
-                border-radius: 5px;
-                display: none;
-            }
+        /* Stil für das Toast-Element */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
         </style>
     @endpush
 
@@ -468,33 +468,26 @@
 
 
         <script>
-            window.addEventListener("load", function() {
-                let schaltflaeche1 = document.getElementById("btn1");
-                schaltflaeche1.addEventListener("click", function() {
-                    showToast(
-                        "Die Umkreissuche wurde gestartet. Bitte warten Sie einen Moment, während wir die Ergebnisse für Sie sammeln."
-                        ); // Aufruf der showToast-Funktion mit der Meldung
-                }, false);
+            document.addEventListener("DOMContentLoaded", function() {
+                // Event-Listener für Klickereignis auf Schaltfläche
+                document.getElementById("btn1").addEventListener("click", function() {
+                    showToast("Die Umkreissuche wurde gestartet. Bitte warten Sie einen Moment, während wir die Ergebnisse für Sie sammeln.");
+                });
+
+                function showToast(message) {
+                    // Erstellen des Toast-Elements
+                    var toast = document.createElement("div");
+                    toast.classList.add("toast-container");
+                    toast.textContent = message;
+                    // Hinzufügen des Toast-Elements zum body
+                    document.body.appendChild(toast);
+                    // Timeout zum Ausblenden des Toasts nach 3 Sekunden
+                    setTimeout(function() {
+                        toast.style.display = "none";
+                        document.body.removeChild(toast);
+                    }, 3000);
+                }
             });
-
-            function showToast(message) {
-                // Erstellen Sie ein neues Element für den Toast
-                var toast = document.createElement("div");
-                toast.classList.add("toast-container");
-                toast.innerText = message;
-
-                // Fügen Sie den Toast dem Dokument hinzu
-                document.body.appendChild(toast);
-
-                // Zeigen Sie den Toast an
-                toast.style.display = "block";
-
-                // Verzögern Sie das Ausblenden des Toasts nach 3 Sekunden
-                setTimeout(function() {
-                    toast.style.display = "none";
-                    document.body.removeChild(toast); // Entfernen Sie den Toast aus dem Dokument
-                }, 3000);
-            }
         </script>
 
         @push('specific-scripts')
@@ -539,8 +532,8 @@
                 function getLocation() {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(zeigePosition, zeigeFehler, {
-                            enableHighAccuracy: false,
-                            timeout: 5000,
+                            enableHighAccuracy: true,
+                            timeout: 10000, // Timeout auf 10 Sekunden erhöht
                             maximumAge: 0
                         });
                     } else {
@@ -551,7 +544,6 @@
                 function zeigePosition(position) {
                     var latitude = position.coords.latitude;
                     var longitude = position.coords.longitude;
-                    var accuracy = position.coords.accuracy;
 
                     // Leere das Eingabefeld für die Suchabfrage
                     $('#autocomplete').val('');
@@ -587,16 +579,8 @@
                         })
                         .catch(function(error) {
                             // Fehlerbehandlung
-                            if (error.response) {
-                                // Server hat die Anfrage mit einem Statuscode außerhalb des 2xx-Bereichs beantwortet
-                                console.error('Server-Fehler:', error.response.data);
-                            } else if (error.request) {
-                                // Die Anfrage wurde gemacht, aber es wurde keine Antwort empfangen
-                                console.error('Keine Antwort vom Server');
-                            } else {
-                                // Etwas ist während der Anfrage-Einrichtung schief gelaufen
-                                console.error('Fehler während der Anfrage-Einrichtung', error.message);
-                            }
+                            console.error('Fehler bei der Standortabfrage:', error);
+                            ausgabe.innerHTML = "Ein Fehler ist aufgetreten, bitte versuchen Sie es erneut.";
                         });
                 }
 
@@ -609,13 +593,14 @@
                             ausgabe.innerHTML = "Standortdaten sind nicht verfügbar."
                             break;
                         case error.TIMEOUT:
-                            ausgabe.innerHTML = "Die Standortabfrage dauerte zu lange (Time-out)."
+                            ausgabe.innerHTML = "Die Standortabfrage dauerte zu lange (Time-out). Bitte versuchen Sie es erneut."
                             break;
                         case error.UNKNOWN_ERROR:
-                            ausgabe.innerHTML = "unbekannter Fehler."
+                            ausgabe.innerHTML = "Unbekannter Fehler."
                             break;
                     }
                 }
             </script>
+
         @endpush
     @endsection

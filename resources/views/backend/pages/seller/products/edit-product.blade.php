@@ -76,7 +76,7 @@
                                                             @endif
                                                         </div>
                                                         <div class="change-btn d-flex align-items-center flex-wrap">
-                                                            <input type="file" class="form-control" id="productImageUpload" name="product_image" accept=".png, .jpg, .jpeg">
+                                                            <input type="file" class="form-control" id="productImageUpload" name="productImageUpload" accept=".png, .jpg, .jpeg">
                                                             <label for="productImageUpload" class="dlab-upload">Choose File</label>
                                                             <!-- Wenn ein Bild vorhanden ist, füge einen Button zum Entfernen hinzu -->
                                                             @if(isset($product) && $product->product_image_url)
@@ -86,6 +86,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+
 
                                             <div class="row">
                                                 <div class="col-md-2">
@@ -282,6 +284,52 @@
     @endpush
 
     @push('specific-scripts')
+
+
+    <script>
+        // Überprüfe, ob jQuery geladen wurde
+        if (typeof jQuery != 'undefined') {
+            // Warte, bis das Dokument vollständig geladen ist
+            $(document).ready(function() {
+                // Initialisiere Kropify
+                $('input[type="file"][id="productImageUpload"]').Kropify({
+                    preview: '#productImagePreview', // Stelle sicher, dass du das richtige Vorschau-Element angibst
+                    viewMode: 1,
+                    aspectRatio: 1,
+                    cancelButtonText: 'Cancel',
+                    resetButtonText: 'Reset',
+                    cropButtonText: 'Crop & update',
+                    maxSize: 10485760,
+                    showLoader: true,
+                    processURL: '{{ route("seller.manage-products.process-product-image") }}', // Setze die Prozess-URL auf die neue Route
+                    processUpload: true, // Erlaube automatisches Hochladen nach dem Zuschneiden
+                    success: function(data) {
+                        if(data.status == 1) {
+                            toastr.success(data.msg);
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                        // Diese Funktion wird ausgeführt, wenn das Bild erfolgreich zugeschnitten und verarbeitet wurde
+                        console.log('Bild verarbeitet:', data);
+                        // Verwende die verarbeiteten Bilddaten nach Bedarf
+                    },
+                    errors: function(error, text) {
+                        // Diese Funktion wird ausgeführt, wenn ein Fehler auftritt
+                        console.error('Fehler:', text);
+                    }
+                });
+            });
+        } else {
+            // Gib eine Fehlermeldung aus, wenn jQuery nicht gefunden wird
+            console.error('jQuery ist nicht geladen.');
+        }
+    </script>
+
+
+
+
+
+
 	<script src="{{ asset('backend/vendor/ckeditor/ckeditor.js')}}"></script>
 
     <!-- JavaScript, um den CKEditor zu initialisieren und den Inhalt anzuzeigen -->
@@ -321,41 +369,7 @@
     });
 </script>
 
-<script>
-    $(document).ready(function() {
-        // Funktion zum Anzeigen des ausgewählten Bilds im Vorschaubereich
-        function showImagePreview(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#productImagePreview').css('background-image', 'url(' + e.target.result + ')');
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
 
-        // Hinzufügen des 'change' -Ereignisses zum Input-Feld
-        $('#productImageUpload').on('change', function() {
-            showImagePreview(this);
-            console.log('Bild hochgeladen:', this.files[0].name); // Debugging-Ausgabe
-        });
-
-        // Hinzufügen des 'click' -Ereignisses zum "Remove" -Link
-        $('.remove-img').on('click', function() {
-            $('#productImageUpload').val(''); // Leeren des Input-Felds
-            $('#productImagePreview').css('background-image', 'url({{ asset("backend/images/no-img-avatar.png") }})'); // Zurücksetzen der Vorschau auf das Standardbild
-            console.log('Bild entfernt'); // Debugging-Ausgabe
-        });
-
-    });
-
-    $('.remove-img').on('click', function() {
-    $('#productImageUpload').val('');
-    $('#productImagePreview').css('background-image', 'url({{ asset("backend/images/no-img-avatar.png") }})');
-    $('#removeImage').val('1'); // Hier setzen wir den Wert auf 1, um anzuzeigen, dass das Bild entfernt werden soll
-});
-
-</script>
 
 
 
