@@ -50,6 +50,7 @@ class CartService {
 
         // Update the cart in the session storage
         $this->session->put(self::DEFAULT_INSTANCE, $content);
+        
     }
 
     /**
