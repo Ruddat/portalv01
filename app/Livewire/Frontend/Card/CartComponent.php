@@ -12,7 +12,7 @@ class CartComponent extends Component
     protected $total;
     protected $content;
     protected $deposit;
-    protected $deliveryFee;
+    public $deliveryFee;
     protected $discount;
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
@@ -23,7 +23,17 @@ class CartComponent extends Component
         $this->cart = Session::get('cart', []);
        // $this->content = collect($this->cart); // Konvertiere das Array $cart in eine Collection $content
 
+       $shopId = Session::get('shopId'); // Hole die Shop-ID aus der Session
+       $this->deliveryFee = Session::get("delivery_cost_$shopId");
+
+     //  dd($this->deliveryFee);
+
+     //  dd(session()->all());
+
+
         $this->updateCart();
+        $this->render();
+
         // Berechne den Gesamtpreis des Warenkorbs
        // $this->total = $this->calculateTotal();
     }

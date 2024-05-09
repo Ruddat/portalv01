@@ -121,6 +121,13 @@ class ShopCardController extends Controller
                     // Für jetzt drucken wir nur eine Nachricht aus
                     echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
                     echo "Kosten" . $area->delivery_cost . " euro";
+
+                    // Speichere die Lieferkosten in der Sitzung
+                    session(['delivery_cost_' . $shopId => $area->delivery_cost]);
+
+dd($area->delivery_cost);
+
+
                     $foundInDeliveryArea = true;
                     $modalScript = false;
                     break; // Keine Notwendigkeit, andere Bereiche zu überprüfen, sobald ein Übereinstimmung gefunden wurde
@@ -132,6 +139,7 @@ class ShopCardController extends Controller
                 // echo "Der Benutzer liegt nicht innerhalb eines Lieferbereichs.";
                 $modalScript = true;
             }
+            dd($area->delivery_cost);
 
             // Restaurant gefunden, geben Sie die Detailansicht zurück
             return view('frontend.pages.detailrestaurant.detail-restaurant', [

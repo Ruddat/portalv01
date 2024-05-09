@@ -309,7 +309,7 @@
 
 
 
-
+@kropifyScripts
 @livewireScripts
 
 

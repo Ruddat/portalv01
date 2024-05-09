@@ -48,7 +48,12 @@
                                         <td>{{ $product->product_ordering }}</td>
                                         <td><strong>#{{ $product->product_code }}</strong></td>
                                         <td><img class="square" width="48" src="{{ $product->product_image_url }}" alt=""></td>
-                                        <td>{{ $product->product_title }}</td>
+
+
+                                        <td>
+                                            <a href="{{ route('seller.manage-products.edit-product', ['shopId' => $shopId, 'menuId' =>  $menuId, 'categoryId' => $categoryId, 'productId' => $product->id]) }}">{{ $product->product_title }}</a>
+
+                                        </td>
                                         <td><sub>{!! $product->product_description !!}</sub></td>
                                         <td>{{ $product->produckt_anonce }}</td>
                                         <td>

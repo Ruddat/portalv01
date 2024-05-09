@@ -25,8 +25,9 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('frontend/img/favicon.ico') }}" />
     @endif
 
+    @kropifyStyles
 
-    <!-- Toastr -->
+    {{-- Toastr --}}
     <link rel="stylesheet" href="{{ asset('backend/vendor/toastr/css/toastr.min.css') }}">
 
 	<!-- Stylesheet -->

@@ -86,9 +86,29 @@ class Index extends Component
         $this->cartService = $cartService;
         $this->selectedSize = null;
 
+        // Annahme: $allIngredientIds enthält alle Zutaten-IDs aus deiner Datenquelle
+        $allIngredientIds = [/* Hier kommen deine Zutaten-IDs */];
+
+        // Setze alle Zutaten als geöffnet
+        $this->openIngredients = $allIngredientIds;
+
+        // Abrufen und Eintragen der Zutaten-IDs
+        $this->openIngredients = $this->getAllIngredientNodesIds($restaurant);
         // Calculate and store minimum prices for each product
         $this->minPrices = $this->calculateMinPrices();
         $this->updateCart();
+    }
+
+
+
+    private function getAllIngredientNodesIds($restaurant)
+    {
+        // Annahme: Hier wird die Logik implementiert, um alle eindeutigen Zutaten-IDs basierend auf der shop_id abzurufen
+        $ingredientNodesIds = ModProductIngredientsNodes::where('shop_id', $restaurant->id)
+            ->distinct('ingredients_id') // Nur eindeutige Zutaten-IDs auswählen
+            ->pluck('ingredients_id')
+            ->toArray();
+        return $ingredientNodesIds;
     }
 
 
