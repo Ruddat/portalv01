@@ -12,6 +12,7 @@ use App\Models\ModSellerVotings;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\ModProductSizesPrices;
+use Illuminate\Support\Facades\Session;
 
 class NewCartController extends Controller
 {
@@ -126,6 +127,7 @@ class NewCartController extends Controller
             $userLatitude = session('userLatitude');
             $userLongitude = session('userLongitude');
 
+
             // Holen des Standort vom Restaurant
             $shopLocation = ModShop::where('id', $restaurant->id)->first();
             $distance = $this->calculateDistance($userLatitude, $userLongitude, $shopLocation->lat, $shopLocation->lng);
@@ -149,6 +151,32 @@ class NewCartController extends Controller
                     echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
                     echo "Kosten" . $area->delivery_cost . " euro";
                     echo "Frei ab" . $area->free_delivery_threshold . " euro";
+
+
+// Lösche die alten Daten für den vorherigen Shop, wenn vorhanden
+$oldShopId = Session::get('shopId');
+if ($oldShopId !== null) {
+    Session::forget('delivery_cost_' . $oldShopId);
+    Session::forget('delivery_charge_' . $oldShopId);
+    Session::forget('delivery_free_' . $oldShopId);
+}
+
+// Speichere die Lieferkosten in der Sitzung für den neuen Shop
+session(['delivery_cost_' . $restaurantId => $area->delivery_cost]);
+// Speichere den Mindestbestellwert in der Sitzung für den neuen Shop
+session(['delivery_charge_' . $restaurantId => $area->delivery_charge]);
+// Speichere Anfahrtkostenfrei in der Sitzung für den neuen Shop
+session(['delivery_free_' . $restaurantId => $area->free_delivery_threshold]);
+
+// Speichere die ID des neuen Shops in der Sitzung
+session(['shopId' => $restaurantId]);
+
+                //    dd(session()->all());
+
+
+               //     dd($area->delivery_cost);
+
+
                     $foundInDeliveryArea = true;
                     $modalScript = false;
                     break; // Keine Notwendigkeit, andere Bereiche zu überprüfen, sobald ein Übereinstimmung gefunden wurde
@@ -158,6 +186,12 @@ class NewCartController extends Controller
             // Wenn der Benutzer nicht in einem Lieferbereich gefunden wurde
             if (!$foundInDeliveryArea) {
                 // echo "Der Benutzer liegt nicht innerhalb eines Lieferbereichs.";
+                $oldShopId = Session::get('shopId');
+if ($oldShopId !== null) {
+    Session::forget('delivery_cost_' . $oldShopId);
+    Session::forget('delivery_charge_' . $oldShopId);
+    Session::forget('delivery_free_' . $oldShopId);
+}
                 $modalScript = true;
             }
 

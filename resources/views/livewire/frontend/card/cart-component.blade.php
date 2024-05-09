@@ -75,6 +75,8 @@
     <button class="w-full p-2 border-2 rounded border-red-500 hover:border-red-600 bg-red-500 hover:bg-red-600"
         wire:click="clearCart">Clear Cart</button>
 @else
+
+
     <p class="text-3xl text-center mb-2">cart is empty!</p>
     @endif
 
