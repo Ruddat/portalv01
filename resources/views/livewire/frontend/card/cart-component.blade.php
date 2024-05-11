@@ -54,11 +54,34 @@
     </ul>
 
     <ul class="clearfix">
-        <li>{{ app(\App\Services\TranslationService::class)->trans('Subtotal', app()->getLocale()) }}<span>${{ $total }}</span></li>
+        <li>{{ app(\App\Services\TranslationService::class)->trans('Subtotal', app()->getLocale()) }}<span>${{ $subtotal }}</span></li>
+
+        @php
+        $remainingAmountForFreeDelivery = max(0, $deliveryFreeThreshold - $total);
+    @endphp
+
+    <li>{{ app(\App\Services\TranslationService::class)->trans('Liefergebühr', app()->getLocale()) }}
         @if ($deliveryFee > 0)
-        <li>{{ app(\App\Services\TranslationService::class)->trans('Liefergebühr', app()->getLocale()) }}
-            <span>{{ $deliveryFee }}</span></li>
+            <span>{{ $deliveryFee }}</span>
+        @else
+            <span style="color: green">{{ __('Kostenlos') }}</span>
         @endif
+    </li>
+    <!-- Hier füge den Balken hinzu -->
+
+    <div class="row opt_deliver_fee">
+        <div class="col-12">
+            <li>
+                @if ($remainingAmountForFreeDelivery > 0)
+                    <span>{{ __('Noch $') }}{{ $remainingAmountForFreeDelivery }}{{ __(' für kostenfreie Lieferung') }}</span>
+                @else
+                    <span style="color: green">{{ __('Kostenlose Lieferung') }}</span>
+                @endif
+            </li>
+        </div>
+    </div>
+
+
         @if ($discount > 0)
         <li>{{ app(\App\Services\TranslationService::class)->trans('discount') }}</li>
         <span>{{ $discount }}</span>
@@ -77,13 +100,24 @@
 @else
 
 
-    <p class="text-3xl text-center mb-2">cart is empty!</p>
+    <p class="text-3xl text-center mb-2">{{ __('cart_is_empty') }}</p>
     @endif
 
     <style>
         .box_order .ingredients {
         float: left;
     }
+
+    .opt_deliver_fee{
+  border-top: 1px solid #ededed;
+  border-bottom: 1px solid #ededed;
+  margin-bottom: 20px;
+  padding: 15px 0 5px 0;
+  background-color: lightgreen;
+}
+
+
+
     </style>
 
 

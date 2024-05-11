@@ -63,10 +63,10 @@ class ShopSearchController extends Controller
                     $userLatitude = $results[0]['lat'];
                     $userLongitude = $results[0]['lon'];
                     $userCity = $results[0]['name'];
-               // dd($userCity);
-                    $request->session()->put('userLatitude', $userLatitude);
-                    $request->session()->put('userLongitude', $userLongitude);
-                    $request->session()->put('selectedLocation', $query);
+
+                    session(['userLatitude' => $userLatitude]);
+                    session(['userLongitude' => $userLongitude]);
+                    session(['selectedLocation' => $query]);
                 }
             }
 
@@ -96,7 +96,9 @@ class ShopSearchController extends Controller
             $name = $results[0]['name'] ?? null;
             $display_name = $results[0]['display_name'] ?? null;
             // Überprüfen, ob ein Stadtnamen gefunden wurde
-            if ($name) {
+          //  dd($name, $display_name);
+            if ($display_name) {
+            //    dd($name);
                 // Stadtnamen und Ortsnamen in der Session speichern
              //   $request->session()->put('selectedCity', $city);
                 $request->session()->put('selectedName', $display_name);
