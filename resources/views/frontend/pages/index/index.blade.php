@@ -529,34 +529,43 @@
             <script src="{{ asset('extra-assets\axios\axios.min.js') }}"></script>
 
             <script>
-                function getLocation() {
+                document.getElementById('btn1').addEventListener('click', getLocation);
+
+                async function getLocation() {
                     if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(zeigePosition, zeigeFehler, {
-                            enableHighAccuracy: true,
-                            timeout: 10000, // Timeout auf 10 Sekunden erhöht
-                            maximumAge: 0
-                        });
+                        try {
+                            const position = await new Promise((resolve, reject) => {
+                                navigator.geolocation.getCurrentPosition(resolve, reject, {
+                                    enableHighAccuracy: true,
+                                    timeout: 10000,
+                                    maximumAge: 0
+                                });
+                            });
+                            await showPosition(position);
+                        } catch (error) {
+                            showError(error);
+                        }
                     } else {
-                        ausgabe.innerHTML = 'Ihr Browser unterstützt keine Geolocation.';
+                        console.log('Ihr Browser unterst�tzt keine Geolocation.');
                     }
                 }
 
-                function zeigePosition(position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
+                async function showPosition(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
 
-                    // Leere das Eingabefeld für die Suchabfrage
+                    // Leere das Eingabefeld f�r die Suchabfrage
                     $('#autocomplete').val('');
 
-                    // Lösche die alten Koordinaten aus der Session
+                    // L�sche die alten Koordinaten aus der Session
                     sessionStorage.removeItem('userLatitude');
                     sessionStorage.removeItem('userLongitude');
 
                     // CSRF-Token aus dem Meta-Tag der Seite abrufen
-                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-                    // Beispiel: Ajax-Anfrage an Laravel-Route mit Axios
-                    axios.post('/speichere-standort', {
+                    try {
+                        const response = await axios.post('/speichere-standort', {
                             latitude: latitude,
                             longitude: longitude
                         }, {
@@ -564,39 +573,38 @@
                                 'X-CSRF-TOKEN': csrfToken,
                                 'Content-Type': 'application/json'
                             }
-                        })
-                        .then(function(response) {
-                            // Erfolgreiche Anfrage
-                            console.log(response.data);
-                            // Überprüfe, ob die Koordinaten erfolgreich gespeichert wurden
-                            if (response.data.success) {
-                                // Validierung erfolgreich, das Suchformular automatisch senden
-                                $('#searchForm').submit();
-                            } else {
-                                // Fehlermeldung anzeigen
-                                alert(response.data.message);
-                            }
-                        })
-                        .catch(function(error) {
-                            // Fehlerbehandlung
-                            console.error('Fehler bei der Standortabfrage:', error);
-                            ausgabe.innerHTML = "Ein Fehler ist aufgetreten, bitte versuchen Sie es erneut.";
                         });
+
+                        // Erfolgreiche Anfrage
+                        console.log(response.data);
+                        // Überpr�fe, ob die Koordinaten erfolgreich gespeichert wurden
+                        if (response.data.success) {
+                            // Validierung erfolgreich, das Suchformular automatisch senden
+                            $('#searchForm').submit();
+                        } else {
+                            // Fehlermeldung anzeigen
+                            alert(response.data.message);
+                        }
+                    } catch (error) {
+                        // Fehlerbehandlung
+                        console.error('Fehler bei der Standortabfrage:', error);
+                        console.log("Ein Fehler ist aufgetreten, bitte versuchen Sie es erneut.");
+                    }
                 }
 
-                function zeigeFehler(error) {
+                function showError(error) {
                     switch (error.code) {
                         case error.PERMISSION_DENIED:
-                            ausgabe.innerHTML = "Benutzer lehnte Standortabfrage ab."
+                            console.log("Benutzer lehnte Standortabfrage ab.");
                             break;
                         case error.POSITION_UNAVAILABLE:
-                            ausgabe.innerHTML = "Standortdaten sind nicht verfügbar."
+                            console.log("Standortdaten sind nicht verf�gbar.");
                             break;
                         case error.TIMEOUT:
-                            ausgabe.innerHTML = "Die Standortabfrage dauerte zu lange (Time-out). Bitte versuchen Sie es erneut."
+                            console.log("Die Standortabfrage dauerte zu lange (Time-out). Bitte versuchen Sie es erneut.");
                             break;
                         case error.UNKNOWN_ERROR:
-                            ausgabe.innerHTML = "Unbekannter Fehler."
+                            console.log("Unbekannter Fehler.");
                             break;
                     }
                 }

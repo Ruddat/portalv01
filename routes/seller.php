@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\Seller\DashboardController;
 use App\Http\Controllers\Backend\Seller\Review\ReviewController;
 use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
 use App\Http\Controllers\Backend\Seller\Products\ProductController;
+use App\Http\Controllers\Backend\Seller\LottoSim\LottoSimController;
 use App\Http\Controllers\Backend\Seller\Worktimes\WorktimesController;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
@@ -114,6 +115,7 @@ Route::prefix('manage-products')->name('manage-products.')->middleware(['auth:se
 // Testing Methods
 Route::prefix('test')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
     Route::get('/test', [LieferandoSpiderController::class, 'indexAction'])->name('indexAction');
+    Route::get('/simulate-lotto', [LottoSimController::class, 'simulate'])->name('simulateLotto');
 });
 
 

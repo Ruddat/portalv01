@@ -13,6 +13,7 @@ class CartComponent extends Component
     protected $content;
     protected $deposit;
     public $deliveryFee;
+    public $deliveryFreeThreshold = 30;
     protected $discount;
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
@@ -32,6 +33,7 @@ class CartComponent extends Component
 
 
         $this->updateCart();
+        $this->calculateSubTotal();
         $this->render();
 
         // Berechne den Gesamtpreis des Warenkorbs
@@ -42,6 +44,7 @@ class CartComponent extends Component
     {
         return view('livewire.frontend.card.cart-component', [
             'total' => $this->total,
+            'subtotal' => $this->subtotal,
             'cart' => $this->cart,
             'deposit' => $this->deposit,
             'deliveryFee' => $this->deliveryFee,
@@ -52,9 +55,21 @@ class CartComponent extends Component
 
     public function updateCart()
     {
+        $this->subtotal = Cart::total();
         $this->total = Cart::total();
         $this->content = Cart::content();
     }
+
+protected function calculateSubTotal()
+    {
+        // Berechne den Gesamtpreis des Warenkorbs
+        $subTotal = 0;
+        foreach ($this->cart as $item) {
+            $subTotal += $item['price'] * $item['quantity'];
+        }
+        return $subTotal;
+    }
+
 
     protected function calculateTotal()
     {

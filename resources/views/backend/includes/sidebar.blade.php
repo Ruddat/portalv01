@@ -209,6 +209,13 @@
 
 
                 </ul>
+                <div class="plus-box">
+					<div class="d-flex align-items-center">
+						<h5>Lotto Fun - Check your Numbers</h5>
+
+					</div>
+					<a href="{{ route('seller.simulateLotto') }}" class="btn bg-white btn-sm">{{ app(\App\Services\TranslationService::class)->trans('Lotto-Sim', app()->getLocale()) }}</a>
+				</div>
 				<div class="plus-box">
 					<div class="d-flex align-items-center">
 						<h5>Upgrade your Account to Get Free Voucher</h5>
