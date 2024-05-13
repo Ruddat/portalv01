@@ -32,6 +32,19 @@ class LottoSimController extends Controller
                 return $this->calculateEurojackpotProbabilities($historicalData);
             });
 
+
+            // Den Wert von $probabilities ausgeben (nachdem er entweder aus dem Cache geholt wurde oder berechnet wurde)
+            $lottoNumbersList = [];
+            for ($i = 0; $i < 12; $i++) {
+                $lottoNumbers = $this->simulateEurojackpotDrawBasedOnLastDraw($probabilities);
+                $lottoNumbersList[] = $lottoNumbers;
+            }
+//dd($lottoNumbersList);
+
+            // Die Blade-Vorlage mit den Lottozahlen aufrufen und die Zahlenliste übergeben
+            return view('backend\pages\seller\lottosimulator\lottosim', ['lottoNumbersList' => $lottoNumbersList]);
+
+
             // Den Wert von $probabilities ausgeben (nachdem er entweder aus dem Cache geholt wurde oder berechnet wurde)
             $output = '';
             for ($i = 0; $i < 12; $i++) {
@@ -40,6 +53,8 @@ class LottoSimController extends Controller
             }
 
             return response($output)->header('Content-Type', 'application/json');
+
+
         } catch (\Exception $e) {
             Log::error('Error occurred while simulating Eurojackpot draw: ' . $e->getMessage());
             abort(500, 'An error occurred while simulating Eurojackpot draw.');
@@ -113,15 +128,58 @@ class LottoSimController extends Controller
         $lottoNumbers = [];
 
         // Ziehe die Hauptzahlen (5 aus 50)
-        $mainNumbers = $this->drawUniqueNumbersFromProbabilities($probabilities, 5);
+        $mainNumbers = $this->drawUniqueMainNumbersFromProbabilities($probabilities, 5);
         $lottoNumbers['main_numbers'] = $mainNumbers;
 
         // Ziehe die Eurozahlen (2 aus 10)
-        $euroNumbers = $this->drawUniqueNumbersFromProbabilities($probabilities, 2);
+        $euroNumbers = $this->drawUniqueEuroNumbersFromProbabilities($probabilities, 2);
         $lottoNumbers['euro_numbers'] = $euroNumbers;
 
         return $lottoNumbers;
     }
+
+    private function drawUniqueMainNumbersFromProbabilities(array $probabilities, int $count): array
+    {
+        $numbers = [];
+        $probabilitySum = array_sum($probabilities);
+
+        // Sortiere die Zahlen nach ihrer Wahrscheinlichkeit
+        arsort($probabilities);
+
+        while (count($numbers) < $count) {
+            $randomNumber = $this->getRandomNumberBasedOnProbabilities($probabilities, $probabilitySum);
+            // Überprüfen, ob die Zufallszahl nicht bereits in den gezogenen Zahlen ist und im Bereich von 1 bis 50 liegt
+            if (!in_array($randomNumber, $numbers) && $randomNumber >= 1 && $randomNumber <= 50) {
+                $numbers[] = $randomNumber;
+            }
+        }
+
+        // Sortiere die Zahlen und gebe sie zurück
+        sort($numbers);
+        return $numbers;
+    }
+
+    private function drawUniqueEuroNumbersFromProbabilities(array $probabilities, int $count): array
+    {
+        $numbers = [];
+        $probabilitySum = array_sum($probabilities);
+
+        // Sortiere die Zahlen nach ihrer Wahrscheinlichkeit
+        arsort($probabilities);
+
+        while (count($numbers) < $count) {
+            $randomNumber = $this->getRandomNumberBasedOnProbabilities($probabilities, $probabilitySum);
+            // Überprüfen, ob die Zufallszahl nicht bereits in den gezogenen Zahlen ist und im Bereich von 1 bis 12 liegt
+            if (!in_array($randomNumber, $numbers) && $randomNumber >= 1 && $randomNumber <= 12) {
+                $numbers[] = $randomNumber;
+            }
+        }
+
+        // Sortiere die Zahlen und gebe sie zurück
+        sort($numbers);
+        return $numbers;
+    }
+
 
     private function drawUniqueNumbersFromProbabilities(array $probabilities, int $count): array
     {
@@ -133,8 +191,8 @@ class LottoSimController extends Controller
 
         while (count($numbers) < $count) {
             $randomNumber = $this->getRandomNumberBasedOnProbabilities($probabilities, $probabilitySum);
-            // Überprüfen, ob die Zufallszahl nicht bereits in den gezogenen Zahlen ist und nicht Null ist
-            if (!in_array($randomNumber, $numbers) && $randomNumber !== 0) {
+            // Überprüfen, ob die Zufallszahl nicht bereits in den gezogenen Zahlen ist und im Bereich von 1 bis 12 liegt
+            if (!in_array($randomNumber, $numbers) && $randomNumber >= 1 && $randomNumber <= 12) {
                 $numbers[] = $randomNumber;
             }
         }
@@ -146,17 +204,17 @@ class LottoSimController extends Controller
 
     private function getRandomNumberBasedOnProbabilities(array $probabilities, float $probabilitySum): int
     {
-        // Debugging: Check if the probabilities are empty
+        // Debugging: Überprüfen, ob die Wahrscheinlichkeiten leer sind
         if (empty($probabilities)) {
             throw new \Exception('Probabilities are empty.');
         }
 
-        // Debugging: Check if the probability sum is zero
+        // Debugging: Überprüfen, ob die Wahrscheinlichkeitssumme größer als Null ist
         if ($probabilitySum <= 0) {
             throw new \Exception('Probability sum is not greater than zero.');
         }
 
-        $randomFloat = mt_rand() / mt_getrandmax(); // Generate a random float between 0 and 1
+        $randomFloat = mt_rand() / mt_getrandmax(); // Generiere eine Zufallszahl zwischen 0 und 1
         $randomProbability = $randomFloat * $probabilitySum;
         $currentProbability = 0;
 
@@ -167,7 +225,7 @@ class LottoSimController extends Controller
             }
         }
 
-        // If we reach this point, something went wrong
+        // Wenn wir an diesen Punkt gelangen, ist etwas schief gelaufen
         throw new \Exception('Failed to select a random number based on probabilities.');
     }
 }

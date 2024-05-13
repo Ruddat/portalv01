@@ -412,6 +412,7 @@
     /* Schatten für den Inhalt */
     z-index: 1;
    /* background-color: rgba(251, 188, 47, 0.8); */
+   -webkit-user-select: none; /* Chrome, Safari, Opera */
 }
 
 .overlay-header {
