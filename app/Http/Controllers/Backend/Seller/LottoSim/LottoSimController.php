@@ -42,7 +42,7 @@ class LottoSimController extends Controller
 //dd($lottoNumbersList);
 
             // Die Blade-Vorlage mit den Lottozahlen aufrufen und die Zahlenliste übergeben
-            return view('backend\pages\seller\lottosimulator\lottosim', ['lottoNumbersList' => $lottoNumbersList]);
+            return view('backend.pages.seller.lottosimulator.lottosim', ['lottoNumbersList' => $lottoNumbersList]);
 
 
             // Den Wert von $probabilities ausgeben (nachdem er entweder aus dem Cache geholt wurde oder berechnet wurde)
