@@ -9,19 +9,33 @@
     <div class="container">
         <div class="row page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Eurolotto Fun</a></li>
             </ol>
         </div>
         <!-- row -->
+
+        <!-- Integrate picture inside the container -->
+        <div class="row justify-content-center mt-0">
+            <div class="col-lg-8">
+                <picture>
+
+                    <img src="{{ asset('extra-assets/images/eurolotto.png') }}" class="img-fluid img-thumbnail" alt="Eurolotto">
+                </picture>
+                <div class="text-center mt-3">
+                    <p>{{ app(\App\Services\TranslationService::class)->trans('Bitte beachten Sie: Es gibt keine Gewinngarantie für diese Zahlen. Alle Zahlen werden auf Wahrscheinlichkeiten basierend auf vergangenen Ziehungen berechnet.', app()->getLocale()) }}</p>
+                </div>
+            </div>
+        </div>
+
         <div class="pick-number-area">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row justify-content-center mt-2">
-                        @foreach($lottoNumbersList as $lottoNumbers)
+                        @foreach($lottoNumbersList as $key => $lottoNumbers)
                         <div class="col-lg-3 col-sm-3 col-md-4 mb-4">
                             <div class="single-pick">
                                 <div class="header-area">
-                                    <h4 class="title">Pick 5 Numbers</h4>
+                                    <h4 class="title">{{ app(\App\Services\TranslationService::class)->trans(' 5 from 50 - Field ', app()->getLocale()) }} {{ $key + 1 }}</h4> <!-- Hier wird der Key verwendet -->
                                     <div class="buttons">
                                         <a href="#" class="custom-button1"><i class="fas fa-magic"></i>Quick Pick</a>
                                         <a href="#" class="custom-button2"><i class="fas fa-trash-alt"></i>Clear All</a>
@@ -34,7 +48,7 @@
                                         @endfor
                                     </ul>
                                     <div class="separator">
-                                        <p>Pick 2 Euronumbers</p>
+                                        <p>2 / 12 Euro Numbers</p>
                                     </div>
                                     <ul>
                                         @for($i = 1; $i <= 12; $i++)

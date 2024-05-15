@@ -35,7 +35,7 @@ class LottoSimController extends Controller
 
             // Den Wert von $probabilities ausgeben (nachdem er entweder aus dem Cache geholt wurde oder berechnet wurde)
             $lottoNumbersList = [];
-            for ($i = 0; $i < 12; $i++) {
+            for ($i = 0; $i < 8; $i++) {
                 $lottoNumbers = $this->simulateEurojackpotDrawBasedOnLastDraw($probabilities);
                 $lottoNumbersList[] = $lottoNumbers;
             }
@@ -47,7 +47,7 @@ class LottoSimController extends Controller
 
             // Den Wert von $probabilities ausgeben (nachdem er entweder aus dem Cache geholt wurde oder berechnet wurde)
             $output = '';
-            for ($i = 0; $i < 12; $i++) {
+            for ($i = 0; $i < 8; $i++) {
                 $lottoNumbers = $this->simulateEurojackpotDrawBasedOnLastDraw($probabilities);
                 $output .= json_encode(['numbers' => $lottoNumbers]) . "\n";
             }
