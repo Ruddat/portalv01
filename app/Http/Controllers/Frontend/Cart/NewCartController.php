@@ -22,8 +22,28 @@ class NewCartController extends Controller
      * @param  int  $restaurantId
      * @return \Illuminate\Http\Response
      */
-    public function index($restaurantId)
+    public function index($restaurantIdOrSlug)
     {
+
+    // Restaurant anhand des Slugs finden
+    $restaurant = ModShop::where('shop_slug', $restaurantIdOrSlug)->first();
+
+    // Wenn das Restaurant nicht anhand des Slugs gefunden wurde, versuchen es anhand der ID zu finden
+    if (!$restaurant) {
+        $restaurant = ModShop::find($restaurantIdOrSlug);
+    }
+
+    // Überprüfen ob das Restaurant gefunden wurde
+    if ($restaurant) {
+        // Das Restaurant wurde gefunden, verwenden der $restaurant->id oder $restaurant->slug je nach Bedarf
+        // Hier können Sie die weitere Logik für die Restaurant-Ansicht implementieren
+        $restaurantId = $restaurant->id;
+       // dd($restaurant->id);
+    } else {
+        // Wenn weder der Slug noch die ID ein gültiges Restaurant ergeben haben, entsprechend reagieren
+        // Zum Beispiel eine Fehlermeldung anzeigen oder auf eine Standardseite weiterleiten
+        abort(404); // Seite nicht gefunden
+    }
 
 
     // Überprüfen, ob die Session-Variablen vorhanden sind
@@ -171,7 +191,7 @@ session(['delivery_free_' . $restaurantId => $area->free_delivery_threshold]);
 // Speichere die ID des neuen Shops in der Sitzung
 session(['shopId' => $restaurantId]);
 
-                //    dd(session()->all());
+                //   dd(session()->all());
 
 
                //     dd($area->delivery_cost);

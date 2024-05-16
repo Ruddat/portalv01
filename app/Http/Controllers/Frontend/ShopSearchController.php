@@ -110,7 +110,7 @@ class ShopSearchController extends Controller
 
             // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
             if ($userLatitude !== null && $userLongitude !== null) {
-                $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average')
+                $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average', 'shop_slug')
                     ->selectRaw(
                         '( 6371 * acos( cos( radians(?) ) *
                         cos( radians( lat ) ) *
@@ -130,7 +130,7 @@ class ShopSearchController extends Controller
                 }
             } else {
             // Wenn keine Geokoordinaten vorhanden sind, eine einfache Datenbankabfrage durchführen
-                $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average')
+                $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average', 'shop_slug')
                 ->paginate($this->perPage);
              }
 
@@ -202,7 +202,7 @@ foreach ($restaurants as $restaurant) {
 
 
 
-//dd($restaurant);
+//dd($restaurants);
 
 
             // Die aktuellen Abfrageparameter für die Pagination beibehalten
