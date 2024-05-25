@@ -189,3 +189,39 @@
 
 
 
+<style>
+    header {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding: 15px 0;
+      z-index: -1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0);
+    }
+
+    .secondary_nav.is_stuck {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top: 0;
+        z-index: 999;
+        border-top: none;
+    }
+
+    .btn_reserve_fixed {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: #fff;
+        -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 999;
+    }
+
+
+    </style>
