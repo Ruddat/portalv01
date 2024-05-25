@@ -89,7 +89,9 @@ class StorePopup extends Component
 
     public function wantToBrowse()
     {
-        dd('browsePopup erfolgreich');
+      //  dd('browsePopup erfolgreich');
+      $this->isOpen = false;
+
     }
 
     public function redirectToSearch()
