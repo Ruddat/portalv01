@@ -40,7 +40,10 @@ use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
     Route::post('/winorder/call-soap-service', [WinOrderSOAPController::class, 'callSoapService'])->name('call.soap.service');
 
     // Frontend routes CartController methods
-    Route::get('/detail-restaurant-2/{restaurantId}', [NewCartController::class, 'index'])->name('detail-restaurant-2.index');
+ //   Route::get('/detail-restaurant-2/{restaurantId}', [NewCartController::class, 'index'])->name('detail-restaurant-2.index');
+    Route::get('/restaurant/{slug}', [NewCartController::class, 'index'])->name('restaurant.index');
+    //Route::get('/detail-restaurant-2/{shop_slug}', [NewCartController::class, 'index'])->name('detail-restaurant-2.index');
+
     Route::post('/vote', [NewCartController::class, 'vote'])->name('vote-restaurant.vote');
     Route::post('/reply', [NewCartController::class, 'reply'])->name('vote-restaurant.reply');
 

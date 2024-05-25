@@ -49,6 +49,8 @@
 
 
                             </div>
+
+
                             <div class="col-xl-8 col-lg-7 col-md-6 position-relative">
                                 <div class="buttons clearfix">
                                     <span class="magnific-gallery">
@@ -463,7 +465,15 @@
         </div>
         <!-- /container -->
 
-        <div id="message">Item added to cart</div><!-- Add to cart message -->
+
+        <!-- Script zum Öffnen des Popups nach dem Laden der Seite -->
+        <!-- Einbindung der Livewire-Komponente -->
+
+
+        <livewire:frontend.storeinfos.store-popup :restaurant="$restaurant" />
+
+
+
 
 
 
@@ -473,6 +483,24 @@
             <script src="{{ asset('frontend/js/sticky_sidebar.min.js') }}"></script>
             <script src="{{ asset('frontend/js/sticky-kit.min.js') }}"></script>
             <script src="{{ asset('frontend/js/specific_detail.js') }}"></script>
+
+         <script>
+                document.addEventListener('livewire:load', function () {
+                    Livewire.on('openPopup', function (status, storeName = null) {
+                        $.fancybox.open({
+                            src  : '#storePopup',
+                            type : 'inline',
+                            opts : {
+                                afterClose: function () {
+                                    Livewire.dispatch('closePopup');
+                                }
+                            }
+                        });
+                    });
+                });
+            </script>
+
+
         @endpush
     @endsection
     @if (isset($modalScript) && $modalScript)
@@ -529,7 +557,14 @@
         </div>
 
 
+
+
         @push('specific-scripts')
+
+
+
+
+
             <script>
                 (function($) {
                     "use strict";
@@ -620,6 +655,7 @@
         });
     });
     </script>
+
 
 
         @endpush
