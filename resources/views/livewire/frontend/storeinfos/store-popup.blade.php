@@ -61,7 +61,7 @@
 
                     @elseif($shopStatus == 'on' || $shopStatus == 'open')
                         <!-- Modal-Inhalt für online -->
-                        <p>Damit dein Essen so schnell wie möglich bei dir ist, brauchen wir bitte noch Adresse.</p>
+                        <p>Damit dein Essen so schnell wie möglich bei dir ist, brauchen wir bitte noch die Adresse.</p>
                         <form>
                             <div class="row">
                                 <div class="mb-3 col-md-9">
@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="button" class="btn btn-infomodal" wire:click="deliveryPopup">
+                                <button type="button" class="btn btn-infomodal" wire:click="orderDelivery">
                                     <i class="icon-food_icon_delivery"></i>Lieferung
                                 </button>
                             </div>
@@ -91,7 +91,7 @@
                             <h2 class="modal-title text-center">Selbst abholen</h2>
                             <p>Hol' dir deine Bestellung ganz einfach und schnell aus unserer Filiale in <b>{{ $storeCity }} {{ $storeStreet }}</b> ab!</p>
                             <div class="text-center">
-                            <button type="button" class="btn btn-infomodal" wire:click="closePopup"><i class="icon-food_icon_shop"></i>Abholung</button>
+                            <button type="button" class="btn btn-infomodal" wire:click="orderPickUp"><i class="icon-food_icon_shop"></i>Abholung</button>
                             </div>
 
                         </div>
@@ -99,94 +99,62 @@
                         <!-- Modal-Inhalt für Vorbestellung -->
 
                         <div class="modal-body">
-                            <p>Der Store hat zurzeit noch geschlossen.
-                                Du kannst im aktuellen Store vorbestellen oder einen anderen Store auswählen.</p>
+                            <p>{{ $storeName }} hat zurzeit noch geschlossen.
+                                Du kannst jetzt bei {{ $storeName }} vorbestellen oder einen anderen Store auswählen.</p>
                             <div class="deliveryTimes">
                                 <div>
-                                    @if(!empty($todayOpeningHours))
+
+                                    @if($todayOpeningHours->isNotEmpty())
                                     <h4>Öffnungszeiten heute</h4>
-                                    @foreach($todayOpeningHours as $hour)
-                                        @if($hour['is_open'])
-                                            @if(\Carbon\Carbon::hasFormat($hour['open'], 'H:i:s') && \Carbon\Carbon::hasFormat($hour['close'], 'H:i:s'))
-                                                <div class="opening-hours-item">
-                                                    {{ \Carbon\Carbon::createFromFormat('H:i:s', $hour['open'])->format('H:i') }} Uhr - {{ \Carbon\Carbon::createFromFormat('H:i:s', $hour['close'])->format('H:i') }} Uhr
-                                                </div>
+                                        @foreach($todayOpeningHours as $hour)
+                                            @if($hour['is_open'])
+                                                @if(\Carbon\Carbon::hasFormat($hour['open'], 'H:i:s') && \Carbon\Carbon::hasFormat($hour['close'], 'H:i:s'))
+                                                    <div class="opening-hours-item">
+                                                        {{ \Carbon\Carbon::createFromFormat('H:i:s', $hour['open'])->format('H:i') }} Uhr - {{ \Carbon\Carbon::createFromFormat('H:i:s', $hour['close'])->format('H:i') }} Uhr
+                                                    </div>
+                                                @else
+                                                    <div class="opening-hours-item">
+                                                        Ungültiges Zeitformat
+                                                    </div>
+                                                @endif
                                             @else
                                                 <div class="opening-hours-item">
-                                                    Ungültiges Zeitformat
+                                                    Geschlossen
                                                 </div>
                                             @endif
-                                        @else
-                                            <div class="opening-hours-item">
-                                                Geschlossen
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @else
-                                    <div class="opening-hours-item">
-                                        Keine Öffnungszeiten verfügbar
-                                    </div>
-                                @endif
-
-                                @if(!$isOpen && !empty($openingHoursForWeek))
-                                    <h4>Nächste Öffnungszeiten</h4>
-                                    @foreach($openingHoursForWeek as $day => $hours)
-                                        <div class="opening-hours-day">
-                                            <strong>{{ ucfirst($day) }}:</strong>
-                                            @foreach($hours as $hour)
-                                                @if($hour['is_open'])
-                                                    @if(\Carbon\Carbon::hasFormat($hour['open'], 'H:i:s') && \Carbon\Carbon::hasFormat($hour['close'], 'H:i:s'))
-                                                        {{ \Carbon\Carbon::createFromFormat('H:i:s', $hour['open'])->format('H:i') }} Uhr - {{ \Carbon\Carbon::createFromFormat('H:i:s', $hour['close'])->format('H:i') }} Uhr
-                                                    @else
-                                                        Ungültiges Zeitformat
-                                                    @endif
-                                                @else
-                                                    Geschlossen
-                                                @endif
-                                            @endforeach
+                                        @endforeach
+                                    @else
+                                        <div class="opening-hours-item">
+                                            Keine Öffnungszeiten verfügbar
                                         </div>
-                                    @endforeach
-                                @endif
-
-                                @if($shopStatus === 'preorder')
-                                <div class="preorder-notice">
-                                    @if(!empty($todayOpeningHours) && isset($todayOpeningHours[0]['open']) && !empty($todayOpeningHours[0]['open']) && $todayOpeningHours[0]['open'] !== 'geschlossen')
-                                        @php
-                                            try {
-                                                $firstOpenHour = \Carbon\Carbon::createFromFormat('H:i:s', $todayOpeningHours[0]['open'])->format('H:i');
-                                            } catch (\Exception $e) {
-                                                $firstOpenHour = null;
-                                            }
-                                        @endphp
-                                        @if($firstOpenHour)
-                                            Wir öffnen heute um {{ $firstOpenHour }} Uhr
-                                        @else
-                                            Die Öffnungszeit konnte nicht geladen werden.
-                                        @endif
-                                    @elseif(!empty($nextOpenDay) && !empty($nextOpenTime) && isset($nextOpenTime['open']) && !empty($nextOpenTime['open']) && $nextOpenTime['open'] !== 'geschlossen')
-                                        @php
-                                            try {
-                                                $nextOpenDayName = ucfirst(\Carbon\Carbon::parse($nextOpenDay)->locale('de')->dayName);
-                                                $nextOpenHour = \Carbon\Carbon::createFromFormat('H:i:s', $nextOpenTime['open'])->format('H:i');
-                                            } catch (\Exception $e) {
-                                                $nextOpenDayName = null;
-                                                $nextOpenHour = null;
-                                            }
-                                        @endphp
-                                        @if($nextOpenDayName && $nextOpenHour)
-                                            Wir öffnen {{ \Carbon\Carbon::parse($nextOpenDay)->isTomorrow() ? 'morgen' : $nextOpenDayName }} um {{ $nextOpenHour }} Uhr
-                                        @else
-                                            Die nächste Öffnungszeit konnte nicht geladen werden.
-                                        @endif
                                     @endif
+
+
+    <!-- Nächste Öffnungszeiten -->
+    @if($isOpen && $nextOpenTime)
+        <h4>Nächste Öffnungszeiten</h4>
+        @php
+            list($nextOpenDay, $nextOpenHour) = explode(' ', $nextOpenTime);
+            $nextOpenHourFormatted = \Carbon\Carbon::createFromFormat('H:i', $nextOpenHour)->format('H:i');
+            $nextOpenDayCarbon = \Carbon\Carbon::parse($nextOpenDay);
+            $nextOpenDayName = $nextOpenDayCarbon->locale('de')->dayName;
+            $isToday = $nextOpenDayCarbon->isToday();
+            $isTomorrow = $nextOpenDayCarbon->isTomorrow();
+        @endphp
+
+        <div class="opening-hours-item">
+            @if($isToday)
+                Wir öffnen heute um {{ $nextOpenHourFormatted }} Uhr
+            @elseif($isTomorrow)
+                Wir öffnen morgen um {{ $nextOpenHourFormatted }} Uhr
+            @else
+                Wir öffnen wieder am {{ $nextOpenDayName }} um {{ $nextOpenHourFormatted }} Uhr
+            @endif
+        </div>
+    @endif
+
                                 </div>
-                            @endif
 
-
-
-
-
-                                </div>
 
 
                             </div>
@@ -207,12 +175,11 @@
                     @if($shopStatus == 'closed' || $shopStatus == 'off')
                         <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">Store wechseln</button>
                     @elseif($shopStatus == 'open')
-                        <button type="button" class="btn btn-infomodal" wire:click="closePopup">Stöbern</button>
-                        <button type="button" class="btn btn-infomodal" wire:click="closePopup">Bestellen</button>
+                        <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse">Ich möchte nur stöbern</button>
                     @elseif($shopStatus == 'limited')
                         <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">Zurück zur Restaurantauswahl</button>
                     @elseif($shopStatus == 'on')
-                        <button type="button" class="btn btn-infomodal" wire:click="closePopup"><i class="icon-food_icon_shop"></i>Ich möchte nur stöbern</button>
+                        <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse"><i class="icon-food_icon_shop"></i>Ich möchte nur stöbern</button>
                     @endif
                 </div>
             </div>

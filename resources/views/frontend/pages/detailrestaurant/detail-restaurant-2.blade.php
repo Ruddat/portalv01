@@ -546,6 +546,7 @@ h2.modal-title {
     text-transform: uppercase;
     color: #e60004;
     font-size: large;
+    padding-top: 6px;
 }
 
 .modal-body p {
@@ -617,6 +618,7 @@ h2.modal-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: column;
 }
 
 .opening-hours-item .day {
