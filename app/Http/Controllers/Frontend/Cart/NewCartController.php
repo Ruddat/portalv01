@@ -168,9 +168,9 @@ class NewCartController extends Controller
                     // Hier können Sie weitere Aktionen ausführen, wenn der Benutzer innerhalb des Lieferbereichs liegt
                     // Zum Beispiel, eine Bestellung zulassen, spezielle Nachrichten anzeigen usw.
                     // Für jetzt drucken wir nur eine Nachricht aus
-                    echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
-                    echo "Kosten" . $area->delivery_cost . " euro";
-                    echo "Frei ab" . $area->free_delivery_threshold . " euro";
+                //    echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
+                //    echo "Kosten" . $area->delivery_cost . " euro";
+                //    echo "Frei ab" . $area->free_delivery_threshold . " euro";
 
 
 // Lösche die alten Daten für den vorherigen Shop, wenn vorhanden

@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        \App\Models\ModShop::factory()->times(500)->create();
+     //   \App\Models\ModShop::factory()->times(500)->create();
+        $this->call(ModShopsSeeder::class);
         $this->call(RolesAndPermissionsSeeder::class);
 
         $this->call(AdminSeeder::class);

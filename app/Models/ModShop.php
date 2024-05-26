@@ -30,6 +30,7 @@ class ModShop extends Model
 
         static::updating(function ($restaurant) {
             $restaurant->shop_slug = Str::slug($restaurant->title . '-' . $restaurant->city);
+        //    $restaurant->shop_slug = Str::slug($restaurant->title);
         });
     }
 

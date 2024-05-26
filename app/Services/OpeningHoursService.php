@@ -117,7 +117,6 @@ class OpeningHoursService
     return $openingHours;
 }
 
-
     private static function getOpeningHours(ModShop $shop, $dayOfWeek)
     {
         return DB::table('mod_seller_worktimes')
@@ -127,4 +126,72 @@ class OpeningHoursService
         ->orderBy('open_time') // Nach Öffnungszeit sortieren
         ->get();
     }
+
+    public static function getHolidayHours(ModShop $shop, $date)
+    {
+        $currentTime = Carbon::now(); // Aktuelle Uhrzeit
+
+        $holidayHours = DB::table('mod_seller_holi_days')
+            ->where('shop_id', $shop->id)
+            ->whereDate('holiday_date', $date)
+            ->get();
+
+        if ($holidayHours->isEmpty()) {
+            return null; // Keine speziellen Feiertagszeiten für dieses Datum gefunden
+        }
+
+        // Überprüfe, ob für den aktuellen Tag eine Feiertagszeit vorhanden ist
+        $currentHolidayHours = $holidayHours->first(function ($holidayHour) use ($currentTime) {
+            return $currentTime->between(
+                Carbon::createFromFormat('H:i:s', $holidayHour->open_time ?? '00:00:00'),
+                Carbon::createFromFormat('H:i:s', $holidayHour->close_time ?? '23:59:59')
+            );
+        });
+
+        // Wenn eine Feiertagszeit für den aktuellen Tag gefunden wurde und sie geschlossen ist,
+        // ersetze die regulären Öffnungszeiten
+        if ($currentHolidayHours && !$currentHolidayHours->is_open) {
+            return [
+                'open_time' => null,
+                'close_time' => null,
+                'is_open' => false,
+                'holiday_message' => $currentHolidayHours->holiday_message,
+            ];
+        }
+
+        // Sortiere die Feiertagszeiten nach Relevanz
+        $sortedHolidayHours = $holidayHours->sortByDesc(function ($holidayHour) use ($currentTime) {
+            // Überprüfe, ob open_time und close_time gültige Zeiten sind
+            if ($holidayHour->open_time !== null && $holidayHour->close_time !== null) {
+                // Vergleiche die aktuelle Uhrzeit mit den Feiertagszeiten, um die relevante Zeit zu bestimmen
+                if ($currentTime->between(
+                    Carbon::createFromFormat('H:i:s', $holidayHour->open_time),
+                    Carbon::createFromFormat('H:i:s', $holidayHour->close_time)
+                )) {
+                    return 1; // Priorisiere offene Zeiten
+                } else {
+                    return 0;
+                }
+            } else {
+                // Wenn open_time oder close_time NULL ist, gehe davon aus, dass der Laden geschlossen ist
+                return 0;
+            }
+        });
+
+        // Wähle die relevanteste Feiertagszeit aus (die erste in der sortierten Liste)
+        $relevantHolidayHours = $sortedHolidayHours->first();
+
+        return [
+            'open_time' => $relevantHolidayHours->open_time,
+            'close_time' => $relevantHolidayHours->close_time,
+            'is_open' => $relevantHolidayHours->is_open,
+            'holiday_message' => $relevantHolidayHours->holiday_message,
+        ];
+    }
+
+
+
+
+
+
 }

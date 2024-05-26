@@ -88,7 +88,7 @@ return [
     |
     */
 
-    'locale' => 'de',
+    'locale' => 'de_DE',
 
     /*
     |--------------------------------------------------------------------------
@@ -197,6 +197,8 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         App\Providers\CookiesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        App\Providers\RestaurantProvider::class,
+
     ])->toArray(),
 
     /*

@@ -12,6 +12,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^2.7",
         "jbohme/nominatim-laravel": "^1.0",
+        "jzonta/faker-restaurant": "^2.0",
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.2",
         "laravel/sanctum": "^3.3",

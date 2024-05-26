@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('mod_shops', function (Blueprint $table) {
             // Hinzufügen von Slug
-            $table->string('shop_slug')->nullable()->after('shop_nr');
+            $table->text('shop_slug', 255)->nullable()->after('shop_nr');
         });
     }
 

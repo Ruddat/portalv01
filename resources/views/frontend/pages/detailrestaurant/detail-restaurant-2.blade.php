@@ -470,7 +470,7 @@
         <!-- Einbindung der Livewire-Komponente -->
 
 
-        <livewire:frontend.storeinfos.store-popup :restaurant="$restaurant" />
+        <livewire:frontend.storeinfos.store-popup :restaurant="$restaurant" :shopId="$restaurant->id"/>
 
 
 
