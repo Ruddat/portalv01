@@ -176,7 +176,7 @@ class StorePopup extends Component
             // Beispielhafte Ausgabe
      //       $this->openPopUp = false;
 
-            dd('Session Daten', ['shopId' => $shopId, 'status' => $status]);
+     //       dd('Session Daten', ['shopId' => $shopId, 'status' => $status]);
         } else {
          //   dd('Keine Daten für diese shopId in der Session gefunden.');
         }

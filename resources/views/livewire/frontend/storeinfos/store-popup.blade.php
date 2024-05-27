@@ -14,11 +14,11 @@
                     @elseif($shopStatus == 'open')
                         <h2 class="modal-title text-center">Einfach liefern lassen</h2>
                     @elseif($shopStatus == 'limited')
-                        <h2 class="modal-title text-center">Shop wird eingerichtet</h2>
+                        <h2 class="modal-title text-center">{{ app(\App\Services\TranslationService::class)->trans('Shop wird eingerichtet', app()->getLocale()) }}</h2>
                     @elseif($shopStatus == 'on')
                         <h2 class="modal-title text-center">{{ $storeName }}</h2>
                     @elseif($shopStatus == 'preorder')
-                        <h2 class="modal-title text-center">Vorbestellung möglich</h2>
+                        <h2 class="modal-title text-center">{{ app(\App\Services\TranslationService::class)->trans('Vorbestellung möglich', app()->getLocale()) }}</h2>
                     @endif
                 </div>
 
@@ -86,8 +86,9 @@
                         </div>
                     @elseif($shopStatus == 'preorder')
                         <div class="modal-body">
-                            <p>{{ $storeName }} hat zurzeit noch geschlossen.
-                                Du kannst jetzt vorbestellen oder einen anderen Store auswählen.</p>
+                            <p>{{ $storeName }}
+                                {{ app(\App\Services\TranslationService::class)->trans('hat zurzeit noch geschlossen.
+                                Du kannst jetzt vorbestellen oder einen anderen Store auswählen.', app()->getLocale()) }} </p>
                             <div class="deliveryTimes">
                                 <div>
                                     @if ($todayOpeningHours instanceof \Illuminate\Support\Collection && $todayOpeningHours->isNotEmpty())
@@ -107,7 +108,7 @@
                                     @if (!empty($openingHours))
                                         @foreach ($openingHours as $hours)
                                             @if (!is_null($hours['open']) && !is_null($hours['close']))
-                                                <div>
+                                                <div class="opening-hours-item">
                                                     Öffnet: {{ \Carbon\Carbon::createFromFormat('H:i:s', $hours['open'])->format('H:i') }} Uhr
                                                     Schließt: {{ \Carbon\Carbon::createFromFormat('H:i:s', $hours['close'])->format('H:i') }} Uhr
                                                     @if ($hours['is_open'])
@@ -117,20 +118,20 @@
                                                     @endif
                                                 </div>
                                             @else
-                                                <div>
+                                                <div class="opening-hours-item">
                                                     Der Laden ist heute geschlossen.
                                                 </div>
                                             @endif
                                         @endforeach
                                     @else
-                                        <div>
+                                        <div class="opening-hours-item">
                                             Keine Öffnungszeiten verfügbar.
                                         </div>
                                     @endif
 
-                                    <!-- Nächste Öffnungszeiten -->
+                                    {{-- Nächste Öffnungszeiten --}}
                                     @if($isOpen && $nextOpenTime)
-                                        <h4>Nächste Öffnungszeiten</h4>
+                                        <h4>{{ app(\App\Services\TranslationService::class)->trans('Nächste Öffnungszeiten', app()->getLocale()) }}</h4>
                                         @php
                                             list($nextOpenDay, $nextOpenHour) = explode(' ', $nextOpenTime);
                                             $nextOpenHourFormatted = \Carbon\Carbon::createFromFormat('H:i', $nextOpenHour)->format('H:i');
