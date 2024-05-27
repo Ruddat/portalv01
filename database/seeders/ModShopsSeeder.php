@@ -129,6 +129,30 @@ class ModShopsSeeder extends Seeder
                 ['city' => 'Eutin', 'lat' => 54.1407, 'lng' => 10.6194, 'radius' => 10],
             ],
             // Weitere Bundesländer und Städte...
+
+
+            'Niederlande' => [
+                ['city' => 'Marknesse', 'lat' => 52.7083, 'lng' => 5.8572, 'radius' => 10],
+                ['city' => 'Lelystad', 'lat' => 52.5185, 'lng' => 5.4714, 'radius' => 10],
+                ['city' => 'Emmeloord', 'lat' => 52.7126, 'lng' => 5.7480, 'radius' => 10],
+                ['city' => 'Dronten', 'lat' => 52.5250, 'lng' => 5.7180, 'radius' => 10],
+                ['city' => 'Urk', 'lat' => 52.6603, 'lng' => 5.5980, 'radius' => 10],
+                ['city' => 'Zeewolde', 'lat' => 52.3312, 'lng' => 5.5402, 'radius' => 10],
+                ['city' => 'Swifterbant', 'lat' => 52.5817, 'lng' => 5.6420, 'radius' => 10],
+                ['city' => 'Biddinghuizen', 'lat' => 52.4540, 'lng' => 5.6920, 'radius' => 10],
+                ['city' => 'Tollebeek', 'lat' => 52.6780, 'lng' => 5.6420, 'radius' => 10],
+                ['city' => 'Espel', 'lat' => 52.7210, 'lng' => 5.6450, 'radius' => 10],
+                ['city' => 'Creil', 'lat' => 52.7650, 'lng' => 5.6600, 'radius' => 10],
+                ['city' => 'Nagele', 'lat' => 52.6430, 'lng' => 5.7210, 'radius' => 10],
+                ['city' => 'Ens', 'lat' => 52.6400, 'lng' => 5.8250, 'radius' => 10],
+                ['city' => 'Kraggenburg', 'lat' => 52.6560, 'lng' => 5.9000, 'radius' => 10],
+                ['city' => 'Rutten', 'lat' => 52.8070, 'lng' => 5.7970, 'radius' => 10],
+                ['city' => 'Luttelgeest', 'lat' => 52.7460, 'lng' => 5.8220, 'radius' => 10],
+                ['city' => 'Bant', 'lat' => 52.7640, 'lng' => 5.7440, 'radius' => 10],
+                ['city' => 'Ketelhaven', 'lat' => 52.5480, 'lng' => 5.6440, 'radius' => 10],
+                ['city' => 'Kuinre', 'lat' => 52.7850, 'lng' => 5.8250, 'radius' => 10],
+            ],
+
         ];
 
         foreach ($bundeslaender as $bundesland => $cities) {
@@ -187,7 +211,7 @@ class ModShopsSeeder extends Seeder
                         'ordering' => $faker->randomNumber(),
                         'ordering2' => $faker->randomNumber(),
                         'published' => $faker->numberBetween(0, 1),
-                        'status' => $faker->randomElement(['on', 'off', 'closed', 'limited']),
+                        'status' => $faker->randomElement(['closed', 'limited']),
                         'activation_date' => $faker->dateTime(),
                         'date' => $faker->dateTime(),
                         'contact_info' => $faker->paragraph,

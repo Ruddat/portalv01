@@ -78,14 +78,33 @@ class StorePopup extends Component
             $this->nextOpenTime = OpeningHoursService::getNextOpenTime($this->shop);
         }
 
-        // Shopstatus überprüfen
-        $this->shopStatus = OpeningHoursService::getShopStatus($this->shop);
+    // Shopstatus überprüfen
+    $this->shopStatus = OpeningHoursService::getShopStatus($this->shop);
+
+    // Status-basiertes Bestellmanagement
+    switch ($this->shopStatus) {
+        case 'on':
+    // Falls der Laden geschlossen ist, erlauben wir nur Vorbestellungen
+    if ($this->isOpen === false) {
+        // dd($this->shopStatus);
+        $this->shopStatus = 'preorder';
+        $this->isOpen = true;
+
+    }
+
+            break;
+        case 'off':
+            $this->shopStatus = 'off';
+            break;
+        case 'closed':
+            $this->shopStatus = 'closed';
+            break;
+        case 'limited':
+            $this->shopStatus = 'limited';
+            break;
+    }
 
 
-        if ($this->isOpen === false) {
-            $this->shopStatus = 'preorder';
-            $this->isOpen = true;
-        }
     }
 
 
@@ -157,9 +176,9 @@ class StorePopup extends Component
             // Beispielhafte Ausgabe
      //       $this->openPopUp = false;
 
-//            dd('Session Daten', ['shopId' => $shopId, 'status' => $status]);
+            dd('Session Daten', ['shopId' => $shopId, 'status' => $status]);
         } else {
-            dd('Keine Daten für diese shopId in der Session gefunden.');
+         //   dd('Keine Daten für diese shopId in der Session gefunden.');
         }
     }
 

@@ -276,8 +276,12 @@ class ModShops extends Component
         // Weitere Validierungsregeln für andere Eigenschaften deines Shop-Modells
     ]);
 
+
     // Füge hier die Logik zum Aktualisieren eines vorhandenen Shops hinzu
     $shop = ModShop::find($this->newShop['id']);
+
+dd($shop);
+
     $shop->update($this->newShop);
 
     // Kombiniere die Teile der Adresse aus dem Livewire-Daten-Array
