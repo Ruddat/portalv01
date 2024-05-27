@@ -18,7 +18,7 @@
                     @elseif($shopStatus == 'on')
                         <h2 class="modal-title text-center">{{ $storeName }}</h2>
                     @elseif($shopStatus == 'preorder')
-                        <h2 class="modal-title text-center">{{ app(\App\Services\TranslationService::class)->trans('Vorbestellung möglich', app()->getLocale()) }}</h2>
+                        <h2 class="modal-title text-center">@autotranslate('Pre-order available', app()->getLocale())</h2>
                     @endif
                 </div>
 
@@ -51,7 +51,7 @@
                         </div>
 
                     @elseif($shopStatus == 'on' || $shopStatus == 'open')
-                        <p>Damit dein Essen so schnell wie möglich bei dir ist, brauchen wir bitte noch die Adresse.</p>
+                        <p>@autotranslate("To get your food to you as quickly as possible, we'll need your address, please.", app()->getLocale())</p>
                         <form>
                             <div class="row">
                                 <div class="mb-3 col-md-9">
@@ -87,8 +87,8 @@
                     @elseif($shopStatus == 'preorder')
                         <div class="modal-body">
                             <p>{{ $storeName }}
-                                {{ app(\App\Services\TranslationService::class)->trans('hat zurzeit noch geschlossen.
-                                Du kannst jetzt vorbestellen oder einen anderen Store auswählen.', app()->getLocale()) }} </p>
+                                @autotranslate('is currently closed.
+                                You can now pre-order or choose another store.', app()->getLocale())</p>
                             <div class="deliveryTimes">
                                 <div>
                                     @if ($todayOpeningHours instanceof \Illuminate\Support\Collection && $todayOpeningHours->isNotEmpty())
@@ -131,7 +131,8 @@
 
                                     {{-- Nächste Öffnungszeiten --}}
                                     @if($isOpen && $nextOpenTime)
-                                        <h4>{{ app(\App\Services\TranslationService::class)->trans('Nächste Öffnungszeiten', app()->getLocale()) }}</h4>
+                                        <h4>@autotranslate('Next opening hours', app()->getLocale())</h4>
+
                                         @php
                                             list($nextOpenDay, $nextOpenHour) = explode(' ', $nextOpenTime);
                                             $nextOpenHourFormatted = \Carbon\Carbon::createFromFormat('H:i', $nextOpenHour)->format('H:i');
@@ -143,9 +144,9 @@
 
                                         <div class="opening-hours-item">
                                             @if($isToday)
-                                                Wir öffnen heute um {{ $nextOpenHourFormatted }} Uhr
+                                                @autotranslate('We open today at', app()->getLocale()) {{ $nextOpenHourFormatted }}  @autotranslate('Clock', app()->getLocale())
                                             @elseif($isTomorrow)
-                                                Wir öffnen morgen um {{ $nextOpenHourFormatted }} Uhr
+                                                @autotranslate('We open tomorrow at', app()->getLocale()) {{ $nextOpenHourFormatted }} @autotranslate('Clock', app()->getLocale())
                                             @else
                                                 Wir öffnen wieder am {{ $nextOpenDayName }} um {{ $nextOpenHourFormatted }} Uhr
                                             @endif
@@ -155,19 +156,19 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">Store wechseln</button>
-                            <button type="button" class="btn btn-infomodal" wire:click.prevent="preOrder"><i class="icon-clock_2"></i>Vorbestellen</button>
+                            <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">@autotranslate('Change store', app()->getLocale())</button>
+                            <button type="button" class="btn btn-infomodal" wire:click.prevent="preOrder"><i class="icon-clock_2"></i>@autotranslate('Pre-order', app()->getLocale())</button>
                         </div>
                     @endif
                 </div>
 
                 <div class="modal-footer">
                     @if($shopStatus == 'closed' || $shopStatus == 'off')
-                        <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">Store wechseln</button>
+                        <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">@autotranslate('Change store', app()->getLocale())</button>
                     @elseif($shopStatus == 'open')
                         <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse">Ich möchte nur stöbern</button>
                     @elseif($shopStatus == 'limited')
-                        <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">Zurück zur Restaurantauswahl</button>
+                        <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">@autotranslate('Back to restaurant selection', app()->getLocale())</button>
                     @elseif($shopStatus == 'on')
                         <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse"><i class="icon-food_icon_shop"></i>Ich möchte nur stöbern</button>
                     @endif

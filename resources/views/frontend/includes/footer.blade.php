@@ -11,7 +11,7 @@
                         <li><a href="help.html">{{ app(\App\Services\TranslationService::class)->trans('Help', app()->getLocale()) }}</a></li>
                         <li><a href="register.html">{{ app(\App\Services\TranslationService::class)->trans('My account', app()->getLocale()) }}</a></li>
                         <li><a href="{{ url('/blog') }}">{{ app(\App\Services\TranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
-                        <li><a href="contacts.html">{{ app(\App\Services\TranslationService::class)->trans('Contacts', app()->getLocale()) }}</a></li>
+                        <li><a href="contacts.html">@autotranslate('Contacts', app()->getLocale())</a></li>
                     </ul>
                 </div>
             </div>
@@ -22,12 +22,12 @@
                         <li><a href="grid-listing-filterscol.html">{{ app(\App\Services\TranslationService::class)->trans('Top Categories', app()->getLocale()) }}</a></li>
                         <li><a href="grid-listing-filterscol-full-masonry.html">{{ app(\App\Services\TranslationService::class)->trans('Best Rated', app()->getLocale()) }}</a></li>
                         <li><a href="grid-listing-filterscol-full-width.html">{{ app(\App\Services\TranslationService::class)->trans('Best Price', app()->getLocale()) }}</a></li>
-                        <li><a href="grid-listing-filterscol-full-masonry.html">{{ app(\App\Services\TranslationService::class)->trans('Latest Submissions', app()->getLocale()) }}</a></li>
+                        <li><a href="grid-listing-filterscol-full-masonry.html">@autotranslate('Latest Submissions', app()->getLocale())</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                    <h3 data-bs-target="#collapse_3">{{ app(\App\Services\TranslationService::class)->trans('Contacts', app()->getLocale()) }}</h3>
+                    <h3 data-bs-target="#collapse_3">@autotranslate('Contacts', app()->getLocale())</h3>
                 <div class="collapse dont-collapse-sm contacts" id="collapse_3">
                     <ul>
                         @if(get_settings()->site_address)
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                    <h3 data-bs-target="#collapse_4">{{ app(\App\Services\TranslationService::class)->trans('Keep in touch', app()->getLocale()) }}</h3>
+                    <h3 data-bs-target="#collapse_4">@autotranslate('Keep in touch', app()->getLocale())</h3>
                 <div class="collapse dont-collapse-sm" id="collapse_4">
                     <div id="newsletter">
                         <div id="message-newsletter"></div>

@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use Blade;
 use Illuminate\Support\Facades\App;
+use App\Services\TranslationService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use App\Services\AutoTranslationService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +18,15 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+
+        // Registriere den TranslationService
+        $this->app->singleton(TranslationService::class, function ($app) {
+            return new TranslationService(new \Stichoza\GoogleTranslate\GoogleTranslate());
+        });
+
+        $this->app->singleton(AutoTranslationService::class, function ($app) {
+            return new AutoTranslationService($app->make(\App\Repositories\TranslationRepository::class));
+        });
     }
 
     /**
@@ -26,6 +38,13 @@ class AppServiceProvider extends ServiceProvider
          Paginator::useBootstrap(); // For Bootstrap 5
     //	 Paginator::useBootstrapFour(); // For Bootstrap 4
 	//   Paginator::useBootstrapThree(); // For Bootstrap 3
+
+        // Blade Directive für AutoTranslationService
+        Blade::directive('autotranslate', function ($expression) {
+            return "<?php echo app(\App\Services\AutoTranslationService::class)->trans($expression); ?>";
+        });
+
+
 
         //
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {

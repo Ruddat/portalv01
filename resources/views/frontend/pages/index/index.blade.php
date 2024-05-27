@@ -90,7 +90,7 @@
                 <div class="container">
                     <div class="row justify-content-lg-start justify-content-md-center">
                         <div class="col-xl-7 col-lg-8">
-                            <h1>{{ app(\App\Services\TranslationService::class)->trans('Delivery or Takeaway Food', app()->getLocale()) }}
+                            <h1>@autotranslate('Delivery or Takeaway Food', app()->getLocale())
                             </h1>
                             <p>{{ app(\App\Services\TranslationService::class)->trans(
                                 'The best restaurants at the best price
@@ -115,13 +115,13 @@
                                     </div>
                                     <div class="col-lg-3 button-container">
                                         <button class="btn_2 gradient"
-                                            type="submit">{{ GoogleTranslate::trans('Search', app()->getLocale()) }}</button>
+                                            type="submit">@autotranslate('Search', app()->getLocale())</button>
                                     </div>
                                 </div>
                             </form>
                             <!-- /row -->
                             <div class="search_trends">
-                                <h5>{{ app(\App\Services\TranslationService::class)->trans('Trending:', app()->getLocale()) }}
+                                <h5>@autotranslate('Trending', app()->getLocale())
                                 </h5>
                                 <ul>
                                     <li><a href="#0">Sushi</a></li>
@@ -150,7 +150,7 @@
         <div class="container margin_30_60">
             <div class="main_title center">
                 <span><em></em></span>
-                <h2>{{ app(\App\Services\TranslationService::class)->trans('Popular Categories', app()->getLocale()) }}</h2>
+                <h2>@autotranslate('Popular Categories', app()->getLocale())</h2>
                 <p>Cum doctus civibus efficiantur in imperdiet deterruisset</p>
             </div>
             <!-- /main_title -->
@@ -263,10 +263,10 @@
             <div class="container margin_60_40">
                 <div class="main_title">
                     <span><em></em></span>
-                    <h2>{{ app(\App\Services\TranslationService::class)->trans('Top Rated Restaurants', app()->getLocale()) }}
+                    <h2>@autotranslate('Top Rated Restaurants', app()->getLocale())
                     </h2>
                     <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
-                    <a href="#0">View All &rarr;</a>
+                    <a href="#0">@autotranslate('View All', app()->getLocale()) &rarr;</a>
                 </div>
                 <div class="row add_bottom_25">
                     <div class="col-lg-6">
@@ -389,12 +389,12 @@
                     <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
                         <div>
                             <small>{{ app(\App\Services\TranslationService::class)->trans('FooYes Delivery', app()->getLocale()) }}</small>
-                            <h3>{{ app(\App\Services\TranslationService::class)->trans('We Deliver to your Office', app()->getLocale()) }}
+                            <h3>@autotranslate('We Deliver to your Office', app()->getLocale())
                             </h3>
-                            <p>{{ app(\App\Services\TranslationService::class)->trans('Enjoy a tasty food in minutes!', app()->getLocale()) }}
+                            <p>@autotranslate('Enjoy a tasty food in minutes!', app()->getLocale())
                             </p>
                             <a href="grid-listing-filterscol.html"
-                                class="btn_1 gradient">{{ app(\App\Services\TranslationService::class)->trans('Start Now!', app()->getLocale()) }}</a>
+                                class="btn_1 gradient">@autotranslate('Start Now!', app()->getLocale())</a>
                         </div>
                     </div>
                     <!-- /wrapper -->
@@ -414,7 +414,7 @@
                                     <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}"
                                             data-src="{{ asset('frontend/img/how_1.svg') }}" alt=""
                                             width="150" height="167" class="lazy"></figure>
-                                    <h3>{{ app(\App\Services\TranslationService::class)->trans('Easly Order', app()->getLocale()) }}
+                                    <h3>@autotranslate('Easly Order', app()->getLocale())
                                     </h3>
                                     <p>Faucibus ante, in porttitor tellus blandit et. Phasellus tincidunt metus lectus
                                         sollicitudin.</p>
@@ -434,7 +434,7 @@
                                     <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}"
                                             data-src="{{ asset('frontend/img/how_3.svg') }}" alt=""
                                             width="150" height="132" class="lazy"></figure>
-                                    <h3>{{ app(\App\Services\TranslationService::class)->trans('Enjoy Food', app()->getLocale()) }}
+                                    <h3>@autotranslate('Enjoy Food', app()->getLocale())
                                     </h3>
                                     <p>Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, a feugiat
                                         eros.</p>
@@ -442,14 +442,14 @@
                             </div>
                         </div>
                         <p class="text-center mt-3 d-block d-lg-none"><a href="#0"
-                                class="btn_1 medium gradient pulse_bt mt-2">{{ app(\App\Services\TranslationService::class)->trans('Register Now!', app()->getLocale()) }}</a>
+                                class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Register Now!', app()->getLocale())</a>
                         </p>
                     </div>
                     <div class="col-lg-5 offset-lg-1 align-self-center">
                         <div class="intro_txt">
                             <div class="main_title">
                                 <span><em></em></span>
-                                <h2>{{ app(\App\Services\TranslationService::class)->trans('Start Ordering Now', app()->getLocale()) }}
+                                <h2>@autotranslate('Start Ordering Now', app()->getLocale())
                                 </h2>
                             </div>
                             <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet libero
@@ -457,7 +457,7 @@
                             <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
                                 pariatur.</p>
                             <p><a href="#0"
-                                    class="btn_1 medium gradient pulse_bt mt-2">{{ app(\App\Services\TranslationService::class)->trans('Register', app()->getLocale()) }}</a>
+                                    class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Register', app()->getLocale())</a>
                             </p>
                         </div>
                     </div>
@@ -471,7 +471,7 @@
             document.addEventListener("DOMContentLoaded", function() {
                 // Event-Listener für Klickereignis auf Schaltfläche
                 document.getElementById("btn1").addEventListener("click", function() {
-                    showToast("Die Umkreissuche wurde gestartet. Bitte warten Sie einen Moment, während wir die Ergebnisse für Sie sammeln.");
+                    showToast("@autotranslate('The radius search has been initiated. Please wait a moment while we gather the results for you.', app()->getLocale())");
                 });
 
                 function showToast(message) {
