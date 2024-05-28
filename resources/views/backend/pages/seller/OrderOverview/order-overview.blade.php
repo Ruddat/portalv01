@@ -17,7 +17,7 @@
                                         <div class="row">
                                             <div class="col-xl-4 col-lg-4 col-6">
                                                 <div class="line position-relative">
-                                                <p class="font-w500 mb-0">Total Income</p>
+                                                <p class="font-w500 mb-0">@autotranslate('Total Income', app()->getLocale())</p>
                                                 <h2 class="mb-0 text-primary">$12,890,00</h2>
                                                 </div>
                                             </div>

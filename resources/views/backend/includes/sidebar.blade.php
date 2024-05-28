@@ -102,11 +102,11 @@
                             <li><a href="#">Top Rank</a></li>
                             <hr>
 
-                            <li><a href="{{ route('seller.indexOrderOverview', ['shopId' => $shopId]) }}">Bestellübersicht</a></li>
-                            <li><a href="{{ route('seller.reviews-overview', ['shopId' => $shopId]) }}">Kundenbewertungen</a></li>
+                            <li><a href="{{ route('seller.indexOrderOverview', ['shopId' => $shopId]) }}">@autotranslate('Order overview', app()->getLocale())</a></li>
+                            <li><a href="{{ route('seller.reviews-overview', ['shopId' => $shopId]) }}">@autotranslate('Customer reviews', app()->getLocale())</a></li>
                             <li><a href="#">Stornierungen</a></li>
                             <hr>
-                            <li><a href="{{ route('seller.product-sizes', ['shop' => $shopId]) }}">Produktgroessen</a></li>
+                            <li><a href="{{ route('seller.product-sizes', ['shop' => $shopId]) }}">@autotranslate('Product sizes', app()->getLocale())</a></li>
                             <li><a href="{{ route('seller.manage-ingredients.ingredients-index', ['shop' => $shopId]) }}">Zutaten</a></li>
                             <hr>
 							<li><a href="{{ route('seller.manage-categories.cats-subcats-list') }}">{{ app(\App\Services\TranslationService::class)->trans('Product Categories', app()->getLocale()) }}</a></li>

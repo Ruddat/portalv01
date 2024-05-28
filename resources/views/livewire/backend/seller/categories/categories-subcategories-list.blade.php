@@ -23,7 +23,7 @@
                                 <a href="{{ route('seller.manage-categories.add-category') }}"
                                     class="btn btn-primary btn-sm" type="button">
                                     <i class="fa fa-plus"></i>
-                                    Add Category
+                                    @autotranslate('Add Category', app()->getLocale())
                                 </a>
                             </div>
                         </div>
@@ -33,12 +33,12 @@
                                     <thead>
                                         <tr>
                                             <th style="width:80px;"><strong>#</strong></th>
-                                            <th><strong>Category Image</strong></th>
-                                            <th><strong>Category Name</strong></th>
+                                            <th><strong>@autotranslate('Category Image', app()->getLocale())</strong></th>
+                                            <th><strong>@autotranslate('Category Name', app()->getLocale())</strong></th>
                                             <th><strong>N. of sub categories</strong></th>
-                                            <th><strong>Show in list</strong></th>
-                                            <th><strong>Turned on</strong></th>
-                                            <th><strong>Actions</strong></th>
+                                            <th><strong>@autotranslate('Show in list', app()->getLocale())</strong></th>
+                                            <th><strong>@autotranslate('Turned on', app()->getLocale())</strong></th>
+                                            <th><strong>@autotranslate('Actions', app()->getLocale())</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody id="sortable_categories">

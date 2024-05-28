@@ -27,7 +27,7 @@
                         <div class="text-center">
                             <img src="{{ $storeLogo }}" alt="{{ $storeName }}" class="img-fluid mb-3" style="max-height: 150px;">
                             <h3>{{ $storeName }}</h3>
-                            <p class="text-wrap">Bitte ein anderes Restaurant waehlen!!!</p>
+                            <p class="text-wrap">@autotranslate('Please choose another restaurant!', app()->getLocale())</p>
                         </div>
 
                     @elseif($shopStatus == 'off')
@@ -47,7 +47,7 @@
                         <div class="text-center">
                             <img src="{{ $storeLogo }}" alt="{{ $storeName }}" class="img-fluid mb-3" style="max-height: 150px;">
                             <h3>{{ $storeName }}</h3>
-                            <p class="text-wrap">Der Shop wird gerade eingerichtet. Bitte schaue später noch einmal vorbei.</p>
+                            <p class="text-wrap">@autotranslate('This shop is currently being set up. Please check back later.', app()->getLocale())</p>
                         </div>
 
                     @elseif($shopStatus == 'on' || $shopStatus == 'open')
@@ -55,33 +55,34 @@
                         <form>
                             <div class="row">
                                 <div class="mb-3 col-md-9">
-                                    <input id="street" name="street" type="text" class="form-control @error('street') is-invalid @enderror" placeholder="Street*" autocomplete="off" spellcheck="false" wire:model="street">
-                                    @error('street') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    <input id="street" name="street" type="text" class="form-control @error('street') is-invalid @enderror" placeholder="@autotranslate('Street*', app()->getLocale())" autocomplete="off" spellcheck="false" wire:model="street">
+                                    @error('street') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <input name="housenumber" type="text" class="form-control @error('housenumber') is-invalid @enderror" placeholder="Nr.*" wire:model="housenumber">
-                                    @error('housenumber') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    <input name="housenumber" type="text" class="form-control @error('housenumber') is-invalid @enderror" placeholder="@autotranslate('Nr.*', app()->getLocale())" wire:model="housenumber">
+                                    @error('housenumber') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <input type="text" class="form-control @error('postcode') is-invalid @enderror" placeholder="Postleitzahl*" wire:model="postcode">
-                                    @error('postcode') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    <input type="text" class="form-control @error('postcode') is-invalid @enderror" placeholder="@autotranslate('Postal code*', app()->getLocale())" wire:model="postcode">
+                                    @error('postcode') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}
+                                    </span> @enderror
                                 </div>
                                 <div class="mb-3 col-md-9">
-                                    <input type="text" class="form-control @error('city') is-invalid @enderror" placeholder="City*" wire:model="city">
-                                    @error('city') <span class="invalid-feedback">{{ $message }}</span> @enderror
+                                    <input type="text" class="form-control @error('city') is-invalid @enderror" placeholder="@autotranslate('City*', app()->getLocale())" wire:model="city">
+                                    @error('city') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                             </div>
                             <div class="text-center">
                                 <button type="button" class="btn btn-infomodal" wire:click="orderDelivery">
-                                    <i class="icon-food_icon_delivery"></i>Lieferung
+                                    <i class="icon-food_icon_delivery"></i>@autotranslate('Delivery', app()->getLocale())
                                 </button>
                             </div>
                         </form>
                         <div>
-                            <h2 class="modal-title text-center">Selbst abholen</h2>
+                            <h2 class="modal-title text-center">@autotranslate('Self Pickup', app()->getLocale())</h2>
                             <p>Hol' dir deine Bestellung ganz einfach und schnell aus unserer Filiale in <b>{{ $storeCity }} {{ $storeStreet }}</b> ab!</p>
                             <div class="text-center">
-                            <button type="button" class="btn btn-infomodal" wire:click="orderPickUp"><i class="icon-food_icon_shop"></i>Abholung</button>
+                            <button type="button" class="btn btn-infomodal" wire:click="orderPickUp"><i class="icon-food_icon_shop"></i>@autotranslate('Pick up', app()->getLocale())</button>
                             </div>
                         </div>
                     @elseif($shopStatus == 'preorder')

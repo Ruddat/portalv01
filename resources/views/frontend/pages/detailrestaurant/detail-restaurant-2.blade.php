@@ -43,9 +43,7 @@
                                         </span><strong>{{ number_format($overallRating, 1) }}</strong></div>
                                 </div>
                                 <h1>{{ $restaurant->title }}</h1>
-                                {{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a
-                                    href="https://www.google.com/maps/dir/{{ $restaurant->lat }},{{ $restaurant->lng }}/{{ urlencode($restaurant->title) }}"
-                                    target="_blank">Get directions to {{ $restaurant->title }}</a>
+                                {{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a href="https://www.google.com/maps/dir/?api=1&destination={{ $restaurant->lat }},{{ $restaurant->lng }}" target="_blank">@autotranslate('Get directions to', app()->getLocale()) {{ $restaurant->title }}</a>
 
 
                             </div>
@@ -239,7 +237,7 @@
             <div class="row">
                 <div class="col-lg-8 list_menu">
                     <section id="section-20">
-                        <h4>Reviews</h4>
+                        <h4>@autotranslate('Reviews', app()->getLocale())</h4>
                         <div class="row add_bottom_30 d-flex align-items-center reviews">
                             <div class="col-md-3">
                                 <div id="review_summary">

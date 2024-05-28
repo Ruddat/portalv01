@@ -92,11 +92,7 @@
                         <div class="col-xl-7 col-lg-8">
                             <h1>@autotranslate('Delivery or Takeaway Food', app()->getLocale())
                             </h1>
-                            <p>{{ app(\App\Services\TranslationService::class)->trans(
-                                'The best restaurants at the best price
-                                                            ',
-                                app()->getLocale(),
-                            ) }}
+                            <p>@autotranslate('The best restaurants at the best price', app()->getLocale())
                                 <span class="element" style="font-weight: 500"></span></p>
 
                             <form method="post" action="{{ route('search.index') }}" id="searchForm">
@@ -106,7 +102,7 @@
                                         <div class="form-group">
                                             <input class="form-control no_border_r" type="text" name="query"
                                                 id="autocomplete"
-                                                placeholder="{{ app(\App\Services\TranslationService::class)->trans('Strasse oder Ort...', app()->getLocale()) }}"
+                                                placeholder="@autotranslate('Street or location...', app()->getLocale())"
                                                 value="{{ session('selectedLocation') }}">
                                             @error('query')
                                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -388,7 +384,7 @@
                 <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }}">
                     <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
                         <div>
-                            <small>{{ app(\App\Services\TranslationService::class)->trans('FooYes Delivery', app()->getLocale()) }}</small>
+                            <small>@autotranslate('MamasExpress', app()->getLocale())</small>
                             <h3>@autotranslate('We Deliver to your Office', app()->getLocale())
                             </h3>
                             <p>@autotranslate('Enjoy a tasty food in minutes!', app()->getLocale())
@@ -423,7 +419,7 @@
                                     <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}"
                                             data-src="{{ asset('frontend/img/how_2.svg') }}" alt=""
                                             width="130" height="145" class="lazy"></figure>
-                                    <h3>{{ app(\App\Services\TranslationService::class)->trans('Quick Delivery', app()->getLocale()) }}
+                                    <h3>@autotranslate('Quick Delivery', app()->getLocale())
                                     </h3>
                                     <p>Maecenas pulvinar, risus in facilisis dignissim, quam nisi hendrerit nulla, id
                                         vestibulum.</p>
