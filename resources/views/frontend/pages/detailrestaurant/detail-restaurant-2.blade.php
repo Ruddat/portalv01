@@ -256,16 +256,16 @@
                                                 @endphp
                                                 <div>{{ $ratingText }}</div>
                                             @else
-                                                <div>No reviews yet</div>
+                                                <div>@autotranslate('No reviews yet', app()->getLocale())</div>
                                             @endif
                                         </em></em>
-                                    <small>Based on {{ $numberOfRatings }} reviews</small>
+                                    <small>@autotranslate('Based on', app()->getLocale()) {{ $numberOfRatings }} @autotranslate('reviews', app()->getLocale())</small>
                                 </div>
                             </div>
                             <div class="col-md-9 reviews_sum_details">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <h6>Food Quality</h6>
+                                        <h6>@autotranslate('Food Quality', app()->getLocale())</h6>
                                         <div class="row">
                                             <div class="col-xl-10 col-lg-9 col-9">
                                                 <div class="progress">
@@ -280,7 +280,7 @@
                                             </div>
                                         </div>
                                         <!-- /row -->
-                                        <h6>Service</h6>
+                                        <h6>@autotranslate('Service', app()->getLocale())</h6>
                                         <div class="row">
                                             <div class="col-xl-10 col-lg-9 col-9">
                                                 <div class="progress">
@@ -297,7 +297,7 @@
                                         <!-- /row -->
                                     </div>
                                     <div class="col-md-6">
-                                        <h6>Punctuality</h6>
+                                        <h6>@autotranslate('Punctuality', app()->getLocale())</h6>
                                         <div class="row">
                                             <div class="col-xl-10 col-lg-9 col-9">
                                                 <div class="progress">
@@ -312,7 +312,7 @@
                                             </div>
                                         </div>
                                         <!-- /row -->
-                                        <h6>Price</h6>
+                                        <h6>@autotranslate('Price', app()->getLocale())</h6>
                                         <div class="row">
                                             <div class="col-xl-10 col-lg-9 col-9">
                                                 <div class="progress">

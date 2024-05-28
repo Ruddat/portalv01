@@ -68,16 +68,15 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>Last Name</label>
-                                    <input wire:model="last_name" class="form-control" placeholder="Last Name">
-                                    @error('last_name') <span class="text-danger">{{ $message }}</span> @enderror
+                                    <input wire:model="last_name" class="form-control" placeholder="@autotranslate('Last Name*', app()->getLocale())">
+                                    @error('last_name') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label>First Name</label>
-                                    <input wire:model="first_name" class="form-control" placeholder="First Name">
-                                    @error('first_name') <span class="text-danger">{{ $message }}</span> @enderror
+
+                                    <input wire:model="first_name" class="form-control" placeholder="@autotranslate('First Name*', app()->getLocale())">
+                                    @error('first_name') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                             </div>
                         </div>
@@ -87,69 +86,64 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>{{ app(\App\Services\TranslationService::class)->trans('Email Address', app()->getLocale()) }}</label>
-                                    <input wire:model="email" class="form-control" placeholder="Email Address">
-                                    @error('email') <span class="text-danger">{{ $message }}</span> @enderror
+                                    <input wire:model="email" class="form-control" placeholder="@autotranslate('Email Address*', app()->getLocale())">
+                                    @error('email') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Phone</label>
-                                    <input wire:model="phone" class="form-control" placeholder="Phone">
-                                    @error('phone') <span class="text-danger">{{ $message }}</span> @enderror
+                                    <input wire:model="phone" class="form-control" placeholder="@autotranslate('Phone*', app()->getLocale())">
+                                    @error('phone') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <textarea  wire:model="order_comment" class="form-control" style="height: 80px;" placeholder="Order Comment" id="order_comment" name="order_comment"></textarea>
+                                <textarea  wire:model="order_comment" class="form-control" style="height: 80px;" placeholder="@autotranslate('Order Comment', app()->getLocale())" id="order_comment" name="order_comment"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label>Full Address</label>
-                            <input wire:model="full_address" class="form-control" placeholder="Full Address">
-                            @error('full_address') <span class="text-danger">{{ $message }}</span> @enderror
+                            <input wire:model="full_address" class="form-control" placeholder="@autotranslate('Full Address*', app()->getLocale())">
+                            @error('full_address') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                         </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label>Postal Code</label>
-                                    <input wire:model="postal_code" class="form-control" placeholder="0123">
-                                    @error('postal_code') <span class="text-danger">{{ $message }}</span> @enderror
+                                    <input wire:model="postal_code" class="form-control" placeholder="@autotranslate('Postal Code*', app()->getLocale())">
+                                    @error('postal_code') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                             </div>
                             <div class="col-md-9">
                                 <div class="form-group">
-                                    <label>City</label>
-                                    <input wire:model="city" class="form-control" placeholder="City">
-                                    @error('city') <span class="text-danger">{{ $message }}</span> @enderror
+                                    <input wire:model="city" class="form-control" placeholder="@autotranslate('City*', app()->getLocale())">
+                                    @error('city') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-12">
-                                <textarea wire:model="description_of_way" class="form-control" style="height: 80px;" placeholder="Shipping Comment" id="shipping_comment" name="order_comment"></textarea>
+                                <textarea wire:model="description_of_way" class="form-control" style="height: 80px;" placeholder="@autotranslate('Shipping Comment', app()->getLocale())" id="shipping_comment" name="order_comment"></textarea>
                             </div>
                         </div>
 
 
                         <div class="row opt_order_news">
                             <div class="col-12">
-                                <label class="container_radio">Ja, ich möchte gelegentlich Neuigkeiten und Coupons erfahren.
+                                <label class="container_radio">@autotranslate('Yes, I would like to occasionally receive news and coupons.', app()->getLocale())
                                     <input wire:model="opt_news_coupons" type="checkbox" value="1">
                                     <span class="checkmark"></span>
                                 </label>
-                                @error('opt_news_coupons') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('opt_news_coupons') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                             </div>
                             <div class="col-12">
-                                <label class="container_radio">Meine Daten für den nächsten Besuch speichern.
+                                <label class="container_radio">@autotranslate('Save my data for the next visit.', app()->getLocale())
                                     <input wire:model="opt_save_data" type="checkbox" value="1">
                                     <span class="checkmark"></span>
                                 </label>
-                                @error('opt_save_data') <span class="text-danger">{{ $message }}</span> @enderror
+                                @error('opt_save_data') <span class="text-danger">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                             </div>
                         </div>
                     </div>
@@ -159,7 +153,7 @@
                 <div class="box_order_form">
                     <div class="head">
                         <div class="title">
-                            <h3>{{ app(\App\Services\TranslationService::class)->trans('Zahlungsarten', app()->getLocale()) }}</h3>
+                            <h3>@autotranslate('Payment methods', app()->getLocale())</h3>
                         </div>
                     </div>
                     <!-- /head -->
@@ -167,13 +161,13 @@
 
                         <div class="row opt_order">
                             <div class="col-6">
-                                <label class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Delivery', app()->getLocale()) }}
+                                <label class="container_radio">@autotranslate('Delivery', app()->getLocale())
                                     <input type="radio" value="option1" name="opt_order" checked>
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
                             <div class="col-6">
-                                <label class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Selbstabholen', app()->getLocale()) }}
+                                <label class="container_radio">@autotranslate('Pick up', app()->getLocale())
                                     <input type="radio" value="option1" name="opt_order">
                                     <span class="checkmark"></span>
                                 </label>
@@ -282,13 +276,13 @@
                 <div class="box_order_form">
                     <div class="head">
                         <div class="title">
-                            <h3>{{ app(\App\Services\TranslationService::class)->trans('Zahlungsarten', app()->getLocale()) }}</h3>
+                            <h3>@autotranslate('Payment methods', app()->getLocale())</h3>
                         </div>
                     </div>
                     <!-- /head -->
                     <div class="main">
                         <div class="payment_select">
-                            <label class="container_radio">Pay with Cash
+                            <label class="container_radio">@autotranslate('Cash payment', app()->getLocale())
                                 <input wire:model="payment_method" type="radio" value="cash" checked name="payment_method">
                                 <span class="checkmark"></span>
                             </label>
@@ -296,13 +290,13 @@
                         </div>
                         <!--End row -->
                         <div class="payment_select" id="paypal">
-                            <label class="container_radio">Pay with Paypal
+                            <label class="container_radio">@autotranslate('Pay with Paypal', app()->getLocale())
                                 <input wire:model="payment_method" type="radio" value="paypal" name="payment_method">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
                         <div class="payment_select">
-                            <label class="container_radio">EC Card
+                            <label class="container_radio">@autotranslate('EC Card', app()->getLocale())
                                 <input wire:model="payment_method" type="radio" value="ec-card" name="payment_method">
                                 <span class="checkmark"></span>
                             </label>
@@ -316,7 +310,7 @@
             <div class="col-xl-4 col-lg-4" id="sidebar_fixed">
                 <div class="box_order">
                     <div class="head">
-                        <h3>{{ app(\App\Services\TranslationService::class)->trans('Order Summary', app()->getLocale()) }}</h3>
+                        <h3>@autotranslate('Order Summary', app()->getLocale())</h3>
                         <div>{{ $shopData->title }}</div>
                     </div>
                     <!-- /head -->
@@ -348,11 +342,6 @@
         </form>
     </div>
     <!-- /container -->
-    <div class="mt-4">
-        <h4>Generiertes XML-Dokument:</h4>
-        <pre>{{ $xml }}</pre>
-    </div>
-
 
 
 
