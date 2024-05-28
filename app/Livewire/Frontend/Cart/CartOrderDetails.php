@@ -113,21 +113,21 @@ class CartOrderDetails extends Component
             'order_comment' => 'nullable', // Validierung des Bestellkommentars
             'description_of_way' => 'nullable', // Validierung des Versandkommentars
         ],[
-            'selectedOption.required' => 'Bitte wählen Sie eine Option aus.',
-            'company.required_if' => 'Bitte geben Sie den Firmennamen ein.',
-            'department.required_if' => 'Bitte geben Sie den Abteilungsnamen ein.',
-            'last_name.required' => 'Bitte geben Sie den Nachnamen ein.',
-            'last_name.min' => 'Der Nachname muss mindestens 4 Zeichen lang sein.',
-            'first_name.required' => 'Bitte geben Sie den Vornamen ein.',
-            'first_name.min' => 'Der Vorname muss mindestens 4 Zeichen lang sein.',
-            'email.required' => 'Bitte geben Sie die E-Mail-Adresse ein.',
-            'phone.required' => 'Bitte geben Sie die Telefonnummer ein.',
-            'full_address.required' => 'Bitte geben Sie die vollständige Adresse ein.',
-            'full_address.min' => 'Die vollständige Adresse muss mindestens 5 Zeichen lang sein.',
-            'city.required' => 'Bitte geben Sie die Stadt ein.',
-            'city.min' => 'Die Stadt muss mindestens 5 Zeichen lang sein.',
-            'postal_code.required' => 'Bitte geben Sie die Postleitzahl ein.',
-            'payment_method.required' => 'Bitte wählen Sie eine Zahlungsart aus.',
+            'selectedOption.required' => 'Please select an option.',
+            'company.required_if' => 'Please enter the company name.',
+            'department.required_if' => 'Please enter the department name.',
+            'last_name.required' => 'Please enter the last name.',
+            'last_name.min' => 'The last name must be at least 4 characters long.',
+            'first_name.required' => 'Please enter the first name.',
+            'first_name.min' => 'The first name must be at least 4 characters long.',
+            'email.required' => 'Please enter the email address.',
+            'phone.required' => 'Please enter the phone number.',
+            'full_address.required' => 'Please enter the full address.',
+            'full_address.min' => 'The full address must be at least 5 characters long.',
+            'city.required' => 'Please enter the city.',
+            'city.min' => 'The city must be at least 5 characters long.',
+            'postal_code.required' => 'Please enter the postal code.',
+            'payment_method.required' => 'Please select a payment method.',
         ]);
 
       //   dd($validatedData);
