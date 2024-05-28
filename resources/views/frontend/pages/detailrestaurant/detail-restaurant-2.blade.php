@@ -37,15 +37,13 @@
                                                 @endphp
                                                 <div>{{ $ratingText }}</div>
                                             @else
-                                                <div>No reviews yet</div>
+                                                <div>@autotranslate('No reviews yet', app()->getLocale())</div>
                                             @endif
-                                            <em>{{ $numberOfRatings }} Reviews</em>
+                                            <em>{{ $numberOfRatings }} @autotranslate('Reviews', app()->getLocale())</em>
                                         </span><strong>{{ number_format($overallRating, 1) }}</strong></div>
                                 </div>
                                 <h1>{{ $restaurant->title }}</h1>
-                                {{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a
-                                    href="https://www.google.com/maps/dir/{{ $restaurant->lat }},{{ $restaurant->lng }}/{{ urlencode($restaurant->title) }}"
-                                    target="_blank">Get directions to {{ $restaurant->title }}</a>
+                                {{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a href="https://www.google.com/maps/dir/?api=1&destination={{ $restaurant->lat }},{{ $restaurant->lng }}" target="_blank">@autotranslate('Get directions to', app()->getLocale()) {{ $restaurant->title }}</a>
 
 
                             </div>
@@ -55,15 +53,14 @@
                                 <div class="buttons clearfix">
                                     <span class="magnific-gallery">
                                         <a href="{{ asset('frontend/img/detail_1.jpg') }}" class="btn_hero"
-                                            title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>View
-                                            photos</a>
+                                            title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>@autotranslate('View photos', app()->getLocale())</a>
                                         <a href="{{ asset('frontend/img/detail_2.jpg') }}" title="Photo title"
                                             data-effect="mfp-zoom-in"></a>
                                         <a href="{{ asset('frontend/img/detail_3.jpg') }}" title="Photo title"
                                             data-effect="mfp-zoom-in"></a>
                                     </span>
-                                    <a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>Wishlist</a>
-                                    <a href="#0" class="btn_hero wishlist"><i class="icon_info"></i>Info</a>
+                                    <a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>@autotranslate('Wishlist', app()->getLocale())</a>
+                                    <a href="#0" class="btn_hero wishlist"><i class="icon_info"></i>@autotranslate('Info', app()->getLocale())</a>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +78,7 @@
                     @foreach ($categories as $category)
                         <li><a href="#section-{{ $category->id }}">{{ $category->category_name }}</a></li>
                     @endforeach
-                    <li><a href="#section-20"><i class="icon_chat_alt"></i>Reviews</a></li>
+                    <li><a href="#section-20"><i class="icon_chat_alt"></i>@autotranslate('Reviews', app()->getLocale())</a></li>
                 </ul>
             </div>
             <span></span>
@@ -102,7 +99,7 @@
                     <div class="col-lg-4" id="sidebar_fixed">
                         <div class="box_order mobile_fixed">
                             <div class="head">
-                                <h3>{{ app(\App\Services\TranslationService::class)->trans('Order Summary', app()->getLocale()) }}
+                                <h3>@autotranslate('Order Summary', app()->getLocale())
                                 </h3>
                                 <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
 
@@ -114,14 +111,14 @@
                                 <div class="row opt_order">
                                     <div class="col-6">
                                         <label
-                                            class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Delivery', app()->getLocale()) }}
+                                            class="container_radio">@autotranslate('Delivery', app()->getLocale())
                                             <input type="radio" value="option1" name="opt_order" checked>
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
                                     <div class="col-6">
                                         <label
-                                            class="container_radio">{{ app(\App\Services\TranslationService::class)->trans('Selbstabholen', app()->getLocale()) }}
+                                            class="container_radio">@autotranslate('Selbstabholen', app()->getLocale())
                                             <input type="radio" value="option1" name="opt_order">
                                             <span class="checkmark"></span>
                                         </label>
@@ -217,7 +214,7 @@
                                     <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}"
                                         class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</a>
                                     <div class="text-center">
-                                        <small>{{ app(\App\Services\TranslationService::class)->trans('No money charged on this steps', app()->getLocale()) }}</small>
+                                        <small>@autotranslate('No money charged on this steps', app()->getLocale())</small>
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +237,7 @@
             <div class="row">
                 <div class="col-lg-8 list_menu">
                     <section id="section-20">
-                        <h4>Reviews</h4>
+                        <h4>@autotranslate('Reviews', app()->getLocale())</h4>
                         <div class="row add_bottom_30 d-flex align-items-center reviews">
                             <div class="col-md-3">
                                 <div id="review_summary">

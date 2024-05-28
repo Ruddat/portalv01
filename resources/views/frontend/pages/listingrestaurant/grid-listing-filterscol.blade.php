@@ -52,14 +52,14 @@
 					<div class="type_delivery">
 						<ul class="clearfix">
 						    <li>
-						        <label class="container_radio">Delivery
+						        <label class="container_radio">@autotranslate('Delivery', app()->getLocale())
 						            <input type="radio" name="type_d" checked="checked">
 						            <span class="checkmark"></span>
 						        </label>
 						    </li>
 						    <li>
-						        <label class="container_radio">Take away
-						            <input type="radio" name="type_d">
+						        <label class="container_radio">@autotranslate('Pick up', app()->getLocale())
+                                    <input type="radio" name="type_d">
 						            <span class="checkmark"></span>
 						        </label>
 						    </li>
@@ -166,9 +166,9 @@
 						</div>
 						<!-- /filter_type -->
                         <div class="filter_type">
-                            <h4><a href="#filter_3" data-bs-toggle="collapse" class="closed">Distance</a></h4>
+                            <h4><a href="#filter_3" data-bs-toggle="collapse" class="closed">@autotranslate('Distance', app()->getLocale())</a></h4>
                             <div class="collapse" id="filter_3">
-                                <div class="distance">Radius around selected destination <span id="distanceValue">{{ $selectedDistance }}</span> km</div>
+                                <div class="distance"> @autotranslate('Radius around selected destination', app()->getLocale()) <span id="distanceValue">{{ $selectedDistance }}</span> km</div>
                                 <div class="add_bottom_25">
                                     <input type="range" name="distance" id="distance" min="5" max="50" step="5" value="{{ $selectedDistance }}" data-orientation="horizontal" oninput="updateDistanceValue()">
                                 </div>
@@ -207,7 +207,7 @@
 							</div>
 						</div>
 						<!-- /filter_type -->
-                        <p> <button class="btn_1 outline full-width" type="submit">Filter anwenden</button><p>
+                        <p> <button class="btn_1 outline full-width" type="submit">@autotranslate('Apply filter', app()->getLocale())</button><p>
                         </form>
 					</div>
                     <script>
@@ -222,7 +222,7 @@
 				<div class="col-lg-9">
 					<div class="row">
 						<div class="col-12">
-							<h2 class="title_small">Top Categories</h2>
+							<h2 class="title_small">@autotranslate('Top Categories', app()->getLocale())</h2>
 							<div class="owl-carousel owl-theme categories_carousel_in listing">
 								<div class="item">
 									<figure>
@@ -292,7 +292,7 @@
                                         <span class="ribbon_sponsored on">Sponsored</span>
                                         <img src="{{ asset('frontend/img/lazy-placeholder.png') }}" data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
                                         <a href="{{ route('detail-restaurant-2.index', ['slug' => $restaurant->slug]) }}" class="strip_info">
-                                            <small>Pizza, Burger</small>
+                                            <small>@autotranslate('Pizza, Burger', app()->getLocale())</small>
                                         </a>
                                                <div style="display: flex; align-items: center;">
                                                 <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo" style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
@@ -305,8 +305,8 @@
                                     </figure>
                                     <ul>
                                         <li>
-                                            <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}" title="Takeaway">Takeaway</span>
-                                            <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}" title="Delivery">Delivery</span>
+                                            <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}" title="Takeaway">@autotranslate('Pick up', app()->getLocale())</span>
+                                            <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}" title="Delivery">@autotranslate('Delivery', app()->getLocale())</span>
                                             <strong class="icon-food_icon_shop fs2"> {{ number_format($restaurant->distance, 2) }} km</strong>
                                         </li>
                                         <li>
@@ -327,7 +327,7 @@
                             @endforeach
                             <!-- /strip grid -->
                         @else
-                        <p>Keine Sponsored Restaurants gefunden.</p>
+                        <p>@autotranslate('No sponsored restaurants found.', app()->getLocale())</p>
                     @endif
 
 
@@ -342,7 +342,7 @@
 
 
                     <div class="promo">
-						<h3>Free Delivery for your first 14 days!</h3>
+						<h3>@autotranslate('Free Delivery for your first 14 days!', app()->getLocale())</h3>
 						<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
 						<i class="icon-food_icon_delivery"></i>
 					</div>
@@ -388,8 +388,8 @@
 
                                 <ul>
                                         <li>
-                                            <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}" title="Takeaway">Takeaway</span>
-                                            <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}" title="Delivery">Delivery</span>
+                                            <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}" title="Takeaway">@autotranslate('Pick up', app()->getLocale())</span>
+                                            <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}" title="Delivery">@autotranslate('Delivery', app()->getLocale())</span>
                                             <strong class="icon-food_icon_shop fs2"> {{ number_format($restaurant->distance, 2) }} km</strong>
                                         </li>
                                         <li>

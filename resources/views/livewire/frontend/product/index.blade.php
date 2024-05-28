@@ -349,16 +349,16 @@
 
             <div class="product-infos">
                 <hr>
-                    *Der angegebene Preis basiert auf dem Referenzpreis gemäß § 11 PAngV (Referenzpreis = niedrigster
-                    Gesamtpreis der letzten 30 Tage vor Beginn der Preisermäßigung).
-                <h5>Zusatzstoffe:</h5>
+                @autotranslate('*The indicated price is based on the reference price according to § 11 PAngV (reference price = lowest total price of the last 30 days before the start of the price reduction).', app()->getLocale())
+
+                <h5>@autotranslate('Additives:', app()->getLocale())</h5>
                 <!-- Schleife für Allergene -->
                 @foreach ($allergens as $allergen)
                     <strong>{{ $allergen->id }} - </strong>
                     {{ $allergen->allergenic_short_title }}
                 @endforeach
 
-                <h5>Allergene:</h5>
+                <h5>@autotranslate('Allergens:', app()->getLocale())</h5>
                 <!-- Schleife für Zusatzstoffe -->
                 @foreach ($additives as $additive)
                     <strong>{{ $additive->additive_nr }} -</strong>
