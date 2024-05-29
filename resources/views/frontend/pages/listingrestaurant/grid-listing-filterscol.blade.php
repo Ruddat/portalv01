@@ -14,7 +14,7 @@
 		    <div class="container">
 		    	<div class="row">
 		    		<div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-block">
-                        <h1>Es wurden {{ $restaurants->total() }} Restaurants in
+                        <h1> {{ $restaurants->total() }} @autotranslate('Restaurants in', app()->getLocale())
                             @php
                             $findCityName = Session::get('selectedName');
                             $words = explode(' ', $findCityName); // Den String in Wörter aufteilen
@@ -24,18 +24,18 @@
 
                             @if ($findCityName)
                                 {{ rtrim($firstTwoWords, ',') }} <!-- rtrim-Funktion entfernt das Komma -->
-                                gefunden!
+                                @autotranslate('found!', app()->getLocale())
                             @else
                                 Stadt oder Ortsname nicht verfügbar.
                             @endif
                         </h1>
-		        		<a href="/">Change address</a>
+		        		<a href="/">@autotranslate('Change address', app()->getLocale())</a>
                         <!-- Im Header des Templates, wo die Stadt und der Ortsname angezeigt werden sollen -->
 
 		    		</div>
 		    		<div class="col-xl-4 col-lg-5 col-md-5">
 		    			<div class="search_bar_list">
-							<input type="text" class="form-control" placeholder="Dishes, restaurants or cuisines">
+							<input type="text" class="form-control" placeholder="@autotranslate('Dishes, restaurants or cuisines', app()->getLocale())">
 							<button type="submit"><i class="icon_search"></i></button>
 						</div>
 		    		</div>
@@ -67,34 +67,34 @@
 					</div>
 					<!-- /type_delivery -->
 
-					<a href="#0" class="open_filters btn_filters"><i class="icon_adjust-vert"></i><span>Filters</span></a>
+					<a href="#0" class="open_filters btn_filters"><i class="icon_adjust-vert"></i><span>@autotranslate('Filters', app()->getLocale())</span></a>
 
 					<div class="filter_col">
-						<div class="inner_bt clearfix">Filters<a href="#" class="open_filters"><i class="icon_close"></i></a></div>
+						<div class="inner_bt clearfix">@autotranslate('Filters', app()->getLocale())<a href="#" class="open_filters"><i class="icon_close"></i></a></div>
 						<div class="filter_type">
 							<h4><a href="#filter_1" data-bs-toggle="collapse" class="opened">Sort</a></h4>
 							<div class="collapse show" id="filter_1">
 								<ul>
 								    <li>
-								        <label class="container_radio">Top Rated
+								        <label class="container_radio">@autotranslate('Top Rated', app()->getLocale())
 								            <input type="radio" name="filter_sort" checked="">
 								            <span class="checkmark"></span>
 								        </label>
 								    </li>
 								    <li>
-								        <label class="container_radio">Reccomended
+								        <label class="container_radio">@autotranslate('Reccomended', app()->getLocale())
 								            <input type="radio" name="filter_sort">
 								            <span class="checkmark"></span>
 								        </label>
 								    </li>
 								    <li>
-								        <label class="container_radio">Price: low to high
+								        <label class="container_radio">@autotranslate('Price: low to high', app()->getLocale())
 								            <input type="radio" name="filter_sort">
 								            <span class="checkmark"></span>
 								        </label>
 								    </li>
 								    <li>
-								        <label class="container_radio">Up to 15% off
+								        <label class="container_radio">@autotranslate('Up to 15% off', app()->getLocale())
 								            <input type="radio" name="filter_sort">
 								            <span class="checkmark"></span>
 								        </label>
@@ -116,7 +116,7 @@
 						</div>
 						<!-- /filter_type -->
 						<div class="filter_type">
-							<h4><a href="#filter_2" data-bs-toggle="collapse" class="closed">Categories</a></h4>
+							<h4><a href="#filter_2" data-bs-toggle="collapse" class="closed">@autotranslate('Categories', app()->getLocale())</a></h4>
 							<div class="collapse" id="filter_2">
 								<ul>
 								    <li>
