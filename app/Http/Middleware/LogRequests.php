@@ -68,13 +68,16 @@ if ($requestLog) {
     protected function isBot($userAgent)
     {
         $botUserAgents = [
-            'Googlebot', 'Bingbot', 'Slurp', 'DuckDuckBot', 'Baiduspider', 'YandexBot', 'Sogou', 'Exabot', 'facebot', 'ia_archiver',
+            'Googlebot', 'Bingbot', 'Slurp', 'DuckDuckBot', 'Plesk', 'Googlebot-Image/1.0', 'Baiduspider', 'YandexBot', 'Sogou', 'Exabot', 'facebot', 'ia_archiver',
             // Add more bot user agents here
         ];
+
+        Log::info('Checking User-Agent for bot: ' . $userAgent);
 
         if ($userAgent) {
             foreach ($botUserAgents as $bot) {
                 if (stripos($userAgent, $bot) !== false) {
+                    Log::info('Bot detected: ' . $userAgent);
                     return true;
                 }
             }
