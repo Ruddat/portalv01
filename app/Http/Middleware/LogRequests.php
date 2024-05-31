@@ -6,7 +6,6 @@ use Closure;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\SysRequestLog;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
 
 class LogRequests
@@ -20,41 +19,39 @@ class LogRequests
      */
     public function handle(Request $request, Closure $next)
     {
+        Log::info('Processing request: ' . $request->fullUrl());
+
         // Bot detection
         if ($this->isBot($request->header('User-Agent'))) {
-            // Handle bot based on configuration
+            Log::info('Bot detected: ' . $request->header('User-Agent'));
             return $this->handleBot($request);
         }
 
         $response = $next($request);
 
-// Log data
-$logData = [
-    'ip_address' => $request->ip(),
-    'url' => $request->fullUrl(),
-    'method' => $request->method(),
-    'user_agent' => $request->header('User-Agent'),
-    'referrer' => $request->header('referer'), // Referrer
-    'timestamp' => Carbon::now(), // Set timestamp to current time (exact second)
-];
+        // Log data
+        $logData = [
+            'ip_address' => $request->ip(),
+            'url' => $request->fullUrl(),
+            'method' => $request->method(),
+            'user_agent' => $request->header('User-Agent'),
+            'referrer' => $request->header('referer'), // Referrer
+            'timestamp' => Carbon::now(), // Set timestamp to current time (exact second)
+        ];
 
-// Find or create a log and increment the count
-$requestLog = SysRequestLog::where('ip_address', $logData['ip_address'])
-    ->where('url', $logData['url'])
-    ->where('method', $logData['method'])
-    ->where('user_agent', $logData['user_agent'])
-   // ->where('referrer', $logData['referrer'])
-   // ->where('timestamp', '>=', $logData['timestamp']->subSeconds(10)->toDateTimeString()) // Convert Carbon object to string
-    ->first();
+        // Find or create a log and increment the count
+        $requestLog = SysRequestLog::where('ip_address', $logData['ip_address'])
+            ->where('url', $logData['url'])
+            ->where('method', $logData['method'])
+            ->where('user_agent', $logData['user_agent'])
+            ->first();
 
-//dd($requestLog, $logData);
-
-if ($requestLog) {
-    $requestLog->increment('count');
-} else {
-    $logData['count'] = 1;
-    SysRequestLog::create($logData);
-}
+        if ($requestLog) {
+            $requestLog->increment('count');
+        } else {
+            $logData['count'] = 1;
+            SysRequestLog::create($logData);
+        }
 
         return $response;
     }
@@ -67,16 +64,16 @@ if ($requestLog) {
      */
     protected function isBot($userAgent)
     {
-        $botUserAgents = [
-            'Googlebot', 'Bingbot', 'Slurp', 'DuckDuckBot', 'Plesk', 'Googlebot-Image/1.0', 'Baiduspider', 'YandexBot', 'Sogou', 'Exabot', 'facebot', 'ia_archiver',
-            // Add more bot user agents here
+        $botPatterns = [
+            '/Googlebot/i', '/Bingbot/i', '/Slurp/i', '/DuckDuckBot/i', '/Plesk/i', '/Googlebot-Image\/1.0/i', '/Baiduspider/i', '/YandexBot/i', '/Sogou/i', '/Exabot/i', '/facebot/i', '/ia_archiver/i', '/YandexWebmaster/i',
+            // Add more bot patterns here
         ];
 
         Log::info('Checking User-Agent for bot: ' . $userAgent);
 
         if ($userAgent) {
-            foreach ($botUserAgents as $bot) {
-                if (stripos($userAgent, $bot) !== false) {
+            foreach ($botPatterns as $pattern) {
+                if (preg_match($pattern, $userAgent)) {
                     Log::info('Bot detected: ' . $userAgent);
                     return true;
                 }
@@ -94,6 +91,8 @@ if ($requestLog) {
      */
     protected function handleBot(Request $request)
     {
+        Log::info('Handling bot request: ' . $request->fullUrl());
+
         // Log the bot request
         $this->logBotRequest($request);
 
@@ -102,13 +101,16 @@ if ($requestLog) {
 
         switch ($botAction) {
             case 'block':
+                Log::info('Bot request blocked.');
                 return response('Access denied', 403);
 
             case 'redirect':
+                Log::info('Bot request redirected.');
                 return redirect()->route('home'); // Replace 'home' with your desired route
 
             case 'log':
             default:
+                Log::info('Bot request logged.');
                 // Just log the request and proceed
                 return response('Bot detected and logged', 200);
         }

@@ -15,7 +15,7 @@
 				<div class="container">
 					<div class="row justify-content-center">
 						<div class="col-lg-10">
-							<h1>{{ app(\App\Services\TranslationService::class)->trans('Kunden gewinnen leicht gemacht!', app()->getLocale()) }}</h1>
+							<h1>{{ app(\App\Services\TranslationService::class)->trans('Kunden gewinnen leicht fsfd gemacht!', app()->getLocale()) }}</h1>
 							<p>{{ app(\App\Services\TranslationService::class)->trans('Attraktive Strategien für neue Kunden.', app()->getLocale()) }}</p>
 							<a href="#submit" class="btn_1 gradient btn_scroll">{{ app(\App\Services\TranslationService::class)->trans('Einfach! Sofort online', app()->getLocale()) }}</a>
 						</div>
@@ -119,7 +119,7 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
-											<input type="text" class="form-control" placeholder="Address and Number" name="address_register" id="address_register">
+											<input type="text" class="form-control" placeholder="@autotranslate('Address and Number', app()->getLocale())" name="address_register" id="address_register">
 										</div>
 									</div>
 								</div>
@@ -128,7 +128,7 @@
 								<div class="row add_bottom_15">
 									<div class="col-md-6">
 										<div class="form-group">
-											<input type="text" class="form-control" placeholder="City" name="city_register" id="city_register">
+											<input type="text" class="form-control" placeholder="@autotranslate('City', app()->getLocale())" name="city_register" id="city_register">
 										</div>
 									</div>
                                     <div class="col-md-6">

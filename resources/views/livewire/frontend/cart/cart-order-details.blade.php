@@ -35,12 +35,6 @@
                                 </label>
                             </div>
                             <div class="col-2">
-                                <label class="container_radio">Divers
-                                    <input type="radio" wire:model.change="selectedOption" value="Divers">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="col-2">
                                 <label class="container_radio">Firma
                                     <input type="radio" wire:model.change="selectedOption" value="firma">
                                     <span class="checkmark"></span>

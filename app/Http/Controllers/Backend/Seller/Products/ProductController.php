@@ -169,6 +169,12 @@ class ProductController extends Controller
     // Definiere den Zielordner für das neue Bild
     $destinationPath = public_path('uploads/shops/' . $shopId . '/images/products/');
 
+    if (!File::exists($destinationPath)) {
+        File::makeDirectory($destinationPath, 0755, true);
+    }
+
+    
+
     // Neu generierter Dateiname für das Bild
     $newFilename = Str::slug($product->product_title) . '_' . date('YmdHis') . '.' . pathinfo($imageName, PATHINFO_EXTENSION);
 
