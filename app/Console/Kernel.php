@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('lotto:download')->dailyAt('00:00');
+        $schedule->command('sitemap:generate')->daily('00:00');
+
     }
 
     /**
@@ -25,4 +27,9 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
+
+    protected $commands = [
+        \App\Console\Commands\GenerateSitemap::class,
+    ];
+
 }
