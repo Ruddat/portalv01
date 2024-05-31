@@ -8,13 +8,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     @if($shopStatus == 'closed')
-                        <h2 class="modal-title text-center">geschlossen!!</h2>
+                        <h2 class="modal-title text-center">@autotranslate('closed!!', app()->getLocale())</h2>
                     @elseif($shopStatus == 'off')
-                        <h2 class="modal-title text-center">ZURZEIT GESCHLOSSEN</h2>
+                        <h2 class="modal-title text-center">@autotranslate('CURRENTLY CLOSED', app()->getLocale())</h2>
                     @elseif($shopStatus == 'open')
-                        <h2 class="modal-title text-center">Einfach liefern lassen</h2>
+                        <h2 class="modal-title text-center">@autotranslate('Delivery', app()->getLocale())</h2>
                     @elseif($shopStatus == 'limited')
-                        <h2 class="modal-title text-center">{{ app(\App\Services\TranslationService::class)->trans('Shop wird eingerichtet', app()->getLocale()) }}</h2>
+                        <h2 class="modal-title text-center">@autotranslate('Shop wird eingerichtet', app()->getLocale())</h2>
                     @elseif($shopStatus == 'on')
                         <h2 class="modal-title text-center">{{ $storeName }}</h2>
                     @elseif($shopStatus == 'preorder')
@@ -34,11 +34,11 @@
                         <div class="text-center">
                             <img src="{{ $storeLogo }}" alt="{{ $storeName }}" class="img-fluid mb-3" style="max-height: 150px;">
                             <h3>{{ $storeName }}</h3>
-                            <p class="text-wrap">Der Store hat zurzeit geschlossen und es ist keine Online Bestellung möglich.</p>
+                            <p class="text-wrap">@autotranslate('The store is currently closed, and online ordering is not available.', app()->getLocale())</p>
                             <h4 class="modal-body">ÖFFNUNGSZEITEN</h4>
                             <div class="deliveryTimes">
-                                <div class="open_left">Montag - Sonntag</div>
-                                <div class="open_right">geschlossen</div>
+                                <div class="open_left">@autotranslate('Monday - Sunday', app()->getLocale())</div>
+                                <div class="open_right">@autotranslate('closed', app()->getLocale())</div>
                                 <div class="clearfix"></div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                         </form>
                         <div>
                             <h2 class="modal-title text-center">@autotranslate('Self Pickup', app()->getLocale())</h2>
-                            <p>Hol' dir deine Bestellung ganz einfach und schnell aus unserer Filiale in <b>{{ $storeCity }} {{ $storeStreet }}</b> ab!</p>
+                            <p>@autotranslate('Get your order easily and quickly from our store in', app()->getLocale())<b> {{ $storeCity }} {{ $storeStreet }}</b>!</p>
                             <div class="text-center">
                             <button type="button" class="btn btn-infomodal" wire:click="orderPickUp"><i class="icon-food_icon_shop"></i>@autotranslate('Pick up', app()->getLocale())</button>
                             </div>
@@ -167,11 +167,11 @@
                     @if($shopStatus == 'closed' || $shopStatus == 'off')
                         <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">@autotranslate('Change store', app()->getLocale())</button>
                     @elseif($shopStatus == 'open')
-                        <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse">Ich möchte nur stöbern</button>
+                        <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse">@autotranslate('I just want to browse.', app()->getLocale())</button>
                     @elseif($shopStatus == 'limited')
                         <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">@autotranslate('Back to restaurant selection', app()->getLocale())</button>
                     @elseif($shopStatus == 'on')
-                        <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse"><i class="icon-food_icon_shop"></i>Ich möchte nur stöbern</button>
+                        <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse"><i class="icon-food_icon_shop"></i>@autotranslate('I just want to browse.', app()->getLocale())</button>
                     @endif
                 </div>
             </div>

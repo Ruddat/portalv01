@@ -54,7 +54,7 @@
     </ul>
 
     <ul class="clearfix">
-        <li>{{ app(\App\Services\TranslationService::class)->trans('Subtotal', app()->getLocale()) }}<span>${{ $subtotal }}</span></li>
+        <li>@autotranslate('Subtotal', app()->getLocale())<span>${{ $subtotal }}</span></li>
 
         @php
         $remainingAmountForFreeDelivery = max(0, $deliveryFreeThreshold - $total);
@@ -73,9 +73,9 @@
         <div class="col-12">
             <li>
                 @if ($remainingAmountForFreeDelivery > 0)
-                    <span>{{ __('Noch $') }}{{ $remainingAmountForFreeDelivery }}{{ __(' für kostenfreie Lieferung') }}</span>
+                    <span>{{ __('Noch $') }}{{ $remainingAmountForFreeDelivery }} @autotranslate('for free delivery', app()->getLocale())</span>
                 @else
-                    <span style="color: green">{{ __('Kostenlose Lieferung') }}</span>
+                    <span style="color: green">@autotranslate('Free Delivery', app()->getLocale())</span>
                 @endif
             </li>
         </div>
@@ -83,11 +83,11 @@
 
 
         @if ($discount > 0)
-        <li>{{ app(\App\Services\TranslationService::class)->trans('discount') }}</li>
+        <li>@autotranslate('discount', app()->getLocale())</li>
         <span>{{ $discount }}</span>
         @endif
         @if ($deposit > 0)
-        <li>{{ app(\App\Services\TranslationService::class)->trans('Pfand', app()->getLocale()) }}
+        <li>@autotranslate('deposit', app()->getLocale())
             <span>{{ $deposit }}</span>
         </li>
         @endif
@@ -100,7 +100,7 @@
 @else
 
 
-    <p class="text-3xl text-center mb-2">{{ __('cart_is_empty') }}</p>
+    <p class="text-3xl text-center mb-2">@autotranslate('cart is empty', app()->getLocale())</p>
     @endif
 
     <style>

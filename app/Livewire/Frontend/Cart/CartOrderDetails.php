@@ -100,8 +100,8 @@ class CartOrderDetails extends Component
             'selectedOption' => 'required',
             'company' => 'required_if:selectedOption,Firma',
             'department' => 'required_if:selectedOption,Firma',
-            'last_name' => 'required_if:selectedOption,Frau,Herr,Divers|min:4',
-            'first_name' => 'required_if:selectedOption,Frau,Herr,Divers|min:4',
+            'last_name' => 'required_if:selectedOption,Frau,Herr|min:4',
+            'first_name' => 'required_if:selectedOption,Frau,Herr|min:4',
             'email' => 'required|email', // Validierung der E-Mail-Adresse
             'phone' => 'required', // Validierung der Telefonnummer
             'full_address' => 'required:min:5', // Validierung der vollständigen Adresse
