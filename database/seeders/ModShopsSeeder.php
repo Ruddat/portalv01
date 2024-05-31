@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\ModShop;
 use Faker\Factory as Faker;
+use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 use App\Providers\RestaurantProvider;
 
 class ModShopsSeeder extends Seeder
@@ -159,12 +160,20 @@ class ModShopsSeeder extends Seeder
             foreach ($cities as $cityData) {
                 for ($i = 0; $i < 5; $i++) { // Generiere 10 Shops pro Stadt
                     [$lat, $lng] = $this->generateRandomCoordinates($cityData['lat'], $cityData['lng'], $cityData['radius']);
+
+                    $title = $faker->restaurant;
+
                     ModShop::create([
                         'parent' => 0,
                         'shop_nr' => $faker->unique()->numberBetween(1000, 9999),
-                        'shop_slug' => $faker->slug, // 'shop_slug' hinzugefügt
-                      //  'title' => $faker->unique()->company,
-                      'title' => $faker->restaurant,
+
+                        'shop_slug' => Str::slug($title), // Besserer Slug basierend auf dem Titel
+                        'title' => $title,
+
+                        //'shop_slug' => $faker->slug, // 'shop_slug' hinzugefügt
+                   //     'shop_slug' => Str::slug($faker->restaurant),  // Besserer Slug basierend auf dem Titel
+                        //  'title' => $faker->unique()->company,
+                      //'title' => $faker->restaurant,
 
                       'street' => $faker->streetAddress(),
                         'zip' => $faker->postcode,

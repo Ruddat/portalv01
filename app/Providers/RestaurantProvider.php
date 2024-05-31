@@ -33,13 +33,13 @@ class RestaurantProvider extends ServiceProvider
             'Tasty', 'Delicious', 'Gourmet', 'Savory', 'Yummy', 'Succulent',
             'Spicy', 'Juicy', 'Crispy', 'Hearty', 'Fresh', 'Exquisite',
             'Smoky', 'Flavorful', 'Zesty', 'Aromatic', 'Mouthwatering', 'Divine',
-            'Authentic', 'Traditional', 'Homemade', 'Sizzling', 'Buttery', 'Creamy'
+            'Authentic', 'Traditional', 'Homemade', 'Sizzling', 'Buttery', 'Creamy', 'Watering',
         ];
 
         $nouns = [
-            'Bistro', 'Café', 'Eatery', 'Diner', 'Restaurant', 'Grill',
-            'Kitchen', 'Joint', 'Spot', 'Place', 'Bar', 'Pub',
-            'Tavern', 'Lounge', 'House', 'Hideaway', 'Hangout', 'Canteen',
+            'Bistro', 'Café', 'Eatery', 'Diner', 'Restaurant', 'Grill', 'Steakhouse', 'Brasserie',
+            'Kitchen', 'Joint', 'Spot', 'Place', 'Bar', 'Pub', 'Beast Pizza', 'Pizza Place',
+            'Tavern', 'Lounge', 'House', 'Hideaway', 'Hangout', 'Canteen', 'Pizza Express',
             'Eatery', 'Corner', 'Pizzeria', 'Trattoria', 'Osteria', 'Ristorante',
             'Sushi Bar', 'Izakaya', 'Sashimi', 'Sushi House', 'Sushi Spot', 'Sushi Lounge'
         ];
