@@ -21,7 +21,7 @@ class AutoTranslationService
 
     public function trans($key, $locale)
     {
-        Log::info("Request to translate '$key' to '$locale'.");
+      //  Log::info("Request to translate '$key' to '$locale'.");
 
         // Suche die Übersetzung in der Datenbank
         $translation = $this->translationRepository->findTranslation($key, $locale);
