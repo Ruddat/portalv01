@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('ip_address');
             $table->string('url');
             $table->string('method');
-            $table->string('user_agent');
+            $table->text('user_agent');
             $table->timestamp('timestamp');
             $table->unsignedInteger('count')->default(1); // Neue Spalte für die Zählung
             $table->timestamps();

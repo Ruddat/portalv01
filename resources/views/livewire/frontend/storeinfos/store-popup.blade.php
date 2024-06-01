@@ -35,7 +35,7 @@
                             <img src="{{ $storeLogo }}" alt="{{ $storeName }}" class="img-fluid mb-3" style="max-height: 150px;">
                             <h3>{{ $storeName }}</h3>
                             <p class="text-wrap">@autotranslate('The store is currently closed, and online ordering is not available.', app()->getLocale())</p>
-                            <h4 class="modal-body">ÖFFNUNGSZEITEN</h4>
+                            <h4 class="modal-body">@autotranslate('ÖFFNUNGSZEITEN', app()->getLocale())</h4>
                             <div class="deliveryTimes">
                                 <div class="open_left">@autotranslate('Monday - Sunday', app()->getLocale())</div>
                                 <div class="open_right">@autotranslate('closed', app()->getLocale())</div>
@@ -113,9 +113,10 @@
                                                     Öffnet: {{ \Carbon\Carbon::createFromFormat('H:i:s', $hours['open'])->format('H:i') }} Uhr
                                                     Schließt: {{ \Carbon\Carbon::createFromFormat('H:i:s', $hours['close'])->format('H:i') }} Uhr
                                                     @if ($hours['is_open'])
-                                                        (Geöffnet)
+
+                                                        @autotranslate('(Geöffnet)', app()->getLocale())
                                                     @else
-                                                        (Geschlossen)
+                                                        @autotranslate('(Geschlossen)', app()->getLocale())
                                                     @endif
                                                 </div>
                                             @else

@@ -19,11 +19,11 @@ class LogRequests
      */
     public function handle(Request $request, Closure $next)
     {
-        Log::info('Processing request: ' . $request->fullUrl());
+      //  Log::info('Processing request: ' . $request->fullUrl());
 
         // Bot detection
         if ($this->isBot($request->header('User-Agent'))) {
-            Log::info('Bot detected: ' . $request->header('User-Agent'));
+        //    Log::info('Bot detected: ' . $request->header('User-Agent'));
             return $this->handleBot($request);
         }
 
