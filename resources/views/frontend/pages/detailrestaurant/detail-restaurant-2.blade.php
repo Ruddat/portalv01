@@ -641,7 +641,6 @@
     });
     </script>
 
-
 <script>
     // JavaScript für das Ein- und Ausblenden des Reply-Formulars
     $(document).ready(function() {
@@ -657,8 +656,6 @@
 
         @endpush
     @endif
-
-
 
 
 

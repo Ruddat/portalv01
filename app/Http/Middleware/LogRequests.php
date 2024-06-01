@@ -124,6 +124,9 @@ class LogRequests
      */
     protected function logBotRequest(Request $request)
     {
+
+        Log::info('Saving bot request: ' . $request->header('User-Agent'));
+
         SysRequestLog::create([
             'ip_address' => $request->ip(),
             'url' => $request->fullUrl(),
