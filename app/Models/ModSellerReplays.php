@@ -11,6 +11,8 @@ class ModSellerReplays extends Model
     use HasFactory;
 
 
+    protected $guarded = [];
+
     /**
      * Get the rating that owns the reply.
      */
@@ -18,4 +20,11 @@ class ModSellerReplays extends Model
     {
         return $this->belongsTo(ModSellerVotings::class, 'voting_id');
     }
+
+    public function voting()
+    {
+        return $this->belongsTo(ModSellerVoting::class, 'voting_id');
+    }
+
+
 }

@@ -35,6 +35,12 @@ class ModSellerVotings extends Model
     }
 
 
+    public function replays()
+    {
+        return $this->hasMany(ModSellerReplay::class, 'voting_id');
+    }
+    
+
     public function shopData()
     {
         return $this->belongsTo(ModOrders::class, 'shop_id', 'parent');
