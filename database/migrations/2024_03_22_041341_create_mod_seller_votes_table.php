@@ -19,6 +19,9 @@ return new class extends Migration
             $table->enum('type', ['like', 'dislike']); // Daumen-hoch oder Daumen-runter
             $table->unsignedInteger('likes_count')->default(0); // Spalte für die Anzahl der Likes
             $table->unsignedInteger('dislikes_count')->default(0); // Spalte für die Anzahl der Dislikes
+            // User ID oder Identifier hinzufügen
+            $table->unsignedBigInteger('user_id')->nullable(); // Falls die Benutzer authentifiziert sind
+            $table->string('identifier')->nullable(); // Für Gäste oder unauthentifizierte Benutzer
             // Order Hash hinzufügen
             $table->string('order_hash');
             $table->timestamps();
@@ -27,6 +30,8 @@ return new class extends Migration
             // 'onDelete('cascade')' sorgt dafür, dass die Abstimmungen gelöscht werden, wenn der zugehörige Voting-Eintrag gelöscht wird
             // Fremdschlüsselbeziehung zu mod_shops
             $table->foreign('shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
+            // Falls Benutzer angemeldet sind, Fremdschlüsselbeziehung zu users hinzufügen
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

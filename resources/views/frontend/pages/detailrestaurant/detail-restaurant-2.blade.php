@@ -233,234 +233,26 @@
         </div>
         <!-- /bg_gray -->
 
+
         <div class="container margin_30_20">
             <div class="row">
                 <div class="col-lg-8 list_menu">
-                    <section id="section-20">
+                    <section id="section-5">
                         <h4>@autotranslate('Reviews', app()->getLocale())</h4>
-                        <div class="row add_bottom_30 d-flex align-items-center reviews">
-                            <div class="col-md-3">
-                                <div id="review_summary">
-                                    <strong>{{ number_format($overallRating, 1) }}</strong>
-                                    <em><em>
-                                            @if ($overallRating !== null)
-                                                @php
-                                                    $ratingText =
-                                                        $overallRating >= 8.5
-                                                            ? 'Best'
-                                                            : ($overallRating >= 7
-                                                                ? 'Superb'
-                                                                : ($overallRating >= 5
-                                                                    ? 'Good'
-                                                                    : 'Average'));
-                                                @endphp
-                                                <div>{{ $ratingText }}</div>
-                                            @else
-                                                <div>@autotranslate('No reviews yet', app()->getLocale())</div>
-                                            @endif
-                                        </em></em>
-                                    <small>@autotranslate('Based on', app()->getLocale()) {{ $numberOfRatings }} @autotranslate('reviews', app()->getLocale())</small>
-                                </div>
-                            </div>
-                            <div class="col-md-9 reviews_sum_details">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h6>@autotranslate('Food Quality', app()->getLocale())</h6>
-                                        <div class="row">
-                                            <div class="col-xl-10 col-lg-9 col-9">
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width: {{ $overallRatingProgress ? $overallRatingProgress->foodQualityTotal * 10 : 0 }}%"
-                                                        aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->foodQualityTotal * 10 : 0 }}"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-2 col-lg-3 col-3">
-                                                <strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->foodQualityTotal, 1) : 'N/A' }}</strong>
-                                            </div>
-                                        </div>
-                                        <!-- /row -->
-                                        <h6>@autotranslate('Service', app()->getLocale())</h6>
-                                        <div class="row">
-                                            <div class="col-xl-10 col-lg-9 col-9">
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width: {{ $overallRatingProgress ? $overallRatingProgress->serviceTotal * 10 : 0 }}%"
-                                                        aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->serviceTotal * 10 : 0 }}"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-2 col-lg-3 col-3">
-                                                <strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->serviceTotal, 1) : 'N/A' }}</strong>
-                                            </div>
-                                        </div>
-                                        <!-- /row -->
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h6>@autotranslate('Punctuality', app()->getLocale())</h6>
-                                        <div class="row">
-                                            <div class="col-xl-10 col-lg-9 col-9">
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width: {{ $overallRatingProgress ? $overallRatingProgress->deliveryTimeTotal * 10 : 0 }}%"
-                                                        aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->deliveryTimeTotal * 10 : 0 }}"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-2 col-lg-3 col-3">
-                                                <strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->deliveryTimeTotal, 1) : 'N/A' }}</strong>
-                                            </div>
-                                        </div>
-                                        <!-- /row -->
-                                        <h6>@autotranslate('Price', app()->getLocale())</h6>
-                                        <div class="row">
-                                            <div class="col-xl-10 col-lg-9 col-9">
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar"
-                                                        style="width: {{ $overallRatingProgress ? $overallRatingProgress->priceTotal * 10 : 0 }}%"
-                                                        aria-valuenow="{{ $overallRatingProgress ? $overallRatingProgress->priceTotal * 10 : 0 }}"
-                                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-2 col-lg-3 col-3">
-                                                <strong>{{ $overallRatingProgress ? number_format($overallRatingProgress->priceTotal, 1) : 'N/A' }}</strong>
-                                            </div>
-                                        </div>
-                                        <!-- /row -->
-                                    </div>
-                                </div>
-                                <!-- /row -->
-                            </div>
-
-
-                        </div>
-                        <!-- /row -->
-                        <div id="reviews">
-                            @foreach ($ratings->reverse() as $rating)
-                                <div class="review_card">
-                                    <div class="row">
-                                        <div class="col-md-2 user_info">
-                                            <figure><img src="{{ asset('uploads/images/default/avatar_3.jpg') }}"
-                                                    alt=""></figure>{{ $rating->gender }}
-                                            <h5>{{ $rating->order->surname }}</h5>
-                                        </div>
-
-                                        <div class="col-md-10 review_content">
-                                            <div class="clearfix add_bottom_15">
-                                                <?php
-                                                $averageRating = ($rating->food_quality + $rating->service + $rating->price + $rating->punctuality) / 4;
-                                                ?>
-                                                <span
-                                                    class="rating">{{ $averageRating ? number_format($averageRating, 1) : 'N/A' }}<small>/10</small>
-                                                    <strong>Rating average</strong></span>
-                                                <em>Published {{ $rating->created_at->diffForHumans() }}</em>
-                                            </div>
-                                            <h4>"{{ $rating->review_title }}"</h4>
-                                            <p>{{ $rating->review_content }}</p>
-                                            <ul>
-                                                <!-- Like Symbol -->
-                                                <li>
-                                                    <a href="#" class="like-btn"
-                                                        data-restaurant-id="{{ $restaurant->id }}"
-                                                        data-order-id="{{ $rating->order_id }}">
-                                                        <i class="icon_like"></i>
-                                                        <span>Useful {{ $rating->likes_count }}</span>
-                                                    </a>
-                                                </li>
-
-                                                <!-- Dislike Symbol -->
-                                                <li>
-                                                    <a href="#" class="dislike-btn"
-                                                        data-restaurant-id="{{ $restaurant->id }}"
-                                                        data-order-id="{{ $rating->order_id }}">
-                                                        <i class="icon_dislike"></i>
-                                                        <span>Not useful {{ $rating->dislikes_count }}</span>
-                                                    </a>
-                                                </li>
-
-                                                <!-- Button zum Öffnen des Modals -->
-                                                <li>
-                                                    <!-- Reply-Link -->
-                                                    <a href="#" class="reply-link" data-toggle="collapse"
-                                                        data-target="#replyForm{{ $rating->id }}" aria-expanded="false"
-                                                        aria-controls="replyForm{{ $rating->id }}">
-                                                        <i class="arrow_back"></i>
-                                                        <span>Reply</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <!-- Erfolgsmeldung für jedes Rating -->
-                                            <div class="vote-message" style="display: none;">Danke für Ihr Voting!</div>
-                                        </div>
-                                    </div>
-
-                                    {{-- Reply-Formular --}}
-
-
-                                    <div class="collapse" id="replyForm{{ $rating->id }}">
-                                        <div class="box_general write_review">
-                                            <form action="{{ route('vote-restaurant.reply') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="rating_id" value="{{ $rating->id }}">
-                                                <h4 class="add_bottom_15">Write a Reply for "{{ $restaurant->title }}"
-                                                </h4>
-                                                <div class="form-group">
-                                                    <label for="reply_title">Title of your Reply</label>
-                                                    <input class="form-control" id="reply_title-{{ $rating->id }}"
-                                                        name="reply_title" type="text"
-                                                        placeholder="If you could say it in one sentence, what would you say?">
-                                                    @error('reply_title')
-                                                        <span class="error">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="reply_content">Your Reply</label>
-                                                    <textarea class="form-control" id="reply_content" name="reply_content" style="height: 180px;"
-                                                        placeholder="Write your review to help others learn about this online business"></textarea>
-                                                    @error('reply_content')
-                                                        <span class="error">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                                <button type="submit" class="btn_1">Submit Reply</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- /row -->
-                                    @foreach ($rating->replies->reverse() ?? [] as $reply)
-                                        <div class="row reply">
-                                            <div class="col-md-2 user_info">
-                                                <figure><img src="{{ asset('frontend/img/avatar.jpg') }}" alt="">
-                                                </figure>
-                                            </div>
-                                            <div class="col-md-10">
-                                                <div class="review_content">
-                                                    <strong>Reply from {{ $reply->reply_author }}</strong>
-                                                    <em>Published {{ $reply->created_at->diffForHumans() }}</em>
-                                                    <p><br>{{ $reply->reply_title }}<br></p>
-                                                    <p>{{ $reply->reply_content }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /reply -->
-                                    @endforeach
-
-
-                                </div>
-                            @endforeach
-
-                            <!-- /review_card -->
-                            <div class="d-flex">
-                                {!! $ratings->links() !!}
-                            </div>
-
-                        </div>
-                        <!-- /reviews -->
+                        @livewire('frontend.votings.rating-list', ['shopId' => $restaurant->id])
                     </section>
                     <!-- /section -->
                 </div>
             </div>
         </div>
         <!-- /container -->
+
+
+
+
+
+
+
 
 
         <!-- Script zum Öffnen des Popups nach dem Laden der Seite -->
