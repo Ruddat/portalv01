@@ -23,24 +23,8 @@
                                         <span class="open-text">Open</span>
                                     </div>
 
-                                    <div class="score"><span>
-                                            @if ($overallRating !== null)
-                                                @php
-                                                    $ratingText =
-                                                        $overallRating >= 8.5
-                                                            ? 'Best'
-                                                            : ($overallRating >= 7
-                                                                ? 'Superb'
-                                                                : ($overallRating >= 5
-                                                                    ? 'Good'
-                                                                    : 'Average'));
-                                                @endphp
-                                                <div>{{ $ratingText }}</div>
-                                            @else
-                                                <div>@autotranslate('No reviews yet', app()->getLocale())</div>
-                                            @endif
-                                            <em>{{ $numberOfRatings }} @autotranslate('Reviews', app()->getLocale())</em>
-                                        </span><strong>{{ number_format($overallRating, 1) }}</strong></div>
+                                    @livewire('frontend.votings.rating-summary', ['shopId' => $restaurant->id])
+
                                 </div>
                                 <h1>{{ $restaurant->title }}</h1>
                                 {{ $restaurant->street }} - {{ $restaurant->city }}, {{ $restaurant->zip }} - <a href="https://www.google.com/maps/dir/?api=1&destination={{ $restaurant->lat }},{{ $restaurant->lng }}" target="_blank">@autotranslate('Get directions to', app()->getLocale()) {{ $restaurant->title }}</a>
@@ -78,7 +62,7 @@
                     @foreach ($categories as $category)
                         <li><a href="#section-{{ $category->id }}">{{ $category->category_name }}</a></li>
                     @endforeach
-                    <li><a href="#section-20"><i class="icon_chat_alt"></i>@autotranslate('Reviews', app()->getLocale())</a></li>
+                    <li><a href="#section-999"><i class="icon_chat_alt"></i>@autotranslate('Reviews', app()->getLocale())</a></li>
                 </ul>
             </div>
             <span></span>
@@ -374,82 +358,27 @@
             </script>
 
 
-<script>
-    $(document).ready(function() {
-        // Like-Button klicken
-        $('.like-btn').click(function(e) {
-            e.preventDefault();
-            var btn = $(this);
-            var restaurantId = btn.data('restaurant-id');
-            var type = 'like';
-            vote(restaurantId, type, btn);
-        });
-
-        // Dislike-Button klicken
-        $('.dislike-btn').click(function(e) {
-            e.preventDefault();
-            var btn = $(this);
-            var restaurantId = btn.data('restaurant-id');
-            var type = 'dislike';
-            vote(restaurantId, type, btn);
-        });
-
-        // Funktion für die Ajax-Anfrage
-        function vote(restaurantId, type, btn) {
-            $.ajax({
-                type: 'POST',
-                url: '/vote',
-                data: {
-                    restaurant_id: restaurantId,
-                    order_id: btn.data('order-id'),
-                    type: type,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    // Erfolgsmeldung verarbeiten
-                    console.log(response);
-                    if (response.success) {
-                        // Erfolgreich abgestimmt, aktualisieren Sie die Anzeige der Anzahl der Stimmen und den Zustand des Buttons
-                        var voteType = type === 'like' ? 'Useful' : 'Not useful';
-                        var currentVotesText = btn.find('span').text(); // Textinhalt extrahieren
-                        var matches = currentVotesText.match(/\d+/); // Den Wert der Stimmen mit einem regulären Ausdruck extrahieren
-                        if (matches && matches.length > 0) {
-                            var currentVotes = parseInt(matches[0]); // Extrahierten Wert in eine Ganzzahl konvertieren
-                            currentVotes++; // Inkrementieren Sie die Anzahl der Stimmen
-                            btn.find('span').text(voteType + ' ' + currentVotes); // Aktualisieren Sie die Anzeige der Anzahl der Stimmen
-                            // Zeigen Sie die Erfolgsmeldung an
-                            btn.closest('.review_content').find('.vote-message').show();
-                        } else {
-                            console.error('Unable to extract current votes count');
-                        }
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Fehlermeldung verarbeiten
-                    console.error(xhr.responseText);
-                }
-            });
-        }
-    });
-    </script>
-
-<script>
-    // JavaScript für das Ein- und Ausblenden des Reply-Formulars
-    $(document).ready(function() {
-        $('.reply-link').click(function(e) {
-            e.preventDefault();
-            var targetId = $(this).data('target');
-            $(targetId).collapse('toggle');
-        });
-    });
-    </script>
-
 
 
         @endpush
     @endif
 
+    <style>
+        .reviews #review_summary {
+            text-align: center;
+            background-color: #66cc66;
+            color: #fff;
+            padding: 20px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Übergangseffekt für die Hintergrundfarbe */
+        }
 
+        /* Hover-Stil */
+        .reviews #review_summary:hover {
+            background-color: #4CAF50; /* Neue Hintergrundfarbe beim Hover */
+        }
+    </style>
 
 
 

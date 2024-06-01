@@ -3,6 +3,7 @@
         <div class="col-md-3" >
             <div id="review_summary">
                 <strong>{{ number_format($overallRating, 1) }}</strong>
+                <section id="section-999">
                 <em>{{ $numberOfRatings }} @autotranslate('Reviews', app()->getLocale())</em>
 
                 <div class="score" wire:loading.remove>
@@ -28,7 +29,7 @@
                 </div>
 
 
-
+            </section>
             </div>
         </div>
         <div class="col-md-9 reviews_sum_details">
