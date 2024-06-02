@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('ip_address');
             $table->string('url');
             $table->string('method');
-            $table->text('user_agent');
+            $table->text('user_agent')->nullable();
+            $table->text('referrer')->nullable();
+            $table->boolean('is_bot')->default(false);
+            $table->integer('count')->default(1);
             $table->timestamp('timestamp');
-            $table->unsignedInteger('count')->default(1); // Neue Spalte für die Zählung
             $table->timestamps();
         });
     }

@@ -21,6 +21,7 @@ class LogRequests
     public function handle(Request $request, Closure $next)
     {
         if ($this->crawlerDetect->isCrawler()) {
+            $this->logRequest($request, true);
             return $this->handleBot($request);
         }
 
@@ -51,29 +52,34 @@ class LogRequests
         }
     }
 
-    protected function logRequest(Request $request)
+    protected function logRequest(Request $request, $isBot = false)
     {
         $requestData = [
             'ip_address' => $request->ip(),
             'url' => $request->fullUrl(),
             'method' => $request->method(),
             'user_agent' => $request->header('User-Agent'),
+            'referrer' => $request->header('referer'), // Referrer
         ];
 
-        $requestLog = SysRequestLog::updateOrCreate(
-            $requestData,
-            ['timestamp' => Carbon::now()]
-        );
+        $requestLog = SysRequestLog::where('ip_address', $requestData['ip_address'])
+            ->where('url', $requestData['url'])
+            ->where('method', $requestData['method'])
+            ->where('user_agent', $requestData['user_agent'])
+            ->first();
 
-        // Erhöhe den count und setze is_bot, wenn ein Bot erkannt wird
-        if ($this->crawlerDetect->isCrawler()) {
+        if ($requestLog) {
             $requestLog->increment('count');
-            $requestLog->update(['is_bot' => true]);
-        } else {
-            // Erhöhe den count, wenn der Eintrag bereits existiert
-            if (!$requestLog->wasRecentlyCreated) {
-                $requestLog->increment('count');
+            if ($isBot) {
+                $requestLog->update(['is_bot' => true]);
             }
+        } else {
+            $requestData['count'] = 1;
+            $requestData['timestamp'] = Carbon::now();
+            if ($isBot) {
+                $requestData['is_bot'] = true;
+            }
+            SysRequestLog::create($requestData);
         }
     }
 }
