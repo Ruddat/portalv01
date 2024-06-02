@@ -198,6 +198,7 @@ return [
         App\Providers\CookiesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\RestaurantProvider::class,
+        \Torann\GeoIP\GeoIPServiceProvider::class,
 
     ])->toArray(),
 
@@ -218,6 +219,7 @@ return [
         'Cart'=> App\Facades\Cart::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
     ])->toArray(),
 
 ];
