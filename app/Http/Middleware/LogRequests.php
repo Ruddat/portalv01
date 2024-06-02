@@ -48,6 +48,7 @@ class LogRequests
             case 'log':
             default:
                 Log::info('Bot request logged.');
+                break;
                 return response('Bot detected and logged', 200);
         }
     }

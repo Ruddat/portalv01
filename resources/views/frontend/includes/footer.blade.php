@@ -137,6 +137,7 @@
                     <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Impressum', app()->getLocale()) }}</a></li>
                     <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Terms and conditions', app()->getLocale()) }}</a></li>
                     <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Privacy', app()->getLocale()) }}</a></li>
+                    <li><a href="/media-stats">@autotranslate('Media Data', app()->getLocale())</a></li>
                     <li><span>© FooYes</span></li>
                 </ul>
             </div>

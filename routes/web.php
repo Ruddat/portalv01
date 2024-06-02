@@ -9,6 +9,7 @@ use App\Http\Controllers\Frontend\Card\CardController;
 use App\Http\Controllers\Frontend\ShopSearchController;
 use App\Http\Controllers\Frontend\Cart\NewCartController;
 use App\Http\Controllers\Frontend\Geoip\LocationController;
+use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 
 
@@ -58,7 +59,7 @@ use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 
 
 Route::get('/get-location', [LocationController::class, 'getLocation']);
-
+Route::get('/media-stats', [MediaStatsController::class, 'index'])->name('media.stats.index');
 
 
 
@@ -217,7 +218,9 @@ Route::get('/', [ShopSearchController::class, 'index'])->name('index');
 
 Route::match(['get', 'post'], '/search', [ShopSearchController::class, 'search'])->name('search.index');
 
-Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])->name('speichere-standort');
+Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])
+    ->name('speichere-standort')
+    ->middleware(LogRequests::class);
 
 
 

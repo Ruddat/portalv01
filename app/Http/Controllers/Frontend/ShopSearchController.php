@@ -236,6 +236,8 @@ foreach ($restaurants as $restaurant) {
      */
     public function speichereStandort(Request $request)
     {
+
+
         // Geokoordinaten aus dem Request erhalten
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
