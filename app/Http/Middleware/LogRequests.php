@@ -60,7 +60,7 @@ class LogRequests
             'url' => $request->fullUrl(),
             'method' => $request->method(),
             'user_agent' => $request->header('User-Agent'),
-            'referrer' => $request->header('referer'), // Referrer
+        //    'referrer' => $request->header('referer'), // Referrer
         ];
 
         $requestLog = SysRequestLog::where('ip_address', $requestData['ip_address'])
