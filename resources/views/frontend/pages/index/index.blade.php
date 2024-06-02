@@ -461,7 +461,7 @@
             </div>
         </div>
         <!-- /shape_element_2 -->
-
+        @livewire('frontend.social-toast.social-proof')
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {

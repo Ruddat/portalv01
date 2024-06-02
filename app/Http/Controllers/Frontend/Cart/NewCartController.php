@@ -171,7 +171,7 @@ if ($oldShopId !== null) {
     Session::forget('delivery_charge_' . $oldShopId);
     Session::forget('delivery_free_' . $oldShopId);
 }
-                $modalScript = true;
+                $modalScript = false;
             }
 
 //dd($productsByCategory);
@@ -181,10 +181,6 @@ if ($oldShopId !== null) {
                 'restaurant' => $restaurant,
                 'categories' => $categories,
                 'productsByCategory' => $productsByCategory, // Übergeben Sie die Produkte nach Kategorien an die Blade-Vorlage
-               // 'overallRating' => $overallRating, // Übergeben Sie die Gesamtbewertung an die Blade-Vorlage
-              //  'numberOfRatings' => $numberOfRatings, // Übergeben Sie die Anzahl der Bewertungen an die Blade-Vorlage
-              //  'overallRatingProgress' => $overallRatingProgress, // Übergeben Sie die Fortschrittsbalken für die Gesamtbewertung an die Blade-Vorlage
-             //   'ratings' => $ratings, // Übergeben Sie die Ratings an die Blade-Vorlage
                 'modalScript' => $modalScript, // Das Skript für das Modal übergeben
                 'sizesWithPrices' => $sizesWithPrices,
            //     'overallRatingSingle' => $ratingData['overallRatingSingle'], // Übergeben Sie die Gesamtbewertung für jede Kategorie an die Blade-Vorlage

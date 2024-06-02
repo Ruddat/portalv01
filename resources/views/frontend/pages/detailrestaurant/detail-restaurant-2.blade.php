@@ -37,14 +37,20 @@
                                 <div class="buttons clearfix">
                                     <span class="magnific-gallery">
                                         <a href="{{ asset('frontend/img/detail_1.jpg') }}" class="btn_hero"
-                                            title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>@autotranslate('View photos', app()->getLocale())</a>
+                                            title="Photo title" data-effect="mfp-zoom-in"><i class="icon_image"></i>@autotranslate('Gallerie', app()->getLocale())</a>
                                         <a href="{{ asset('frontend/img/detail_2.jpg') }}" title="Photo title"
                                             data-effect="mfp-zoom-in"></a>
                                         <a href="{{ asset('frontend/img/detail_3.jpg') }}" title="Photo title"
                                             data-effect="mfp-zoom-in"></a>
                                     </span>
-                                    <a href="#0" class="btn_hero wishlist"><i class="icon_heart"></i>@autotranslate('Wishlist', app()->getLocale())</a>
-                                    <a href="#0" class="btn_hero wishlist"><i class="icon_info"></i>@autotranslate('Info', app()->getLocale())</a>
+                                    <a href="#0" class="btn_hero wishlist" title="@autotranslate('Wishlist', app()->getLocale())">
+                                        <i class="icon_heart"></i>
+                                    </a>
+
+                                    <!-- Info Link -->
+                                    <a href="#0" class="btn_hero wishlist" data-toggle="tooltip" data-placement="top" title="@autotranslate('Shop Informationen', app()->getLocale())">
+                                        <i class="icon_info"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -231,23 +237,10 @@
         </div>
         <!-- /container -->
 
-
-
-
-
-
-
-
-
         <!-- Script zum Öffnen des Popups nach dem Laden der Seite -->
         <!-- Einbindung der Livewire-Komponente -->
 
-
         <livewire:frontend.storeinfos.store-popup :restaurant="$restaurant" :shopId="$restaurant->id"/>
-
-
-
-
 
 
 
