@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\ShopCardController;
 use App\Http\Controllers\Frontend\Card\CardController;
 use App\Http\Controllers\Frontend\ShopSearchController;
 use App\Http\Controllers\Frontend\Cart\NewCartController;
+use App\Http\Controllers\Frontend\Geoip\LocationController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 
 
@@ -54,6 +55,13 @@ use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 //Route::get('/', function () {
 //    return view('frontend/pages/index.index');
 //});
+
+
+Route::get('/get-location', [LocationController::class, 'getLocation']);
+
+
+
+
 
 Route::get('/index-2', function () {
     return view('frontend/pages/index.index-2');

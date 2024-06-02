@@ -389,7 +389,7 @@
                             </h3>
                             <p>@autotranslate('Enjoy a tasty food in minutes!', app()->getLocale())
                             </p>
-                            <a href="grid-listing-filterscol.html"
+                            <a href="/get-location"
                                 class="btn_1 gradient">@autotranslate('Start Now!', app()->getLocale())</a>
                         </div>
                     </div>
