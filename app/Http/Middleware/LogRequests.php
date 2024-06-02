@@ -20,12 +20,7 @@ class LogRequests
 
     public function handle(Request $request, Closure $next)
     {
-        if ($this->crawlerDetect->isCrawler()) {
-            $this->logRequest($request, true);
-            return $this->handleBot($request);
-        }
 
-        $response = $next($request);
 
         $this->logRequest($request);
 
