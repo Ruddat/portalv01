@@ -27,6 +27,7 @@ class GenerateSitemap extends Command
      //   $sitemap->add(Url::create('/about'));
         $sitemap->add(Url::create('/register'));
         $sitemap->add(Url::create('/seller/register'));
+        $sitemap->add(Url::create('/media-stats'));
 
         // Dynamische Seiten aus ModShop hinzufügen (nur 'limited' oder 'on', sortiert nach updated_at)
         $shops = ModShop::whereIn('status', ['limited', 'on'])
