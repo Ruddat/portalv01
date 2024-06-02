@@ -199,6 +199,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         App\Providers\RestaurantProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
+        Jaybizzle\LaravelCrawlerDetect\LaravelCrawlerDetectServiceProvider::class,
 
     ])->toArray(),
 
@@ -220,6 +221,8 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'Crawler'   => Jaybizzle\LaravelCrawlerDetect\Facades\LaravelCrawlerDetect::class,
+
     ])->toArray(),
 
 ];
