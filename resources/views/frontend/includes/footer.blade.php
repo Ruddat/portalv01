@@ -124,8 +124,8 @@
                     <li>
                         <div class="styled-select currency-selector">
                             <select>
-                                <option value="US Dollars" selected>US Dollars</option>
-                                <option value="Euro">Euro</option>
+                                <option value="US Dollars">US Dollars</option>
+                                <option value="Euro" selected>Euro</option>
                             </select>
                         </div>
                     </li>
@@ -145,3 +145,9 @@
 </footer>
 @cookieconsentview
 <!--/footer-->
+
+
+
+
+@stack('scripts')
+
