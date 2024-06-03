@@ -51,17 +51,21 @@ class SearchLocation extends Component
 
     private function processLocation($location)
     {
-        // Speichere die Standortdaten in der Session oder Datenbank
-        // Hier kannst du deine Logik zur Verwendung oder Speicherung des Standorts einfügen
-        // Zum Beispiel:
-        // Session::put('userLatitude', $location->lat);
-        // Session::put('userLongitude', $location->lon);
+        // Extrahiere Dorfnamen und Anzeigenamen aus dem Standort
+        $village = $location['address']['village'] ?? null;
+        $display_name = $location['display_name'] ?? null;
 
-        // Speichere die Standortdaten in der Session
+        // Wähle den Stadtnamen basierend auf Verfügbarkeit aus
+        $cityName = $village ?? $display_name;
+
+        // Speichere den Stadtnamen in der Session, wenn vorhanden
+        if ($cityName) {
+            Session::put('selectedName', $cityName);
+        }
+
+        // Speichere die Standortdaten (Latitude und Longitude) in der Session
         Session::put('userLatitude', $location['lat']);
         Session::put('userLongitude', $location['lon']);
-
-
 
         // Jetzt, da wir die Standortdaten haben, können wir den Controller aufrufen
         return redirect()->route('search.index');
