@@ -126,12 +126,7 @@
                                     <li><a href="#0">Pizza</a></li>
                                 </ul>
                             </div>
-
-                            <button class="custom-button" id="btn1" type="loc_button" onclick="getLocation()"
-                                aria-label="Custom Button" ontouchstart="">
-                                <i class="feather-map-pin h4 icofont-3x text-success"></i>
-                            </button>
-
+                            @livewire('frontend.search-shops.search-location')
                         </div>
                     </div>
                     <!-- /row -->
@@ -463,6 +458,7 @@
         <!-- /shape_element_2 -->
         @livewire('frontend.social-toast.social-proof')
 
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // Event-Listener für Klickereignis auf Schaltfläche
@@ -487,6 +483,9 @@
         </script>
 
         @push('specific-scripts')
+
+
+
             <!-- Typeahead.js CSS -->
             <link rel="stylesheet"
                 href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
@@ -520,91 +519,7 @@
                 });
             </script>
 
-            <!-- Axios JavaScript -->
 
-            <script src="{{ asset('extra-assets\axios\axios.min.js') }}"></script>
-
-            <script>
-                document.getElementById('btn1').addEventListener('click', getLocation);
-
-                async function getLocation() {
-                    if (navigator.geolocation) {
-                        try {
-                            const position = await new Promise((resolve, reject) => {
-                                navigator.geolocation.getCurrentPosition(resolve, reject, {
-                                    enableHighAccuracy: true,
-                                    timeout: 10000,
-                                    maximumAge: 0
-                                });
-                            });
-                            await showPosition(position);
-                        } catch (error) {
-                            showError(error);
-                        }
-                    } else {
-                        console.log('Ihr Browser unterst�tzt keine Geolocation.');
-                    }
-                }
-
-                async function showPosition(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-
-                    // Leere das Eingabefeld f�r die Suchabfrage
-                    $('#autocomplete').val('');
-
-                    // L�sche die alten Koordinaten aus der Session
-                    sessionStorage.removeItem('userLatitude');
-                    sessionStorage.removeItem('userLongitude');
-
-                    // CSRF-Token aus dem Meta-Tag der Seite abrufen
-                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                    try {
-                        const response = await axios.post('/speichere-standort', {
-                            latitude: latitude,
-                            longitude: longitude
-                        }, {
-                            headers: {
-                                'X-CSRF-TOKEN': csrfToken,
-                                'Content-Type': 'application/json'
-                            }
-                        });
-
-                        // Erfolgreiche Anfrage
-                        console.log(response.data);
-                        // Überpr�fe, ob die Koordinaten erfolgreich gespeichert wurden
-                        if (response.data.success) {
-                            // Validierung erfolgreich, das Suchformular automatisch senden
-                            $('#searchForm').submit();
-                        } else {
-                            // Fehlermeldung anzeigen
-                            alert(response.data.message);
-                        }
-                    } catch (error) {
-                        // Fehlerbehandlung
-                        console.error('Fehler bei der Standortabfrage:', error);
-                        console.log("Ein Fehler ist aufgetreten, bitte versuchen Sie es erneut.");
-                    }
-                }
-
-                function showError(error) {
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            console.log("Benutzer lehnte Standortabfrage ab.");
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            console.log("Standortdaten sind nicht verf�gbar.");
-                            break;
-                        case error.TIMEOUT:
-                            console.log("Die Standortabfrage dauerte zu lange (Time-out). Bitte versuchen Sie es erneut.");
-                            break;
-                        case error.UNKNOWN_ERROR:
-                            console.log("Unbekannter Fehler.");
-                            break;
-                    }
-                }
-            </script>
 
         @endpush
     @endsection
