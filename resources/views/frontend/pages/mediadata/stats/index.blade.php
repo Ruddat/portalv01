@@ -26,120 +26,215 @@
 		</div>
 		<!-- /hero_single -->
 
-		<div class="bg_gray">
-		    <div class="container margin_60_40">
 
-                <div class="container mt-5">
-                    <h1>@autotranslate('Media Data Statistics', app()->getLocale())</h1>
-                    <h2>Total Requests</h2>
-                    <p>{{ $totalRequests }}</p>
 
-                    <h2>@autotranslate('Popular Pages', app()->getLocale())</h2>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>URL</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($popularPages as $page)
-                                <tr>
-                                    <td>{{ $page->url }}</td>
-                                    <td>{{ $page->total }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
 
-                    <h2>@autotranslate('Requests by Date', app()->getLocale())</h2>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($requestsByDate as $request)
-                                <tr>
-                                    <td>{{ $request->date }}</td>
-                                    <td>{{ $request->total }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                    <h2>@autotranslate('Device Statistics', app()->getLocale())</h2>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>User Agent</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($deviceStats as $device)
-                                <tr>
-                                    <td>{{ $device->user_agent }}</td>
-                                    <td>{{ $device->total }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                    <h2>@autotranslate('Referrer Statistics', app()->getLocale())</h2>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Referrer</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($referrerStats as $referrer)
-                                <tr>
-                                    <td>{{ $referrer->referrer }}</td>
-                                    <td>{{ $referrer->total }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+        <div class="bg_gray">
+            <div class="container margin_30_40">
+                <div class="main_title center">
+                    <span><em></em></span>
+                    <h2>@autotranslate('Media Data Charts', app()->getLocale())</h2>
+                    <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
                 </div>
 
-
-                <div class="container mt-5">
-                    <h1>@autotranslate('Media Data Charts', app()->getLocale())</h1>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h2>@autotranslate('Popular Pages', app()->getLocale())</h2>
+                <div class="row justify-content-center add_bottom_45">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="box_topic submit">
                             <canvas id="popularPagesChart"></canvas>
-                        </div>
-
-                        <div class="col-md-6">
-                            <h2>@autotranslate('Requests by Date', app()->getLocale())</h2>
-                            <canvas id="requestsByDateChart"></canvas>
+                            <h3>@autotranslate('Media Data Charts', app()->getLocale())</h3>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h2>@autotranslate('Referrer Statistics', app()->getLocale())</h2>
-                            <canvas id="referrerStatsChart"></canvas>
-                        </div>
-
-                        <div class="col-md-6">
-                            <h2>@autotranslate('Device Statistics', app()->getLocale())</h2>
-                            <canvas id="deviceStatsChart"></canvas>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="box_topic submit">
+                            <canvas id="requestsByDateChart"></canvas>
+                            <h3>@autotranslate('Popular Pages', app()->getLocale())</h3>
                         </div>
                     </div>
                 </div>
-		        <!-- /row -->
-		    </div>
-		    <!-- /container -->
-		</div>
-		<!-- /bg_gray -->
+
+                <div class="row justify-content-center add_bottom_45">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="box_topic submit">
+                            <canvas id="referrerStatsChart"></canvas>
+                            <h3>@autotranslate('Referrer Statistics', app()->getLocale())</h3>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="box_topic submit">
+                            <canvas id="deviceStatsChart"></canvas>
+                            <h3>@autotranslate('Device Statistics', app()->getLocale())</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center add_bottom_45">
+                    <div class="col-lg-12">
+                        <div class="main_title center">
+                            <h3 style="margin-bottom: 0;">@autotranslate('Media Data Statistics', app()->getLocale())</h3>
+                            <p>Here you'll be able find answers your questions</p>
+                        </div>
+
+                        <div role="tablist" class="add_bottom_15 accordion_2" id="accordion_group">
+                            <!-- Hier die Karten hinzufügen -->
+
+                            <div class="card">
+                                <div class="card-header" role="tab">
+                                    <h5>Total Requests {{ $totalRequests }}
+                                    </h5>
+                                </div>
+
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header" role="tab">
+                                    <h5>@autotranslate('Popular Pages', app()->getLocale())
+                                    </h5>
+                                </div>
+
+                                    <div class="card-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>URL</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($popularPages as $page)
+                                                    <tr>
+                                                        <td>{{ $page->url }}</td>
+                                                        <td>{{ $page->total }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+
+
+                            <div class="card">
+                                <div class="card-header" role="tab">
+                                    <h5>@autotranslate('Requests by Date', app()->getLocale())</h5>
+                                </div>
+
+                                    <div class="card-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($requestsByDate as $request)
+                                                    <tr>
+                                                        <td>{{ $request->date }}</td>
+                                                        <td>{{ $request->total }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+
+
+
+
+                            <div class="card">
+                                <div class="card-header" role="tab">
+                                    <h5>@autotranslate('Device Statistics', app()->getLocale())</h5>
+                                </div>
+
+                                    <div class="card-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>User Agent</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($deviceStats as $device)
+                                                    <tr>
+                                                        <td>{{ $device->user_agent }}</td>
+                                                        <td>{{ $device->total }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+
+
+
+                            <div class="card">
+                                <div class="card-header" role="tab">
+                                    <h5>@autotranslate('Referrer Statistics', app()->getLocale())</h5>
+                                </div>
+
+                                    <div class="card-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Referrer</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($referrerStats as $referrer)
+                                                    <tr>
+                                                        <td>{{ $referrer->referrer }}</td>
+                                                        <td>{{ $referrer->total }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+                        <!-- /accordion group -->
+                    </div>
+                    <!-- /col -->
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-10">
+                        <!-- Hier die Karten hinzufügen -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		<div class="container margin_60_20">
 		    <h5 class="mb_5">@autotranslate('Drop Us a Line', app()->getLocale())</h5>
