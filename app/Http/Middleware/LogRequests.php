@@ -20,11 +20,16 @@ class LogRequests
 
     public function handle(Request $request, Closure $next)
     {
-
-
+        // Protokolliere jede Anfrage, unabhängig von der Art
         $this->logRequest($request);
 
-        return $response;
+
+        // Überprüfe, ob die Anfrage von einem Crawler stammt
+        if ($this->crawlerDetect->isCrawler()) {
+            $this->handleBot($request);
+        }
+
+        return $next($request);
     }
 
     protected function handleBot(Request $request)
@@ -34,17 +39,19 @@ class LogRequests
         switch ($botAction) {
             case 'block':
                 Log::info('Bot request blocked.');
-                return response('Access denied', 403);
+                abort(403, 'Access denied'); // Blockieren Sie den Zugriff
+                break;
 
             case 'redirect':
                 Log::info('Bot request redirected.');
                 return redirect()->route('home');
+                break;
 
             case 'log':
             default:
                 Log::info('Bot request logged.');
+                // Fahren Sie fort, die Anfrage zu verarbeiten, ohne sie zu blockieren
                 break;
-                return response('Bot detected and logged', 200);
         }
     }
 
@@ -55,7 +62,6 @@ class LogRequests
             'url' => $request->fullUrl(),
             'method' => $request->method(),
             'user_agent' => $request->header('User-Agent'),
-        //    'referrer' => $request->header('referer'), // Referrer
         ];
 
         $requestLog = SysRequestLog::where('ip_address', $requestData['ip_address'])
@@ -68,6 +74,7 @@ class LogRequests
             $requestLog->increment('count');
             if ($isBot) {
                 $requestLog->update(['is_bot' => true]);
+                Log::info('Bot request logged.');
             }
         } else {
             $requestData['count'] = 1;
