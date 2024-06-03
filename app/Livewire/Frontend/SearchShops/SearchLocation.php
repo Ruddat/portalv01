@@ -36,6 +36,10 @@ class SearchLocation extends Component
         $result = $nominatim->find($reverse);
 
 
+
+       dd($result);
+
+
         // Speichere die Standortdaten in der Session
         Session::put('userLatitude', $latitude);
         Session::put('userLongitude', $longitude);

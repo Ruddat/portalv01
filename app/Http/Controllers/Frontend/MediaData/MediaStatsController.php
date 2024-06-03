@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 
 class MediaStatsController extends Controller
 {
+
+
     //
     public function index()
     {
@@ -18,8 +20,7 @@ class MediaStatsController extends Controller
         $popularPages = SysRequestLog::select('url', SysRequestLog::raw('count(*) as total'))
             ->groupBy('url')
             ->orderByDesc('total')
-            ->limit(15)
-            ->get();
+            ->paginate(15); // Hier paginieren wir mit 15 Einträgen pro Seite
 
         // Zugriffe nach Datum
         $requestsByDate = SysRequestLog::select(SysRequestLog::raw('DATE(timestamp) as date'), SysRequestLog::raw('count(*) as total'))
@@ -37,8 +38,7 @@ class MediaStatsController extends Controller
         $referrerStats = SysRequestLog::select('referrer', SysRequestLog::raw('count(*) as total'))
             ->groupBy('referrer')
             ->orderByDesc('total')
-            ->limit(10)
-            ->get();
+            ->paginate(10); // Hier paginieren wir mit 10 Einträgen pro Seite
 
         // Daten an die View weiterleiten
         return view('frontend.pages.mediadata.stats.index', compact('totalRequests', 'popularPages', 'requestsByDate', 'deviceStats', 'referrerStats'));
