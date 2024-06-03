@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend\SearchShops;
 
 use Livewire\Component;
+use App\Models\ModSearchLocation;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use NominatimLaravel\Content\Nominatim;
@@ -28,47 +29,99 @@ class SearchLocation extends Component
         $this->latitude = $latitude;
         $this->longitude = $longitude;
 
-        // Hier die Logik zur Speicherung des Standorts einfügen
+       // dd($this->latitude, $this->longitude); // Debugging
 
-        $url = "http://nominatim.openstreetmap.org/";
-        $nominatim = new Nominatim($url);
-        $reverse = $nominatim->newReverse()->latlon($latitude, $longitude);
-        $result = $nominatim->find($reverse);
+        // Toleranz für den Vergleich festlegen
+        $tolerance = 0.0011;
 
+        // Überprüfen, ob die Longitude und Latitude in der Datenbank vorhanden sind
+        $location = ModSearchLocation::whereBetween('lat', [$latitude - $tolerance, $latitude + $tolerance])
+                                      ->whereBetween('lon', [$longitude - $tolerance, $longitude + $tolerance])
+                                      ->first();
 
-
-       dd($result);
-
-
-        // Speichere die Standortdaten in der Session
-        Session::put('userLatitude', $latitude);
-        Session::put('userLongitude', $longitude);
-
-
-    // Überprüfen, ob die Ergebnisse nicht leer sind
-    if (!empty($result)) {
-        // Stadtnamen aus den Ergebnissen extrahieren
-        $village = $result['address']['village'] ?? null;
-
-        $display_name = $result['display_name'] ?? null;
-        // Überprüfen, ob ein Dorfname gefunden wurde
-        $cityName = $village ?? $display_name;
-
-        if ($cityName) {
-            // Stadtnamen und Ortsnamen in der Session speichern
-            Session::put('selectedName', $cityName);
-  //          dd($selectedName);
+        if ($location) {
+            // Standort in der Datenbank gefunden, verwenden
+         //   dd($location); // Debugging++;
+            $this->processLocation($location);
+        } else {
+            // Standort nicht in der Datenbank gefunden, Nominatim API aufrufen
+            $this->retrieveLocationFromNominatim($latitude, $longitude);
         }
-
     }
 
-        // Verberge den Ladezustand
-        $this->loading = false;
+    private function processLocation($location)
+    {
+        // Speichere die Standortdaten in der Session oder Datenbank
+        // Hier kannst du deine Logik zur Verwendung oder Speicherung des Standorts einfügen
+        // Zum Beispiel:
+        // Session::put('userLatitude', $location->lat);
+        // Session::put('userLongitude', $location->lon);
+
+        // Speichere die Standortdaten in der Session
+        Session::put('userLatitude', $location['lat']);
+        Session::put('userLongitude', $location['lon']);
 
 
 
         // Jetzt, da wir die Standortdaten haben, können wir den Controller aufrufen
         return redirect()->route('search.index');
+    }
+
+    private function retrieveLocationFromNominatim($latitude, $longitude)
+    {
+        // Nominatim API aufrufen, um den Standort zu ermitteln
+        $response = Http::get("http://nominatim.openstreetmap.org/reverse", [
+            'format' => 'json',
+            'lat' => $latitude,
+            'lon' => $longitude,
+            'zoom' => 18,
+        ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+
+            if (!empty($data)) {
+                // Standortdaten verarbeiten
+               // dd($data);
+                $this->processLocationData($data);
+            } else {
+                // Keine Daten erhalten
+                // Füge hier deine Fehlerbehandlung hinzu
+            }
+        } else {
+            // API-Aufruf fehlgeschlagen
+            // Füge hier deine Fehlerbehandlung hinzu
+        }
+
+    //    dd($data);
+    }
+
+    private function processLocationData($data)
+    {
+        // Extrahiere und verarbeite die relevanten Standortdaten
+        $locationData = [
+            'place_id' => $data['place_id'] ?? null,
+            'licence' => $data['licence'] ?? null,
+            'osm_type' => $data['osm_type'] ?? null,
+            'osm_id' => $data['osm_id'] ?? null,
+            'lat' => $data['lat'] ?? null,
+            'lon' => $data['lon'] ?? null,
+            'class' => $data['class'] ?? null,
+            'type' => $data['type'] ?? null,
+            'place_rank' => $data['place_rank'] ?? null,
+            'importance' => $data['importance'] ?? null,
+            'addresstype' => $data['addresstype'] ?? null,
+            'name' => $data['name'] ?? null,
+            'display_name' => $data['display_name'] ?? null,
+            'address' => $data['address'] ?? null,
+            'boundingbox' => $data['boundingbox'] ?? null,
+        ];
+
+        // Speichere die Standortdaten in der Datenbank
+        ModSearchLocation::create($locationData);
+
+        // Verarbeite den Standort weiter
+        $this->processLocation($locationData);
     }
 
 
