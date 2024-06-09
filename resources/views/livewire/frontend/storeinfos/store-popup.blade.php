@@ -52,8 +52,14 @@
 
                     @elseif($shopStatus == 'on' || $shopStatus == 'open')
                         <p>@autotranslate("To get your food to you as quickly as possible, we'll need your address, please.", app()->getLocale())</p>
+                        @if ($errorMessage)
+                        <div class="alert alert-danger">
+                            {{ $errorMessage }}
+                        </div>
+                        @endif
                         <form>
                             <div class="row">
+
                                 <div class="mb-3 col-md-9">
                                     <input id="street" name="street" type="text" class="form-control @error('street') is-invalid @enderror" placeholder="@autotranslate('Street*', app()->getLocale())" autocomplete="off" spellcheck="false" wire:model="street">
                                     @error('street') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror

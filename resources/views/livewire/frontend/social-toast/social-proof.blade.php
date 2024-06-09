@@ -1,110 +1,64 @@
-<!-- resources/views/livewire/frontend/social-toast/social-proof.blade.php -->
+<div>
 
-<div id="socialproof-section-suggested-products" class="socialproof-section customer-purchased">
-    <ul class="customer-who-purchased text-left">
-        <li class="product-data">
-            <a href="#">
-                <img loading="lazy" src="{{ asset('uploads/images/default/avatar_3.jpg') }}" alt="" width="" height="">
-            </a>
-            <div id="order-info"></div>
-            <a href="javascript:void(0)" title="Close" class="dT_close">
-                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" fill="none" viewBox="0 0 18 17">
-                    <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor"></path>
-                </svg>
-            </a>
-        </li>
-    </ul>
+    @if(!empty($orders))
+
+    <div class="social-proof-container {{ $showContainer ? 'active' : '' }}" id="social-proof-container">
+        <div class="popup-container" id="popupContainer">
+            @foreach($orders as $order)
+                <div class="popup">
+                    <h2>Neue Bestellung</h2>
+                    <p>Kunde: {{ $order['name'] }}</p>
+                    <p>Produkt: {{ $order['product'] }}</p>
+                    <p>Bestellt {{ $order['created_at'] }}</p>
+                    <div class="close" onclick="closePopup(this.parentNode)">&times;</div>
+                </div>
+            @endforeach
+            <ul class="customer-who-purchased text-left">
+                <li class="product-data active">
+                    <a href="#">
+                        <img loading="lazy" src="{{ asset('uploads/images/default/avatar_3.jpg') }}" alt="" width="" height="">
+                    </a>
+                    <div id="order-info"></div>
+                    <p>Kunde: {{ $order['name'] }}</p>
+                    <a href="javascript:void(0)" title="Close" class="dT_close">
+                        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" fill="none" viewBox="0 0 18 17">
+                            <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor"></path>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
 
 
-    @push('scripts')
-    <script>
-        // Verstecke den Container mit Slide-Out-Animation
-        function hideContainerWithAnimation(container) {
-            container.classList.remove('active');
-            setTimeout(function() {
-                container.style.display = 'none';
-            }, 1000); // Setze Timeout entsprechend der Dauer der Slide-Out-Animation
-        }
+        </div>
 
-        // Zeige den Container mit Slide-In-Animation an
-        function showContainerWithAnimation() {
-            var container = document.querySelector('.customer-who-purchased .product-data');
-            container.style.display = 'block';
-            setTimeout(function() {
-                container.classList.add('active');
-            }, 10); // Verhindert Layout-Doppelberechnung
-            setTimeout(function() {
-                hideContainerWithAnimation(container);
-            }, 10000); // Verstecke nach 10 Sekunden
-        }
 
-        // Aktualisiere den Inhalt des Containers mit neuen Bestellungen
-        function updateContainerContent(orders) {
-            var orderInfo = document.getElementById('order-info');
-            orderInfo.innerHTML = '';
 
-            orders.forEach(function(orderArray) {
-                orderArray.forEach(function(order) {
-                    console.log('Order:', order); // Debugging: Zeige die Bestellung im Konsolenprotokoll an
-                    var p = document.createElement('p');
-                    var timeAgo = formatTimeAgo(new Date(order.created_at));
-                    p.textContent = `${order.name} hat gerade ${order.product} bestellt ${timeAgo}`;
-                    orderInfo.appendChild(p);
-                });
-            });
-        }
+        <ul class="customer-who-purchased text-left">
+            <li class="product-data active">
+                <a href="#">
+                    <img loading="lazy" src="{{ asset('uploads/images/default/avatar_3.jpg') }}" alt="" width="" height="">
+                </a>
+                <div id="order-info"></div>
+                <p>Kunde: {{ $order['name'] }}</p>
+                <a href="javascript:void(0)" title="Close" class="dT_close">
+                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" fill="none" viewBox="0 0 18 17">
+                        <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
 
-        // Formatierung der relativen Zeitangaben
-        function formatTimeAgo(date) {
-            const rtf = new Intl.RelativeTimeFormat('de', { numeric: 'auto' });
-            const seconds = Math.floor((new Date() - date) / 1000);
-            const intervals = [
-                { unit: 'year', value: 60 * 60 * 24 * 365 },
-                { unit: 'month', value: 60 * 60 * 24 * 30 },
-                { unit: 'week', value: 60 * 60 * 24 * 7 },
-                { unit: 'day', value: 60 * 60 * 24 },
-                { unit: 'hour', value: 60 * 60 },
-                { unit: 'minute', value: 60 },
-                { unit: 'second', value: 1 }
-            ];
 
-            for (const interval of intervals) {
-                const delta = Math.floor(seconds / interval.value);
-                if (delta >= 1) {
-                    return rtf.format(-delta, interval.unit);
-                }
-            }
-        }
 
-        // Fetch Orders using Livewire
-        function fetchOrders() {
-            Livewire.dispatch('fetchOrders'); // Emittiere ein Livewire-Event, um die Bestellungen abzurufen
-        }
 
-        // Initialisierung
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchOrders(); // Rufe die Funktion zum Abrufen der Bestellungen beim ersten Laden der Seite auf
 
-            setInterval(function() {
-                fetchOrders(); // Rufe die Funktion zum Abrufen der Bestellungen alle 3 Sekunden auf
-            }, 3000);
 
-            Livewire.on('ordersFetched', function(orders) {
-                console.log('Orders fetched:', orders); // Debugging: Zeige die abgerufenen Bestellungen im Konsolenprotokoll an
-                updateContainerContent(orders);
-                showContainerWithAnimation();
-            });
 
-            document.querySelectorAll('.dT_close').forEach(function(closeButton) {
-                closeButton.addEventListener('click', function() {
-                    var container = this.closest('.product-data');
-                    hideContainerWithAnimation(container);
-                });
-            });
-        });
-    </script>
-    @endpush
+    </div>
 
+    @else
+    <p>Keine Bestellungen vorhanden.</p>
+@endif
 
 <style type="text/css">
     .customer-who-purchased{
@@ -235,17 +189,4 @@
         color: var(--gradient-base-accent-2);
     }
     </style>
-
 </div>
-
-
-
-
-
-
-
-
-
-
-
-

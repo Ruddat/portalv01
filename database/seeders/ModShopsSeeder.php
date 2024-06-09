@@ -165,7 +165,9 @@ class ModShopsSeeder extends Seeder
 
                     ModShop::create([
                         'parent' => 0,
-                        'shop_nr' => $faker->unique()->numberBetween(1000, 9999),
+//                        'shop_nr' => $faker->unique()->numberBetween(1000, 9999),
+                        'shop_nr' => $faker->unique()->numerify('SHOP###'),
+
 
                         'shop_slug' => Str::slug($title), // Besserer Slug basierend auf dem Titel
                         'title' => $title,
@@ -182,8 +184,8 @@ class ModShopsSeeder extends Seeder
                         'lng' => $lng,
                         'phone' => $faker->phoneNumber,
                         'email' => $faker->unique()->safeEmail,
-                        'categories' => $faker->word,
-                        'charge' => $faker->randomFloat(2, 0, 1000),
+                        'categories' => $faker->randomElement(['Italian', 'Mexican', 'Sushi', 'Vegetarian', 'Chinese', 'Pizza']),
+                        'charge' => $faker->randomFloat(2, 0, 30),
                         'markup' => $faker->randomFloat(2, 0, 1000),
                         'per_order' => $faker->randomFloat(2, 0, 1000),
                         'price_sms' => $faker->randomFloat(2, 0, 1000),
@@ -208,7 +210,7 @@ class ModShopsSeeder extends Seeder
                         'backlink' => $faker->url,
                         'cash_active' => $faker->numberBetween(0, 1),
                         'ec_card_active' => $faker->numberBetween(0, 1),
-                        'ec_card_price' => $faker->randomFloat(2, 0, 1000),
+                        'ec_card_price' => $faker->randomFloat(2, 0, 20),
                         'paypal_active' => $faker->numberBetween(0, 1),
                         'paypal_use_system' => $faker->numberBetween(0, 1),
                         'paypal_api_username' => $faker->userName,
@@ -216,11 +218,10 @@ class ModShopsSeeder extends Seeder
                         'paypal_api_signature' => $faker->word,
                         'paypal_api_endpoint' => $faker->url,
                         'paypal_url' => $faker->url,
-                        'lang' => $faker->languageCode,
-                        'ordering' => $faker->randomNumber(),
-                        'ordering2' => $faker->randomNumber(),
-                        'published' => $faker->numberBetween(0, 1),
-                        'status' => $faker->randomElement(['closed', 'limited']),
+                        'ordering' => $faker->numberBetween(1, 100),
+                        'ordering2' => $faker->numberBetween(1, 100),
+                        'published' => 1,
+                        'status' => $faker->randomElement(['on', 'off', 'closed', 'limited']),
                         'activation_date' => $faker->dateTime(),
                         'date' => $faker->dateTime(),
                         'contact_info' => $faker->paragraph,
@@ -230,8 +231,10 @@ class ModShopsSeeder extends Seeder
                         'per_turnover' => $faker->randomFloat(2, 0, 1000),
                         'invoice_payment_account' => $faker->paragraph,
                         'payment_usage_amount' => $faker->randomNumber(),
+
                         'no_abholung' => $faker->numberBetween(0, 1),
                         'no_lieferung' => $faker->numberBetween(0, 1),
+
                         'paid_on_top' => $faker->randomNumber(),
                         'show_logo' => $faker->numberBetween(0, 1),
                         'have_new_products' => $faker->numberBetween(0, 1),
@@ -254,6 +257,16 @@ class ModShopsSeeder extends Seeder
                         'eshop_discount_valid' => $faker->dateTime(),
                         'winorder_version' => $faker->word,
                         'created_at' => $faker->dateTime()->format('Y-m-d H:i:s'),
+
+
+                        'votes_count' => $faker->numberBetween(0, 500),
+                        'voting_average' => $faker->randomFloat(2, 0, 10),
+                        'show_voting' => 1,
+
+                      //  'logo' => $faker->imageUrl(350, 233, 'food', true, 'restaurant'),
+                        'lang' => $faker->randomElement(['de', 'en']),
+
+
                     ]);
                 }
             }

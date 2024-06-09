@@ -250,132 +250,53 @@
         </div>
         <!-- /container -->
 
-        <div class="bg_gray">
-            <div class="container margin_60_40">
-                <div class="main_title">
-                    <span><em></em></span>
-                    <h2>@autotranslate('Top Rated Restaurants', app()->getLocale())
-                    </h2>
-                    <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
-                    <a href="#0">@autotranslate('View All', app()->getLocale()) &rarr;</a>
-                </div>
-                <div class="row add_bottom_25">
-                    <div class="col-lg-6">
-                        <div class="list_home">
-                            <ul>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_1.jpg') }}" alt=""
-                                                class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>9.5</strong></div>
-                                        <em>Italian</em>
-                                        <h3>La Monnalisa</h3>
-                                        <small>8 Patriot Square E2 9NF</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-30%</span></li>
-                                            <li>Average price $35</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_2.jpg') }}" alt=""
-                                                class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>8.0</strong></div>
-                                        <em>Mexican</em>
-                                        <h3>Alliance</h3>
-                                        <small>27 Old Gloucester St, 4563</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-40%</span></li>
-                                            <li>Average price $30</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_3.jpg') }}" alt=""
-                                                class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>9.0</strong></div>
-                                        <em>Sushi - Japanese</em>
-                                        <h3>Sushi Gold</h3>
-                                        <small>Old Shire Ln EN9 3RX</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-25%</span></li>
-                                            <li>Average price $20</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                            </ul>
+
+
+                <div class="bg_gray">
+                    <div class="container margin_60_40">
+                        <div class="main_title">
+                            <span><em></em></span>
+                            <h2>@autotranslate('Top Rated Restaurants', app()->getLocale())</h2>
+                            <p>@autotranslate('Discover the best-rated restaurants in your area.', app()->getLocale())</p>
+                            <a href="{{ route('best-ratet-restaurants.viewAll') }}">@autotranslate('View All', app()->getLocale()) &rarr;</a>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="list_home">
-                            <ul>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_4.jpg') }}" alt=""
-                                                class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>9.5</strong></div>
-                                        <em>Vegetarian</em>
-                                        <h3>Mr. Pepper</h3>
-                                        <small>27 Old Gloucester St, 4563</small>
+                        <div class="row add_bottom_25">
+                            @foreach($restaurants as $restaurant)
+                                <div class="col-lg-6">
+                                    <div class="list_home">
                                         <ul>
-                                            <li><span class="ribbon off">-30%</span></li>
-                                            <li>Average price $20</li>
+                                            <li>
+                                                <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}">
+                                                    <figure>
+                                                        <img src="{{ $restaurant->logo ? $restaurant->logo : asset('frontend/img/location_list_placeholder.png') }}"
+                                                             data-src="{{ $restaurant->logo ? $restaurant->logo : asset('frontend/img/location_list_placeholder.png') }}"
+                                                             alt="{{ $restaurant->title }}"
+                                                             class="lazy" width="350" height="233">
+                                                    </figure>
+                                                    <div class="score"><strong>{{ $restaurant->voting_average }}</strong></div>
+                                                    <em>{{ $restaurant->categories }}</em>
+                                                    <h3>{{ $restaurant->title }}</h3>
+                                                    <small>{{ $restaurant->street }} {{ $restaurant->zip }} {{ $restaurant->city }}</small>
+                                                    <ul>
+                                                        <li><span class="ribbon off">{{ $restaurant->charge }}%</span></li>
+                                                        <li>@autotranslate('Average price ', app()->getLocale()) ${{ $restaurant->per_order }}</li>
+                                                    </ul>
+                                                </a>
+                                            </li>
                                         </ul>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_5.jpg') }}" alt=""
-                                                class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>8.0</strong></div>
-                                        <em>Chinese</em>
-                                        <h3>Dragon Tower</h3>
-                                        <small>22 Hertsmere Rd E14 4ED</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-50%</span></li>
-                                            <li>Average price $35</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}"
-                                                data-src="{{ asset('frontend/img/location_list_6.jpg') }}" alt=""
-                                                class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>8.5</strong></div>
-                                        <em>Pizza - Italian</em>
-                                        <h3>Bella Napoli</h3>
-                                        <small>135 Newtownards Road BT4</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-45%</span></li>
-                                            <li>Average price $25</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                            </ul>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
-                </div>
-                <!-- /row -->
+                        <!-- /row -->
+
+
+
+
+
+
+
+
                 <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }}">
                     <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
                         <div>
@@ -402,61 +323,148 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}"
-                                            data-src="{{ asset('frontend/img/how_1.svg') }}" alt=""
-                                            width="150" height="167" class="lazy"></figure>
-                                    <h3>@autotranslate('Easly Order', app()->getLocale())
-                                    </h3>
-                                    <p>Faucibus ante, in porttitor tellus blandit et. Phasellus tincidunt metus lectus
-                                        sollicitudin.</p>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_1.svg') }}" alt="" width="150" height="167" class="lazy"></figure>
+                                    <h3>@autotranslate('Easily Order', app()->getLocale())</h3>
+                                    <p>@autotranslate('Order your favorite meals with just a few clicks. Fast and easy!', app()->getLocale())</p>
                                 </div>
                                 <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}"
-                                            data-src="{{ asset('frontend/img/how_2.svg') }}" alt=""
-                                            width="130" height="145" class="lazy"></figure>
-                                    <h3>@autotranslate('Quick Delivery', app()->getLocale())
-                                    </h3>
-                                    <p>Maecenas pulvinar, risus in facilisis dignissim, quam nisi hendrerit nulla, id
-                                        vestibulum.</p>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_2.svg') }}" alt="" width="130" height="145" class="lazy"></figure>
+                                    <h3>@autotranslate('Quick Delivery', app()->getLocale())</h3>
+                                    <p>@autotranslate('Enjoy fast delivery. Your food, hot and fresh, right on time.', app()->getLocale())</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 align-self-center">
                                 <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}"
-                                            data-src="{{ asset('frontend/img/how_3.svg') }}" alt=""
-                                            width="150" height="132" class="lazy"></figure>
-                                    <h3>@autotranslate('Enjoy Food', app()->getLocale())
-                                    </h3>
-                                    <p>Morbi convallis bibendum urna ut viverra. Maecenas quis consequat libero, a feugiat
-                                        eros.</p>
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_3.svg') }}" alt="" width="150" height="132" class="lazy"></figure>
+                                    <h3>@autotranslate('Enjoy Food', app()->getLocale())</h3>
+                                    <p>@autotranslate('Savor your meal, whether dining alone or with loved ones.', app()->getLocale())</p>
                                 </div>
                             </div>
                         </div>
-                        <p class="text-center mt-3 d-block d-lg-none"><a href="#0"
-                                class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Register Now!', app()->getLocale())</a>
-                        </p>
+                        <p class="text-center mt-3 d-block d-lg-none"><a href="#0" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Register Now!', app()->getLocale())</a></p>
                     </div>
                     <div class="col-lg-5 offset-lg-1 align-self-center">
                         <div class="intro_txt">
                             <div class="main_title">
                                 <span><em></em></span>
-                                <h2>@autotranslate('Start Ordering Now', app()->getLocale())
-                                </h2>
+                                <h2>@autotranslate('Start Ordering Now', app()->getLocale())</h2>
                             </div>
-                            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet libero
-                                id nisi euismod, sed porta est consectetur deserunt.</p>
-                            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                pariatur.</p>
-                            <p><a href="#0"
-                                    class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Register', app()->getLocale())</a>
-                            </p>
+                            <p class="lead">@autotranslate('Order your favorite dishes online and get them delivered fast.', app()->getLocale())</p>
+                            <p>@autotranslate('Our platform is user-friendly, ensuring a smooth experience.', app()->getLocale())</p>
+                            <p><a href="#0" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Register', app()->getLocale())</a></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- /shape_element_2 -->
-        @livewire('frontend.social-toast.social-proof')
+
+<!-- Hier wire:poll einsetzen -->
+<livewire:frontend.social-toast.social-proof />
+
+
+@push('specific-scripts')
+<script>
+    document.addEventListener('livewire:init', function () {
+        Livewire.on('showContainer', function (event) {
+            console.log('showContainer event received with orders:', event.orders);
+            showContainer();
+        });
+
+        Livewire.on('hideContainer', function () {
+            console.log('hideContainer event received');
+            hideContainer();
+        });
+
+        function showContainer() {
+            var container = document.getElementById('social-proof-container');
+            if (container) {
+                container.classList.add('active'); // Add a class to show the container
+                container.style.display = 'block'; // Ensure the display property is set to block
+                console.log('Showing container:', container);
+            }
+        }
+
+        function hideContainer() {
+            var container = document.getElementById('social-proof-container');
+            if (container) {
+                container.classList.remove('active'); // Remove the class to hide the container
+                container.style.display = 'none'; // Ensure the display property is set to none
+                console.log('Hiding container:', container);
+            }
+        }
+
+        function createPopup() {
+    var popup = document.createElement('div');
+    popup.className = 'popup';
+    popup.innerHTML = `
+      <div class="close" onclick="closePopup(this.parentNode)">&times;</div>
+      <h2>Cross-Sell Product</h2>
+      <p>You might also be interested in this product:</p>
+      <div id="product">
+        <!-- Product content goes here -->
+      </div>
+    `;
+    return popup;
+  }
+
+
+        setInterval(function () {
+            console.log('Fetching orders');
+            Livewire.dispatch('fetchOrders');
+        }, 5000);
+    });
+</script>
+@endpush
+
+
+<style>
+.social-proof-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99999;
+    display: none; /* Hidden by default */
+}
+
+.social-proof-container.active {
+    display: block; /* Display when the active class is added */
+}
+
+.popup-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 99999;
+}
+
+.popup {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
+    z-index: 99999;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+</style>
+
+
 
 
         <script>

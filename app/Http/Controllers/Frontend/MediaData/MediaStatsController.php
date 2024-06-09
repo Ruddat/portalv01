@@ -28,11 +28,13 @@ class MediaStatsController extends Controller
             ->orderBy('date')
             ->get();
 
+
         // Verwendete Geräte
         $deviceStats = SysRequestLog::select('user_agent', SysRequestLog::raw('count(*) as total'))
-            ->groupBy('user_agent')
-            ->orderByDesc('total')
-            ->get();
+        ->groupBy('user_agent')
+        ->orderByDesc('total')
+        ->take(15) // Begrenzen auf 15 Einträge
+        ->get();
 
         // Herkunft der Nutzer
         $referrerStats = SysRequestLog::select('referrer', SysRequestLog::raw('count(*) as total'))

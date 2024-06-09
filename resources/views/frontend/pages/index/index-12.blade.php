@@ -12,9 +12,6 @@
 
 
 
-
-
-
         <div class="hero_single version_1">
             <div class="opacity-mask">
                 <div class="container">

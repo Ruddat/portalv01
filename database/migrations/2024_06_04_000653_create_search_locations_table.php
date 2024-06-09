@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('place_id');
             $table->string('licence');
             $table->string('osm_type');
-            $table->integer('osm_id');
+            $table->bigInteger('osm_id');
             $table->string('lat');
             $table->string('lon');
             $table->string('class');

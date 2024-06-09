@@ -215,12 +215,11 @@ Route::get('lang/change', [GoogleTranslateController::class, 'change'])->name('c
 
 
 Route::get('/', [ShopSearchController::class, 'index'])->name('index');
-
 Route::match(['get', 'post'], '/search', [ShopSearchController::class, 'search'])->name('search.index');
-
 Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])
     ->name('speichere-standort')
     ->middleware(LogRequests::class);
+Route::get('/best-ratet-restaurants', [ShopSearchController::class, 'viewAll'])->name('best-ratet-restaurants.viewAll');
 
 
 

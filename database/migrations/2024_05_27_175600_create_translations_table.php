@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('translations', function (Blueprint $table) {
             $table->id();
-            $table->string('key');
-            $table->string('locale');
+            $table->string('key', 255);  // Erhöhen der Länge des `key`-Feldes
+            $table->string('locale', 5);  // Standard ISO 639-1 (z.B. 'en', 'de')
             $table->text('text');
             $table->timestamps();
 

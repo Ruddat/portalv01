@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Frontend\Storeinfos;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Repositories\ShopRepository;
 use App\Services\OpeningHoursService;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
+use NominatimLaravel\Content\Nominatim;
 
 class StorePopup extends Component
 {
@@ -25,6 +27,10 @@ class StorePopup extends Component
     public $isOpen;
     public $openPopUp = true;
     public $shopId;
+    public $addressData;
+    public $address;
+    //public $errors = [];
+    public $errorMessage;
 
     protected $listeners = ['openPopup' => 'handleOpenPopup', 'closePopup' => 'closePopup'];
 
@@ -37,9 +43,18 @@ class StorePopup extends Component
         $this->storeLogo = $restaurant->logo_url;
 
         // Hole SessionData
-
         $sessionData = $this->getSessionData();
-//dd($sessionData);
+    //    dd($sessionData);
+
+    // Hole die Session-Daten und setzen die Livewire-Eigenschaften
+    $addressData = Session::get('address_data');
+    if ($addressData) {
+        $this->street = $addressData['street'] ?? '';
+        $this->housenumber = $addressData['housenumber'] ?? '';
+        $this->postcode = $addressData['postcode'] ?? '';
+        $this->city = $addressData['city'] ?? '';
+    }
+
 
 
         // Hole Shopdaten
@@ -120,22 +135,64 @@ class StorePopup extends Component
 
     public function preOrder()
     {
+        // dd('preOrderPopup erfolgreich');
         $this->isOpen = true;
         $this->shopStatus = 'open';
+
 
     }
 
     public function orderDelivery()
     {
-        $this->validate([
+        $validatedData = $this->validate([
             'street' => 'required|string',
             'housenumber' => 'required|string',
             'postcode' => 'required|string',
             'city' => 'required|string',
         ]);
 
-        dd('deliveryPopup validierung erfolgreich');
+        // Adresse in der Session speichern
+        Session::put('address_data', $validatedData);
+
+        // Speichern der shopId und den Status in der Session
+        session(['shopId' => $this->shopId, 'status' => 'Delivery']);
+
+        // Geokoordinaten für die neue Adresse berechnen und speichern
+        if (!$this->calculateAndSaveCoordinates($validatedData)) {
+
+            $this->errorMessage = 'Die eingegebene Adresse konnte nicht gefunden werden. Bitte überprüfen Sie Ihre Eingabe.';
+            return redirect()->back()->withErrors(['address' => 'Die eingegebene Adresse konnte nicht gefunden werden. Bitte überprüfen Sie Ihre Eingabe.']);
+        }
+
+        $this->openPopUp = false;
     }
+
+    private function calculateAndSaveCoordinates($addressData)
+    {
+        // Adressdaten in ein durchsuchbares Format konvertieren
+        $query = $addressData['street'] . ' ' . $addressData['housenumber'] . ', ' . $addressData['postcode'] . ' ' . $addressData['city'];
+
+        // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
+        $url = "http://nominatim.openstreetmap.org/";
+        $nominatim = new Nominatim($url);
+        $search = $nominatim->newSearch()->query($query);
+        $results = $nominatim->find($search);
+
+        // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
+        if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+            $userLatitude = $results[0]['lat'];
+            $userLongitude = $results[0]['lon'];
+
+            session(['userLatitude' => $userLatitude]);
+            session(['userLongitude' => $userLongitude]);
+            session(['selectedLocation' => $query]);
+
+            return true; // Erfolgreich Geokoordinaten erhalten
+        }
+
+        return false; // Geokoordinaten konnten nicht erhalten werden
+    }
+
 
     public function orderPickUp()
     {
@@ -146,6 +203,8 @@ class StorePopup extends Component
         session(['shopId' => $this->shopId, 'status' => 'PickUp']);
 
         $sessionData = $this->getSessionData();
+
+        $this->openPopUp = false;
 
 
         // Debugging-Ausgabe

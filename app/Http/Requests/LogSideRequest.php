@@ -40,12 +40,14 @@ class LogSideRequest extends FormRequest
 
     protected function logRequest($isBot = false)
     {
+        $referrer = $this->header('referer') ?? $this->header('referrer') ?? '';
+
         $requestData = [
             'ip_address' => $this->ip(),
             'url' => $this->fullUrl(),
             'method' => $this->method(),
             'user_agent' => $this->header('User-Agent'),
-            'referrer' => $this->header('referer'), // Referrer
+            'referrer' => $referrer, // Referrer
             'timestamp' => Carbon::now(),
             'is_bot' => $isBot,
         ];
