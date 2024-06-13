@@ -8,13 +8,15 @@ use Illuminate\Support\Facades\Session;
 
 class CartComponent extends Component
 {
-    public $cart;
-    protected $total;
-    protected $content;
-    protected $deposit;
+    public $cart = [];
+    public $total = 0;
+    public $content;
+    public $deposit = 0;
     public $deliveryFee;
     public $deliveryFreeThreshold = 30;
-    protected $discount;
+    public $discount = 0;
+    public $subtotal = 0;
+
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
     ];
@@ -22,22 +24,11 @@ class CartComponent extends Component
     public function mount(): void
     {
         $this->cart = Session::get('cart', []);
-       // $this->content = collect($this->cart); // Konvertiere das Array $cart in eine Collection $content
-
-       $shopId = Session::get('shopId'); // Hole die Shop-ID aus der Session
-       $this->deliveryFee = Session::get("delivery_cost_$shopId");
-
-     //  dd($this->deliveryFee);
-
-     //  dd(session()->all());
-
+        $shopId = Session::get('shopId');
+        $this->deliveryFee = Session::get("delivery_cost_$shopId", 0);
 
         $this->updateCart();
         $this->calculateSubTotal();
-        $this->render();
-
-        // Berechne den Gesamtpreis des Warenkorbs
-       // $this->total = $this->calculateTotal();
     }
 
     public function render()
@@ -55,62 +46,43 @@ class CartComponent extends Component
 
     public function updateCart()
     {
+        $this->cart = Session::get('cart', []);
         $this->subtotal = Cart::total();
         $this->total = Cart::total();
-        $this->content = Cart::content();
+        $this->content = Cart::content() ?? collect();
     }
 
-protected function calculateSubTotal()
+    protected function calculateSubTotal()
     {
-        // Berechne den Gesamtpreis des Warenkorbs
         $subTotal = 0;
         foreach ($this->cart as $item) {
             $subTotal += $item['price'] * $item['quantity'];
         }
-        return $subTotal;
+        $this->subtotal = $subTotal;
     }
-
 
     protected function calculateTotal()
     {
-        // Berechne den Gesamtpreis des Warenkorbs
         $total = 0;
         foreach ($this->cart as $item) {
             $total += $item['price'] * $item['quantity'];
         }
-        return $total;
+        $this->total = $total;
     }
 
-        /**
-     * Clears the cart content.
-     *
-     * @return void
-     */
     public function clearCart(): void
     {
         Cart::clear();
+        Session::forget('cart');
         $this->updateCart();
     }
 
-        /**
-     * Removes a cart item by id.
-     *
-     * @param string $id
-     * @return void
-     */
     public function removeFromCart(string $id): void
     {
         Cart::remove($id);
         $this->updateCart();
     }
 
-        /**
-     * Updates a cart item.
-     *
-     * @param string $id
-     * @param string $action
-     * @return void
-     */
     public function updateCartItem(string $id, string $action): void
     {
         Cart::update($id, $action);

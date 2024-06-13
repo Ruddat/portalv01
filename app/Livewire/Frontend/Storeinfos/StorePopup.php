@@ -3,7 +3,9 @@
 namespace App\Livewire\Frontend\Storeinfos;
 
 use Carbon\Carbon;
+use App\Models\ModShop;
 use Livewire\Component;
+use App\Models\DeliveryArea;
 use App\Repositories\ShopRepository;
 use App\Services\OpeningHoursService;
 use Illuminate\Support\Facades\Session;
@@ -17,7 +19,7 @@ class StorePopup extends Component
     public $storeLogo;
     public $street;
     public $housenumber;
-    public $postcode;
+    public $postal_code;
     public $city;
 
     public $shop;
@@ -28,8 +30,7 @@ class StorePopup extends Component
     public $openPopUp = true;
     public $shopId;
     public $addressData;
-    public $address;
-    //public $errors = [];
+
     public $errorMessage;
 
     protected $listeners = ['openPopup' => 'handleOpenPopup', 'closePopup' => 'closePopup'];
@@ -43,18 +44,16 @@ class StorePopup extends Component
         $this->storeLogo = $restaurant->logo_url;
 
         // Hole SessionData
+
         $sessionData = $this->getSessionData();
-    //    dd($sessionData);
-
-    // Hole die Session-Daten und setzen die Livewire-Eigenschaften
-    $addressData = Session::get('address_data');
-    if ($addressData) {
-        $this->street = $addressData['street'] ?? '';
-        $this->housenumber = $addressData['housenumber'] ?? '';
-        $this->postcode = $addressData['postcode'] ?? '';
-        $this->city = $addressData['city'] ?? '';
-    }
-
+//dd($sessionData);
+$addressData = Session::get('address_data');
+if ($addressData) {
+    $this->street = $addressData['street'] ?? '';
+    $this->housenumber = $addressData['housenumber'] ?? '';
+    $this->postal_code = $addressData['postal_code'] ?? '';
+    $this->city = $addressData['city'] ?? '';
+}
 
 
         // Hole Shopdaten
@@ -135,10 +134,8 @@ class StorePopup extends Component
 
     public function preOrder()
     {
-        // dd('preOrderPopup erfolgreich');
         $this->isOpen = true;
         $this->shopStatus = 'open';
-
 
     }
 
@@ -147,7 +144,7 @@ class StorePopup extends Component
         $validatedData = $this->validate([
             'street' => 'required|string',
             'housenumber' => 'required|string',
-            'postcode' => 'required|string',
+            'postal_code' => 'required|string',
             'city' => 'required|string',
         ]);
 
@@ -159,18 +156,24 @@ class StorePopup extends Component
 
         // Geokoordinaten für die neue Adresse berechnen und speichern
         if (!$this->calculateAndSaveCoordinates($validatedData)) {
-
             $this->errorMessage = 'Die eingegebene Adresse konnte nicht gefunden werden. Bitte überprüfen Sie Ihre Eingabe.';
             return redirect()->back()->withErrors(['address' => 'Die eingegebene Adresse konnte nicht gefunden werden. Bitte überprüfen Sie Ihre Eingabe.']);
+        }
+
+        // Lieferkosten berechnen und in der Session speichern
+        if (!$this->calculateAndSaveDeliveryCosts()) {
+            $this->errorMessage = 'Die eingegebene Adresse liegt außerhalb unseres Lieferbereichs.';
+            return redirect()->back()->withErrors(['address' => 'Die eingegebene Adresse liegt außerhalb unseres Lieferbereichs.']);
         }
 
         $this->openPopUp = false;
     }
 
+
     private function calculateAndSaveCoordinates($addressData)
     {
         // Adressdaten in ein durchsuchbares Format konvertieren
-        $query = $addressData['street'] . ' ' . $addressData['housenumber'] . ', ' . $addressData['postcode'] . ' ' . $addressData['city'];
+        $query = $addressData['street'] . ' ' . $addressData['housenumber'] . ', ' . $addressData['postal_code'] . ' ' . $addressData['city'];
 
         // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
         $url = "http://nominatim.openstreetmap.org/";
@@ -193,6 +196,74 @@ class StorePopup extends Component
         return false; // Geokoordinaten konnten nicht erhalten werden
     }
 
+    private function calculateAndSaveDeliveryCosts()
+    {
+        $userLatitude = session('userLatitude');
+        $userLongitude = session('userLongitude');
+
+        if (!$userLatitude || !$userLongitude) {
+            return false;
+        }
+
+        // Holen des Standort vom Restaurant
+        $shopLocation = ModShop::where('id', $this->shopId)->first();
+        $distance = $this->calculateDistance($userLatitude, $userLongitude, $shopLocation->lat, $shopLocation->lng);
+        $distance = round($distance, 2);
+
+        // Holen der Lieferbereiche für den bestimmten Shop
+        $deliveryAreas = DeliveryArea::where('shop_id', $this->shopId)
+            ->orderBy('distance_km', 'asc')
+            ->get();
+
+        // Überprüfen, ob der Benutzer innerhalb eines Lieferbereichs liegt
+        $foundInDeliveryArea = false;
+        foreach ($deliveryAreas as $area) {
+            if ($distance <= $area->distance_km) {
+                // Speichere die Lieferkosten in der Session für den neuen Shop
+                session(['delivery_cost_' . $this->shopId => $area->delivery_cost]);
+                session(['delivery_charge_' . $this->shopId => $area->delivery_charge]);
+                session(['delivery_free_' . $this->shopId => $area->free_delivery_threshold]);
+
+                $foundInDeliveryArea = true;
+                break;
+            }
+        }
+
+        if (!$foundInDeliveryArea) {
+            $oldShopId = Session::get('shopId');
+            if ($oldShopId !== null) {
+                Session::forget('delivery_cost_' . $oldShopId);
+                Session::forget('delivery_charge_' . $oldShopId);
+                Session::forget('delivery_free_' . $oldShopId);
+            }
+        }
+
+
+        if ($foundInDeliveryArea) {
+    // Emit the event to update the delivery cost
+    //event(new \App\Events\DeliveryCostUpdated);
+ //   \Livewire\Livewire::dispatch('deliveryCostUpdated');
+
+ $this->dispatch('deliveryCostChanged');
+
+
+}
+
+
+        return $foundInDeliveryArea;
+    }
+
+    private function calculateDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = $lon1 - $lon2;
+        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+        $dist = acos($dist);
+        $dist = rad2deg($dist);
+        $miles = $dist * 60 * 1.1515;
+        return $miles * 1.609344; // Kilometer
+    }
+
+
 
     public function orderPickUp()
     {
@@ -203,8 +274,6 @@ class StorePopup extends Component
         session(['shopId' => $this->shopId, 'status' => 'PickUp']);
 
         $sessionData = $this->getSessionData();
-
-        $this->openPopUp = false;
 
 
         // Debugging-Ausgabe

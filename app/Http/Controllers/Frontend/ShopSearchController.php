@@ -305,8 +305,8 @@ foreach ($restaurants as $restaurant) {
             $findCityName = $request->session()->get('selectedName');
 
             // View zurückgeben
-//            return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
-            return view('frontend.pages.listingrestaurantopenstreet.grid-listing-masonry-openstreetmap', [
+            return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
+//            return view('frontend.pages.listingrestaurantopenstreet.grid-listing-masonry-openstreetmap', [
 
                 'restaurants' => $restaurants,
                 'userLatitude' => $userLatitude,

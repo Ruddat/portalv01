@@ -69,8 +69,8 @@
                                     @error('housenumber') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <input type="text" class="form-control @error('postcode') is-invalid @enderror" placeholder="@autotranslate('Postal code*', app()->getLocale())" wire:model="postcode">
-                                    @error('postcode') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}
+                                    <input type="text" class="form-control @error('postal_code') is-invalid @enderror" placeholder="@autotranslate('Postal code*', app()->getLocale())" wire:model="postal_code">
+                                    @error('postal_code') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}
                                     </span> @enderror
                                 </div>
                                 <div class="mb-3 col-md-9">

@@ -16,26 +16,26 @@
                     <div class="main">
 
                         <div class="row opt_order">
-                            <div class="col-2">
-                                <label class="container_radio">Familie
+                            <div class="col-3">
+                                <label class="container_radio">@autotranslate('Familie', app()->getLocale())
                                     <input type="radio" wire:model.change="selectedOption" value="familie">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <div class="col-2">
-                                <label class="container_radio">Frau
+                            <div class="col-3">
+                                <label class="container_radio">@autotranslate('Woman', app()->getLocale())
                                     <input type="radio" wire:model.change="selectedOption" value="frau" checked>
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <div class="col-2">
-                                <label class="container_radio">Herr
+                            <div class="col-3">
+                                <label class="container_radio">@autotranslate('Mister', app()->getLocale())
                                     <input type="radio" wire:model.change="selectedOption" value="herr">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <div class="col-2">
-                                <label class="container_radio">Firma
+                            <div class="col-3">
+                                <label class="container_radio">@autotranslate('Firma', app()->getLocale())
                                     <input type="radio" wire:model.change="selectedOption" value="firma">
                                     <span class="checkmark"></span>
                                 </label>
@@ -313,11 +313,12 @@
                             <li>Date<span>Today 23/11/2019</span></li>
                             <li>Hour<span>08.30pm</span></li>
                             <li>Type<span>Delivery</span></li>
+                            <li>Type<span>Delivery</span></li>
                         </ul>
                         <hr>
                         <livewire:frontend.card.cart-component />
 
-                        <button wire:loading.class="opacity-50" type="submit" class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</button>
+                        <button wire:loading.class="opacity-50" type="submit" class="btn_1 gradient full-width mb_5">@autotranslate('Order Now', app()->getLocale())</button>
                         <div wire:loading>
                             Bestellung wird uebertragen......
                         </div>
@@ -325,7 +326,7 @@
 
 
 
-                        <div class="text-center"><small>{{ app(\App\Services\TranslationService::class)->trans('Or Call Us at', app()->getLocale()) }} <strong>{{ $shopData->phone }}</strong></small></div>
+                        <div class="text-center"><small>@autotranslate('Or Call Us at', app()->getLocale()) <strong>{{ $shopData->phone }}</strong></small></div>
                     </div>
                 </div>
                 <!-- /box_booking -->

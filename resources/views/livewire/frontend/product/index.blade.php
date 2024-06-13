@@ -53,7 +53,7 @@
                                     </h5>
                                 </div>
                                 <div class="description">
-                                    <p>{!! $product->product_description !!}</p>
+                                 {!! $product->product_description !!}
 
                                 </div>
                                 <div class="product-info smart-form">

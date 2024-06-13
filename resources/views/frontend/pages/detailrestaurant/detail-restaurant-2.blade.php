@@ -98,23 +98,7 @@
                             <div class="main">
                                 <livewire:frontend.card.cart-component />
 
-                                <div class="row opt_order">
-                                    <div class="col-6">
-                                        <label
-                                            class="container_radio">@autotranslate('Delivery', app()->getLocale())
-                                            <input type="radio" value="option1" name="opt_order" checked>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-6">
-                                        <label
-                                            class="container_radio">@autotranslate('Selbstabholen', app()->getLocale())
-                                            <input type="radio" value="option1" name="opt_order">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
 
-                                </div>
                                 <div class="dropdown day">
                                     <a href="#" data-bs-toggle="dropdown">Day <span id="selected_day"></span></a>
                                     <div class="dropdown-menu">
