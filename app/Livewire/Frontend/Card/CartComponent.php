@@ -26,7 +26,7 @@ class CartComponent extends Component
         $this->cart = Session::get('cart', []);
         $shopId = Session::get('shopId');
         $this->deliveryFee = Session::get("delivery_cost_$shopId", 0);
-
+//dd($this->deliveryFee);
         $this->updateCart();
         $this->calculateSubTotal();
     }
@@ -50,6 +50,10 @@ class CartComponent extends Component
         $this->subtotal = Cart::total();
         $this->total = Cart::total();
         $this->content = Cart::content() ?? collect();
+
+        $shopId = Session::get('shopId');
+        $this->deliveryFee = Session::get("delivery_cost_$shopId", 0); // Standardwert 0 falls nicht gesetzt
+
     }
 
     protected function calculateSubTotal()

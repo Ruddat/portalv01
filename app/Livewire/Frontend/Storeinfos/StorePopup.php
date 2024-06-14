@@ -267,17 +267,20 @@ if ($addressData) {
 
     public function orderPickUp()
     {
+        $oldShopId = Session::get('shopId');
+        if ($oldShopId !== null) {
+            Session::forget('delivery_cost_' . $oldShopId);
+            Session::forget('delivery_charge_' . $oldShopId);
+            Session::forget('delivery_free_' . $oldShopId);
+        }
 
-       // dd($this->shopId, $this->shopStatus);
+        session(['shopId' => $this->shopId, 'status' => 'pickup']);
 
-        // Speichern Sie die shopId und den status in der Session
-        session(['shopId' => $this->shopId, 'status' => 'PickUp']);
+        // Setze die Liefergebühr auf 0
+        Session::put('delivery_cost_' . $this->shopId, 0);
+        $this->deliveryFee = 0; // Stelle sicher, dass die Eigenschaft auch aktualisiert wird
 
-        $sessionData = $this->getSessionData();
-
-
-        // Debugging-Ausgabe
-   //     dd('pickupPopup erfolgreich', session()->all());
+        $this->openPopUp = false;
     }
 
     public function wantToBrowse()
