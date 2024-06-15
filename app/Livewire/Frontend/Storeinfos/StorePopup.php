@@ -152,7 +152,7 @@ if ($addressData) {
         Session::put('address_data', $validatedData);
 
         // Speichern der shopId und den Status in der Session
-        session(['shopId' => $this->shopId, 'status' => 'Delivery']);
+        session(['shopId' => $this->shopId, 'status' => 'delivery']);
 
         // Geokoordinaten für die neue Adresse berechnen und speichern
         if (!$this->calculateAndSaveCoordinates($validatedData)) {

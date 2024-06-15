@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Session\SessionManager;
+use Illuminate\Support\Facades\Session;
 
 class CartService {
     const MINIMUM_QUANTITY = 1;
@@ -50,7 +51,7 @@ class CartService {
 
         // Update the cart in the session storage
         $this->session->put(self::DEFAULT_INSTANCE, $content);
-        
+
     }
 
     /**
@@ -123,21 +124,60 @@ class CartService {
         return is_null($this->session->get(self::DEFAULT_INSTANCE)) ? collect([]) : $this->session->get(self::DEFAULT_INSTANCE);
     }
 
+/**
+ * Returns total price of the items in the cart including delivery fee if applicable.
+ *
+ * @return string
+ */
+public function total(): string
+{
+    $content = $this->getContent();
+
+    $total = $content->reduce(function ($total, $item) {
+        return $total += $item->get('price') * $item->get('quantity');
+    }, 0); // initialisiere $total mit 0
+
+    // Hole die Shop-ID aus der Session
+    $shopId = Session::get('shopId');
+
+    // Überprüfe den Liefermodus
+    $status = Session::get('status', 'delivery');
+
+    if ($status === 'delivery') {
+        // Hole die Liefergebühr und den Schwellenwert für kostenlose Lieferung aus der Session
+        $deliveryFee = Session::get("delivery_cost_$shopId", 0);
+        $deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 30); // Beispielwert 30
+
+        // Füge die Liefergebühr nur hinzu, wenn der Bestellwert unter dem Schwellenwert liegt
+        if ($total < $deliveryFreeThreshold) {
+            $total += $deliveryFee;
+        }
+    }
+
+    return number_format($total, 2);
+}
+
+
+
+
     /**
      * Returns total price of the items in the cart.
      *
      * @return string
      */
-    public function total(): string
+    public function subTotal(): string
     {
         $content = $this->getContent();
-
+//dd($content);
         $total = $content->reduce(function ($total, $item) {
             return $total += $item->get('price') * $item->get('quantity');
         });
 
         return number_format($total, 2);
     }
+
+
+
 
     /**
      * Returns the content of the cart.

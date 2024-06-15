@@ -16,6 +16,8 @@ class CartComponent extends Component
     public $deliveryFreeThreshold = 30;
     public $discount = 0;
     public $subtotal = 0;
+    public $preorderTime;
+
 
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
@@ -47,7 +49,7 @@ class CartComponent extends Component
     public function updateCart()
     {
         $this->cart = Session::get('cart', []);
-        $this->subtotal = Cart::total();
+        $this->subtotal = Cart::subTotal();
         $this->total = Cart::total();
         $this->content = Cart::content() ?? collect();
 
@@ -74,6 +76,9 @@ class CartComponent extends Component
         $this->total = $total;
     }
 
+
+
+
     public function clearCart(): void
     {
         Cart::clear();
@@ -92,4 +97,15 @@ class CartComponent extends Component
         Cart::update($id, $action);
         $this->updateCart();
     }
+
+    public function submitPreorder()
+    {
+        $this->validate([
+            'preorderTime' => 'required|date|after:now',
+        ]);
+
+        // Logik zum Verarbeiten der Vorbestellung
+        session()->flash('message', 'Vorbestellung erfolgreich aufgegeben für ' . Carbon::parse($this->preorderTime)->format('d.m.Y H:i'));
+    }
+
 }
