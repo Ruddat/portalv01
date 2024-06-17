@@ -223,7 +223,7 @@ if ($addressData) {
                 session(['delivery_cost_' . $this->shopId => $area->delivery_cost]);
                 session(['delivery_charge_' . $this->shopId => $area->delivery_charge]);
                 session(['delivery_free_' . $this->shopId => $area->free_delivery_threshold]);
-
+                session(['delivery_free_threshold_' . $this->shopId => $area->free_delivery_threshold]);
                 $foundInDeliveryArea = true;
                 break;
             }

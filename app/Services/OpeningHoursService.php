@@ -117,6 +117,28 @@ class OpeningHoursService
     return $openingHours;
 }
 
+
+public static function getOpeningHoursForTomorrow(ModShop $shop)
+{
+    $tomorrow = Carbon::tomorrow()->format('l');
+
+    $openingHours = DB::table('mod_seller_worktimes')
+        ->where('shop_id', $shop->id)
+        ->where('day_of_week', strtolower($tomorrow))
+        ->whereNotNull('open_time')
+        ->orderBy('open_time')
+        ->get()
+        ->map(function ($hour) {
+            return [
+                'open' => $hour->open_time,
+                'close' => $hour->close_time,
+                'is_open' => $hour->is_open,
+            ];
+        });
+
+    return $openingHours;
+}
+
     private static function getOpeningHours(ModShop $shop, $dayOfWeek)
     {
         return DB::table('mod_seller_worktimes')

@@ -89,7 +89,7 @@
                     <div class="col-lg-4" id="sidebar_fixed">
                         <div class="box_order mobile_fixed">
                             <div class="head">
-                                <h3>@autotranslate('Order Summary', app()->getLocale())
+                                <h3>@autotranslate('Warenkorb', app()->getLocale())
                                 </h3>
                                 <a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
 
@@ -97,7 +97,7 @@
                             <!-- /head -->
                             <div class="main">
                                 <livewire:frontend.card.cart-component />
-
+                                <livewire:frontend.cart.timepicker-component :shopId="$restaurant" />
 
                                 <div class="dropdown day">
                                     <a href="#" data-bs-toggle="dropdown">Day <span id="selected_day"></span></a>
