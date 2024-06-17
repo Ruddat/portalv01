@@ -5,7 +5,9 @@ namespace App\Livewire\Frontend\Storeinfos;
 use Carbon\Carbon;
 use App\Models\ModShop;
 use Livewire\Component;
+use App\Models\AddressData;
 use App\Models\DeliveryArea;
+use App\Models\ModVendorAddressData;
 use App\Repositories\ShopRepository;
 use App\Services\OpeningHoursService;
 use Illuminate\Support\Facades\Session;
@@ -44,17 +46,14 @@ class StorePopup extends Component
         $this->storeLogo = $restaurant->logo_url;
 
         // Hole SessionData
-
         $sessionData = $this->getSessionData();
-//dd($sessionData);
-$addressData = Session::get('address_data');
-if ($addressData) {
-    $this->street = $addressData['street'] ?? '';
-    $this->housenumber = $addressData['housenumber'] ?? '';
-    $this->postal_code = $addressData['postal_code'] ?? '';
-    $this->city = $addressData['city'] ?? '';
-}
-
+        $addressData = Session::get('address_data');
+        if ($addressData) {
+            $this->street = $addressData['street'] ?? '';
+            $this->housenumber = $addressData['housenumber'] ?? '';
+            $this->postal_code = $addressData['postal_code'] ?? '';
+            $this->city = $addressData['city'] ?? '';
+        }
 
         // Hole Shopdaten
         $this->shop = ShopRepository::findById($shopId);
@@ -65,7 +64,6 @@ if ($addressData) {
         // Sonderöffnungszeiten für heute abrufen
         $this->holidayHours = OpeningHoursService::getHolidayHours($this->shop, now()->toDateString());
 
-//dd($this->holidayHours);
         // Überprüfen, ob Sonderöffnungszeiten für heute vorhanden sind
         if ($this->holidayHours) {
             // Überprüfen, ob der Laden geöffnet ist
@@ -88,39 +86,32 @@ if ($addressData) {
         } else {
             // Normale Öffnungszeiten für heute und nächste Öffnungszeit abrufen
             $this->todayOpeningHours = OpeningHoursService::getOpeningHoursForToday($this->shop);
-        //    dd($this->todayOpeningHours);
             $this->nextOpenTime = OpeningHoursService::getNextOpenTime($this->shop);
         }
 
-    // Shopstatus überprüfen
-    $this->shopStatus = OpeningHoursService::getShopStatus($this->shop);
+        // Shopstatus überprüfen
+        $this->shopStatus = OpeningHoursService::getShopStatus($this->shop);
 
-    // Status-basiertes Bestellmanagement
-    switch ($this->shopStatus) {
-        case 'on':
-    // Falls der Laden geschlossen ist, erlauben wir nur Vorbestellungen
-    if ($this->isOpen === false) {
-        // dd($this->shopStatus);
-        $this->shopStatus = 'preorder';
-        $this->isOpen = true;
-
+        // Status-basiertes Bestellmanagement
+        switch ($this->shopStatus) {
+            case 'on':
+                // Falls der Laden geschlossen ist, erlauben wir nur Vorbestellungen
+                if ($this->isOpen === false) {
+                    $this->shopStatus = 'preorder';
+                    $this->isOpen = true;
+                }
+                break;
+            case 'off':
+                $this->shopStatus = 'off';
+                break;
+            case 'closed':
+                $this->shopStatus = 'closed';
+                break;
+            case 'limited':
+                $this->shopStatus = 'limited';
+                break;
+        }
     }
-
-            break;
-        case 'off':
-            $this->shopStatus = 'off';
-            break;
-        case 'closed':
-            $this->shopStatus = 'closed';
-            break;
-        case 'limited':
-            $this->shopStatus = 'limited';
-            break;
-    }
-
-
-    }
-
 
     public function handleOpenPopup($status, $storeName = null)
     {
@@ -136,7 +127,6 @@ if ($addressData) {
     {
         $this->isOpen = true;
         $this->shopStatus = 'open';
-
     }
 
     public function orderDelivery()
@@ -169,32 +159,57 @@ if ($addressData) {
         $this->openPopUp = false;
     }
 
+private function calculateAndSaveCoordinates($addressData)
+{
+    // Prüfen, ob die Adresse bereits in der Datenbank vorhanden ist
+    $existingAddress = ModVendorAddressData::where('street', ucwords($addressData['street']))
+        ->where('housenumber', $addressData['housenumber'])
+        ->where('postal_code', $addressData['postal_code'])
+        ->where('city', ucwords($addressData['city']))
+        ->first();
 
-    private function calculateAndSaveCoordinates($addressData)
-    {
-        // Adressdaten in ein durchsuchbares Format konvertieren
-        $query = $addressData['street'] . ' ' . $addressData['housenumber'] . ', ' . $addressData['postal_code'] . ' ' . $addressData['city'];
+    if ($existingAddress) {
+        session(['userLatitude' => $existingAddress->latitude]);
+        session(['userLongitude' => $existingAddress->longitude]);
+        session(['selectedLocation' => $existingAddress->street . ' ' . $existingAddress->housenumber . ', ' . $existingAddress->postal_code . ' ' . $existingAddress->city]);
 
-        // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
-        $url = "http://nominatim.openstreetmap.org/";
-        $nominatim = new Nominatim($url);
-        $search = $nominatim->newSearch()->query($query);
-        $results = $nominatim->find($search);
-
-        // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
-        if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
-            $userLatitude = $results[0]['lat'];
-            $userLongitude = $results[0]['lon'];
-
-            session(['userLatitude' => $userLatitude]);
-            session(['userLongitude' => $userLongitude]);
-            session(['selectedLocation' => $query]);
-
-            return true; // Erfolgreich Geokoordinaten erhalten
-        }
-
-        return false; // Geokoordinaten konnten nicht erhalten werden
+        return true; // Adresse wurde gefunden und Koordinaten wurden gesetzt
     }
+
+    // Adressdaten in ein durchsuchbares Format konvertieren
+    $query = ucwords($addressData['street']) . ' ' . $addressData['housenumber'] . ', ' . $addressData['postal_code'] . ' ' . ucwords($addressData['city']);
+
+    // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
+    $url = "http://nominatim.openstreetmap.org/";
+    $nominatim = new Nominatim($url);
+    $search = $nominatim->newSearch()->query($query);
+    $results = $nominatim->find($search);
+
+    // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
+    if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+        $userLatitude = $results[0]['lat'];
+        $userLongitude = $results[0]['lon'];
+
+        // Adresse und Koordinaten in der Datenbank speichern
+        ModVendorAddressData::create([
+            'street' => ucwords($addressData['street']),
+            'housenumber' => $addressData['housenumber'],
+            'postal_code' => $addressData['postal_code'],
+            'city' => ucwords($addressData['city']),
+            'latitude' => $userLatitude,
+            'longitude' => $userLongitude,
+        ]);
+
+        session(['userLatitude' => $userLatitude]);
+        session(['userLongitude' => $userLongitude]);
+        session(['selectedLocation' => $query]);
+
+        return true; // Erfolgreich Geokoordinaten erhalten
+    }
+
+    return false; // Geokoordinaten konnten nicht erhalten werden
+}
+
 
     private function calculateAndSaveDeliveryCosts()
     {
@@ -238,17 +253,10 @@ if ($addressData) {
             }
         }
 
-
         if ($foundInDeliveryArea) {
-    // Emit the event to update the delivery cost
-    //event(new \App\Events\DeliveryCostUpdated);
- //   \Livewire\Livewire::dispatch('deliveryCostUpdated');
-
- $this->dispatch('deliveryCostChanged');
-
-
-}
-
+            // Emit the event to update the delivery cost
+            $this->dispatch('deliveryCostChanged');
+        }
 
         return $foundInDeliveryArea;
     }
@@ -262,8 +270,6 @@ if ($addressData) {
         $miles = $dist * 60 * 1.1515;
         return $miles * 1.609344; // Kilometer
     }
-
-
 
     public function orderPickUp()
     {
@@ -285,16 +291,13 @@ if ($addressData) {
 
     public function wantToBrowse()
     {
-      //  dd('browsePopup erfolgreich');
-      $this->openPopUp = false;
-
+        $this->openPopUp = false;
     }
 
     public function redirectToSearch()
     {
         return redirect()->route('search.index');
     }
-
 
     public function getSessionData()
     {
@@ -305,20 +308,13 @@ if ($addressData) {
         if ($shopId) {
             // Daten basierend auf der shopId abrufen
             // Beispielhafte Ausgabe
-     //       $this->openPopUp = false;
-
-     //       dd('Session Daten', ['shopId' => $shopId, 'status' => $status]);
         } else {
-         //   dd('Keine Daten für diese shopId in der Session gefunden.');
+            // Keine Daten für diese shopId in der Session gefunden.
         }
     }
 
-
     public function render()
     {
-
-    //    dd($this->nextOpenTime);
-
         return view('livewire.frontend.storeinfos.store-popup', [
             'todayOpeningHours' => $this->todayOpeningHours,
             'nextOpenTime' => $this->nextOpenTime,
