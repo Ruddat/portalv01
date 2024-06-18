@@ -10,17 +10,17 @@ class OpeningHoursService
 {
     public static function isOpen(ModShop $shop)
     {
-        $currentDayOfWeek = strtolower(Carbon::now()->format('l')); // Aktueller Wochentag
-        $currentTime = Carbon::now(); // Aktuelle Uhrzeit
+        $currentDayOfWeek = strtolower(Carbon::now()->format('l'));
+        $currentTime = Carbon::now();
 
-        // Abrufen der Öffnungszeiten des Geschäfts für den aktuellen Wochentag
+        // Get opening hours for the current day of the week
         $openingHours = self::getOpeningHours($shop, $currentDayOfWeek);
 
         if ($openingHours->isEmpty()) {
-            return false; // Geschlossen, da keine Öffnungszeiten für den aktuellen Wochentag gefunden wurden
+            return false; // Closed because no opening hours found for the current day of the week
         }
 
-        // Überprüfen, ob das Geschäft für den aktuellen Wochentag geöffnet ist
+        // Check if the shop is open for the current day and time
         foreach ($openingHours as $hour) {
             if ($hour->is_open && $currentTime->between(
                 Carbon::createFromFormat('H:i:s', $hour->open_time),
@@ -30,37 +30,54 @@ class OpeningHoursService
             }
         }
 
-        return false; // Geschlossen, da keine passenden Öffnungszeiten gefunden wurden
+        return false; // Closed because no matching opening hours found for the current time
     }
 
-
-
-    public static function getShopStatus(Modshop $shop)
-
+    public static function getShopStatus(ModShop $shop)
     {
         return DB::table('mod_shops')
             ->where('id', $shop->id)
             ->value('status');
+    }
 
+    public static function getOpeningHoursForDate(ModShop $shop, $date)
+    {
+        $dayOfWeek = strtolower(Carbon::parse($date)->format('l'));
+
+        $openingHours = DB::table('mod_seller_worktimes')
+            ->where('shop_id', $shop->id)
+            ->where('day_of_week', $dayOfWeek)
+            ->whereNotNull('open_time')
+            ->orderBy('open_time')
+            ->get()
+            ->map(function ($hour) {
+                return [
+                    'open' => $hour->open_time,
+                    'close' => $hour->close_time,
+                    'is_open' => $hour->is_open,
+                ];
+            });
+
+        return $openingHours;
     }
 
 
     public static function getNextOpenTime(ModShop $shop)
     {
-        $currentTime = Carbon::now(); // Aktuelle Uhrzeit
-        $currentDayOfWeek = strtolower($currentTime->format('l')); // Aktueller Wochentag
+        $currentTime = Carbon::now();
+        $currentDayOfWeek = strtolower($currentTime->format('l'));
 
-        // Alle Öffnungszeiten der nächsten sieben Tage sammeln
+        // Collect all opening hours for the next seven days
         $openingHours = [];
 
         for ($i = 0; $i < 7; $i++) {
-            $dayOfWeek = strtolower($currentTime->format('l')); // Aktueller Wochentag
+            $dayOfWeek = strtolower($currentTime->format('l'));
 
             $dailyOpeningHours = DB::table('mod_seller_worktimes')
                 ->where('shop_id', $shop->id)
                 ->where('day_of_week', $dayOfWeek)
-                ->whereNotNull('open_time') // Nur Zeilen mit gültiger Öffnungszeit berücksichtigen
-                ->orderBy('open_time') // Nach Öffnungszeit sortieren
+                ->whereNotNull('open_time')
+                ->orderBy('open_time')
                 ->get();
 
             foreach ($dailyOpeningHours as $hour) {
@@ -76,82 +93,78 @@ class OpeningHoursService
                 $openingHours[] = [
                     'open_time' => $openTime,
                     'close_time' => $closeTime,
-                    'is_open' => $hour->is_open
+                    'is_open' => $hour->is_open,
                 ];
             }
 
-            // Erhöhe das Datum auf den nächsten Tag
             $currentTime->addDay();
         }
 
-        // Die nächste Öffnungszeit finden
+        // Find the next open time
         foreach ($openingHours as $hours) {
             if ($hours['is_open'] && $hours['open_time']->isAfter(Carbon::now())) {
                 return $hours['open_time']->format('l H:i');
             }
         }
 
-        // Wenn keine Öffnungszeiten für die nächsten sieben Tage gefunden wurden, ist das Geschäft geschlossen
-        return null;
+        return null; // No opening hours found for the next seven days, shop is closed
     }
 
-
     public static function getOpeningHoursForToday(ModShop $shop)
-{
-    $currentDayOfWeek = strtolower(Carbon::now()->format('l'));
+    {
+        $currentDayOfWeek = strtolower(Carbon::now()->format('l'));
 
-    $openingHours = DB::table('mod_seller_worktimes')
-        ->where('shop_id', $shop->id)
-        ->where('day_of_week', $currentDayOfWeek)
-        ->whereNotNull('open_time')
-        ->orderBy('open_time')
-        ->get()
-        ->map(function ($hour) {
-            return [
-                'open' => $hour->open_time,
-                'close' => $hour->close_time,
-                'is_open' => $hour->is_open,
-            ];
-        });
+        $openingHours = DB::table('mod_seller_worktimes')
+            ->where('shop_id', $shop->id)
+            ->where('day_of_week', $currentDayOfWeek)
+            ->whereNotNull('open_time')
+            ->orderBy('open_time')
+            ->get()
+            ->map(function ($hour) {
+                return [
+                    'open' => $hour->open_time,
+                    'close' => $hour->close_time,
+                    'is_open' => $hour->is_open,
+                ];
+            });
 
-    return $openingHours;
-}
+        return $openingHours;
+    }
 
+    public static function getOpeningHoursForTomorrow(ModShop $shop)
+    {
+        $tomorrow = Carbon::tomorrow()->format('l');
 
-public static function getOpeningHoursForTomorrow(ModShop $shop)
-{
-    $tomorrow = Carbon::tomorrow()->format('l');
+        $openingHours = DB::table('mod_seller_worktimes')
+            ->where('shop_id', $shop->id)
+            ->where('day_of_week', strtolower($tomorrow))
+            ->whereNotNull('open_time')
+            ->orderBy('open_time')
+            ->get()
+            ->map(function ($hour) {
+                return [
+                    'open' => $hour->open_time,
+                    'close' => $hour->close_time,
+                    'is_open' => $hour->is_open,
+                ];
+            });
 
-    $openingHours = DB::table('mod_seller_worktimes')
-        ->where('shop_id', $shop->id)
-        ->where('day_of_week', strtolower($tomorrow))
-        ->whereNotNull('open_time')
-        ->orderBy('open_time')
-        ->get()
-        ->map(function ($hour) {
-            return [
-                'open' => $hour->open_time,
-                'close' => $hour->close_time,
-                'is_open' => $hour->is_open,
-            ];
-        });
-
-    return $openingHours;
-}
+        return $openingHours;
+    }
 
     private static function getOpeningHours(ModShop $shop, $dayOfWeek)
     {
         return DB::table('mod_seller_worktimes')
-        ->where('shop_id', $shop->id)
-        ->where('day_of_week', $dayOfWeek)
-        ->whereNotNull('open_time') // Nur Zeilen mit gültiger Öffnungszeit berücksichtigen
-        ->orderBy('open_time') // Nach Öffnungszeit sortieren
-        ->get();
+            ->where('shop_id', $shop->id)
+            ->where('day_of_week', $dayOfWeek)
+            ->whereNotNull('open_time')
+            ->orderBy('open_time')
+            ->get();
     }
 
     public static function getHolidayHours(ModShop $shop, $date)
     {
-        $currentTime = Carbon::now(); // Aktuelle Uhrzeit
+        $currentTime = Carbon::now();
 
         $holidayHours = DB::table('mod_seller_holi_days')
             ->where('shop_id', $shop->id)
@@ -159,10 +172,10 @@ public static function getOpeningHoursForTomorrow(ModShop $shop)
             ->get();
 
         if ($holidayHours->isEmpty()) {
-            return null; // Keine speziellen Feiertagszeiten für dieses Datum gefunden
+            return null; // No special holiday hours found for this date
         }
 
-        // Überprüfe, ob für den aktuellen Tag eine Feiertagszeit vorhanden ist
+        // Check if there are holiday hours for the current date
         $currentHolidayHours = $holidayHours->first(function ($holidayHour) use ($currentTime) {
             return $currentTime->between(
                 Carbon::createFromFormat('H:i:s', $holidayHour->open_time ?? '00:00:00'),
@@ -170,8 +183,7 @@ public static function getOpeningHoursForTomorrow(ModShop $shop)
             );
         });
 
-        // Wenn eine Feiertagszeit für den aktuellen Tag gefunden wurde und sie geschlossen ist,
-        // ersetze die regulären Öffnungszeiten
+        // If holiday hours are found for the current date and it's closed, replace regular opening hours
         if ($currentHolidayHours && !$currentHolidayHours->is_open) {
             return [
                 'open_time' => null,
@@ -181,26 +193,23 @@ public static function getOpeningHoursForTomorrow(ModShop $shop)
             ];
         }
 
-        // Sortiere die Feiertagszeiten nach Relevanz
+        // Sort holiday hours by relevance
         $sortedHolidayHours = $holidayHours->sortByDesc(function ($holidayHour) use ($currentTime) {
-            // Überprüfe, ob open_time und close_time gültige Zeiten sind
             if ($holidayHour->open_time !== null && $holidayHour->close_time !== null) {
-                // Vergleiche die aktuelle Uhrzeit mit den Feiertagszeiten, um die relevante Zeit zu bestimmen
                 if ($currentTime->between(
                     Carbon::createFromFormat('H:i:s', $holidayHour->open_time),
                     Carbon::createFromFormat('H:i:s', $holidayHour->close_time)
                 )) {
-                    return 1; // Priorisiere offene Zeiten
+                    return 1; // Prioritize open times
                 } else {
                     return 0;
                 }
             } else {
-                // Wenn open_time oder close_time NULL ist, gehe davon aus, dass der Laden geschlossen ist
-                return 0;
+                return 0; // Assume closed if open_time or close_time is NULL
             }
         });
 
-        // Wähle die relevanteste Feiertagszeit aus (die erste in der sortierten Liste)
+        // Select the most relevant holiday hours (first one in sorted list)
         $relevantHolidayHours = $sortedHolidayHours->first();
 
         return [
@@ -210,10 +219,4 @@ public static function getOpeningHoursForTomorrow(ModShop $shop)
             'holiday_message' => $relevantHolidayHours->holiday_message,
         ];
     }
-
-
-
-
-
-
 }

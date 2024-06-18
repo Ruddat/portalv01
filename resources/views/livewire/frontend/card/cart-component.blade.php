@@ -120,20 +120,21 @@
     .table_head {
         display: flex;
         justify-content: space-between;
-        padding: 10px;
+        padding: 5px;
         background: #f9f9f9;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px dotted #ddd;
     }
     .table_inner {
         background: #fff;
         padding: 10px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px dotted #ddd;
     }
     .table_row {
     display: flex;
     justify-content: flex-end;
-    padding: 5px 0;
+    padding: 2px 0;
     flex-wrap: wrap;
+    background: beige;
 }
     .left {
         float: left;
