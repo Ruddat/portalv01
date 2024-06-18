@@ -1,42 +1,50 @@
 <div wire:poll="updateCart">
-    <ul class="clearfix">
+    <div class="cart_table2">
         @if ($content && $content->count() > 0)
             @foreach ($content as $id => $item)
-                <li>
-                    <button class="custom-cart-button" data-icon="&#x4f;" wire:click="updateCartItem({{ $id }}, 'minus')"></button>
-                    <a wire:click="updateCartItem({{ $id }}, 'minus')">{{ $item->get('quantity') }} x {{ $item->get('name') }} {{ $item->get('size') }}</a>
-                    <span>{{ number_format($item->get('price'), 2) }}</span>
-                    <button class="custom-cart-button" data-icon="&#x50;" wire:click="updateCartItem({{ $id }}, 'plus')"></button>
-                    <button class="custom-cart-button" aria-hidden="true" data-icon="&#x51;" wire:click="removeFromCart({{ $id }})" style="border: none;"></button>
+                <div class="table_head clearfix">
+                    <button class="custom-cart-button left" data-icon="&#x4f;" wire:click="updateCartItem({{ $id }}, 'minus')"></button>
+                    <span class="left cp cart_title" wire:click="updateCartItem({{ $id }}, 'minus')">
+                        {{ $item->get('quantity') }} x {{ $item->get('name') }} {{ $item->get('size') }}
+                    </span>
+                    <span class="right">
+                        {{ number_format($item->get('price'), 2) }} €
+                        <button class="custom-cart-button right" data-icon="&#x50;" wire:click="updateCartItem({{ $id }}, 'plus')"></button>
+                        <button class="custom-cart-button" aria-hidden="true" data-icon="&#x51;" wire:click="removeFromCart({{ $id }})" style="border: none;"></button>
+                    </span>
+                </div>
 
-                    @if ($item->get('options'))
-                        <div class="ingredients">Toppings:</div>
-
+                @if ($item->get('options'))
+                    <div class="table_inner">
                         @php
                             $toppingCounts = [];
+                            $toppingPrices = [];
                         @endphp
-                        <ul>
-                            @foreach ($item->get('options') as $topping)
-                                @php
-                                    if (array_key_exists($topping['productName'], $toppingCounts)) {
-                                        $toppingCounts[$topping['productName']]++;
-                                    } else {
-                                        $toppingCounts[$topping['productName']] = 1;
-                                    }
-                                @endphp
-                            @endforeach
+                        @foreach ($item->get('options') as $topping)
+                            @php
+                                if (array_key_exists($topping['productName'], $toppingCounts)) {
+                                    $toppingCounts[$topping['productName']]++;
+                                    $toppingPrices[$topping['productName']] += $topping['price'];
+                                } else {
+                                    $toppingCounts[$topping['productName']] = 1;
+                                    $toppingPrices[$topping['productName']] = $topping['price'];
+                                }
+                            @endphp
+                        @endforeach
 
-                            @foreach ($toppingCounts as $toppingName => $count)
-                                <li class="text-red-500">{{ $count }}x{{ $toppingName }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </li>
+                        @foreach ($toppingCounts as $toppingName => $count)
+                            <div class="table_row clearfix">
+                                <span class="left cart_title">{{ $count }} x {{ $toppingName }}</span>
+                                <span class="right">{{ number_format($toppingPrices[$toppingName], 2) }} €</span>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             @endforeach
         @else
             <p class="text-3xl text-center mb-2">@autotranslate('cart is empty', app()->getLocale())</p>
         @endif
-    </ul>
+    </div>
 
     @if ($content && $content->count() > 0)
         <ul class="clearfix">
@@ -44,19 +52,19 @@
 
             @php
                 $status = Session::get('status', 'delivery');
-                $remainingAmountForFreeDelivery = max(0, $deliveryFreeThreshold - $total);
+                $remainingAmountForFreeDelivery = max(0, $deliveryFreeThreshold - $subtotal);
             @endphp
 
-            <li>{{ app(\App\Services\TranslationService::class)->trans('Liefergebühr', app()->getLocale()) }}
+            <li>@autotranslate('Liefergebühr', app()->getLocale())
                 @if ($status === 'delivery')
-                    @if ($total < $deliveryFreeThreshold)
+                    @if ($subtotal < $deliveryFreeThreshold)
                         <span>{{ $deliveryFee }}</span>
                     @else
                     <span style="text-decoration: line-through;">{{ $deliveryFee }}</span>
                     <span style="color: green;">@autotranslate('Kostenlos', app()->getLocale()) &nbsp;&nbsp;</span>
                     @endif
                 @else
-                    <span>{{ __('Abholung') }}</span>
+                    <span>@autotranslate('Abholung', app()->getLocale())</span>
                 @endif
             </li>
 
@@ -84,17 +92,8 @@
                 </li>
             @endif
 
-            <li class="total">Total<span>${{ $total }}</span></li>
+            <li class="total">@autotranslate('Total', app()->getLocale())<span>${{ $total }}</span></li>
         </ul>
-
-        <div class="preorder-section">
-            <label for="preorder-time">Vorbestellungszeit auswählen:</label>
-            <input type="text" id="preorder-time" class="timepicker" wire:model="preorderTime">
-            @error('preorderTime')
-                <span class="error">{{ $message }}</span>
-            @enderror
-            <button type="button" wire:click="submitPreorder">Vorbestellen</button>
-        </div>
 
         <button class="w-full p-2 border-2 rounded border-red-500 hover:border-red-600 bg-red-500 hover:bg-red-600" wire:click="clearCart">Clear Cart</button>
     @endif
@@ -112,33 +111,55 @@
             background-color: lightgreen;
         }
 
-        .preorder-section {
-            margin-top: 20px;
-        }
 
-        .preorder-section label {
-            display: block;
-            margin-bottom: 5px;
-        }
+        .cart_table2 {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    .table_head {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+        background: #f9f9f9;
+        border-bottom: 1px dotted #ddd;
+    }
+    .table_inner {
+        background: #fff;
+        padding: 10px;
+        border-bottom: 1px dotted #ddd;
+    }
+    .table_row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2px 0;
+    flex-wrap: wrap;
+    background: beige;
+}
+    .left {
+        float: left;
+    }
+    .right {
+        float: right;
+    }
+    .cp {
+        cursor: pointer;
+    }
+    .cart_title {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .custom-cart-button {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+    .custom-cart-button:hover {
+        color: #007bff;
+    }
 
-        .preorder-section input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .preorder-section button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .preorder-section button:hover {
-            background-color: #45a049;
-        }
     </style>
 
     @push('scripts')

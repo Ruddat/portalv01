@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Frontend\Card;
 
+use Carbon\Carbon;
 use App\Facades\Cart;
 use Livewire\Component;
+use App\Models\DeliveryArea;
 use Illuminate\Support\Facades\Session;
+use App\Models\ModShop; // Stellen Sie sicher, dass das Modell importiert ist
 
 class CartComponent extends Component
 {
@@ -13,11 +16,10 @@ class CartComponent extends Component
     public $content;
     public $deposit = 0;
     public $deliveryFee;
-    public $deliveryFreeThreshold = 30;
+    public $deliveryFreeThreshold = 0; // Setzen Sie den Standardwert auf 0
     public $discount = 0;
     public $subtotal = 0;
     public $preorderTime;
-
 
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
@@ -28,9 +30,11 @@ class CartComponent extends Component
         $this->cart = Session::get('cart', []);
         $shopId = Session::get('shopId');
         $this->deliveryFee = Session::get("delivery_cost_$shopId", 0);
-//dd($this->deliveryFee);
+        $this->deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0);
+
         $this->updateCart();
         $this->calculateSubTotal();
+        $this->calculateTotal();
     }
 
     public function render()
@@ -50,12 +54,15 @@ class CartComponent extends Component
     {
         $this->cart = Session::get('cart', []);
         $this->subtotal = Cart::subTotal();
-        $this->total = Cart::total();
         $this->content = Cart::content() ?? collect();
 
         $shopId = Session::get('shopId');
         $this->deliveryFee = Session::get("delivery_cost_$shopId", 0); // Standardwert 0 falls nicht gesetzt
 
+        // Laden Sie den `deliveryFreeThreshold`-Wert aus der Datenbank
+        $this->deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0);
+
+        $this->calculateTotal();
     }
 
     protected function calculateSubTotal()
@@ -69,15 +76,16 @@ class CartComponent extends Component
 
     protected function calculateTotal()
     {
-        $total = 0;
-        foreach ($this->cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+        $this->total = $this->subtotal;
+
+//dd($this->total, $this->subtotal);
+
+
+        // Wenn der Schwellenwert für kostenlose Lieferung nicht erreicht ist, fügen Sie die Liefergebühr hinzu
+        if ($this->subtotal < $this->deliveryFreeThreshold) {
+            $this->total += $this->deliveryFee;
         }
-        $this->total = $total;
     }
-
-
-
 
     public function clearCart(): void
     {
@@ -107,5 +115,4 @@ class CartComponent extends Component
         // Logik zum Verarbeiten der Vorbestellung
         session()->flash('message', 'Vorbestellung erfolgreich aufgegeben für ' . Carbon::parse($this->preorderTime)->format('d.m.Y H:i'));
     }
-
 }

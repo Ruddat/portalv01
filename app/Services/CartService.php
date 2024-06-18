@@ -146,8 +146,8 @@ public function total(): string
     if ($status === 'delivery') {
         // Hole die Liefergebühr und den Schwellenwert für kostenlose Lieferung aus der Session
         $deliveryFee = Session::get("delivery_cost_$shopId", 0);
-        $deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 30); // Beispielwert 30
-
+        $deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0); // Beispielwert 30
+//dd($deliveryFreeThreshold);
         // Füge die Liefergebühr nur hinzu, wenn der Bestellwert unter dem Schwellenwert liegt
         if ($total < $deliveryFreeThreshold) {
             $total += $deliveryFee;
