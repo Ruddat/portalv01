@@ -10,7 +10,7 @@
 
 				<div class="row page-titles">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item active"><a href="{{ route('admin.home') }}">Home</a></li>
+						<li class="breadcrumb-item active"><a href="{{ route('admin.home') }}"> @autotranslate('Home', app()->getLocale())</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0)">@yield('pageTitle')</a></li>
 					</ol>
                 </div>
@@ -29,7 +29,8 @@
 
                                         <a href="{{ route('admin.add-additive') }}" class="btn btn-primary " type="button">
                                             <span class="btn-icon-start text-info"><i class="fa fa-plus color-info"></i></span>
-                                            {{ app(\App\Services\TranslationService::class)->trans('Add Additives', app()->getLocale()) }}
+                                            @autotranslate('Add Additives', app()->getLocale())
+
                                         </a>
                                     </div>
                                 </div>
@@ -43,14 +44,14 @@
                                     <table id="example3" class="display" style="min-width: 845px">
                                         <thead>
                                             <tr>
-                                                <th></th>
-                                                <th>{{ app(\App\Services\TranslationService::class)->trans('Number', app()->getLocale()) }}</th>
-                                                <th>{{ app(\App\Services\TranslationService::class)->trans('Art', app()->getLocale()) }}</th>
-                                                <th>{{ app(\App\Services\TranslationService::class)->trans('auf der Speisekarte', app()->getLocale()) }}</th>
+                                                <th>@autotranslate('Icon', app()->getLocale())</th>
+                                                <th>@autotranslate('Number', app()->getLocale())</th>
+                                                <th>@autotranslate('Art', app()->getLocale())</th>
+                                                <th>@autotranslate('auf der Speisekarte', app()->getLocale())</th>
                                                 <th>{{ app(\App\Services\TranslationService::class)->trans('Beispiele', app()->getLocale()) }}</th>
                                                 <th>{{ app(\App\Services\TranslationService::class)->trans('Updated', app()->getLocale()) }}</th>
                                                 <th>{{ app(\App\Services\TranslationService::class)->trans('Active', app()->getLocale()) }}</th>
-                                                <th>{{ app(\App\Services\TranslationService::class)->trans('Action', app()->getLocale()) }}</th>
+                                                <th>@autotranslate('Action', app()->getLocale())</th>
                                             </tr>
                                         </thead>
                                         <tbody>

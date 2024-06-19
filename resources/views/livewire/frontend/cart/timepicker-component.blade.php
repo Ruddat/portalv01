@@ -19,7 +19,23 @@
             <span class="date" :class="{ 'active': @js($selectedDate) === 'heute' }">{{ \Carbon\Carbon::parse($selectedDate)->format('d.m.Y') }}</span>
             <span class="next" wire:click="nextDay">»</span>
         </div>
-
+        <div>
+            @if($openingHours->isNotEmpty())
+                @foreach($openingHours as $hours)
+                    @if(!$hours['is_open'] && !empty($hours['holiday_message']))
+                        <div class="alert alert-info">
+                            {{ $hours['holiday_message'] }}
+                        </div>
+                    @else
+                        <div class="opening-hours">
+                            <p>Öffnet um: {{ $hours['open'] }} -- Schließt um: {{ $hours['close'] }} </p>
+                        </div>
+                    @endif
+                @endforeach
+            @else
+                <p>Keine Öffnungszeiten für das ausgewählte Datum verfügbar.</p>
+            @endif
+        </div>
         <div class="header">@autotranslate('Bitte Stunde wählen:', app()->getLocale())</div>
         <div class="hours">
             @foreach($openingHours as $hour)
@@ -180,7 +196,9 @@
     height: 24px; /* Adjust the height as needed */
     fill: black; /* Makes the SVG color adapt to the current text color */
 }
-
+.opening-hours p {
+    margin-bottom: 6px;
+}
 
     </style>
 </div>

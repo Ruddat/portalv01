@@ -60,13 +60,17 @@ class StorePopup extends Component
 
         // Checke ob der Shop geöffnet ist
         $this->isOpen = OpeningHoursService::isOpen($this->shop);
+//dd($this->isOpen);
 
         // Sonderöffnungszeiten für heute abrufen
         $this->holidayHours = OpeningHoursService::getHolidayHours($this->shop, now()->toDateString());
 
+
         // Überprüfen, ob Sonderöffnungszeiten für heute vorhanden sind
         if ($this->holidayHours) {
             // Überprüfen, ob der Laden geöffnet ist
+       //     dd($this->holidayHours);
+
             $this->isOpen = $this->holidayHours['is_open'] &&
             now()->between(
                 Carbon::createFromFormat('H:i:s', $this->holidayHours['open_time']),

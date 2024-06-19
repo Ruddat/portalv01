@@ -5,6 +5,10 @@ use App\Livewire\Backend\AdminSettings;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\Admin\AdditivesController;
 use App\Http\Controllers\Backend\Admin\AllergensController;
+use App\Livewire\Backend\Admin\PromoBanner\PromoBannerEdit;
+use App\Livewire\Backend\Admin\PromoBanner\PromoBannerIndex;
+use App\Livewire\Backend\Admin\PromoBanner\PromoBannerCreate;
+use App\Http\Controllers\Backend\Admin\PromoBanner\PromoBannerController;
 use App\Http\Controllers\Backend\Admin\Controllcenter\LiveOrdersController;
 use App\Http\Controllers\Backend\Admin\BottlesController; // Importiere den BottlesController
 
@@ -75,6 +79,16 @@ Route::prefix('admin')->name('admin.')->group(function(){
       //  Route::match(['get', 'post'], '/list', [LiveOrdersController::class, 'handleListRequest'])->name('live-orders-list');
 
     });
+
+
+    Route::prefix('promobanner')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+        Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');
+        Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');
+        Route::get('/promo-banners/create', [PromoBannerCreate::class, 'createPromoBanners'])->name('create-promo-banners');
+
+        Route::get('/promo-banners/{promoBanner}/edit', PromoBannerEdit::class)->name('promo-banners.edit');
+    });
+
 
 });
 

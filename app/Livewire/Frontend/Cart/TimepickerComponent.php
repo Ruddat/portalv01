@@ -44,22 +44,36 @@ class TimepickerComponent extends Component
         // Versuche die speziellen Öffnungszeiten für Feiertage zu laden
         $holidayHours = OpeningHoursService::getHolidayHours($shop, $this->selectedDate);
 
-        // Prüfe, ob spezielle Öffnungszeiten vorhanden sind und passe das Format an
-        if (!empty($holidayHours) && $holidayHours['is_open']) {
-            $this->openingHours = collect([[
-                'open' => $holidayHours['open_time'],
-                'close' => $holidayHours['close_time'],
-                'is_open' => $holidayHours['is_open'],
-                'holiday_message' => $holidayHours['holiday_message']
-            ]]);
+        // Debug-Ausgabe der speziellen Öffnungszeiten für Feiertage
+      //  dd($holidayHours);
+
+        // Prüfe, ob spezielle Öffnungszeiten vorhanden sind
+        if (!empty($holidayHours)) {
+            if ($holidayHours['is_open']) {
+                $this->openingHours = collect([[
+                    'open' => $holidayHours['open_time'],
+                    'close' => $holidayHours['close_time'],
+                    'is_open' => $holidayHours['is_open'],
+                    'holiday_message' => $holidayHours['holiday_message']
+                ]]);
+            } else {
+                // Wenn das Geschäft an diesem Feiertag geschlossen ist, setze eine entsprechende Nachricht
+                $this->openingHours = collect([[
+                    'open' => null,
+                    'close' => null,
+                    'is_open' => false,
+                    'holiday_message' => 'Heute geschlossen!!'
+                ]]);
+            }
         } else {
             // Wenn keine speziellen Öffnungszeiten vorhanden sind, lade die regulären Öffnungszeiten
             $this->openingHours = OpeningHoursService::getOpeningHoursForDate($shop, $this->selectedDate);
         }
 
         // Debug-Ausgabe der Öffnungszeiten
-      //  dd($this->openingHours);
+    //    dd($this->openingHours);
     }
+
 
     public function nextDay()
     {
@@ -120,6 +134,7 @@ class TimepickerComponent extends Component
         $this->selectedMinute = null;
         $this->currentDate = Carbon::today();
         $this->selectedDate = Carbon::today()->toDateString();
+        $this->loadOpeningHours();
 
     }
 

@@ -341,12 +341,10 @@
 
 
 
-                    <div class="promo">
-						<h3>@autotranslate('Free Delivery for your first 14 days!', app()->getLocale())</h3>
-						<p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-						<i class="icon-food_icon_delivery"></i>
-					</div>
-					<!-- /promo -->
+					<!-- Admin PromoBanner -->
+                    @livewire('backend.admin.promo-banner.promo-banner-list')
+
+                    <!-- /promo -->
 
 					<div class="row">
 
@@ -500,9 +498,16 @@
 
 
 .promo {
-        position: relative;
-        overflow: hidden;
-    }
+    background: #47e5b6 url(../frontend/img/pattern.svg) center center repeat;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    padding: 20px 25px;
+    color: #fff;
+    position: relative;
+}
 
     .promo i {
         position: absolute;

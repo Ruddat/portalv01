@@ -13,7 +13,7 @@
                     {{-- Aktives Menu wenn Admin eingeloggt --}}
                     <li><a class="no-arrow " href="{{ route('admin.home') }}" aria-expanded="false">
                         <i class="bi bi-house"></i>
-                        <span class="nav-text">Admin Home</span>
+                        <span class="nav-text">@autotranslate('Admin Home', app()->getLocale())</span>
                     </a>
                     </li>
                     @elseif(Auth::guard('seller')->check())
@@ -44,7 +44,7 @@
                             </li>
 							<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Shop</a>
                                 <ul aria-expanded="false">
-                                    <li><a href="{{ url('/mod-liefergebiet') }}">{{ app(\App\Services\TranslationService::class)->trans('Liefergebiet', app()->getLocale()) }}</a></li>
+                                    <li><a href="{{ url('/mod-liefergebiet') }}">@autotranslate('Liefergebiet', app()->getLocale())</a></li>
 									<li><a href="{{ url('/mod-workingtimes') }}">{{ app(\App\Services\TranslationService::class)->trans('Opening Hours', app()->getLocale()) }}</a></li>
 									<li><a href="./ecom-product-detail.html">Product Details</a></li>
 									<li><a href="./ecom-product-order.html">Order</a></li>
@@ -63,7 +63,8 @@
 							<li><a href="message.html">Message</a></li>
 							<li><a href="order-history.html">Order History</a></li>
 							<li><a href="notification.html">Notification</a></li>
-							<li><a href="{{ route('admin.live-orders-list') }}">LiveOrders</a></li>
+							<li><a href="{{ route('admin.live-orders-list') }}">@autotranslate('LiveOrders', app()->getLocale())</a></li>
+                            <li><a href="{{ route('admin.promo-banner-index') }}">@autotranslate('PromoBanner', app()->getLocale())</a></li>
                             <li><a href="{{ url('/roles-permissons') }}">Roles and Permission</a></li>
 							<li><a href="setting.html">Setting</a></li>
 						</ul>
