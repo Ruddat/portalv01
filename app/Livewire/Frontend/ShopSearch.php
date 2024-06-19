@@ -37,91 +37,91 @@ class ShopSearch extends Component
 
     public function search()
     {
+
+        dd('search');
         $url = "http://nominatim.openstreetmap.org/";
         $nominatim = new Nominatim($url);
 
         $search = $nominatim->newSearch();
         $search->query($this->userInput);
 
-        $results = $nominatim->find($search);
+        try {
+            // Füge den User-Agent-Header hinzu
+            $results = $nominatim->find($search, ['headers' => ['User-Agent' => 'FoodieBlitz/1.0 (ingo.ruddat@gmail.com)']]);
 
+            if (!empty($results)) {
+                $userLatitude = $results[0]['lat'];
+                $userLongitude = $results[0]['lon'];
 
+                $this->results = $results;
 
+                // Berechne die Entfernungen
+                $this->calculateDistances();
 
-        if (!empty($results)) {
-            $userLatitude = $results[0]['lat'];
-            $userLongitude = $results[0]['lon'];
+                foreach ($results as $result) {
+                    // Überprüfe, ob ein Datensatz mit der gleichen osm_id bereits existiert
+                    $existingRecord = DB::table('mod_search_places')->where('osm_id', $result['osm_id'])->first();
 
+                    // Füge nur ein, wenn kein existierender Datensatz gefunden wurde
+                    if (!$existingRecord) {
+                        DB::table('mod_search_places')->insert([
+                            'place_id' => $result['place_id'],
+                            'licence' => $result['licence'],
+                            'osm_type' => $result['osm_type'],
+                            'osm_id' => $result['osm_id'],
+                            'lat' => $result['lat'],
+                            'lon' => $result['lon'],
+                            'class' => $result['class'],
+                            'type' => $result['type'],
+                            'place_rank' => $result['place_rank'],
+                            'importance' => $result['importance'],
+                            'addresstype' => $result['addresstype'],
+                            'name' => $result['name'],
+                            'display_name' => $result['display_name'],
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
 
-            $this->results = $results;
+                $restaurants = DB::table('mod_shops')
+                    ->select('title', 'id', 'lat as latitude', 'lng as longitude')
+                    ->selectRaw(
+                        '( 6371 * acos( cos( radians(?) ) *
+                        cos( radians( lat ) ) *
+                        cos( radians( lng ) - radians(?) ) +
+                        sin( radians(?) ) *
+                        sin( radians( lat ) ) ) ) AS distance',
+                        [$userLatitude, $userLongitude, $userLatitude]
+                    )
+                    ->having('distance', '<', 30) // Radius von 30 km
+                    ->orderBy('distance')
+                    ->get();
 
-                        // Berechne die Anzahl der Ergebnisse
-   //$this->resultCount = count($this->results);
-    // Berechne die Entfernungen
-    $this->calculateDistances();
+                // Berechne die Entfernungen und füge sie zu den Ergebnissen hinzu
+                foreach ($restaurants as $restaurant) {
+                    $restaurant->distance = $restaurant->distance;
+                }
 
+                $this->results = $restaurants;
 
-
-            foreach ($results as $result) {
-                // Überprüfe, ob ein Datensatz mit der gleichen place_id bereits existiert
-                $existingRecord = DB::table('mod_search_places')->where('osm_id', $result['osm_id'])->first();
-
-                // Füge nur ein, wenn kein existierender Datensatz gefunden wurde
-                if (!$existingRecord) {
-                DB::table('mod_search_places')->insert([
-                    'place_id' => $result['place_id'],
-                    'licence' => $result['licence'],
-                    'osm_type' => $result['osm_type'],
-                    'osm_id' => $result['osm_id'],
-                    'lat' => $result['lat'],
-                    'lon' => $result['lon'],
-                    'class' => $result['class'],
-                    'type' => $result['type'],
-                    'place_rank' => $result['place_rank'],
-                    'importance' => $result['importance'],
-                    'addresstype' => $result['addresstype'],
-                    'name' => $result['name'],
-                    'display_name' => $result['display_name'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                // Leite zu einer anderen Route weiter
+                return redirect()->route('shops.results', [
+                    'userInput' => $this->userInput,
+                    'results' => $this->results->toArray(),
                 ]);
 
+            } else {
+                // Keine Ergebnisse gefunden
+                $this->results = null;
             }
-        }
-            $restaurants = DB::table('mod_shops')
-                ->select('title', 'id', 'lat as latitude', 'lng as longitude')
-                ->selectRaw(
-                    '( 6371 * acos( cos( radians(?) ) *
-                    cos( radians( lat ) ) *
-                    cos( radians( lng ) - radians(?) ) +
-                    sin( radians(?) ) *
-                    sin( radians( lat ) ) ) ) AS distance',
-                    [$userLatitude, $userLongitude, $userLatitude]
-                )
-                ->having('distance', '<', 30) // Radius von 20 km
-                ->orderBy('distance')
-                ->get();
-
-            // Berechne die Entfernungen und füge sie zu den Ergebnissen hinzu
-            foreach ($restaurants as $restaurant) {
-                $restaurant->distance = $restaurant->distance;
-            }
-
-            $this->results = $restaurants;
-
-        // For example, you can redirect to another route
-        return redirect()->route('shops.results', [
-            'userInput' => $this->userInput,
-            'results' => $this->results->toArray(),
-        ]);
-
-
-        } else {
-            // Keine Ergebnisse gefunden
+        } catch (Exception $e) {
+            // Fehlerbehandlung
+            Log::error('Fehler bei der Nominatim-Suche: ' . $e->getMessage());
             $this->results = null;
-
         }
     }
+
 
     public function autocomplete()
     {
