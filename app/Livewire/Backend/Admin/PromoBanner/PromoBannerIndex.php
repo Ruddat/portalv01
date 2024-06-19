@@ -13,6 +13,8 @@ class PromoBannerIndex extends Component
     public $editMode = false;
     public $createMode = false;
     public $editBannerId;
+    public $is_active = false;
+
     public $icons = [
         'icon-food_icon_cake_2', 'icon-food_icon_fish', 'icon-food_icon_chicken',
         'icon-food_icon_bread_2', 'icon-food_icon_coffee', 'icon-food_icon_dish',
@@ -37,14 +39,17 @@ class PromoBannerIndex extends Component
 
     public function mount()
     {
-        // Beim Laden der Komponente die Daten laden
-        $this->banners = AdminPromoBanner::all();
+        $this->banners = AdminPromoBanner::all()->map(function($banner) {
+            $banner->isExpired = $this->isBannerExpired($banner->end_time);
+            return $banner;
+        });
     }
 
     public function render()
     {
-        return view('livewire.backend.admin.promo-banner.promo-banner-index')
-            ->layout('components.layouts.app');
+        return view('livewire.backend.admin.promo-banner.promo-banner-index');
+
+        //    ->layout('components.layouts.app');
     }
 
     public function delete($id)
@@ -149,5 +154,13 @@ class PromoBannerIndex extends Component
     {
         $this->reset(['title', 'description', 'icon', 'coupon_code', 'start_time', 'end_time', 'banner_color', 'editBannerId']);
     }
+
+    public function isBannerExpired($end_time)
+    {
+
+        return Carbon::now()->greaterThan($end_time);
+    }
+
+
 
 }
