@@ -11,7 +11,8 @@ use App\Models\ModVendorAddressData;
 use App\Repositories\ShopRepository;
 use App\Services\OpeningHoursService;
 use Illuminate\Support\Facades\Session;
-use NominatimLaravel\Content\Nominatim;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class StorePopup extends Component
 {
@@ -39,7 +40,7 @@ class StorePopup extends Component
 
     public function mount($restaurant)
     {
-        $shopId = $restaurant->id;
+        $this->shopId = $restaurant->id;
         $this->storeName = $restaurant->title;
         $this->storeCity = $restaurant->city;
         $this->storeStreet = $restaurant->street;
@@ -56,26 +57,22 @@ class StorePopup extends Component
         }
 
         // Hole Shopdaten
-        $this->shop = ShopRepository::findById($shopId);
+        $this->shop = ShopRepository::findById($this->shopId);
 
         // Checke ob der Shop geöffnet ist
         $this->isOpen = OpeningHoursService::isOpen($this->shop);
-//dd($this->isOpen);
 
         // Sonderöffnungszeiten für heute abrufen
         $this->holidayHours = OpeningHoursService::getHolidayHours($this->shop, now()->toDateString());
 
-
         // Überprüfen, ob Sonderöffnungszeiten für heute vorhanden sind
         if ($this->holidayHours) {
             // Überprüfen, ob der Laden geöffnet ist
-       //     dd($this->holidayHours);
-
             $this->isOpen = $this->holidayHours['is_open'] &&
-            now()->between(
-                Carbon::createFromFormat('H:i:s', $this->holidayHours['open_time']),
-                Carbon::createFromFormat('H:i:s', $this->holidayHours['close_time'])
-            );
+                now()->between(
+                    Carbon::createFromFormat('H:i:s', $this->holidayHours['open_time']),
+                    Carbon::createFromFormat('H:i:s', $this->holidayHours['close_time'])
+                );
 
             // Verwende Sonderöffnungszeiten für heute und setze nextOpenTime auf null, da keine nächste Öffnungszeit erforderlich ist
             $this->todayOpeningHours = [
@@ -163,57 +160,89 @@ class StorePopup extends Component
         $this->openPopUp = false;
     }
 
-private function calculateAndSaveCoordinates($addressData)
-{
-    // Prüfen, ob die Adresse bereits in der Datenbank vorhanden ist
-    $existingAddress = ModVendorAddressData::where('street', ucwords($addressData['street']))
-        ->where('housenumber', $addressData['housenumber'])
-        ->where('postal_code', $addressData['postal_code'])
-        ->where('city', ucwords($addressData['city']))
-        ->first();
+    private function calculateAndSaveCoordinates($addressData)
+    {
+        // Prüfen, ob die Adresse bereits in der Datenbank vorhanden ist
+        $existingAddress = ModVendorAddressData::where('street', ucwords($addressData['street']))
+            ->where('housenumber', $addressData['housenumber'])
+            ->where('postal_code', $addressData['postal_code'])
+            ->where('city', ucwords($addressData['city']))
+            ->first();
 
-    if ($existingAddress) {
-        session(['userLatitude' => $existingAddress->latitude]);
-        session(['userLongitude' => $existingAddress->longitude]);
-        session(['selectedLocation' => $existingAddress->street . ' ' . $existingAddress->housenumber . ', ' . $existingAddress->postal_code . ' ' . $existingAddress->city]);
+        if ($existingAddress) {
+            session(['userLatitude' => $existingAddress->latitude]);
+            session(['userLongitude' => $existingAddress->longitude]);
+            session(['selectedLocation' => $existingAddress->street . ' ' . $existingAddress->housenumber . ', ' . $existingAddress->postal_code . ' ' . $existingAddress->city]);
 
-        return true; // Adresse wurde gefunden und Koordinaten wurden gesetzt
-    }
+            return true; // Adresse wurde gefunden und Koordinaten wurden gesetzt
+        }
 
-    // Adressdaten in ein durchsuchbares Format konvertieren
-    $query = ucwords($addressData['street']) . ' ' . $addressData['housenumber'] . ', ' . $addressData['postal_code'] . ' ' . ucwords($addressData['city']);
+        // Adressdaten in ein durchsuchbares Format konvertieren
+        $query = ucwords($addressData['street']) . ' ' . $addressData['housenumber'] . ', ' . $addressData['postal_code'] . ' ' . ucwords($addressData['city']);
 
-    // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
-    $url = "http://nominatim.openstreetmap.org/";
-    $nominatim = new Nominatim($url);
-    $search = $nominatim->newSearch()->query($query);
-    $results = $nominatim->find($search);
+        // Caching-Mechanismus überprüfen
+        $cachedCoordinates = $this->checkCache($query);
+        if ($cachedCoordinates) {
+            session(['userLatitude' => $cachedCoordinates['lat']]);
+            session(['userLongitude' => $cachedCoordinates['lon']]);
+            session(['selectedLocation' => $query]);
+            return true;
+        }
 
-    // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
-    if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
-        $userLatitude = $results[0]['lat'];
-        $userLongitude = $results[0]['lon'];
-
-        // Adresse und Koordinaten in der Datenbank speichern
-        ModVendorAddressData::create([
-            'street' => ucwords($addressData['street']),
-            'housenumber' => $addressData['housenumber'],
-            'postal_code' => $addressData['postal_code'],
-            'city' => ucwords($addressData['city']),
-            'latitude' => $userLatitude,
-            'longitude' => $userLongitude,
+        // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
+        $client = new Client([
+            'base_uri' => 'http://nominatim.openstreetmap.org/',
+            'timeout' => 10.0,
+            'headers' => [
+                'User-Agent' => 'YourAppName/1.0 (yourname@yourdomain.com)',
+            ],
         ]);
 
-        session(['userLatitude' => $userLatitude]);
-        session(['userLongitude' => $userLongitude]);
-        session(['selectedLocation' => $query]);
+        try {
+            $response = $client->get('search', [
+                'query' => [
+                    'q' => $query,
+                    'format' => 'json',
+                    'addressdetails' => 1,
+                    'limit' => 1,
+                ]
+            ]);
 
-        return true; // Erfolgreich Geokoordinaten erhalten
+            $results = json_decode($response->getBody(), true);
+
+            // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
+            if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+                $userLatitude = $results[0]['lat'];
+                $userLongitude = $results[0]['lon'];
+
+                // Adresse und Koordinaten in der Datenbank speichern
+                ModVendorAddressData::create([
+                    'street' => ucwords($addressData['street']),
+                    'housenumber' => $addressData['housenumber'],
+                    'postal_code' => $addressData['postal_code'],
+                    'city' => ucwords($addressData['city']),
+                    'latitude' => $userLatitude,
+                    'longitude' => $userLongitude,
+                ]);
+
+                session(['userLatitude' => $userLatitude]);
+                session(['userLongitude' => $userLongitude]);
+                session(['selectedLocation' => $query]);
+
+                // Koordinaten im Cache speichern
+                $this->saveToCache($query, ['lat' => $userLatitude, 'lon' => $userLongitude]);
+
+                return true; // Erfolgreich Geokoordinaten erhalten
+            }
+
+        } catch (RequestException $e) {
+            // Handle error
+            $this->errorMessage = 'Fehler beim Abrufen der Geokoordinaten.';
+            return false;
+        }
+
+        return false; // Geokoordinaten konnten nicht erhalten werden
     }
-
-    return false; // Geokoordinaten konnten nicht erhalten werden
-}
-
 
     private function calculateAndSaveDeliveryCosts()
     {
@@ -324,5 +353,18 @@ private function calculateAndSaveCoordinates($addressData)
             'nextOpenTime' => $this->nextOpenTime,
             'isOpen' => $this->isOpen,
         ]);
+    }
+
+    private function checkCache($query)
+    {
+        // Überprüfen Sie, ob die Koordinaten bereits im Cache gespeichert sind.
+        // Implementieren Sie Ihren Cache-Mechanismus hier.
+        return null;
+    }
+
+    private function saveToCache($query, $coordinates)
+    {
+        // Speichern Sie die Koordinaten im Cache.
+        // Implementieren Sie Ihren Cache-Mechanismus hier.
     }
 }

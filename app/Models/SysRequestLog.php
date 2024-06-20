@@ -10,7 +10,7 @@ class SysRequestLog extends Model
     use HasFactory;
 
     protected $fillable = [
-        'ip_address', 'url', 'method', 'user_agent', 'timestamp', 'count',
+        'ip_address', 'url', 'method', 'user_agent', 'timestamp', 'count', 'is_bot', 'referer',
     ];
 
 }
