@@ -84,9 +84,6 @@ Route::prefix('admin')->name('admin.')->group(function(){
     Route::prefix('promobanner')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
         Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');
         Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');
-        Route::get('/promo-banners/create', [PromoBannerCreate::class, 'createPromoBanners'])->name('create-promo-banners');
-
-        Route::get('/promo-banners/{promoBanner}/edit', PromoBannerEdit::class)->name('promo-banners.edit');
     });
 
 
