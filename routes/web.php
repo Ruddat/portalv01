@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\Cart\NewCartController;
 use App\Http\Controllers\Frontend\Geoip\LocationController;
 use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
+use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 
 
 /*
@@ -33,7 +34,9 @@ use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
         Route::get('/order/{restaurantId}', [App\Http\Controllers\Frontend\Cart\OrderController::class, 'index'])->name('order');
     });
 
-    Route::view('/life-tracking/{orderHash}', 'frontend.lifetracking.life-tracking')->name('life-tracking');
+    Route::get('/life-tracking/{orderHash}', [LifeTrackingController::class, 'show'])->name('life-tracking');
+    //Route::view('/life-tracking/{orderHash}', 'frontend.lifetracking.life-tracking')->name('life-tracking');
+
     Route::view('/restaurantvoting/{orderHash}', 'frontend.votingsrestaurant.restaurant-voting')->name('votings-restaurant');
 
     // WinOrder SOAP routes
@@ -209,6 +212,10 @@ Route::get('/index-normal', function () {
 
 
 //// Ab hier aktiv
+
+
+Route::get('/track', \App\Livewire\Frontend\LifeTracking\TrackingMap::class);
+
 
 /// -- sprache wechseln --> google translate
 Route::get('lang/change', [GoogleTranslateController::class, 'change'])->name('change.lang');

@@ -9,7 +9,7 @@
                 <div class="box_order_form">
                     <div class="head">
                         <div class="title">
-                            <h3>{{ app(\App\Services\TranslationService::class)->trans('Personal Details -  Ihre Bestellung', app()->getLocale()) }}</h3>
+                            <h3>@autotranslate('Personal Details -  Ihre Bestellung', app()->getLocale())</h3>
                         </div>
                     </div>
                     {{-- /head --}}
