@@ -12,6 +12,7 @@ use App\Models\ModSearchPlaces;
 use App\Models\ModSellerWorktimes;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ModVendorAddressData;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\LogSideRequest;
@@ -42,6 +43,8 @@ class ShopSearchController extends Controller
 
         // Standardwert für die Entfernung verwenden, wenn nicht gesetzt
         $selectedDistance = $request->session()->get('selectedDistance', 20);
+        $selectedLocation = $request->session()->get('selectedLocation');
+//dd($selectedLocation);
 
         if ($userLatitude !== null && $userLongitude !== null) {
             // Wenn Geokoordinaten in der Session vorhanden sind, Restaurants in der Umgebung auswählen
@@ -140,67 +143,91 @@ class ShopSearchController extends Controller
      */
     public function search(Request $request)
     {
-
         try {
             $query = $request->input('query', '');
             $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
 
             if (!empty($query)) {
-                // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
-                $url = "http://nominatim.openstreetmap.org/";
-                $nominatim = new Nominatim($url);
-                $search = $nominatim->newSearch()->query($query);
-                $results = $nominatim->find($search);
-//dd($results);
+                // Adresse parsen
+                $parsedAddress = $this->parseAddress($query);
+//dd($parsedAddress);
 
-                // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
-                if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
-                    $userLatitude = $results[0]['lat'];
-                    $userLongitude = $results[0]['lon'];
-                    $userCity = $results[0]['name'];
+                if ($parsedAddress) {
+                    // Adresse in der Datenbank suchen
+                    $addressData = ModVendorAddressData::where('street', $parsedAddress['street'])
+                        ->where('housenumber', $parsedAddress['housenumber'])
+                        ->where('postal_code', $parsedAddress['postal_code'])
+                        ->where('city', $parsedAddress['city'])
+                        ->first();
 
-                    session(['userLatitude' => $userLatitude]);
-                    session(['userLongitude' => $userLongitude]);
-                    session(['selectedLocation' => $query]);
+                    if ($addressData) {
+                        // Adresse aus der Datenbank verwenden
+                        $userLatitude = $addressData->latitude;
+                        $userLongitude = $addressData->longitude;
+
+                        session(['userLatitude' => $userLatitude]);
+                        session(['userLongitude' => $userLongitude]);
+                        session(['selectedLocation' => $query]);
+                    } else {
+//  dd($parsedAddress);
+                        // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
+                        $url = "http://nominatim.openstreetmap.org/";
+                        $nominatim = new Nominatim($url);
+                        $search = $nominatim->newSearch()->query($query);
+                        $results = $nominatim->find($search);
+
+                        // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
+                        if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+                            $userLatitude = $results[0]['lat'];
+                            $userLongitude = $results[0]['lon'];
+                            $userCity = $results[0]['name'];
+
+                            // Adresse in der Datenbank speichern
+                            ModVendorAddressData::create([
+                                'street' => $parsedAddress['street'],
+                                'housenumber' => $parsedAddress['housenumber'],
+                                'postal_code' => $parsedAddress['postal_code'],
+                                'city' => $parsedAddress['city'],
+                                'latitude' => $userLatitude,
+                                'longitude' => $userLongitude,
+                                'created_at' => now(),
+                                'updated_at' => now()
+                            ]);
+
+                            session(['userLatitude' => $userLatitude]);
+                            session(['userLongitude' => $userLongitude]);
+                            session(['selectedLocation' => $query]);
+                        }
+                    }
                 }
             }
 
             // Weitere Logik zur Restaurant-Suche hier...
-            //
 
             // Session-Werte abrufen
             $userLatitude = $request->session()->get('userLatitude', null);
             $userLongitude = $request->session()->get('userLongitude', null);
 
             // Wenn der Filterwert für den Umkreis im Request vorhanden ist, speichern wir ihn in der Session
-                if ($request->filled('distance')) {
+            if ($request->filled('distance')) {
                 $selectedDistance = $request->input('distance');
                 $request->session()->put('selectedDistance', $selectedDistance);
-                } else {
-            // Wenn der Filterwert nicht im Request vorhanden ist, verwenden wir den Wert aus der Session
+            } else {
+                // Wenn der Filterwert nicht im Request vorhanden ist, verwenden wir den Wert aus der Session
                 $selectedDistance = Session::get('selectedDistance', 20);
-             }
+            }
 
             // Überprüfen, ob die Ergebnisse nicht leer sind
             if (!empty($results)) {
                 $result_neu = $results[0]; // Nur den ersten Eintrag verwenden
                 $placeId = $result_neu['place_id'];
                 $osmId = $result_neu['osm_id'];
-            // Stadtnamen aus den Ergebnissen extrahieren
-         //   $city = $result[0]['display_name']['name'] ?? null;
-            $name = $results[0]['name'] ?? null;
-            $display_name = $results[0]['display_name'] ?? null;
-            // Überprüfen, ob ein Stadtnamen gefunden wurde
-          //  dd($name, $display_name);
-            if ($display_name) {
-            //    dd($name);
-                // Stadtnamen und Ortsnamen in der Session speichern
-             //   $request->session()->put('selectedCity', $city);
-                $request->session()->put('selectedName', $display_name);
+                $name = $results[0]['name'] ?? null;
+                $display_name = $results[0]['display_name'] ?? null;
+                if ($display_name) {
+                    $request->session()->put('selectedName', $display_name);
                 }
-            // Überprüfen, ob der Eintrag bereits in der Datenbank vorhanden ist
-            $this->saveLocation($results);
-
+                $this->saveLocation($results);
             }
 
             // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
@@ -213,117 +240,76 @@ class ShopSearchController extends Controller
                         sin( radians(?) ) *
                         sin( radians( lat ) ) ) ) AS distance',
                         [$userLatitude, $userLongitude, $userLatitude]
-                )
-                ->where('published', true)
-                ->having('distance', '<', $selectedDistance)
-                ->orderBy('distance')
-                ->paginate($this->perPage);
+                    )
+                    ->where('published', true)
+                    ->having('distance', '<', $selectedDistance)
+                    ->orderBy('distance')
+                    ->paginate($this->perPage);
 
-            // Entfernung in der Session speichern, wenn eine neue Suche durchgeführt wurde
-            if (!empty($query)) {
-                $request->session()->put('selectedDistance', $selectedDistance);
+                if (!empty($query)) {
+                    $request->session()->put('selectedDistance', $selectedDistance);
                 }
             } else {
-            // Wenn keine Geokoordinaten vorhanden sind, eine einfache Datenbankabfrage durchführen
                 $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average', 'shop_slug')
-                ->paginate($this->perPage);
-             }
-
-
-// Ein leeres Array erstellen, um die Meldungen für jedes Restaurant zu speichern
-$restaurantStatus = [];
-
-// Aktuelle Zeit mit der richtigen Zeitzone erstellen
-$currentDateTime = Carbon::now('Europe/Berlin');
-
-// Durch die Restaurants iterieren
-foreach ($restaurants as $restaurant) {
-    // Öffnungszeiten für das aktuelle Restaurant abrufen
-    $openingHours = ModSellerWorktimes::where('shop_id', $restaurant->id)->get();
-
-    // Überprüfen, ob Öffnungszeiten vorhanden sind
-    if ($openingHours->isNotEmpty()) {
-        // Öffnungsstatus für den aktuellen Tag berechnen und dem Restaurantobjekt anhängen
-        $currentDayOfWeek = strtolower($currentDateTime->format('l'));
-
-        $currentOpenStatus = [];
-
-        // Iteriere über die Öffnungszeiten für den aktuellen Tag
-        foreach ($openingHours as $hour) {
-            if ($hour->day_of_week === $currentDayOfWeek) {
-                $currentOpenStatus[] = [
-                    'isOpen' => $hour->is_open == 1,
-                    'times' => [
-                        'start' => $hour->open_time ? Carbon::parse($hour->open_time) : null,
-                        'end' => $hour->close_time ? Carbon::parse($hour->close_time) : null,
-                    ],
-                ];
+                    ->paginate($this->perPage);
             }
-        }
 
-        // Überprüfen, ob das Restaurant geöffnet ist und die entsprechende Meldung generieren
-        if (!empty($currentOpenStatus)) {
-            $isOpen = false;
+            // Ein leeres Array erstellen, um die Meldungen für jedes Restaurant zu speichern
+            $restaurantStatus = [];
 
-            // Durch die aktuellen Öffnungszeiten iterieren
-            foreach ($currentOpenStatus as $status) {
-                $openingTimes = $status['times'];
+            // Aktuelle Zeit mit der richtigen Zeitzone erstellen
+            $currentDateTime = Carbon::now('Europe/Berlin');
 
-                // Überprüfen, ob das Restaurant geöffnet ist
-                if ($openingTimes['start'] && $openingTimes['end']) {
-                    if ($currentDateTime->between($openingTimes['start'], $openingTimes['end'])) {
-                        $isOpen = true;
-                        break;
+            // Durch die Restaurants iterieren
+            foreach ($restaurants as $restaurant) {
+                $openingHours = ModSellerWorktimes::where('shop_id', $restaurant->id)->get();
+                if ($openingHours->isNotEmpty()) {
+                    $currentDayOfWeek = strtolower($currentDateTime->format('l'));
+                    $currentOpenStatus = [];
+                    foreach ($openingHours as $hour) {
+                        if ($hour->day_of_week === $currentDayOfWeek) {
+                            $currentOpenStatus[] = [
+                                'isOpen' => $hour->is_open == 1,
+                                'times' => [
+                                    'start' => $hour->open_time ? Carbon::parse($hour->open_time) : null,
+                                    'end' => $hour->close_time ? Carbon::parse($hour->close_time) : null,
+                                ],
+                            ];
+                        }
                     }
+                    $isOpen = false;
+                    foreach ($currentOpenStatus as $status) {
+                        $openingTimes = $status['times'];
+                        if ($openingTimes['start'] && $openingTimes['end']) {
+                            if ($currentDateTime->between($openingTimes['start'], $openingTimes['end'])) {
+                                $isOpen = true;
+                                break;
+                            }
+                        }
+                    }
+                    $restaurantStatus[$restaurant->id] = $isOpen ? "open" : "closed";
+                } else {
+                    $restaurantStatus[$restaurant->id] = "no opening hours available";
                 }
             }
 
-            // Meldung generieren
-            if ($isOpen) {
-                $restaurantStatus[$restaurant->id] = "open";
-            } else {
-                $restaurantStatus[$restaurant->id] = "closed";
-            }
-        } else {
-            // Wenn keine Öffnungszeiten für das Restaurant vorhanden sind
-            $restaurantStatus[$restaurant->id] = "no opening hours available";
-        }
-    } else {
-        // Wenn keine Öffnungszeiten für das Restaurant vorhanden sind
-        $restaurantStatus[$restaurant->id] = "no opening hours available";
-    }
-}
-
-
-
-
-//dd($restaurants);
-
-
-            // Die aktuellen Abfrageparameter für die Pagination beibehalten
             $restaurants->appends($request->only(['query', 'distance']));
-            // Stadtnamen aus der Session abrufen
             $findCityName = $request->session()->get('selectedName');
 
-            // View zurückgeben
             return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
-//            return view('frontend.pages.listingrestaurantopenstreet.grid-listing-masonry-openstreetmap', [
-
                 'restaurants' => $restaurants,
                 'userLatitude' => $userLatitude,
                 'userLongitude' => $userLongitude,
                 'selectedDistance' => $selectedDistance,
                 'findCityName' => $findCityName,
                 'restaurantStatus' => $restaurantStatus
-
-
             ]);
 
         } catch (\Exception $e) {
-            // Fehlerbehandlung
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 
     /**
      * Speichert den ausgewählten Standort in der Session und sucht nach Restaurants in der Nähe.
@@ -475,6 +461,30 @@ foreach ($restaurants as $restaurant) {
         // Standortinformationen an die Blade-Ansicht übergeben
 // Standortinformationen und Stadtnamen an die Blade-Ansicht übergeben
 return response()->json(['success' => true, 'message' => 'Geokoordinaten erfolgreich gespeichert', 'name' => $name ], 200);
+    }
+
+
+
+
+
+    /**
+     * Parst die Adresse und extrahiert die Komponenten.
+     *
+     * @param string $query
+     * @return array|null
+     */
+    private function parseAddress($query)
+    {
+        $pattern = '/^(.+?)\s+(\d+),\s+(\d{5})\s+(.+)$/';
+        if (preg_match($pattern, $query, $matches)) {
+            return [
+                'street' => $matches[1],
+                'housenumber' => $matches[2],
+                'postal_code' => $matches[3],
+                'city' => $matches[4]
+            ];
+        }
+        return null;
     }
 
 

@@ -22,6 +22,8 @@ class StorePopup extends Component
     public $storeLogo;
     public $street;
     public $housenumber;
+    public $shipping_street;
+    public $shipping_house_no;
     public $postal_code;
     public $city;
 
@@ -49,9 +51,10 @@ class StorePopup extends Component
         // Hole SessionData
         $sessionData = $this->getSessionData();
         $addressData = Session::get('address_data');
+     //   dd($addressData);
         if ($addressData) {
-            $this->street = $addressData['street'] ?? '';
-            $this->housenumber = $addressData['housenumber'] ?? '';
+            $this->shipping_street = $addressData['shipping_street'] ?? '';
+            $this->shipping_house_no = $addressData['shipping_house_no'] ?? '';
             $this->postal_code = $addressData['postal_code'] ?? '';
             $this->city = $addressData['city'] ?? '';
         }
@@ -133,8 +136,8 @@ class StorePopup extends Component
     public function orderDelivery()
     {
         $validatedData = $this->validate([
-            'street' => 'required|string',
-            'housenumber' => 'required|string',
+            'shipping_street' => 'required|string',
+            'shipping_house_no' => 'required|string',
             'postal_code' => 'required|string',
             'city' => 'required|string',
         ]);
@@ -142,8 +145,11 @@ class StorePopup extends Component
         // Adresse in der Session speichern
         Session::put('address_data', $validatedData);
 
+
         // Speichern der shopId und den Status in der Session
         session(['shopId' => $this->shopId, 'status' => 'delivery']);
+
+        Session::put('delivery_or_pickup_' . $this->shopId, 'delivery');
 
         // Geokoordinaten für die neue Adresse berechnen und speichern
         if (!$this->calculateAndSaveCoordinates($validatedData)) {
@@ -163,8 +169,8 @@ class StorePopup extends Component
     private function calculateAndSaveCoordinates($addressData)
     {
         // Prüfen, ob die Adresse bereits in der Datenbank vorhanden ist
-        $existingAddress = ModVendorAddressData::where('street', ucwords($addressData['street']))
-            ->where('housenumber', $addressData['housenumber'])
+        $existingAddress = ModVendorAddressData::where('street', ucwords($addressData['shipping_street']))
+            ->where('housenumber', $addressData['shipping_house_no'])
             ->where('postal_code', $addressData['postal_code'])
             ->where('city', ucwords($addressData['city']))
             ->first();
@@ -176,9 +182,9 @@ class StorePopup extends Component
 
             return true; // Adresse wurde gefunden und Koordinaten wurden gesetzt
         }
-
+//dd($existingAddress);
         // Adressdaten in ein durchsuchbares Format konvertieren
-        $query = ucwords($addressData['street']) . ' ' . $addressData['housenumber'] . ', ' . $addressData['postal_code'] . ' ' . ucwords($addressData['city']);
+        $query = ucwords($addressData['shipping_street']) . ' ' . $addressData['shipping_house_no'] . ', ' . $addressData['postal_code'] . ' ' . ucwords($addressData['city']);
 
         // Caching-Mechanismus überprüfen
         $cachedCoordinates = $this->checkCache($query);
@@ -217,8 +223,8 @@ class StorePopup extends Component
 
                 // Adresse und Koordinaten in der Datenbank speichern
                 ModVendorAddressData::create([
-                    'street' => ucwords($addressData['street']),
-                    'housenumber' => $addressData['housenumber'],
+                    'street' => ucwords($addressData['shipping_street']),
+                    'housenumber' => $addressData['shipping_house_no'],
                     'postal_code' => $addressData['postal_code'],
                     'city' => ucwords($addressData['city']),
                     'latitude' => $userLatitude,
@@ -317,6 +323,8 @@ class StorePopup extends Component
 
         // Setze die Liefergebühr auf 0
         Session::put('delivery_cost_' . $this->shopId, 0);
+        Session::put('delivery_or_pickup_' . $this->shopId, 'pickup');
+
         $this->deliveryFee = 0; // Stelle sicher, dass die Eigenschaft auch aktualisiert wird
 
         $this->openPopUp = false;

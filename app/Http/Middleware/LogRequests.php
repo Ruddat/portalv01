@@ -23,16 +23,16 @@ class LogRequests
         if ($this->crawlerDetect->isCrawler()) {
             $this->logRequest($request, true);
             // Debugging-Informationen und gesamte Anfrage
-            Log::debug('Bot found:', [
-                'ip_address' => $request->ip(),
-                'url' => $request->fullUrl(),
-                'method' => $request->method(),
-                'user_agent' => $request->header('User-Agent'),
-                'referrer' => $request->header('referer'),
-                'headers' => $request->headers->all(),
-                'query' => $request->query->all(),
-                'body' => $request->all()
-            ]);
+        //    Log::debug('Bot found:', [
+        //        'ip_address' => $request->ip(),
+        //        'url' => $request->fullUrl(),
+        //        'method' => $request->method(),
+        //        'user_agent' => $request->header('User-Agent'),
+        //        'referrer' => $request->header('referer'),
+        //        'headers' => $request->headers->all(),
+        //        'query' => $request->query->all(),
+        //        'body' => $request->all()
+        //    ]);
         } else {
             $this->logRequest($request, false);
         }
@@ -48,16 +48,18 @@ class LogRequests
         $method = strtoupper(trim($request->method()));
         $userAgent = trim($request->header('User-Agent'));
         $referrer = trim($request->header('referer') ?? '');
+        $today = Carbon::today(); // Heutiges Datum
 
-        // Überprüfen, ob bereits ein Eintrag mit denselben Details existiert
+        // Überprüfen, ob bereits ein Eintrag mit denselben Details am selben Tag existiert
         $existingLog = SysRequestLog::where('ip_address', $ipAddress)
             ->where('url', $url)
             ->where('method', $method)
             ->where('user_agent', $userAgent)
+            ->whereDate('timestamp', $today)
             ->first();
 
         if ($existingLog) {
-            Log::debug('Existing Log Found:', $existingLog->toArray());
+        //    Log::debug('Existing Log Found:', $existingLog->toArray());
             // Erhöhe die count-Spalte um 1
             $existingLog->increment('count');
         } else {
