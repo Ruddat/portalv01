@@ -26,6 +26,11 @@ class LifeTracking extends Component
     public $votingStatus = false;
     public $starRating;
     public $shopData;
+    public $orderItems = [];
+    public $orderData;
+    public $totalPrice = 0.0;
+
+
 
     public function mount($orderHash, CartService $cartService)
     {
@@ -63,36 +68,29 @@ class LifeTracking extends Component
 
             $this->starRating = $this->getOverallVoting($order->parent);
 
-            $orderData = json_decode($order->order_json_data, true);
+            $orderData = json_decode($order->order_json_data);
 
-            if (isset($orderData['OrderList']['Order']['ArticleList']['Article'])) {
-                $articles = $orderData['OrderList']['Order']['ArticleList']['Article'];
+            $this->orderData = json_decode($this->order->order_json_data);
 
-                // SubArticleList immer als Array behandeln
-                foreach ($articles as &$article) {
-                    if (isset($article['SubArticleList']['SubArticle'])) {
-                        $subArticles = $article['SubArticleList']['SubArticle'];
-                        $article['SubArticleList'] = is_array($subArticles) ? $subArticles : [$subArticles];
-                    } elseif (isset($article['SubArticleList']) && !is_array($article['SubArticleList'])) {
-                        // Falls SubArticleList existiert, aber kein Array ist, in ein Array umwandeln
-                        $article['SubArticleList'] = [$article['SubArticleList']];
-                    } elseif (!isset($article['SubArticleList'])) {
-                        // Falls SubArticleList nicht vorhanden ist, ein leeres Array zuweisen
-                        $article['SubArticleList'] = [];
-                    }
+            // Überprüfe, ob die Daten in der erwarteten Struktur vorliegen
+            if (isset($this->orderData->OrderList->Order->ArticleList->Article)) {
+                // Überprüfe, ob es sich um ein einzelnes Objekt oder ein Array von Objekten handelt
+                if (is_array($this->orderData->OrderList->Order->ArticleList->Article)) {
+                    // Wenn es sich um ein Array handelt, verwende es direkt
+                    $this->orderItems = $this->orderData->OrderList->Order->ArticleList->Article;
+                } else {
+                    // Wenn es sich um ein einzelnes Objekt handelt, wandle es in ein Array um
+                    $this->orderItems = [$this->orderData->OrderList->Order->ArticleList->Article];
                 }
-
-                // Die vorbereiteten Artikel in die Eigenschaft $orderedArticles setzen
-                $this->orderedArticles = $articles;
+            } else {
+                // Setze die Artikel auf ein leeres Array, wenn der Schlüssel nicht existiert oder die Daten fehlen
+                $this->orderItems = [];
             }
+//dd($orderItems, $orderData);
 
-            $this->dispatch('trackingStatusUpdated', $this->latitude, $this->longitude);
-        } else {
-            // Order nicht gefunden, eventuell eine Fehlermeldung setzen
-            $this->order = null;
-            session()->flash('error', 'Order not found.');
         }
     }
+
 
     public function fetchTrackingStatus()
     {
@@ -182,6 +180,9 @@ class LifeTracking extends Component
             'orderedArticles' => $this->orderedArticles,
             'starrating' => $this->starRating,
             'shopData' => $this->shopData,
+            'orderItems' => $this->orderItems,
+            'orderData' => $this->orderData,
+
         ]);
     }
 }

@@ -3,9 +3,10 @@
 namespace App\Livewire\Frontend\Cart;
 
 use Carbon\Carbon;
+use App\Models\ModShop;
 use Livewire\Component;
 use App\Services\OpeningHoursService;
-use App\Models\ModShop;
+use Illuminate\Support\Facades\Session;
 
 class TimepickerComponent extends Component
 {
@@ -35,6 +36,12 @@ class TimepickerComponent extends Component
         for ($i = 0; $i < 7; $i++) {
             $this->availableDates[] = $today->copy()->addDays($i)->format('Y-m-d');
         }
+
+                // Lade die gespeicherte Vorbestellzeit aus der Session, falls vorhanden
+                $storedTime = Session::get('selectedTime');
+                if ($storedTime) {
+                    $this->selectedTime = $storedTime;
+                }
     }
 
     public function loadOpeningHours()
@@ -124,6 +131,8 @@ class TimepickerComponent extends Component
                 $this->selectedHour = null;
                 $this->selectedMinute = null;
             }
+                        // Speichere die ausgewählte Zeit in der Session
+                        Session::put('selectedTime', $this->selectedTime);
         }
     }
 
@@ -135,7 +144,8 @@ class TimepickerComponent extends Component
         $this->currentDate = Carbon::today();
         $this->selectedDate = Carbon::today()->toDateString();
         $this->loadOpeningHours();
-
+        // Lösche die gespeicherte Zeit aus der Session
+        Session::forget('selectedTime');
     }
 
     public function render()

@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\ModOrders;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\ModVendorAddressData;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -30,10 +31,12 @@ class CartOrderDetails extends Component
     public $email = ''; // Eigenschaft zum Speichern der E-Mail-Adresse
     public $phone = ''; // Eigenschaft zum Speichern der Telefonnummer
     public $full_address = ''; // Eigenschaft zum Speichern der vollständigen Adresse
+    public $shipping_street = ''; // Eigenschaft zum Speichern der Street
+    public $shipping_house_no = ''; // Eigenschaft zum Speichern der House No
     public $city = ''; // Eigenschaft zum Speichern der Stadt
     public $postal_code = ''; // Eigenschaft zum Speichern des Postleitzahl
     public $opt_news_coupons = true; // Eigenschaft zum Speichern der Option "Ja, ich möchte gelegentlich Neuigkeiten und Coupons erfahren"
-    public $opt_save_data = true; // Eigenschaft zum Speichern der Option "Meine Daten für den nächsten Besuch speichern"
+    public $opt_save_data = false; // Eigenschaft zum Speichern der Option "Meine Daten für den nächsten Besuch speichern"
     public $payment_method = 'cash'; // Eigenschaft zum Speichern der ausgewählten Zahlungsart
     public $order_comment = ''; // Eigenschaft zum Speichern des Bestellkommentars
     public $description_of_way = ''; // Eigenschaft zum Speichern des Versandkommentars
@@ -47,14 +50,36 @@ class CartOrderDetails extends Component
     public $selectedTime;
 
 
+    protected $rules = [
+        'selectedOption' => 'required',
+        'company' => 'required_if:selectedOption,firma',
+        'department' => 'required_if:selectedOption,firma',
+        'last_name' => 'required_if:selectedOption,frau,herr,familie|min:4',
+        'first_name' => 'required_if:selectedOption,frau,herr,familie|min:4',
+        'email' => 'required|email',
+        'phone' => 'required',
+        'shipping_street' => 'required|min:5',
+        'shipping_house_no' => 'required|min:1',
+        'city' => 'required|min:5',
+        'postal_code' => 'required',
+        'payment_method' => 'required',
+        'opt_news_coupons' => 'boolean',
+        'opt_save_data' => 'boolean',
+        'order_comment' => 'nullable',
+        'description_of_way' => 'nullable',
+    ];
+
+
     public function mount($restaurantId)
     {
         // Abrufen der Shop-Daten anhand der ID oder eine Fehlermeldung anzeigen, falls nicht gefunden
         $this->shopData = ModShop::findOrFail($restaurantId);
+      //  dd($this->shopData);
      //   $this->createXml();
         $this->ipAddress = $_SERVER['REMOTE_ADDR'];
 
         $addressData = Session::get('address_data');
+//dd($addressData);
 
       //  dd($addressData);
         // Überprüfe, ob die Daten vorhanden sind
@@ -70,12 +95,14 @@ class CartOrderDetails extends Component
 
             $this->email = $addressData['email'] ?? '';
             $this->phone = $addressData['phone'] ?? '';
-            $this->full_address = $addressData['full_address'] ?? '';
+            $this->shipping_street = $addressData['shipping_street'] ?? '';
+            $this->shipping_house_no = $addressData['shipping_house_no'] ?? '';
             $this->city = $addressData['city'] ?? '';
             $this->postal_code = $addressData['postal_code'] ?? '';
-            $this->payment_method = $addressData['payment_method'] ?? '';
-            $this->opt_news_coupons = $addressData['opt_news_coupons'] ?? false;
-            $this->opt_save_data = $addressData['opt_save_data'] ?? false;
+
+            $this->payment_method = $addressData['payment_method'] ?? 'cash';
+            $this->opt_news_coupons = $addressData['opt_news_coupons'] ?? true;
+            $this->opt_save_data = $addressData['opt_save_data'] ?? true;
             $this->order_comment = $addressData['order_comment'] ?? '';
             $this->description_of_way = $addressData['description_of_way'] ?? '';
 
@@ -85,97 +112,69 @@ class CartOrderDetails extends Component
 
     public function orderNowForm()
     {
-
-            // Überprüfen, ob der Warenkorb leer ist
-            $order = session()->get('shopping-cart');
-
-         //  dd($order);
-   // if (empty($order) || !Session::has('newOrderNumber')) {
-    if (empty($order)) {
-    return redirect()->back()->with('error', 'Der Warenkorb ist leer oder die Sitzung ist abgelaufen.');
-} else {
-
-}
-        $validatedData = $this->validate([
-            'selectedOption' => 'required',
-            'company' => 'required_if:selectedOption,Firma',
-            'department' => 'required_if:selectedOption,Firma',
-            'last_name' => 'required_if:selectedOption,Frau,Herr|min:4',
-            'first_name' => 'required_if:selectedOption,Frau,Herr|min:4',
-            'email' => 'required|email', // Validierung der E-Mail-Adresse
-            'phone' => 'required', // Validierung der Telefonnummer
-            'full_address' => 'required:min:5', // Validierung der vollständigen Adresse
-            'city' => 'required|min:5', // Validierung der Stadt
-            'postal_code' => 'required', // Validierung der Postleitzahl
-            'payment_method' => 'required', // Validierung der ausgewählten Zahlungsart
-            'opt_news_coupons' => 'boolean', // Validierung der Option "Ja, ich möchte gelegentlich Neuigkeiten und Coupons erfahren"
-            'opt_save_data' => 'boolean', // Validierung der Option "Meine Daten für den nächsten Besuch speichern"
-            'order_comment' => 'nullable', // Validierung des Bestellkommentars
-            'description_of_way' => 'nullable', // Validierung des Versandkommentars
-        ],[
-            'selectedOption.required' => 'Please select an option.',
-            'company.required_if' => 'Please enter the company name.',
-            'department.required_if' => 'Please enter the department name.',
-            'last_name.required' => 'Please enter the last name.',
-            'last_name.min' => 'The last name must be at least 4 characters long.',
-            'first_name.required' => 'Please enter the first name.',
-            'first_name.min' => 'The first name must be at least 4 characters long.',
-            'email.required' => 'Please enter the email address.',
-            'phone.required' => 'Please enter the phone number.',
-            'full_address.required' => 'Please enter the full address.',
-            'full_address.min' => 'The full address must be at least 5 characters long.',
-            'city.required' => 'Please enter the city.',
-            'city.min' => 'The city must be at least 5 characters long.',
-            'postal_code.required' => 'Please enter the postal code.',
-            'payment_method.required' => 'Please select a payment method.',
-        ]);
-
-      //   dd($validatedData);
-
-// Konvertiere die Formulardaten in JSON
-$jsonData = json_encode($validatedData);
-
-// Speichere die Formulardaten als Cookie im Browser des Benutzers
- // Speichere die Formulardaten als Cookie im Browser des Benutzers
- $response = Response::make('')->withCookie(cookie('form_data', $jsonData, 60 * 24 * 30)); // Gültig für 30 Tage
-
- Session::put('address_data', $validatedData);
-
-
-
-
-        // Kombiniere die Teile der Adresse aus dem Livewire-Daten-Array
-        $street = $this->full_address;
-        $zip = $this->postal_code;
-        $city = $this->city;
-
-        // Baue die vollständige Adresse
-        $userInput = "$street $zip $city";
-        // $userInput = 'Heidkrugsweg 31, Edemissen'; // Die Adresse, die der Benutzer eingibt
-        // dd($userInput);
-
-        $url = "https://nominatim.openstreetmap.org/";
-        $nominatim = new Nominatim($url);
-
-        $search = $nominatim->newSearch();
-        $search->query($userInput);
-
-        $results = $nominatim->find($search);
-
-    if (!empty($results)) {
-        foreach ($results as $result) {
-        $latitude = $result['lat'];
-        $longitude = $result['lon'];
-        // echo "Latitude: $latitude, Longitude: $longitude<br>";
+        // Überprüfen, ob der Warenkorb leer ist
+        $order = session()->get('shopping-cart');
+        if (empty($order)) {
+            return redirect()->back()->with('error', 'Der Warenkorb ist leer oder die Sitzung ist abgelaufen.');
         }
-    }
-         // koordinaten vom besteller zur berechnung der liefergebueren
 
-         // Speichern der Werte in der Session
+        // Validierung der Benutzereingaben
+        $validatedData = $this->validate();
+
+      //  dd($validatedData);
+
+        // Adresse für Geokodierung vorbereiten
+        $street = $validatedData['shipping_street'];
+        $housenumber = $validatedData['shipping_house_no'];
+        $city = $validatedData['city'];
+        $postal_code = $validatedData['postal_code'];
+        $userInput = "$street $housenumber, $postal_code $city";
+
+        // Überprüfen, ob die Adresse bereits in der Datenbank vorhanden ist
+        $existingAddress = ModVendorAddressData::where('street', $street)
+            ->where('housenumber', $housenumber)
+            ->where('postal_code', $postal_code)
+            ->where('city', $city)
+            ->first();
+
+        if ($existingAddress) {
+            // Adresse gefunden, benutze die gespeicherten Koordinaten
+            $latitude = $existingAddress->latitude;
+            $longitude = $existingAddress->longitude;
+        } else {
+            // Adresse nicht gefunden, nutze Nominatim zur Geokodierung
+            $client = new Client();
+            $response = $client->get('https://nominatim.openstreetmap.org/search', [
+                'query' => [
+                    'format' => 'json',
+                    'q' => $userInput
+                ]
+            ]);
+            $data = json_decode($response->getBody(), true);
+
+            if (!empty($data)) {
+                $latitude = $data[0]['lat'];
+                $longitude = $data[0]['lon'];
+
+                // Speichere die neue Adresse und ihre Koordinaten in der Datenbank
+                ModVendorAddressData::create([
+                    'street' => $street,
+                    'housenumber' => $housenumber,
+                    'postal_code' => $postal_code,
+                    'city' => $city,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } else {
+                return redirect()->back()->with('error', 'Geocoding failed. Please check the address and try again.');
+            }
+        }
+
+        // Speichern der Werte in der Session
         Session::put('latitude', $latitude);
         Session::put('longitude', $longitude);
-
-        //dd($latitude, $longitude);
 
         // Shopinformationen aus der Datenbank
         $shopId = $this->shopData->id;
@@ -185,84 +184,67 @@ $jsonData = json_encode($validatedData);
         $orderHash = Str::random(16);
 
         $lastOrderNumber = ModOrders::where('parent', $shopId)->max('order_nr');
-
-        // Inkrementieren der letzten Bestellnummer um eins, um die neue Bestellnummer zu generieren
-          $newOrderNumber = $lastOrderNumber + 1;
-        // Bestellnummer als Eigenschaft des Livewire-Komponentenobjekts speichern
-          $this->newOrderNumber = $newOrderNumber;
+        $newOrderNumber = $lastOrderNumber + 1;
 
         Session::put('newOrderNumber', $newOrderNumber);
         Session::put('orderHash', $orderHash);
 
-       // Neue Bestellung erstellen und in die Datenbank speichern
-    $order = ModOrders::create([
-        'order_nr' => $newOrderNumber,
-        'parent' => $shopId,
-        'shop_name' => $this->shopData->title,
-        'hash' => $orderHash,
-        'clients_ip' => $this->ipAddress,
-        'gender' => $this->selectedOption === 'familie' ? '1' : ($this->selectedOption === 'frau' ? '2' : ($this->selectedOption === 'herr' ? '3' : '4')),
-        //  'status' => '0', // New
-        'name' => $validatedData['last_name'],
-        'surname' => $validatedData['first_name'],
-        'email' => $validatedData['email'],
-        'phone' => $validatedData['phone'],
-        'company' => $validatedData['company'],
-        'department' => $validatedData['department'],
-        'order_date' => now(),
-        'shipping_street' => $validatedData['full_address'],
-        'shipping_house_no' => '2', // Beispielwert
-        'shipping_type' => 'picup', // Beispielwert
-        'shipping_lng' => $longitude,
-        'shipping_lat' => $latitude,
-        'price_products' => '0.00', // Beispielwert
-        'price_shipping' => '0.00', // Beispielwert
-        'price_bottles' => '0.00', // Beispielwert
-        'price_payment' => '0.00', // Beispielwert
-        'price_tips' => '0.00', // Beispielwert
-        'price_total' => '12.90', // Beispielwert
-        'eshop_discount' => '0.00', // Beispielwert
-        'cart_in_session' => '0', // Beispielwert
-        'coupon_code' => '', // Beispielwert
-        'rand_id' => '0', // Beispielwert
+        $deliveryorpickup = Session::get('delivery_or_pickup_'. $shopId);
 
-        'shipping_city' => $validatedData['city'],
-        'shipping_zip' => $validatedData['postal_code'],
-        'payment_type' => $validatedData['payment_method'],
-        'order_comment' => $validatedData['order_comment'],
-        'shipping_comment' => $validatedData['description_of_way'],
-        // Fügen Sie weitere Felder hinzu, je nach Bedarf
-    ]);
+        // Neue Bestellung erstellen und in die Datenbank speichern
+        $order = ModOrders::create([
+            'order_nr' => $newOrderNumber,
+            'parent' => $shopId,
+            'shop_name' => $this->shopData->title,
+            'hash' => $orderHash,
+            'clients_ip' => $this->ipAddress,
+            'gender' => $this->selectedOption === 'familie' ? '1' : ($this->selectedOption === 'frau' ? '2' : ($this->selectedOption === 'herr' ? '3' : '4')),
+            'name' => $validatedData['last_name'],
+            'surname' => $validatedData['first_name'],
+            'email' => $validatedData['email'],
+            'phone' => $validatedData['phone'],
+            'company' => $validatedData['company'],
+            'department' => $validatedData['department'],
+            'order_date' => now(),
+            'shipping_street' => $validatedData['shipping_street'],
+            'shipping_house_no' => $validatedData['shipping_house_no'],
+            'shipping_type' => $deliveryorpickup,
+            'shipping_lng' => $longitude,
+            'shipping_lat' => $latitude,
+            'price_products' => '0.00',
+            'price_shipping' => '0.00',
+            'price_bottles' => '0.00',
+            'price_payment' => '0.00',
+            'price_tips' => '0.00',
+            'price_total' => '12.90',
+            'eshop_discount' => '0.00',
+            'cart_in_session' => '0',
+            'coupon_code' => '',
+            'rand_id' => '0',
+            'shipping_city' => $validatedData['city'],
+            'shipping_zip' => $validatedData['postal_code'],
+            'payment_type' => $validatedData['payment_method'],
+            'order_comment' => $validatedData['order_comment'],
+            'shipping_comment' => $validatedData['description_of_way'],
+        ]);
 
-        $order = session()->get('shopping-cart');
+        $this->createXml();
+        $this->generateNewPDF($orderHash);
+        $this->generateNewClient($validatedData);
+        $this->generateConfirmationEmail($orderHash);
 
-     //   dd($order);
-
-
-    $this->createXml();
-
-    $this->generateNewPDF($orderHash);
-
-    $this->generateNewClient($validatedData);
-
-    $this->generateConfirmationEmail($orderHash);
-
-    // Hier wird zur Livewire-Komponente `LifeTracking` weitergeleitet
-    // und der $orderHash als Parameter übergeben
-    return Redirect::route('life-tracking', ['orderHash' => $orderHash]);
-
-        // Hier wird zur Methode `redirectToLifeTracking` im Livewire-Controller `LifeTracking` weitergeleitet
-        return Redirect::route('life-tracking');
-
-//        return Redirector::toRoute('life-tracking');
-
-}
+        return redirect()->route('life-tracking', ['orderHash' => $orderHash]);
+    }
 
 public function generateNewClient($data)
 {
     // Geokoordinaten (Beispielwerte)
     $latitude = Session::get('latitude');
     $longitude = Session::get('longitude');
+    $shopId = Session::get('shopId');
+    $deliveryorpickup = Session::get('delivery_or_pickup_'. $shopId);
+//dd($deliveryorpickup);
+
 
     // Überprüfen, ob ein Client mit dem angegebenen Benutzernamen bereits existiert
     $existingClient = Client::where('username', $data['first_name'])->orWhere('email', $data['email'])->first();
@@ -286,9 +268,9 @@ public function generateNewClient($data)
         'email' => $data['email'],
         'phone' => $data['phone'],
         // 'order_date' => now(),
-        'address' => $data['full_address'],
-        'shipping_house_no' => '2', // Beispielwert
-        'shipping_type' => 'picup', // Beispielwert
+        'address' => $data['shipping_street'],
+        'shipping_house_no' => $data['shipping_house_no'], // Beispielwert
+        'shipping_type' => $deliveryorpickup, // Beispielwert
         'longitude' => $longitude,
         'latitude' => $latitude,
         'city' => $data['city'],
@@ -495,6 +477,22 @@ $orderID = $order->addChild('OrderID', $orderIDValue);
     $storeData = $order->addChild('StoreData');
     $storeData->addChild('StoreId', $this->shopData->id); // Annahme: Die StoreId ist in $this->store_id gespeichert
     $storeData->addChild('StoreName', $this->shopData->title); // Annahme: Der StoreName ist in $this->store_name gespeichert
+
+    // Füge AddInfo hinzu
+    $addInfo = $order->addChild('AddInfo');
+    $addInfo->addChild('DiscountPercent', '0');
+    $addInfo->addChild('CurrencyStr', '€');
+    $addInfo->addChild('DeliverLumpSum', '0');
+    $addInfo->addChild('Comment', 'kjdshfjkldsjfljsdlfkjsdflkjdlkfjlk'); // Leeres Kommentar-Feld
+    $addInfo->addChild('PaymentType', 'Barzahlung'); // Beispiel für Barzahlung
+    $addInfo->addChild('PaymentFee', '0');
+    $addInfo->addChild('Tip', '13.50');
+    $addInfo->addChild('TransactionID', ''); // Leeres TransactionID-Feld
+ //   $addInfo->addChild('Total', '3.5'); // Beispielwert für Total
+    $addInfo->addChild('MinOrderValue', '0');
+    $addInfo->addChild('MinQuantitySurcharge', '0');
+    $addInfo->addChild('DateTimeOrder', Session::get('selectedTime')); // Beispielwert für DateTimeOrder
+
 
 //dd($articles);
 
@@ -754,6 +752,9 @@ public function generateQrCode()
     {
         // Adressdaten aus der Session abrufen, falls vorhanden
         $addressData = Session::get('address_data', []);
+
+      //  dd($addressData);
+
         return view('livewire.frontend.cart.cart-order-details', [
             'shopData' => $this->shopData,
             'xml' => $this->xml,

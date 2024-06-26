@@ -7,10 +7,10 @@
 
             <div class="col-lg-12 my-lg-0 my-1">
                 <div id="main-content" class="bg-white border">
-                    <h1>Bestellübersicht</h1>
+                    <h1>@autotranslate('Bestellübersicht', app()->getLocale())</h1>
                     <div class="info">
                         @if ($order->deliver_minutes)
-                            <h5>Ihre Geschätzte Lieferzeit zirka {{ $order->deliver_minutes }} Minuten</h5>
+                            <h5>@autotranslate('Ihre Geschätzte Lieferzeit zirka', app()->getLocale()) {{ $order->deliver_minutes }} @autotranslate('Minuten', app()->getLocale())</h5>
                         @endif
                     </div>
 
@@ -19,17 +19,16 @@
                         <p>@autotranslate('wir liefern an', app()->getLocale()) <strong>{{ $order->shipping_street }} {{ $order->shipping_house_no }},
                             {{ $order->shipping_zip }} {{ $order->shipping_city }}</strong></p>
                     </div>
-                    <div class="text-uppercase">@autotranslate('Order status', app()->getLocale())</div>
                     <div class="order my-3 bg-light">
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="d-flex flex-column justify-content-between order-summary">
                                     <div class="d-flex align-items-center">
-                                        <div class="text-uppercase">Order #{{ $order->order_nr }}</div>
+                                        <div class="text-uppercase">@autotranslate('Bestellnummer #', app()->getLocale()){{ $order->order_nr }}</div>
                                         <div class="blue-label ms-auto text-uppercase">@autotranslate($order->payment_type, app()->getLocale())</div>
 
                                     </div>
-                                    <div class="fs-8">Products #03</div>
+                                    <div class="fs-8">@autotranslate('Products', app()->getLocale()) #03</div>
                                     <div class="fs-8">
                                         {{ \Carbon\Carbon::parse($order->order_date)->translatedFormat('l, d F Y \u\m H:i') }}
                                     </div>
@@ -62,7 +61,7 @@
                             </div>
                             <div class="col-lg-8">
                                 <div class="d-sm-flex align-items-sm-start justify-content-sm-between">
-                                    <div class="status">Status : @autotranslate($statusDescription, app()->getLocale())</div>
+                                    <div class="status">@autotranslate('Status :', app()->getLocale()) @autotranslate($statusDescription, app()->getLocale())</div>
                                     @if ($votingStatus)
                                         <p>
                                             <span class="btn btn-success" style="pointer-events: none; color: white; background-color: green; border: none;">
@@ -101,30 +100,68 @@
                         </div>
                     </div>
                     <!-- Order 2 -->
-                    <div class="order my-3 bg-light">
+                    <div class="order my-2 bg-light">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="my-2 col-md-6 col-lg-6">
                                 <div id="map" style="height: 500px;" wire:ignore></div>
                             </div>
-                            <div class="col-lg-6 order-overview">
-                                <h3>Ihre Bestellung</h3>
+                            <div class="my-3 col-md-6 col-lg-6 order-overview">
+                                <h3>@autotranslate('Ihre Bestellung', app()->getLocale())</h3>
                                 <ul class="order-list">
-                                    @foreach ($orderedArticles as $article)
-                                    <div class="article">
-                                        <p>{{ $article['ArticleName'] }} - {{ $article['Count'] }} x {{ $article['Price'] }}€</p>
-
-                                        @if (!empty($article['SubArticleList']))
-                                            <ul class="sub-articles">
-                                                @foreach ($article['SubArticleList'] as $subArticle)
-                                                    1
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </div>
-                                @endforeach
-
+                                    <li>
+                                        <div class="table-container">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>@autotranslate('Article Name', app()->getLocale())</th>
+                                                        <th>@autotranslate('Price', app()->getLocale())</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($orderItems as $item)
+                                                        <tr class="items">
+                                                            <td>{{ $item->ArticleNo }}</td>
+                                                            <td>{{ $item->ArticleName }} ({{ $item->ArticleSize }})</td>
+                                                            <td>
+                                                                @if(isset($item->Price))
+                                                                    {{ number_format($item->Price, 2, '.', '') }}
+                                                                    @php
+                                                                        $totalPrice += $item->Price; // Addieren Sie den Preis jedes Artikels zur Gesamtsumme
+                                                                    @endphp
+                                                                @else
+                                                                @autotranslate('Gratis', app()->getLocale())
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                        @if (!empty($item->SubArticleList) && is_array($item->SubArticleList->SubArticle))
+                                                            @foreach ($item->SubArticleList->SubArticle as $subArticle)
+                                                                <tr class="subitems">
+                                                                    <td></td>
+                                                                    <td>-- {{ $subArticle->ArticleName }}</td>
+                                                                    <td>
+                                                                        @if(isset($subArticle->Price) && is_numeric($subArticle->Price))
+                                                                            {{ number_format($subArticle->Price, 2, '.', '') }}
+                                                                            @php
+                                                                                $totalPrice += $subArticle->Price; // Addieren Sie den Preis jedes Subartikels zur Gesamtsumme
+                                                                            @endphp
+                                                                        @else
+                                                                        @autotranslate('Gratis', app()->getLocale())
+                                                                        @endif
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <p class="total-price">@autotranslate('Total Price:', app()->getLocale()) {{ number_format($totalPrice, 2, '.', '') }}</p>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
+
+
                         </div>
 
                     </div>
@@ -204,6 +241,45 @@
     font-family: 'Chalkboard', 'Comic Sans MS', cursive;
     margin-bottom: 5px;
 }
+
+
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f6f1d3;
+}
+
+.table td {
+    background-color: #fff;
+}
+
+.subitems td {
+    padding-left: 16px;
+    background-color: #f9f9f9;
+}
+
+.total-price {
+    margin-top: 16px;
+    font-weight: bold;
+}
+
+
 </style>
 
 

@@ -61,12 +61,12 @@
                             <div class="row">
 
                                 <div class="mb-3 col-md-9">
-                                    <input id="street" name="street" type="text" class="form-control @error('street') is-invalid @enderror" placeholder="@autotranslate('Street*', app()->getLocale())" autocomplete="off" spellcheck="false" wire:model="street">
-                                    @error('street') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
+                                    <input id="shipping_street" name="shipping_street" type="text" class="form-control @error('shipping_street') is-invalid @enderror" placeholder="@autotranslate('Strassenname*', app()->getLocale())" autocomplete="off" spellcheck="false" wire:model="shipping_street">
+                                    @error('shipping_street') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                                 <div class="mb-3 col-md-3">
-                                    <input name="housenumber" type="text" class="form-control @error('housenumber') is-invalid @enderror" placeholder="@autotranslate('Nr.*', app()->getLocale())" wire:model="housenumber">
-                                    @error('housenumber') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
+                                    <input name="shipping_house_no" type="text" class="form-control @error('shipping_house_no') is-invalid @enderror" placeholder="@autotranslate('Nr.*', app()->getLocale())" wire:model="shipping_house_no">
+                                    @error('shipping_house_no') <span class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</span> @enderror
                                 </div>
                                 <div class="mb-3 col-md-3">
                                     <input type="text" class="form-control @error('postal_code') is-invalid @enderror" placeholder="@autotranslate('Postal code*', app()->getLocale())" wire:model="postal_code">
