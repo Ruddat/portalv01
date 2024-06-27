@@ -360,61 +360,11 @@
         <!-- /shape_element_2 -->
 
 <!-- Hier wire:poll einsetzen -->
-<livewire:frontend.social-toast.social-proof />
+<livewire:frontend.social-toast.social-proof/>
 
 
 @push('specific-scripts')
-<script>
-    document.addEventListener('livewire:init', function () {
-        Livewire.on('showContainer', function (event) {
-            console.log('showContainer event received with orders:', event.orders);
-            showContainer();
-        });
 
-        Livewire.on('hideContainer', function () {
-            console.log('hideContainer event received');
-            hideContainer();
-        });
-
-        function showContainer() {
-            var container = document.getElementById('social-proof-container');
-            if (container) {
-                container.classList.add('active'); // Add a class to show the container
-                container.style.display = 'block'; // Ensure the display property is set to block
-                console.log('Showing container:', container);
-            }
-        }
-
-        function hideContainer() {
-            var container = document.getElementById('social-proof-container');
-            if (container) {
-                container.classList.remove('active'); // Remove the class to hide the container
-                container.style.display = 'none'; // Ensure the display property is set to none
-                console.log('Hiding container:', container);
-            }
-        }
-
-        function createPopup() {
-    var popup = document.createElement('div');
-    popup.className = 'popup';
-    popup.innerHTML = `
-      <div class="close" onclick="closePopup(this.parentNode)">&times;</div>
-      <h2>Cross-Sell Product</h2>
-      <p>You might also be interested in this product:</p>
-      <div id="product">
-        <!-- Product content goes here -->
-      </div>
-    `;
-    return popup;
-  }
-
-
-        setInterval(function () {
-            console.log('Fetching orders');
-            Livewire.dispatch('fetchOrders');
-        }, 5000);
-    });
-</script>
 @endpush
 
 

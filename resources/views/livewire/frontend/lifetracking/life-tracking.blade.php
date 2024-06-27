@@ -170,6 +170,7 @@
                     </div>
                 </div>
             </div>
+            <livewire:frontend.social-toast.social-proof/>
 
         </div>
     </div>
