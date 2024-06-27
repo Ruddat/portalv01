@@ -463,7 +463,7 @@
         </div>
         <!-- /container -->
 
-
+        <livewire:frontend.social-toast.social-proof/>
 
         <style>
             /* Stil für das Produkt */
