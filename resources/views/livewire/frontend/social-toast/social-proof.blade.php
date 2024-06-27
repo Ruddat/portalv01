@@ -4,31 +4,25 @@
 
     <div class="social-proof-container {{ $showContainer ? 'active' : '' }}" id="social-proof-container">
         <div class="popup-container" id="popupContainer">
-            @foreach($orders as $order)
-                <div class="popup">
-                    <h2>Neue Bestellung</h2>
-                    <p>Kunde: {{ $order['name'] }}</p>
-                    <p>Produkt: {{ $order['product'] }}</p>
-                    <p>Bestellt {{ $order['created_at'] }}</p>
-                    <div class="close" onclick="closePopup(this.parentNode)">&times;</div>
-                </div>
-            @endforeach
             <ul class="customer-who-purchased text-left">
+                @foreach($orders as $order)
+
                 <li class="product-data active">
                     <a href="#">
                         <img loading="lazy" src="{{ asset('uploads/images/default/avatar_3.jpg') }}" alt="" width="" height="">
                     </a>
                     <div id="order-info"></div>
                     <p>Kunde: {{ $order['name'] }}</p>
+                    <p>Produkt: {{ $order['product'] }}</p>
+                    <p>Bestellt {{ $order['created_at'] }}</p>
                     <a href="javascript:void(0)" title="Close" class="dT_close">
                         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" fill="none" viewBox="0 0 18 17">
                             <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor"></path>
                         </svg>
                     </a>
                 </li>
+                @endforeach
             </ul>
-
-
         </div>
 
 
@@ -47,12 +41,6 @@
                 </a>
             </li>
         </ul>
-
-
-
-
-
-
 
     </div>
 
