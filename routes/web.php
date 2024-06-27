@@ -214,8 +214,6 @@ Route::get('/index-normal', function () {
 //// Ab hier aktiv
 
 
-Route::get('/track', \App\Livewire\Frontend\LifeTracking\TrackingMap::class);
-
 
 /// -- sprache wechseln --> google translate
 Route::get('lang/change', [GoogleTranslateController::class, 'change'])->name('change.lang');
