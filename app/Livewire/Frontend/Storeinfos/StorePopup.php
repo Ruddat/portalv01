@@ -3,15 +3,16 @@
 namespace App\Livewire\Frontend\Storeinfos;
 
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use App\Models\ModShop;
 use Livewire\Component;
 use App\Models\AddressData;
 use App\Models\DeliveryArea;
+use App\Services\GeocodeService;
 use App\Models\ModVendorAddressData;
 use App\Repositories\ShopRepository;
 use App\Services\OpeningHoursService;
 use Illuminate\Support\Facades\Session;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 class StorePopup extends Component
@@ -39,6 +40,13 @@ class StorePopup extends Component
     public $errorMessage;
 
     protected $listeners = ['openPopup' => 'handleOpenPopup', 'closePopup' => 'closePopup'];
+
+    protected $geocodeService;
+
+    public function __construct()
+    {
+        $this->geocodeService = new GeocodeService();
+    }
 
     public function mount($restaurant)
     {
@@ -195,41 +203,61 @@ class StorePopup extends Component
             return true;
         }
 
-        // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
-        $client = new Client([
-            'base_uri' => 'http://nominatim.openstreetmap.org/',
-            'timeout' => 10.0,
-            'headers' => [
-                'User-Agent' => 'YourAppName/1.0 (yourname@yourdomain.com)',
-            ],
-        ]);
+        // Geocode-Service initialisieren
+        $geocodeService = new GeocodeService();
 
         try {
-            $response = $client->get('search', [
-                'query' => [
-                    'q' => $query,
-                    'format' => 'json',
-                    'addressdetails' => 1,
-                    'limit' => 1,
-                ]
-            ]);
-
-            $results = json_decode($response->getBody(), true);
+            $results = $geocodeService->searchByAddress($query);
+//dd($results);
 
             // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
             if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
                 $userLatitude = $results[0]['lat'];
                 $userLongitude = $results[0]['lon'];
+                $this->postal_code = $results[0]['address']['postcode'] ?? null;
+                $this->city = $results[0]['address']['city'] ?? $results[0]['address']['village'] ?? null;
+                $this->city_district = $results[0]['address']['city_district'] ?? null;
+                $this->suburb = $results[0]['address']['suburb'] ?? null;
+                $this->street = $results[0]['address']['road'] ?? null;
+                $this->housenumber = $addressData['shipping_house_no'];
 
-                // Adresse und Koordinaten in der Datenbank speichern
-                ModVendorAddressData::create([
-                    'street' => ucwords($addressData['shipping_street']),
-                    'housenumber' => $addressData['shipping_house_no'],
-                    'postal_code' => $addressData['postal_code'],
-                    'city' => ucwords($addressData['city']),
+                // Prüfe, ob die Adresse bereits in der Datenbank existiert
+                $existingAddress = ModVendorAddressData::where('street', $this->street)
+                    ->where('housenumber', $this->housenumber)
+                    ->where('postal_code', $this->postal_code)
+                    ->where('city', $this->city)
+                    ->first();
+
+                if (!$existingAddress) {
+                    // Adresse und Koordinaten in der Datenbank speichern
+                    ModVendorAddressData::create([
+                        'street' => ucwords($this->street),
+                        'housenumber' => $this->housenumber,
+                        'postal_code' => $this->postal_code,
+                        'city' => $this->city,
+                        'city_district' => $this->city_district,
+                        'suburb' => $this->suburb,
+                        'latitude' => $userLatitude,
+                        'longitude' => $userLongitude,
+                    ]);
+                } else {
+                    // Adresse bereits vorhanden
+                    session()->flash('info', 'Address already exists in the database.');
+                }
+
+                // Korrigierte Adresse in der Session speichern
+                $correctedAddress = [
+                    'shipping_street' => ucwords($this->street),
+                    'shipping_house_no' => $this->housenumber,
+                    'postal_code' => $this->postal_code,
+                    'city' => $this->city,
+                    'city_district' => $this->city_district,
+                    'suburb' => $this->suburb,
                     'latitude' => $userLatitude,
                     'longitude' => $userLongitude,
-                ]);
+                ];
+
+                Session::put('address_data', $correctedAddress);
 
                 session(['userLatitude' => $userLatitude]);
                 session(['userLongitude' => $userLongitude]);
@@ -240,7 +268,6 @@ class StorePopup extends Component
 
                 return true; // Erfolgreich Geokoordinaten erhalten
             }
-
         } catch (RequestException $e) {
             // Handle error
             $this->errorMessage = 'Fehler beim Abrufen der Geokoordinaten.';

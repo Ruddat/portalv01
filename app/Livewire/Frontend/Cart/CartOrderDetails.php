@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\ModOrders;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\GeocodeService;
 use App\Models\ModVendorAddressData;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -142,25 +143,28 @@ class CartOrderDetails extends Component
             $latitude = $existingAddress->latitude;
             $longitude = $existingAddress->longitude;
         } else {
+
+
+
+            // Geocode-Service initialisieren
+            $geocodeService = new GeocodeService();
             // Adresse nicht gefunden, nutze Nominatim zur Geokodierung
-            $client = new Client();
-            $response = $client->get('https://nominatim.openstreetmap.org/search', [
-                'query' => [
-                    'format' => 'json',
-                    'q' => $userInput
-                ]
-            ]);
-            $data = json_decode($response->getBody(), true);
+            $data = $geocodeService->searchByAddress($userInput);
+//dd($data);
+
 
             if (!empty($data)) {
+                $result = $data[0];
                 $latitude = $data[0]['lat'];
                 $longitude = $data[0]['lon'];
+                $this->postal_code = $data['address']['postcode'] ?? null;
 
                 // Speichere die neue Adresse und ihre Koordinaten in der Datenbank
                 ModVendorAddressData::create([
                     'street' => $street,
                     'housenumber' => $housenumber,
-                    'postal_code' => $postal_code,
+                  //  'postal_code' => $postal_code,
+                    'postal_code' => $this->postal_code,
                     'city' => $city,
                     'latitude' => $latitude,
                     'longitude' => $longitude,
@@ -168,6 +172,8 @@ class CartOrderDetails extends Component
                     'updated_at' => now(),
                 ]);
             } else {
+              //  dd($data);
+
                 return redirect()->back()->with('error', 'Geocoding failed. Please check the address and try again.');
             }
         }

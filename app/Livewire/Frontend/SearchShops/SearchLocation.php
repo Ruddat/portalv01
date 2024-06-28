@@ -73,6 +73,9 @@ class SearchLocation extends Component
 
     private function retrieveLocationFromNominatim($latitude, $longitude)
     {
+
+      //  dd($latitude, $longitude); // Debugging
+
         // Nominatim API aufrufen, um den Standort zu ermitteln
         $response = Http::get("http://nominatim.openstreetmap.org/reverse", [
             'format' => 'json',

@@ -14,7 +14,7 @@ class ModVendorAddressData extends Model
 
 
     protected $fillable = [
-        'street', 'housenumber', 'postal_code', 'city', 'latitude', 'longitude',
+        'street', 'housenumber', 'postal_code', 'city', 'latitude', 'longitude', 'city_district', 'suburb',
     ];
 
 

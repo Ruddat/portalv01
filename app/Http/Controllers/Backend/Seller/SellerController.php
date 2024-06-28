@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ModSellerShops;
 use Illuminate\Support\Carbon;
+use App\Services\GeocodeService;
 use App\Models\PasswordResetToken;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -17,8 +18,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use NominatimLaravel\Content\Nominatim;
 use Illuminate\Support\Facades\Storage;
+use NominatimLaravel\Content\Nominatim;
 
 class SellerController extends Controller
 {
@@ -184,13 +185,11 @@ class SellerController extends Controller
     // Baue die vollständige Adresse
     $userInput = "$address $zip $city";
 
-    $url = "https://nominatim.openstreetmap.org/";
-    $nominatim = new Nominatim($url);
+    // Geocode-Service initialisieren
+    $geocodeService = new GeocodeService();
+    $results = $geocodeService->searchByAddress($userInput);
 
-    $search = $nominatim->newSearch();
-    $search->query($userInput);
-
-    $results = $nominatim->find($search);
+    //    dd($results);
 
     // Überprüfe, ob Koordinaten gefunden wurden
     if (!empty($results)) {

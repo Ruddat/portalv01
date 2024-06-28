@@ -200,6 +200,8 @@ return [
         App\Providers\RestaurantProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
         Jaybizzle\LaravelCrawlerDetect\LaravelCrawlerDetectServiceProvider::class,
+        App\Providers\GeocodeServiceProvider::class,
+
 
     ])->toArray(),
 
