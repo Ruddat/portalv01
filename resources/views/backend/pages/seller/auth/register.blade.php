@@ -256,22 +256,22 @@
                                             <option value="">
                                                 {{ app(\App\Services\TranslationService::class)->trans('Country', app()->getLocale()) }}
                                             </option>
-                                            <option value="Europe" @if (old('country_register') == 'Europe') selected @endif>Europe
+                                            <option value="Europe" @if (old('country_register') == 'Europe' || (!old('country_register') && 'Europe' === 'Europe')) selected @endif>
+                                                Europe
                                             </option>
+                                            <!-- Hier weitere Länderoptionen einfügen, falls erforderlich -->
 
-                                            </select>
-
-
-
-
+                                        </select>
                                     </div>
                                     @error('country_register')
-                                        <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
-                                            {{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
+                                    <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
+                                        {{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}
+                                    </div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- /row -->
                         <div class="form-group text-center">

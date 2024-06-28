@@ -139,7 +139,6 @@ class SellerController extends Controller
 
     public function registerHandler(Request $request)
     {
-
         $request->validate([
             'name_register' => 'required',
             'email_register' => 'required|email|unique:sellers,email',
@@ -159,68 +158,63 @@ class SellerController extends Controller
             'city_register.required' => 'City is required',
             'zip_register.required' => 'Zip is required',
             'country_register.required' => 'Country is required',
-
         ]);
 
-    // Überprüfe, ob das versteckte Formularfeld "bot_trap" nicht leer ist
-    if ($request->filled('bot_trap')) {
-        // Hier kannst du entsprechend reagieren, wenn das Formular von einem Roboter ausgefüllt wurde
-        // Zum Beispiel kannst du eine Fehlermeldung zurückgeben oder die Registrierung verhindern
-        return redirect()->back()->withInput()->withErrors(['bot_trap' => 'Das Formular wurde von einem Roboter ausgefüllt.']);
-    }
+        if ($request->filled('bot_trap')) {
+            return redirect()->back()->withInput()->withErrors(['bot_trap' => 'Das Formular wurde von einem Roboter ausgefüllt.']);
+        }
 
-    // shopnumber die unique ist
-    $timestamp = now()->format('ymdHi');
-    $randomNumber = mt_rand(10, 99);
-    $uniqueShopNumber = sprintf('%s-%s', $timestamp, $randomNumber);
-    $this->newShop['shop_nr'] = $uniqueShopNumber;
-    $defaultPhone = '1234567890';
+        // Generiere eine eindeutige Shopnummer
+        $timestamp = now()->format('ymdHi');
+        $randomNumber = mt_rand(10, 99);
+        $uniqueShopNumber = sprintf('%s-%s', $timestamp, $randomNumber);
+        $this->newShop['shop_nr'] = $uniqueShopNumber;
+        $defaultPhone = '1234567890';
 
-    // Extrahiere die Adresse aus der Anfrage
-    $address = $request->input('address_register');
-    $city = $request->input('city_register');
-    $zip = $request->input('zip_register');
+        // Extrahiere und baue die vollständige Adresse
+        $address = $request->input('address_register');
+        $city = $request->input('city_register');
+        $zip = $request->input('zip_register');
+        $userInput = "$address $zip $city";
 
+        // Geocode-Service initialisieren
+        $geocodeService = new GeocodeService();
+        $results = $geocodeService->searchByAddress($userInput);
 
-    // Baue die vollständige Adresse
-    $userInput = "$address $zip $city";
+        if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+            // Nutze die Koordinaten des ersten Ergebnisses
+            $latitude = $results[0]['lat'];
+            $longitude = $results[0]['lon'];
 
-    // Geocode-Service initialisieren
-    $geocodeService = new GeocodeService();
-    $results = $geocodeService->searchByAddress($userInput);
+            // Extrahiere die korrigierte Adresse
+            $correctedAddress = [
+                'street' => $results[0]['address']['road'] ?? $address,
+                'housenumber' => $results[0]['address']['house_number'] ?? '',
+                'postal_code' => $results[0]['address']['postcode'] ?? $zip,
+                'city' => $results[0]['address']['city'] ?? $results[0]['address']['village'] ?? $city,
+                'city_district' => $results[0]['address']['city_district'] ?? null,
+                'suburb' => $results[0]['address']['suburb'] ?? null,
+            ];
+//dd($correctedAddress);
 
-    //    dd($results);
+            // Speichere die korrigierte Adresse in der Session
+            session(['address_data' => $correctedAddress]);
 
-    // Überprüfe, ob Koordinaten gefunden wurden
-    if (!empty($results)) {
-        // Nutze die Koordinaten des ersten Ergebnisses
-        $latitude = $results[0]['lat'];
-        $longitude = $results[0]['lon'];
-
-    } else {
-        // Hier kannst du entsprechend reagieren, wenn keine Koordinaten gefunden wurden
-        // Zum Beispiel kannst du eine Fehlermeldung zurückgeben oder die Registrierung verhindern
-        return redirect()->back()->withInput()->withErrors(['address_register' => 'Die Adresse konnte nicht gefunden werden.']);
-    }
+        } else {
+            return redirect()->back()->withInput()->withErrors(['address_register' => 'Die Adresse konnte nicht gefunden werden.']);
+        }
 
         $seller = Seller::create([
             'name' => $request->name_register,
             'email' => $request->email_register,
-       //     'is_master' => true,
-         //    'password' => bcrypt($request->password_register),
-        //    'restaurant_name' => $request->restaurantname_register,
-        //    'address' => $request->address_register,
-        //    'city' => $request->city_register,
-        //    'zip' => $request->zip_register,
-        //    'country' => $request->country_register,
         ]);
 
         $shop = $seller->shops()->create([
             'shop_nr' => $this->newShop['shop_nr'],
             'title' => $request->restaurantname_register,
-            'street' => $request->address_register,
-            'city' => $request->city_register,
-            'zip' => $request->zip_register,
+            'street' => ucfirst($request->address_register),
+            'city' => $correctedAddress['city'],
+            'zip' => $correctedAddress['postal_code'],
             'phone' => $defaultPhone,
             'email' => $request->email_register,
             'lat' => $latitude,
@@ -231,110 +225,59 @@ class SellerController extends Controller
             'order_email' => $request->email_register,
             'progress' => '0',
             'status' => 'limited',
-       //     'pivot' => ['is_master' => true], // Setze das Pivot-Attribut is_master auf true
-
         ]);
-        // Den Shop als Master-Shop markieren
+
         $seller->shops()->wherePivot('mod_shop_id', $shop->id)->updateExistingPivot($shop->id, ['is_master' => true]);
 
-
-
-        // Den Shop als Master-Shop markieren
-        //  $seller->shops()->attach($shop->id, ['is_master' => true]);
-
-        // Seller-Daten zusammenstellen
-        $seller = [
-            'name' => $request->input('name_register'),
-            'email' => $request->input('email_register'),
-            'restaurant_name' => $request->input('restaurantname_register'),
-            'address' => $request->input('address_register'),
-            'city' => $request->input('city_register'),
-            'zip' => $request->input('zip_register'),
-            'country' => $request->input('country_register'),
-        // Füge weitere Felder hinzu, falls erforderlich
-        ];
-
-
-         // token in database is generated
-         // get seller details
-        $seller = Seller::where('email', $request->email_register)->first();
-
-            // generate token
-            // $token = base64_decode((Str::random(64)));
-            // $token = Str::hash(microtime().Str::random(40));
         $token = Str::random(40);
+        $encodedToken = base64_encode($token);
 
-
-            // check if the token is already exists in password_resets table
         $oldToken = DB::table('password_reset_tokens')
-             ->where(['email' => $request->email_register, 'guard' => constGuards::SELLER])
-             ->first();
+            ->where(['email' => $request->email_register, 'guard' => constGuards::SELLER])
+            ->first();
 
-         if ($oldToken) {
+        if ($oldToken) {
+            DB::table('password_reset_tokens')
+                ->where(['email' => $request->email_register, 'guard' => constGuards::SELLER])
+                ->update([
+                'token' => $token,
+                'created_at' => now(),
+            ]);
+        } else {
+            DB::table('password_reset_tokens')->insert([
+                'email' => $request->email_register,
+                'guard' => constGuards::SELLER,
+                'token' => $token,
+                'created_at' => now(),
+            ]);
+        }
 
-             $encodedToken = base64_encode($token);
-
-         // Update token in password_resets table
-         DB::table('password_reset_tokens')
-             ->where(['email' => $request->email_register, 'guard' => constGuards::SELLER])
-             ->update([
-             'token' => $token,
-             'created_at' => now(),
-         ]);
-
-     } else {
-
-         $encodedToken = base64_encode($token);
-
-         // Speichere das Base64-codierte Token in der Datenbank
-         DB::table('password_reset_tokens')->insert([
-             'email' => $request->email_register,
-             'guard' => constGuards::SELLER,
-             'token' => $token,
-             'created_at' => now(),
-         ]);
-     }
-
-       // dd($request->email_register, $token, $encodedToken);
-
-        // Erzeuge die Verifizierungs-URL für den Verkäufer
         $verificationUrl = route('seller.verify-email', ['token' => $token, 'email' => $request->email_register]);
-
-        // Daten für die E-Mail-Vorlage zusammenstellen
         $data = [
             'seller' => $seller,
             'verificationUrl' => $verificationUrl
-                ];
+        ];
 
-        // E-Mail-Vorlage rendern
         $email_body = view('email-templates.seller-verification-email-template', $data)->render();
 
+        $mailConfig = [
+            'mail_from_email' => custom_env('MAIL_FROM_ADDRESS'),
+            'mail_from_name' => custom_env('MAIL_FROM_NAME'),
+            'mail_recipient_email' => $request->email_register,
+            'mail_recipient_name' => $request->name_register,
+            'mail_subject' => 'Email Verification',
+            'mail_body' => $email_body
+        ];
 
-
-        // E-Mail-Konfiguration zusammenstellen
-                $mailConfig = array(
-                    'mail_from_email' => custom_env('MAIL_FROM_ADDRESS'),
-                    'mail_from_name' => custom_env('MAIL_FROM_NAME'),
-                    'mail_recipient_email'=>$request->email_register,
-                    'mail_recipient_name'=>$request->name_register,
-                    'mail_subject'=>'Email Verification',
-                    'mail_body'=>$email_body
-
-                );
-        //dd($data, $mailConfig);
-
-                if(sendEmail($mailConfig)){
-                    session()->flash('success', 'Your email has been verified.');
-                    return view('backend.pages.seller.auth.email-verificaton', $data);
-                //    return redirect()->route('admin.forgot-password');
-
-            }else{
-                session()->flash('fail', 'Something went wrong');
-                return redirect()->route('admin.forgot-password');
-            }
+        if (sendEmail($mailConfig)) {
+            session()->flash('success', 'Your email has been verified.');
+            return view('backend.pages.seller.auth.email-verificaton', $data);
+        } else {
+            session()->flash('fail', 'Something went wrong');
+            return redirect()->route('admin.forgot-password');
+        }
 
         return redirect()->route('seller.login')->with('success', 'Registration successful. Please verify your email');
-
     }
 
 
