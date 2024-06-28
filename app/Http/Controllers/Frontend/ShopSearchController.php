@@ -9,6 +9,7 @@ use App\Models\ModShop;
 use Illuminate\Http\Request;
 
 use App\Models\ModSearchPlaces;
+use App\Services\GeocodeService;
 use App\Models\ModSellerWorktimes;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -28,6 +29,14 @@ class ShopSearchController extends Controller
 
 
     protected $perPage = 24; // Anzahl der Ergebnisse pro Seite für die Pagination
+
+    protected $geocodeService;
+
+    public function __construct(GeocodeService $geocodeService)
+    {
+        $this->geocodeService = $geocodeService;
+    }
+
 
     /**
      * Zeigt die normale Indexseite, z.B. das Suchformular.
@@ -169,12 +178,13 @@ class ShopSearchController extends Controller
                         session(['userLongitude' => $userLongitude]);
                         session(['selectedLocation' => $query]);
                     } else {
-//  dd($parsedAddress);
+
+                        // geocodingService
                         // Nominatim-Anfrage durchführen, um Geokoordinaten zu erhalten
-                        $url = "http://nominatim.openstreetmap.org/";
-                        $nominatim = new Nominatim($url);
-                        $search = $nominatim->newSearch()->query($query);
-                        $results = $nominatim->find($search);
+
+                        $results = $this->geocodeService->searchByAddress($query);
+//                         dd($results);
+
 
                         // Geokoordinaten aus den Ergebnissen extrahieren und in der Session speichern
                         if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
@@ -334,6 +344,11 @@ class ShopSearchController extends Controller
         // Standort in der Session speichern
         $request->session()->put('userLatitude', $latitude);
         $request->session()->put('userLongitude', $longitude);
+
+
+     dd($request);
+
+
         // Nominatim-Anfrage durchführen, um den ausgewählten Ort zu erhalten
         $url = "http://nominatim.openstreetmap.org/";
         $nominatim = new Nominatim($url);

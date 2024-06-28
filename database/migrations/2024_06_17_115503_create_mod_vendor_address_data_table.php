@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('housenumber');
             $table->string('postal_code');
             $table->string('city');
+            $table->string('city_district')->nullable();
+            $table->string('suburb')->nullable();
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
             $table->timestamps();

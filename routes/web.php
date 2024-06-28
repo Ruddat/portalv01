@@ -9,8 +9,10 @@ use App\Http\Controllers\Frontend\Card\CardController;
 use App\Http\Controllers\Frontend\ShopSearchController;
 use App\Http\Controllers\Frontend\Cart\NewCartController;
 use App\Http\Controllers\Frontend\Geoip\LocationController;
+use App\Http\Controllers\Frontend\Search\GeocodeController;
 use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
+use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
 use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 
 
@@ -213,6 +215,12 @@ Route::get('/index-normal', function () {
 
 //// Ab hier aktiv
 
+// Subscribe Comming-Soon
+Route::post('/subscribe-comming-soon', [SubscriptionController::class, 'subscribeComingSoon'])->name('subscribe.commingsoon');
+
+
+
+Route::get('/geocode', [GeocodeController::class, 'getCoordinates']);
 
 
 /// -- sprache wechseln --> google translate

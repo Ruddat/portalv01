@@ -207,6 +207,12 @@
                     </div>
                     <!-- /box_order_form -->
 
+                    @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ app(\App\Services\AutoTranslationService::class)->trans(session('error'), app()->getLocale()) }}
+                    </div>
+                    @endif
+
                     <div class="box_order_form">
                         <div class="head">
                             <div class="title">

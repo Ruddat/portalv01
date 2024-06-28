@@ -98,6 +98,7 @@
                             <div class="main">
                                 <livewire:frontend.card.cart-component />
                                 <livewire:frontend.cart.timepicker-component :shopId="$restaurant" />
+                                <livewire:frontend.cart.tip-component />
 
                                 <div class="dropdown day">
                                     <a href="#" data-bs-toggle="dropdown">Day <span id="selected_day"></span></a>

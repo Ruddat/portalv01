@@ -11,6 +11,25 @@ class TipComponent extends Component
     public $tipPercentage = null; // '5', '10', '15', '20', null (for no tip)
     public $tipAmount = 0;
 
+
+    public function mount()
+    {
+        $tipType = $this->setTipType($this->tipType);
+
+        if (Session::has('tipType')) {
+            $this->tipType = Session::get('tipType');
+        }
+
+        if (Session::has('tipPercentage')) {
+            $this->tipPercentage = Session::get('tipPercentage');
+        }
+
+        if (Session::has('tipAmount')) {
+            $this->tipAmount = Session::get('tipAmount');
+        }
+    }
+
+
     public function setTipType($type)
     {
         $this->tipType = $type;
@@ -29,7 +48,7 @@ class TipComponent extends Component
     {
         $this->tipAmount = $amount;
         Session::put('tipAmount', $amount);
-      //  dd(Session::get('tipAmount'));
+       // dd(Session::get('tipAmount'));
     }
 
     public function resetTip()

@@ -64,7 +64,7 @@
                             <p>@autotranslate('Attractive strategies for acquiring new customers.', app()->getLocale())
                             </p>
                             <a href="#submit"
-                                class="btn_1 gradient btn_scroll">@autotranslate('Simple! Instantly online.', app()->getLocale())</a>
+                                class="btn_1 medium gradient pulse_bt btn_scroll">@autotranslate('Simple! Instantly online.', app()->getLocale())</a>
                         </div>
                     </div>
                     <!-- /row -->
@@ -87,13 +87,9 @@
             <div class="row justify-content-center align-items-center add_bottom_15">
                 <div class="col-lg-6">
                     <div class="box_about">
-                        <h3>{{ app(\App\Services\TranslationService::class)->trans('Boost your Orders', app()->getLocale()) }}
-                        </h3>
-                        <p class="lead">Est falli invenire interpretaris id, magna libris sensibus mel id.</p>
-                        <p>Per eu nostrud feugiat. Et quo molestiae persecuti neglegentur. At zril definitionem mei, vel ei
-                            choro volumus. An tota nulla soluta has, ei nec essent audiam, te nisl dignissim vel. Ex velit
-                            audire perfecto pro, ei mei doming vivendo legendos. Cu sit magna zril, an odio delectus
-                            constituto vis. Vis ludus omnesque ne, est veri quaeque ad.</p>
+                        <h3>@autotranslate('Boost your Orders', app()->getLocale())</h3>
+                        <p class="lead">@autotranslate('Warum sollten Sie sich für uns entscheiden?', app()->getLocale())</p>
+                        <p>@autotranslate('Willkommen auf unserem Portal! Haben Sie sich jemals gefragt, wie Sie Ihre Bestellungen in die Höhe treiben können? Wir haben die Antwort für Sie. Unsere Plattform ist darauf spezialisiert, Ihnen durch optimierte Listungen mehr Sichtbarkeit und somit mehr Kunden zu verschaffen.', app()->getLocale())</p>
                         <img src="{{ asset('frontend/img/arrow_about.png') }}" alt="" class="arrow_1">
                     </div>
                 </div>
@@ -113,11 +109,14 @@
                     <div class="box_about">
                         <h3>@autotranslate('Manage Easly', app()->getLocale())
                         </h3>
-                        <p class="lead">Est falli invenire interpretaris id, magna libris sensibus mel id.</p>
-                        <p>Per eu nostrud feugiat. Et quo molestiae persecuti neglegentur. At zril definitionem mei, vel ei
-                            choro volumus. An tota nulla soluta has, ei nec essent audiam, te nisl dignissim vel. Ex velit
-                            audire perfecto pro, ei mei doming vivendo legendos. Cu sit magna zril, an odio delectus
-                            constituto vis. Vis ludus omnesque ne, est veri quaeque ad.</p>
+                        <p class="lead">@autotranslate('In nur 10 Minuten gelistet – Mehrere Shops verwalten – Sofortige Auszahlung des Guthabens', app()->getLocale())</p>
+                        <p>@autotranslate('Unsere Plattform bietet Ihnen alles, was Sie brauchen, um Ihr Geschäft schnell und effizient zu verwalten.', app()->getLocale())</p>
+                        <p><strong>@autotranslate('Schnelle Listung:', app()->getLocale())</strong></p>
+                        <p>@autotranslate('Sie wollen schnell durchstarten? Kein Problem! Mit unserem benutzerfreundlichen System sind Sie innerhalb von 10 Minuten gelistet. Geben Sie einfach die erforderlichen Informationen ein, und schon ist Ihr Shop online und bereit für Kunden.', app()->getLocale())</p>
+                        <p><strong>@autotranslate('Verwalten Sie mehrere Shops mühelos:', app()->getLocale())</strong></p>
+                        <p>@autotranslate('Haben Sie mehr als einen Shop? Kein Grund zur Sorge. Unser System ermöglicht Ihnen die Verwaltung mehrerer Shops an einem zentralen Ort. Wechseln Sie nahtlos zwischen Ihren Shops, ohne Zeit zu verlieren, und behalten Sie stets den Überblick.', app()->getLocale())</p>
+                        <p><strong>@autotranslate('Sofortige Auszahlung Ihres Guthabens:', app()->getLocale())</strong></p>
+                        <p>@autotranslate('Warten Sie nicht länger auf Ihr Geld. Bei uns erhalten Sie sofortige Auszahlungen Ihres Guthabens. Sobald ein Verkauf abgeschlossen ist, steht Ihnen das Geld zur Verfügung – einfach, schnell und zuverlässig.', app()->getLocale())</p>
                         <img src="{{ asset('frontend/img/arrow_about.png') }}" alt="" class="arrow_2">
                     </div>
                 </div>
@@ -127,11 +126,14 @@
                 <div class="col-lg-6">
                     <div class="box_about">
                         <h3>@autotranslate('Reach New Customers', app()->getLocale())</h3>
-                        <p class="lead">Est falli invenire interpretaris id, magna libris sensibus mel id.</p>
-                        <p>Per eu nostrud feugiat. Et quo molestiae persecuti neglegentur. At zril definitionem mei, vel ei
-                            choro volumus. An tota nulla soluta has, ei nec essent audiam, te nisl dignissim vel. Ex velit
-                            audire perfecto pro, ei mei doming vivendo legendos. Cu sit magna zril, an odio delectus
-                            constituto vis. Vis ludus omnesque ne, est veri quaeque ad.</p>
+                        <p class="lead">@autotranslate('Optimierte Listungen für maximale Reichweite', app()->getLocale())</p>
+                        <p>@autotranslate('Durch gezielte und gut platzierte Listungen wird Ihr Produkt oder Service von den richtigen Menschen zur richtigen Zeit gefunden. Wir sorgen dafür, dass Ihr Angebot prominent und attraktiv präsentiert wird.', app()->getLocale())</p>
+                        <p><strong>@autotranslate('Warum das wichtig ist:', app()->getLocale())</strong></p>
+                        <p><strong>@autotranslate('1. Mehr Sichtbarkeit: ', app()->getLocale())</strong> @autotranslate(' Je besser Ihr Produkt gelistet ist, desto mehr potentielle Kunden sehen es.', app()->getLocale())</p>
+                        <p><strong>@autotranslate('2. Höhere Conversion-Rate: ', app()->getLocale())</strong> @autotranslate('Gut platzierte Angebote führen zu mehr Käufen.', app()->getLocale())</p>
+                        <p><strong>@autotranslate('3. Wachstum und Erfolg: ', app()->getLocale())</strong> @autotranslate('Mit steigenden Bestellungen wächst auch Ihr Geschäft.', app()->getLocale())</p>
+                        <p>@autotranslate('Unsere Experten arbeiten kontinuierlich daran, die bestmögliche Platzierung für Ihre Produkte zu sichern. Mit unseren maßgeschneiderten Lösungen erreichen Sie genau die Zielgruppe, die Sie brauchen.', app()->getLocale())</p>
+
                     </div>
 
                 </div>
@@ -150,10 +152,9 @@
             <div class="row justify-content-center">
                 <div class="col-lg-5">
                     <div class="text-center add_bottom_15">
-                        <h4>@autotranslate('Simply fill out the form below!', app()->getLocale())
+                        <h4>@autotranslate('Melden Sie sich noch heute an und erleben Sie den Unterschied!', app()->getLocale())
                         </h4>
-                        <p>Id persius indoctum sed, audiam verear his in, te eum quot comprehensam. Sed impetus vocibus
-                            repudiare et.</p>
+                        <p>@autotranslate('Nicht warten sondern starten!', app()->getLocale())</p>
                     </div>
                     <div id="message-register"></div>
 
@@ -162,7 +163,7 @@
                         <input type="hidden" name="robot_check" value="">
                         <input type="hidden" name="bot_trap" value="">
 
-                        <h6>Personal data</h6>
+                        <h6>@autotranslate('Personal data', app()->getLocale())</h6>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
@@ -255,26 +256,26 @@
                                             <option value="">
                                                 {{ app(\App\Services\TranslationService::class)->trans('Country', app()->getLocale()) }}
                                             </option>
-                                            <option value="Europe" @if (old('country_register') == 'Europe') selected @endif>Europe
+                                            <option value="Europe" @if (old('country_register') == 'Europe' || (!old('country_register') && 'Europe' === 'Europe')) selected @endif>
+                                                Europe
                                             </option>
+                                            <!-- Hier weitere Länderoptionen einfügen, falls erforderlich -->
 
-                                            </select>
-
-
-
-
+                                        </select>
                                     </div>
                                     @error('country_register')
-                                        <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
-                                            {{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
+                                    <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
+                                        {{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}
+                                    </div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
 
+
                         <!-- /row -->
                         <div class="form-group text-center">
-                            <input type="submit" id="registerButton" class="btn_1 gradient"
+                            <input type="submit" id="registerButton" class="btn_1 medium gradient pulse_bt"
                                 value="{{ app(\App\Services\TranslationService::class)->trans('Restaurant Anmelden', app()->getLocale()) }}">
                         </div>
                     </form>
