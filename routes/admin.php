@@ -86,6 +86,14 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');
     });
 
+        // Managers
+        Route::prefix('manager')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+            Route::view('/translations', 'backend.pages.admin.manager.translations-manager')->name('translations');
+          //  Route::match(['get', 'post'], '/list', [LiveOrdersController::class, 'handleListRequest'])->name('live-orders-list');
+
+        });
+
+
 
 });
 

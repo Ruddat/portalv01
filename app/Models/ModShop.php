@@ -28,18 +28,19 @@ class ModShop extends Model
     {
         parent::boot();
 
+        static::creating(function ($restaurant) {
+            $restaurant->shop_slug = $restaurant->generateSlug($restaurant->title . '-' . $restaurant->city, 'shop_slug');
+        });
+
         static::updating(function ($restaurant) {
-            $restaurant->shop_slug = Str::slug($restaurant->title . '-' . $restaurant->city);
-        //    $restaurant->shop_slug = Str::slug($restaurant->title);
+            $restaurant->shop_slug = $restaurant->generateSlug($restaurant->title . '-' . $restaurant->city, 'shop_slug');
         });
     }
-
 
     public function sluggable(): array
     {
         return [
             'shop_slug' => [
-                //'source' => ['title', 'city'],
                 'source' => null, // Deaktivieren Sie automatisches Erzeugen des Slugs aus anderen Attributen
                 'separator' => '-',
                 'unique' => true // Hinzugefügt, um sicherzustellen, dass der Slug eindeutig ist
@@ -63,8 +64,10 @@ class ModShop extends Model
 
     protected function generateSlug($value, $attribute)
     {
-        $slug = SlugService::createSlug(Restaurant::class, $attribute, $value);
+        // Erstelle den Slug nur aus dem Titel und der Stadt
+        $slug = Str::slug($value);
 
+        // Stelle sicher, dass der Slug eindeutig ist
         return $this->ensureUniqueSlug($slug);
     }
 
