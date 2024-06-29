@@ -3,7 +3,7 @@
         ***********************************-->
         <div class="dlabnav border-right">
             <div class="dlabnav-scroll">
-					<p class="menu-title style-1"> Main Menu</p>
+					<p class="menu-title style-1">@autotranslate('Main Menu', app()->getLocale())</p>
 
 
 
@@ -20,7 +20,7 @@
                     {{-- Aktives Menu wenn Seller eingeloggt --}}
                     <li><a class="no-arrow " href="{{ route('seller.dashboard') }}" aria-expanded="false">
                         <i class="bi bi-house"></i>
-                        <span class="nav-text">Home</span>
+                        <span class="nav-text">@autotranslate('Home', app()->getLocale())</span>
                     </a>
                     </li>
                     @endif
@@ -32,12 +32,12 @@
                     @if (Auth::guard('admin')->check())
                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 							<i class="bi bi-grid"></i>
-							<span class="nav-text">Dashboard</span>
+							<span class="nav-text">@autotranslate('Dashboard', app()->getLocale())</span>
 						</a>
                         <ul aria-expanded="false">
-                            <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Module</a>
+                            <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">@autotranslate('Module', app()->getLocale())</a>
                                 <ul aria-expanded="false">
-                                    <li><a href="{{ url('/mod-shops') }}">{{ app(\App\Services\TranslationService::class)->trans('Kundenliste', app()->getLocale()) }}</a></li>
+                                    <li><a href="{{ url('/mod-shops') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Kundenliste', app()->getLocale()) }}</a></li>
                                     <li><a href="./email-inbox.html">Kontrollcentern</a></li>
                                     <li><a href="./email-read.html">Rechnungen</a></li>
                                 </ul>
@@ -45,7 +45,7 @@
 							<li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Shop</a>
                                 <ul aria-expanded="false">
                                     <li><a href="{{ url('/mod-liefergebiet') }}">@autotranslate('Liefergebiet', app()->getLocale())</a></li>
-									<li><a href="{{ url('/mod-workingtimes') }}">{{ app(\App\Services\TranslationService::class)->trans('Opening Hours', app()->getLocale()) }}</a></li>
+									<li><a href="{{ url('/mod-workingtimes') }}">@autotranslate('Opening Hours', app()->getLocale())</a></li>
 									<li><a href="./ecom-product-detail.html">Product Details</a></li>
 									<li><a href="./ecom-product-order.html">Order</a></li>
 									<li><a href="./ecom-checkout.html">Checkout</a></li>
@@ -64,7 +64,6 @@
 							<li><a href="order-history.html">Order History</a></li>
 							<li><a href="notification.html">Notification</a></li>
 							<li><a href="{{ route('admin.live-orders-list') }}">@autotranslate('LiveOrders', app()->getLocale())</a></li>
-                            <li><a href="{{ route('admin.promo-banner-index') }}">@autotranslate('PromoBanner', app()->getLocale())</a></li>
                             <li><a href="{{ url('/roles-permissons') }}">Roles and Permission</a></li>
 							<li><a href="setting.html">Setting</a></li>
 						</ul>
@@ -110,7 +109,7 @@
                             <li><a href="{{ route('seller.product-sizes', ['shop' => $shopId]) }}">@autotranslate('Product sizes', app()->getLocale())</a></li>
                             <li><a href="{{ route('seller.manage-ingredients.ingredients-index', ['shop' => $shopId]) }}">Zutaten</a></li>
                             <hr>
-							<li><a href="{{ route('seller.manage-categories.cats-subcats-list') }}">{{ app(\App\Services\TranslationService::class)->trans('Product Categories', app()->getLocale()) }}</a></li>
+							<li><a href="{{ route('seller.manage-categories.cats-subcats-list') }}">@autotranslate('Product Categories', app()->getLocale())</a></li>
 
                             <hr>
                         </ul>
@@ -132,7 +131,7 @@
 					<li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 						<i class="bi bi-bicycle"></i>
 
-							<span class="nav-text">Live Order</span>
+							<span class="nav-text">@autotranslate('Order overview', app()->getLocale())Live Order</span>
 						</a>
                         <ul aria-expanded="false">
 							<li><a href="{{ route('seller.indexAction') }}">LieferandoSpider</a></li>
@@ -163,24 +162,38 @@
 
                     @if (Auth::guard('admin')->check())
                     {{-- Aktives Menu wenn Admin eingeloggt --}}
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-						<i class="bi bi-info-circle"></i>
-							<span class="nav-text">Apps</span>
-						</a>
+
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="nav-text">@autotranslate('Apps', app()->getLocale())</span>
+                        </a>
                          <ul aria-expanded="false">
-                            <li><a href="{{ route('admin.profile') }}">{{ app(\App\Services\TranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
-                            <li><a href="{{ route('admin.settings') }}">{{ app(\App\Services\TranslationService::class)->trans('Settings', app()->getLocale()) }}</a></li>
-                            <li><a href="{{ route('admin.bottles-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\TranslationService::class)->trans('Flaschenpfand', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('admin.profile') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('admin.settings') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Settings', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('admin.bottles-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\AutoTranslationService::class)->trans('Flaschenpfand', app()->getLocale()) }}</a></li>
                             <li>
                                 <a href="{{ route('admin.additives-list') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.additives-list' ? 'active' : '' }}">
-                                    {{ app(\App\Services\TranslationService::class)->trans('Zusatzstoffe', app()->getLocale()) }}
+                                    @autotranslate('Zusatzstoffe', app()->getLocale())
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('admin.allergens-list') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.additives-list' ? 'active' : '' }}">
-                                    {{ app(\App\Services\TranslationService::class)->trans('Allergenes', app()->getLocale()) }}</a></li>
+                                    {{ app(\App\Services\AutoTranslationService::class)->trans('Allergenes', app()->getLocale()) }}</a></li>
                                 </a>
                             </li>
+
+                          </ul>
+                      </li>
+
+                      <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="nav-text">@autotranslate('Verwaltung', app()->getLocale())</span>
+                        </a>
+                         <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.translations') }}">@autotranslate('Translation', app()->getLocale())</a></li>
+                            <li><a href="{{ route('admin.promo-banner-index') }}">@autotranslate('WerbeBanner', app()->getLocale())</a></li>
 
                           </ul>
                       </li>
@@ -191,10 +204,10 @@
 
                       <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
 						<i class="bi bi-info-circle"></i>
-							<span class="nav-text">Settings</span>
+							<span class="nav-text">@autotranslate('Settings', app()->getLocale())</span>
 						</a>
                          <ul aria-expanded="false">
-                            <li><a href="{{ route('seller.profile') }}">{{ app(\App\Services\TranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('seller.profile') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
 
                         </ul>
                     </li>
@@ -215,7 +228,7 @@
 						<h5>Lotto Fun - Check your Numbers</h5>
 
 					</div>
-					<a href="{{ route('seller.simulateLotto') }}" class="btn bg-white btn-sm">{{ app(\App\Services\TranslationService::class)->trans('Lotto-Sim', app()->getLocale()) }}</a>
+					<a href="{{ route('seller.simulateLotto') }}" class="btn bg-white btn-sm">{{ app(\App\Services\AutoTranslationService::class)->trans('Lotto-Sim', app()->getLocale()) }}</a>
 				</div>
 				<div class="plus-box">
 					<div class="d-flex align-items-center">
@@ -225,7 +238,7 @@
 					<a href="javascript:void(0);" class="btn bg-white btn-sm">Upgrade</a>
 				</div>
 				<div class="copyright mt-0">
-					<p><strong>Food Desk - Online Food Delivery</strong> © v{{ config('app.version', '1.0') }} - {{ \Carbon\Carbon::createFromDate(2023, 1, 12)->format('Y') }} bis {{ now()->format('Y') }} All Rights Reserved</p>
+					<p><strong>Food Desk - @autotranslate('Online Food Delivery', app()->getLocale())</strong> © v{{ config('app.version', '1.0') }} - {{ \Carbon\Carbon::createFromDate(2023, 1, 12)->format('Y') }} bis {{ now()->format('Y') }} All Rights Reserved</p>
 					<p class="fs-12">Made with <span class="heart"></span> by Ingo Ruddat</p>
 				</div>
 			</div>

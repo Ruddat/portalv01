@@ -34,7 +34,7 @@ if( !function_exists('send_mail')){
 
             // Setze die Zeichenkodierung
             $mail->CharSet = 'UTF-8';
-            
+
     if ($mail->send()) {
         return true;
     } else {
@@ -119,6 +119,27 @@ if( !function_exists('get_settings')){
             $dotenv->load();
 
             return $_ENV[$key] ?? $default;
+        }
+    }
+
+    if (!function_exists('word_wrap')) {
+        function word_wrap($string, $limit = 6) {
+            $words = explode(' ', $string);
+            $output = [];
+            $line = '';
+
+            foreach ($words as $word) {
+                if (str_word_count($line . ' ' . $word) > $limit) {
+                    $output[] = trim($line);
+                    $line = $word;
+                } else {
+                    $line .= ' ' . $word;
+                }
+            }
+
+            $output[] = trim($line);
+
+            return implode('<br>', $output);
         }
     }
 }

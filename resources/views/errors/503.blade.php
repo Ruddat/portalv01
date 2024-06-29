@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Favicons-->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="{{ asset('extra-assets/coming_soon/img/favicon.ico') }}" type="image/x-icon"/>
     <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('extra-assets/coming_soon/img/apple-touch-icon-72x72-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
 
@@ -54,7 +54,7 @@
                                     {{ session('success') }}
                                 </div>
                             @endif
-                            <form method="POST" action="{{ route('subscribe.commingsoon') }}" id="newsletter" name="newsletter" autocomplete="off">
+                            <form method="POST" action="{{ route('subscribe.commingsoon') }}" id="newsletter" name="newsletter" autocomplete="on">
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-9 first-nogutter">

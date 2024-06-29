@@ -29,7 +29,7 @@
 
                                     <a href="{{ route('admin.add-allergen') }}" class="btn btn-primary " type="button">
                                         <span class="btn-icon-start text-info"><i class="fa fa-plus color-info"></i></span>
-                                        {{ app(\App\Services\TranslationService::class)->trans('Add Allergenic', app()->getLocale()) }}
+                                        @autotranslate('Add Allergenic', app()->getLocale())
                                     </a>
                                 </div>
                             </div>
@@ -45,7 +45,7 @@
                                         <tr>
                                             <th>{{ app(\App\Services\TranslationService::class)->trans('Number', app()->getLocale()) }}</th>
                                             <th>{{ app(\App\Services\TranslationService::class)->trans('auf der Speisekarte', app()->getLocale()) }}</th>
-                                            <th>{{ app(\App\Services\TranslationService::class)->trans('Beispiele', app()->getLocale()) }}</th>
+                                            <th>@autotranslate('Beispiele', app()->getLocale())</th>
                                             <th>{{ app(\App\Services\TranslationService::class)->trans('Updated', app()->getLocale()) }}</th>
                                             <th>{{ app(\App\Services\TranslationService::class)->trans('Active', app()->getLocale()) }}</th>
                                             <th>{{ app(\App\Services\TranslationService::class)->trans('Action', app()->getLocale()) }}</th>
@@ -57,8 +57,8 @@
                                         @foreach ($allergens as $allergen)
                                         <tr>
                                             <td>{{ $allergen->id }}</td>
-                                            <td>{{ app(\App\Services\TranslationService::class)->trans($allergen->allergenic_short_title, app()->getLocale()) }}</td>
-                                            <td>{{ app(\App\Services\TranslationService::class)->trans($allergen->allergenic_title, app()->getLocale()) }}</td>
+                                            <td>@autotranslate($allergen->allergenic_short_title, app()->getLocale())</td>
+                                            <td>@autotranslate($allergen->allergenic_title, app()->getLocale())</td>
                                             <td>{{ \Carbon\Carbon::parse($allergen->updated_at)->format('d.m.Y') }}</td>
                                             <td>
                                                 <!-- Klickbares Symbol für den Zusatzstoffstatus -->

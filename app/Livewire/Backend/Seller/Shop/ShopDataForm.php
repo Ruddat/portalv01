@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Seller\Shop;
 
 use App\Models\ModShop;
 use Livewire\Component;
+use App\Services\GeocodeService;
 use Illuminate\Support\Facades\Auth;
 use NominatimLaravel\Content\Nominatim;
 
@@ -89,24 +90,22 @@ class ShopDataForm extends Component
     // $userInput = 'Heidkrugsweg 31, Edemissen'; // Die Adresse, die der Benutzer eingibt
     //dd($userInput);
 
-    $url = "https://nominatim.openstreetmap.org/";
-    $nominatim = new Nominatim($url);
 
-    $search = $nominatim->newSearch();
-    $search->query($userInput);
+        // Geocode-Service initialisieren
+        $geocodeService = new GeocodeService();
+        $results = $geocodeService->searchByAddress($userInput);
 
-    $results = $nominatim->find($search);
+
+      //  dd($results);
 
     if (!empty($results)) {
         foreach ($results as $result) {
         $latitude = $result['lat'];
         $longitude = $result['lon'];
-   //     echo "Latitude: $latitude, Longitude: $longitude<br>";
+        //     echo "Latitude: $latitude, Longitude: $longitude<br>";
+        //dd($latitude, $longitude);
     }
-
-
-
-      //  dd($latitude, $longitude);
+    //  dd($latitude, $longitude);
 
         // Update shop data in the database
         $this->shop->update([

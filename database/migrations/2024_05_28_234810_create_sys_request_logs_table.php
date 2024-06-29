@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sys_request_logs', function (Blueprint $table) {
             $table->id();
             $table->string('ip_address');
-            $table->string('url');
+            $table->string('url', 512);
             $table->string('method');
             $table->text('user_agent')->nullable();
             $table->text('referrer')->nullable();

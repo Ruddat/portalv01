@@ -17,6 +17,10 @@ class PreventRequestsDuringMaintenance extends Middleware
      */
     protected $except = [
         'subscribe-comming-soon',
+        'subscribe.commingsoon',
+        'extra-assets/*', // Ausschließen von statischen Dateien
+        'img/*', // Ausschließen von Bilddateien
+        'css/*', // Ausschließen von CSS-Dateien
     ];
 
     /**
@@ -28,14 +32,18 @@ class PreventRequestsDuringMaintenance extends Middleware
      */
     public function handle($request, Closure $next)
     {
+       // Log::info('Request Path: ' . $request->path());
+     //   Log::info('Request Method: ' . $request->method());
+
         foreach ($this->except as $except) {
+        //    Log::info('Checking exception: ' . $except);
             if ($request->is($except)) {
-                Log::info('Maintenance mode bypassed for: ' . $request->path());
+            //    Log::info('Maintenance mode bypassed for: ' . $request->path());
                 return $next($request);
             }
         }
 
-      //  Log::info('Maintenance mode active for: ' . $request->path());
+     //   Log::info('Maintenance mode active for: ' . $request->path());
         return parent::handle($request, $next);
     }
 }

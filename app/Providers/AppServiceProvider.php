@@ -43,7 +43,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('autotranslate', function ($expression) {
             return "<?php echo app(\App\Services\AutoTranslationService::class)->trans($expression); ?>";
         });
-
+        
+        Blade::directive('wordwrap', function ($expression) {
+            return "<?php echo word_wrap($expression); ?>";
+        });
 
 
         //
@@ -62,5 +65,8 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Schema::defaultStringLength(191);
+
+
+
     }
 }

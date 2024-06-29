@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('locale', 5);  // Standard ISO 639-1 (z.B. 'en', 'de')
             $table->text('text');
             $table->timestamps();
-
             $table->unique(['key', 'locale']);
         });
     }

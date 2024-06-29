@@ -11,9 +11,12 @@ class SubscriptionController extends Controller
 {
     public function subscribeComingSoon(Request $request)
     {
+dd($request->all());
+
+
         $validatedData = $request->validate([
             'email' => 'required|email|unique:newsletters',
-            'name' => 'nullable|string|max:255'
+       //     'name' => 'nullable|string|max:255'
         ]);
 
         Newsletter::create($validatedData);

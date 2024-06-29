@@ -71,7 +71,7 @@
                                                 <td>{{ app(\App\Services\TranslationService::class)->trans($additive->additive_title, app()->getLocale()) }}</td>
                                                 <td>
                                                     @php
-                                                        $description = app(\App\Services\TranslationService::class)->trans($additive->additive_description, app()->getLocale());
+                                                        $description = app(\App\Services\AutoTranslationService::class)->trans($additive->additive_description, app()->getLocale());
                                                         $wrappedDescription = wordwrap($description, 38, "<br>\n", true);
                                                         $limitedDescription = Str::limit($wrappedDescription, 10000, ''); // Keine Begrenzung durch Str::limit(), weil wordwrap bereits angewendet wurde
                                                     @endphp
