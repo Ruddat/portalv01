@@ -1,7 +1,7 @@
 <div>
     <div class="d-flex justify-content-between mb-4">
         <div>
-            <input type="text" wire:model.lazy="search" placeholder="Search translations..." class="form-control">
+            <input type="text" wire:model.live="search" placeholder="Search translations..." class="form-control">
         </div>
         <div>
             <select wire:model.lazy="locale" class="form-control">
@@ -43,7 +43,7 @@
                         <td>@wordwrap($translation->key)</td>
                         <td>{{ $translation->locale }}</td>
                         <td>
-                            <input type="text" wire:model.defer="saveUpdatedTranslations.{{ $translation->id }}" value="{{ $translation->text }}" class="form-control">
+                            <textarea id="{{ $translation->id }}" wire:model="saveUpdatedTranslations.{{ $translation->id }}" class="form-control" rows="5">{{ $translation->text }}</textarea>
                         </td>
                         <td>
                             <button type="button" wire:click="deleteTranslation({{ $translation->id }})" class="btn btn-danger">@autotranslate('Delete', app()->getLocale())</button>

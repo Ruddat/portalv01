@@ -216,7 +216,9 @@ Route::get('/index-normal', function () {
 //// Ab hier aktiv
 
 // Subscribe Comming-Soon
-Route::post('/subscribe-comming-soon', [SubscriptionController::class, 'subscribeComingSoon'])->name('subscribe.commingsoon');
+Route::post('/subscribe-comming-soon', [SubscriptionController::class, 'subscribeComingSoon'])
+    ->name('subscribe.commingsoon')
+    ->middleware(\App\Http\Middleware\PreventRequestsDuringMaintenance::class);
 
 
 

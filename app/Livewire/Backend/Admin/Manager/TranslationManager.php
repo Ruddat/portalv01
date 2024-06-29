@@ -28,7 +28,14 @@ class TranslationManager extends Component
 
     public function initializeTranslations()
     {
-        $translations = Translation::paginate($this->perPage);
+        $translations = Translation::when($this->search, function ($query) {
+            $query->where('text', 'like', '%' . $this->search . '%');
+        })
+        ->when($this->locale, function ($query) {
+            $query->where('locale', $this->locale);
+        })
+        ->paginate($this->perPage);
+
         foreach ($translations as $translation) {
             $this->saveUpdatedTranslations[$translation->id] = $translation->text;
         }
@@ -48,11 +55,13 @@ class TranslationManager extends Component
 
     public function render()
     {
-        $translations = Translation::where('text', 'like', '%' . $this->search . '%')
-            ->when($this->locale, function ($query) {
-                $query->where('locale', $this->locale);
-            })
-            ->paginate($this->perPage);
+        $translations = Translation::when($this->search, function ($query) {
+            $query->where('text', 'like', '%' . $this->search . '%');
+        })
+        ->when($this->locale, function ($query) {
+            $query->where('locale', $this->locale);
+        })
+        ->paginate($this->perPage);
 
         foreach ($translations as $translation) {
             if (!isset($this->saveUpdatedTranslations[$translation->id])) {
@@ -68,9 +77,6 @@ class TranslationManager extends Component
 
     public function saveTranslations()
     {
-
-      //  dd($this->saveUpdatedTranslations);
-
         foreach ($this->saveUpdatedTranslations as $id => $text) {
             $translation = Translation::find($id);
             if ($translation) {
@@ -78,7 +84,8 @@ class TranslationManager extends Component
             }
         }
 
-        return $this->dispatch('toast', message: 'Translations updated successfully.', notify:'success' );
+        $this->dispatch('toast', message: 'Translations updated successfully.', notify:'success' );
+        $this->initializeTranslations();
     }
 
     public function deleteTranslation($id)

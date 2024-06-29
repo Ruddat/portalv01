@@ -37,7 +37,7 @@
                         <ul aria-expanded="false">
                             <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">@autotranslate('Module', app()->getLocale())</a>
                                 <ul aria-expanded="false">
-                                    <li><a href="{{ url('/mod-shops') }}">{{ app(\App\Services\TranslationService::class)->trans('Kundenliste', app()->getLocale()) }}</a></li>
+                                    <li><a href="{{ url('/mod-shops') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Kundenliste', app()->getLocale()) }}</a></li>
                                     <li><a href="./email-inbox.html">Kontrollcentern</a></li>
                                     <li><a href="./email-read.html">Rechnungen</a></li>
                                 </ul>
@@ -63,9 +63,7 @@
 							<li><a href="message.html">Message</a></li>
 							<li><a href="order-history.html">Order History</a></li>
 							<li><a href="notification.html">Notification</a></li>
-                            <li><a href="{{ route('admin.translations') }}">@autotranslate('Translation', app()->getLocale())</a></li>
 							<li><a href="{{ route('admin.live-orders-list') }}">@autotranslate('LiveOrders', app()->getLocale())</a></li>
-                            <li><a href="{{ route('admin.promo-banner-index') }}">@autotranslate('PromoBanner', app()->getLocale())</a></li>
                             <li><a href="{{ url('/roles-permissons') }}">Roles and Permission</a></li>
 							<li><a href="setting.html">Setting</a></li>
 						</ul>
@@ -164,14 +162,16 @@
 
                     @if (Auth::guard('admin')->check())
                     {{-- Aktives Menu wenn Admin eingeloggt --}}
-                     <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-						<i class="bi bi-info-circle"></i>
-							<span class="nav-text">Apps</span>
-						</a>
+
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="nav-text">@autotranslate('Apps', app()->getLocale())</span>
+                        </a>
                          <ul aria-expanded="false">
-                            <li><a href="{{ route('admin.profile') }}">{{ app(\App\Services\TranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
-                            <li><a href="{{ route('admin.settings') }}">{{ app(\App\Services\TranslationService::class)->trans('Settings', app()->getLocale()) }}</a></li>
-                            <li><a href="{{ route('admin.bottles-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\TranslationService::class)->trans('Flaschenpfand', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('admin.profile') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('admin.settings') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Settings', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('admin.bottles-list') }}" class="no-arrow" {{ Route::is('admin.manage-intern.*') ? 'active' : '' }}>{{ app(\App\Services\AutoTranslationService::class)->trans('Flaschenpfand', app()->getLocale()) }}</a></li>
                             <li>
                                 <a href="{{ route('admin.additives-list') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.additives-list' ? 'active' : '' }}">
                                     @autotranslate('Zusatzstoffe', app()->getLocale())
@@ -179,9 +179,21 @@
                             </li>
                             <li>
                                 <a href="{{ route('admin.allergens-list') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.additives-list' ? 'active' : '' }}">
-                                    {{ app(\App\Services\TranslationService::class)->trans('Allergenes', app()->getLocale()) }}</a></li>
+                                    {{ app(\App\Services\AutoTranslationService::class)->trans('Allergenes', app()->getLocale()) }}</a></li>
                                 </a>
                             </li>
+
+                          </ul>
+                      </li>
+
+                      <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="nav-text">@autotranslate('Verwaltung', app()->getLocale())</span>
+                        </a>
+                         <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.translations') }}">@autotranslate('Translation', app()->getLocale())</a></li>
+                            <li><a href="{{ route('admin.promo-banner-index') }}">@autotranslate('WerbeBanner', app()->getLocale())</a></li>
 
                           </ul>
                       </li>
@@ -195,7 +207,7 @@
 							<span class="nav-text">@autotranslate('Settings', app()->getLocale())</span>
 						</a>
                          <ul aria-expanded="false">
-                            <li><a href="{{ route('seller.profile') }}">{{ app(\App\Services\TranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
+                            <li><a href="{{ route('seller.profile') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Profile', app()->getLocale()) }}</a></li>
 
                         </ul>
                     </li>
@@ -216,7 +228,7 @@
 						<h5>Lotto Fun - Check your Numbers</h5>
 
 					</div>
-					<a href="{{ route('seller.simulateLotto') }}" class="btn bg-white btn-sm">{{ app(\App\Services\TranslationService::class)->trans('Lotto-Sim', app()->getLocale()) }}</a>
+					<a href="{{ route('seller.simulateLotto') }}" class="btn bg-white btn-sm">{{ app(\App\Services\AutoTranslationService::class)->trans('Lotto-Sim', app()->getLocale()) }}</a>
 				</div>
 				<div class="plus-box">
 					<div class="d-flex align-items-center">
