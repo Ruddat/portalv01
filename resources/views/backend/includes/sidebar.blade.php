@@ -192,6 +192,7 @@
                             <span class="nav-text">@autotranslate('Verwaltung', app()->getLocale())</span>
                         </a>
                          <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.shopmanagement') }}">@autotranslate('ShopManagement', app()->getLocale())</a></li>
                             <li><a href="{{ route('admin.translations') }}">@autotranslate('Translation', app()->getLocale())</a></li>
                             <li><a href="{{ route('admin.promo-banner-index') }}">@autotranslate('WerbeBanner', app()->getLocale())</a></li>
 

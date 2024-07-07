@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Blade;
+use App\Services\CopyShopService;
 use Illuminate\Support\Facades\App;
 use App\Services\TranslationService;
 use Illuminate\Pagination\Paginator;
@@ -43,11 +44,14 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('autotranslate', function ($expression) {
             return "<?php echo app(\App\Services\AutoTranslationService::class)->trans($expression); ?>";
         });
-        
+
         Blade::directive('wordwrap', function ($expression) {
             return "<?php echo word_wrap($expression); ?>";
         });
 
+        $this->app->singleton(CopyShopService::class, function ($app) {
+            return new CopyShopService();
+        });
 
         //
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {

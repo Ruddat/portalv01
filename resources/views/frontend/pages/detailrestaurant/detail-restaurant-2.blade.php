@@ -333,6 +333,9 @@
 
 
                 })(window.jQuery);
+
+
+
             </script>
 
 
@@ -342,6 +345,7 @@
     @endif
 
     <style>
+        
         .reviews #review_summary {
             text-align: center;
             background-color: #66cc66;

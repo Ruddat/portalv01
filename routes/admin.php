@@ -89,6 +89,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         // Managers
         Route::prefix('manager')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
             Route::view('/translations', 'backend.pages.admin.manager.translations-manager')->name('translations');
+            Route::view('/shopmanagement', 'backend.pages.admin.manager.shop-manager')->name('shopmanagement');
           //  Route::match(['get', 'post'], '/list', [LiveOrdersController::class, 'handleListRequest'])->name('live-orders-list');
 
         });

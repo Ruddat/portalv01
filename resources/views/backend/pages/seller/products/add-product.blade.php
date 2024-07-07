@@ -275,6 +275,7 @@
 
 
     @push('specific-css')
+    @kropifyStyles
     @endpush
 
     @push('specific-scripts')
@@ -285,6 +286,8 @@
         if (typeof jQuery != 'undefined') {
             // Warte, bis das Dokument vollständig geladen ist
             $(document).ready(function() {
+                // Hole das CSRF-Token aus dem Meta-Tag
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 // Initialisiere Kropify
                 $('input[type="file"][id="productImageUpload"]').Kropify({
                     preview: '#productImagePreview', // Stelle sicher, dass du das richtige Vorschau-Element angibst
@@ -297,6 +300,9 @@
                     showLoader: true,
                     processURL: '{{ route("seller.manage-products.process-product-image") }}', // Setze die Prozess-URL auf die neue Route
                     processUpload: true, // Erlaube automatisches Hochladen nach dem Zuschneiden
+                    headers: {
+                    'X-CSRF-TOKEN': csrfToken // Füge das CSRF-Token dem Header hinzu
+                },
                     success: function(data) {
                         if(data.status == 1) {
                             toastr.success(data.msg);

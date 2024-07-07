@@ -10,7 +10,6 @@ use App\Models\ModAdditives;
 use App\Models\ModAllergens;
 use Illuminate\Http\Request;
 use App\Rules\UniqueArticleNo;
-use Mberecall\Kropify\Kropify;
 use App\Models\ModProductSizes;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -19,6 +18,7 @@ use Intervention\Image\Facades\Image;
 use App\Models\ModProductsIngredients;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Mberecall\Services\Library\Kropify;
 use App\Models\ModProductIngredientsNodes;
 
 
@@ -173,7 +173,7 @@ class ProductController extends Controller
         File::makeDirectory($destinationPath, 0755, true);
     }
 
-    
+
 
     // Neu generierter Dateiname für das Bild
     $newFilename = Str::slug($product->product_title) . '_' . date('YmdHis') . '.' . pathinfo($imageName, PATHINFO_EXTENSION);

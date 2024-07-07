@@ -327,8 +327,11 @@ class SellerController extends Controller
                 ->where('is_finished', false)
                 ->pluck('mod_shop_id');
 
+             //   dd($unfinishedShopIds);
+
             // Lösche die nicht fertigen Shops aus der mod_shops-Tabelle, die diesem Seller zugeordnet sind
-            $deletedShopsCount = ModShop::whereIn('id', $unfinishedShopIds)->delete();
+         //   $deletedShopsCount = ModShop::whereIn('id', $unfinishedShopIds)->delete();
+            $deletedShopsCount = ModShop::whereIn('id', $unfinishedShopIds)->forceDelete();
 
             // Lösche den Seller
             $seller->delete();

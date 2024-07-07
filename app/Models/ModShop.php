@@ -4,9 +4,14 @@ namespace App\Models;
 
 
 use App\Models\Seller;
+use App\Models\ModOrders;
 use App\Models\ModCategory;
 use App\Models\ModProducts;
 use Illuminate\Support\Str;
+use App\Models\DeliveryArea;
+use App\Models\ModSellerHoliDay;
+use App\Models\ModSellerVotings;
+use App\Models\ModSellerWorktimes;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -129,4 +134,28 @@ class ModShop extends Model
     }
 
 
+    // fuer kopiershop
+
+    public function openingHours()
+    {
+        return $this->hasMany(ModSellerWorktimes::class, 'shop_id');
+    }
+
+    public function holidays()
+    {
+        return $this->hasMany(ModSellerHoliDay::class, 'shop_id');
+    }
+    public function deliveryAreas()
+    {
+        return $this->hasMany(DeliveryArea::class, 'shop_id');
+    }
+    public function orders()
+    {
+        return $this->hasMany(ModOrders::class, 'parent');
+    }
+
+    public function votes()
+    {
+        return $this->hasMany(ModSellerVotings::class, 'shop_id');
+    }
 }
