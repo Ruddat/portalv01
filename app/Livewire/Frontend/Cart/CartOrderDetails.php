@@ -158,13 +158,13 @@ class CartOrderDetails extends Component
                 $latitude = $data[0]['lat'];
                 $longitude = $data[0]['lon'];
                 $this->postal_code = $data['address']['postcode'] ?? null;
-
+//dd($postal_code);
                 // Speichere die neue Adresse und ihre Koordinaten in der Datenbank
                 ModVendorAddressData::create([
                     'street' => $street,
                     'housenumber' => $housenumber,
-                  //  'postal_code' => $postal_code,
-                    'postal_code' => $this->postal_code,
+                    'postal_code' => $postal_code,
+                  //  'postal_code' => $this->postal_code,
                     'city' => $city,
                     'latitude' => $latitude,
                     'longitude' => $longitude,

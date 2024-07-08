@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Admin\Manager;
 use App\Models\ModShop;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\ModSellerShops;
 use App\Services\CopyShopService;
 
 
@@ -19,17 +20,21 @@ class ShopManagement extends Component
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
 
+    public $sellerShops;
+
+
+public $title;
+
     public $selectedShopId;
+    public $shop;  // This will hold the shop details being edited
     public $copyOptions = [
         'shopData' => true,
+        'logo' => true,
+        'articles' => true,
         'openingHours' => true,
         'deliveryArea' => true,
-        'categories' => true,
-        'sizesandprices' => true,
-        'ingredients' => true,
-        'products' => true,
         'orders' => false,
-        'votings' => false,
+        'votes' => false,
     ];
 
     public $shopToDelete;
@@ -40,12 +45,34 @@ class ShopManagement extends Component
     protected $listeners = ['copyShopConfirmed'];
 
 
+    protected $rules = [
+        'shop.title' => 'required|string|max:255',
+        'shop.street' => 'required|string|max:255',
+        'shop.street_nr' => 'required|string|max:255',
+        'shop.city' => 'required|string|max:255',
+        'shop.zip' => 'required|string|max:10',
+        'shop.email' => 'required|email|max:255',
+        'shop.show_logo' => 'boolean',
+        'shop.allow_ratings' => 'boolean',
+        'shop.no_pickup' => 'boolean',
+        'shop.is_active' => 'boolean',
+        'shop.status' => 'required|string|max:10',
+        'shop.customer_number' => 'string|max:255',
+        'shop.monthly_fee' => 'numeric',
+        'shop.sales_percentage' => 'numeric',
+        'shop.per_order_fee' => 'numeric',
+        'shop.sms_fee' => 'numeric',
+        'shop.setup_fee' => 'numeric',
+        'shop.order_email' => 'email|max:255',
+        'shop.sms_number' => 'string|max:20',
+        'shop.seller_shop' => 'required|integer|exists:seller_shops,id',
+    ];
+
 
     public function boot(CopyShopService $CopyShopService)
     {
         $this->CopyShopService = $CopyShopService;
     }
-
 
     public function updatingSearch()
     {
@@ -68,6 +95,8 @@ class ShopManagement extends Component
 
         $this->status = ModShop::pluck('status', 'id')->toArray();
         $this->onlineStatus = ModShop::pluck('published', 'id')->toArray();
+
+        $this->sellerShops = ModSellerShops::all(); // Assuming you have a SellerShop model to fetch seller shops
 
     }
 
@@ -96,31 +125,42 @@ class ShopManagement extends Component
         $this->dispatch('openCopyModal');
     }
 
+    public function openEditModal($shopId)
+    {
+        $this->shop = ModShop::find($shopId);
+        $this->shopId = $shopId; // Optional, falls Sie die shopId in der Komponente benötigen
+
+        // Hier können Sie zusätzliche Logik ausführen, um das Modal zu öffnen oder weitere Aktionen durchzuführen
+        $this->dispatch('openEditModal'); // Event auslösen, um das Modal zu öffnen (optional)
+    }
 
     public function copyShopConfirmed()
     {
-   //  dd($this->selectedShopId, $this->copyOptions);
-
         try {
             $this->CopyShopService->copyShop($this->selectedShopId, $this->copyOptions);
-            $this->loadData(); // Annahme: Methode loadData() lädt die Daten neu
-
-            $this->dispatch('toast', message: 'Shop successfully copied.', notify:'success' );
-           // $this->dispatch('closeCopyModal');
-
+            $this->loadData();
+            $this->dispatch('toast', ['message' => 'Shop successfully copied.', 'notify' => 'success']);
         } catch (\Exception $e) {
-            $this->dispatch('toast', message: 'Failed to copy shop: ' . $e->getMessage(), notify:'error' );
+            $this->dispatch('toast', ['message' => 'Failed to copy shop: ' . $e->getMessage(), 'notify' => 'error']);
         }
     }
 
+    public function updateShop()
+    {
+        $shop = ModShop::find($this->selectedShopId);
+        if ($shop) {
+            $shop->update($this->shop->toArray());
+            $this->loadData();
+            $this->dispatch('toast', ['message' => 'Shop successfully updated.', 'notify' => 'success']);
+            $this->dispatch('closeEditModal');
+        }
+    }
 
     public function loadData()
     {
         $this->status = ModShop::pluck('status', 'id')->toArray();
         $this->onlineStatus = ModShop::pluck('published', 'id')->toArray();
-        // Weitere Daten laden, falls nötig
     }
-
 
     public function confirmDeletion($shopId)
     {
@@ -132,12 +172,10 @@ class ShopManagement extends Component
     {
         ModShop::findOrFail($this->shopToDelete)->delete();
         $this->shopToDelete = null;
-        $this->loadData(); // Annahme: Methode loadData() lädt die Daten neu
-        $this->dispatch('toast', message: 'Shop erfolgreich gelöscht.', notify:'success' );
+        $this->loadData();
+        $this->dispatch('toast', ['message' => 'Shop erfolgreich gelöscht.', 'notify' => 'success']);
         $this->dispatch('closeDeleteConfirmationModal');
     }
-
-
 
     public function render()
     {

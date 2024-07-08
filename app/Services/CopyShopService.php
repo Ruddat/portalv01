@@ -45,63 +45,42 @@ class CopyShopService
                 }
             }
 
-            // Öffnungszeiten kopieren, wenn ausgewählt
-            if (isset($options['openingHours']) && $options['openingHours']) {
-                $this->copyOpeningHours($originalShop, $newShop);
+            // Logo kopieren
+            if (isset($options['logo']) && $options['logo']) {
+                $this->copyLogo($originalShop, $newShop);
             }
 
-            // Liefergebiet kopieren, wenn ausgewählt
-            if (isset($options['deliveryArea']) && $options['deliveryArea']) {
-                $this->copyDeliveryAreas($originalShop, $newShop);
-            }
 
-            // Kategorien kopieren und Kategorie-ID-Zuordnung erstellen
+            // Kategorien, Größen und Produkte kopieren
             $categoryIdMap = [];
-            if (isset($options['sizesandprices']) && $options['sizesandprices']) {
-                $sizeIdMap = [];
-                // Kategorien kopieren und Kategorie-ID-Zuordnung erstellen
-                $categoryIdMap = [];
-                $originalCategories = ModCategory::where('shop_id', $shopId)->get();
-                foreach ($originalCategories as $originalCategory) {
-                    Log::info("Kopiere Kategorie mit ID: {$originalCategory->id}");
-                    $newCategory = $this->copyCategories($originalCategory, $newShop->id, $sizeIdMap); // Hier wird der dritte Parameter hinzugefügt
-                    $categoryIdMap[$originalCategory->id] = $newCategory->id;
-                }
+            $sizeIdMap = [];
+            if (isset($options['articles']) && $options['articles']) {
 
-                $originalSizes = ModProductSizes::where('shop_id', $shopId)->get();
+                // Kategorien kopieren
+                $categoryIdMap = $this->copyCategories($originalShop, $newShop);
 
-                foreach ($originalSizes as $originalSize) {
-                    Log::info("Kopiere Größen und Preise für Kategorie mit ID: {$originalSize->id}");
+                // Größen kopieren
+                $sizeIdMap = $this->copySizes($originalShop, $newShop);
 
-            //        $sizeIdMap += $this->copySizesAndPrices($originalSize, $newShop->id, $categoryIdMap);
-                }
-            }
+                // Kategorien mit neuen Größen-IDs aktualisieren
+                $this->updateCategorySizes($newShop, $categoryIdMap, $sizeIdMap);
 
-            // Produkte kopieren, wenn ausgewählt
-            $productIdMap = [];
-            if (isset($options['products']) && $options['products']) {
-                $productIdMap = $this->copyProducts($originalShop, $newShop, $categoryIdMap);
-          //  dd($productIdMap);
-            }
-         //   dd($productIdMap);
-            // Produktgrößen und Preise kopieren, wenn ausgewählt
-            if (isset($options['sizesandprices']) && $options['sizesandprices']) {
-                $sizeIdMap = [];
-                $originalSizes = ModProductSizes::where('shop_id', $shopId)->get();
-                foreach ($originalSizes as $originalSize) {
-                    Log::info("Kopiere Größen und Preise für Kategorie mit ID: {$originalSize->id}");
-                    $sizeIdMap += $this->copySizesAndPrices($originalSize, $newShop->id, $productIdMap);
-                }
-            }
+                // Produkte kopieren
+                $productIdMap = $this->copyProducts($originalShop, $newShop, $categoryIdMap, $sizeIdMap);
 
-            // Ingredients kopieren, wenn ausgewählt
-            if (isset($options['ingredients']) && $options['ingredients']) {
-                $originalIngredients = ModProductsIngredients::where('shop_id', $shopId)->get();
-                $ingredientIdMap = $this->copyIngredients($originalIngredients, $shopId, $newShop->id, $sizeIdMap);
-                Log::info('Ingredient ID Map:', $ingredientIdMap);
 
-                $originalIngredientNodes = ModProductIngredientsNodes::where('shop_id', $shopId)->get();
-                $this->copyIngredientNodes($originalIngredientNodes, $newShop->id, $ingredientIdMap);
+                // Produktgrößenpreise kopieren
+                $this->copyProductSizesPrices($originalShop, $newShop, $productIdMap, $sizeIdMap);
+
+
+                // Zutaten kopieren
+                $ingredientIdMap = $this->copyIngredients($originalShop, $newShop, $sizeIdMap);
+
+                $this->copyIngredientNodes($originalShop, $newShop, $productIdMap, $ingredientIdMap);
+
+
+                Log::info('Produkt ID Karte: ' . print_r($productIdMap, true));
+                Log::info('Zutaten ID Karte: ' . print_r($ingredientIdMap, true));
             }
 
             // Bestellungen kopieren und Zuordnung erhalten
@@ -115,6 +94,17 @@ class CopyShopService
                 $this->copyVotes($originalShop, $newShop, $orderIdMap);
             }
 
+            // Öffnungszeiten kopieren, wenn ausgewählt
+            if (isset($options['openingHours']) && $options['openingHours']) {
+                $this->copyOpeningHours($originalShop, $newShop);
+            }
+
+
+            // Liefergebiet kopieren, wenn ausgewählt
+            if (isset($options['deliveryArea']) && $options['deliveryArea']) {
+                $this->copyDeliveryAreas($originalShop, $newShop);
+            }
+
             DB::commit();
 
             return $newShop;
@@ -125,411 +115,188 @@ class CopyShopService
 
     }
 
-    protected function copyOpeningHours($originalShop, $newShop)
+
+
+
+    protected function copyCategories($originalShop, $newShop)
     {
-        $originalOpeningHours = $originalShop->openingHours()->get();
-        foreach ($originalOpeningHours as $originalOpeningHour) {
-            $newOpeningHour = $originalOpeningHour->replicate();
-            $newOpeningHour->shop_id = $newShop->id;
-            $newOpeningHour->save();
+        $categoryIdMap = [];
+
+        // Alle Kategorien des Originalshops abrufen
+        $originalCategories = ModCategory::where('shop_id', $originalShop->id)->get();
+
+        foreach ($originalCategories as $originalCategory) {
+            // Kategorie replizieren
+            $newCategory = $originalCategory->replicate();
+            $newCategory->shop_id = $newShop->id;
+            $newCategory->save();
+
+             // Kopiere das Kategoriebild, falls vorhanden
+            $this->copyCategoryImage($originalCategory, $newCategory);
+
+            // Kategorie-ID-Karte erstellen
+            $categoryIdMap[$originalCategory->id] = $newCategory->id;
+
+            Log::info("Kategorie kopiert: Original ID {$originalCategory->id} -> Neue ID {$newCategory->id}");
         }
 
-        $originalHolidays = $originalShop->holidays()->get();
-        foreach ($originalHolidays as $originalHoliday) {
-            $newHoliday = $originalHoliday->replicate();
-            $newHoliday->shop_id = $newShop->id;
-            $newHoliday->save();
-        }
+        return $categoryIdMap;
     }
 
-    protected function copyDeliveryAreas($originalShop, $newShop)
-    {
-        $originalDeliveryAreas = $originalShop->deliveryAreas()->get();
-        foreach ($originalDeliveryAreas as $originalDeliveryArea) {
-            $newDeliveryArea = $originalDeliveryArea->replicate();
-            $newDeliveryArea->shop_id = $newShop->id;
-            $newDeliveryArea->save();
-        }
-    }
-
-    protected function copyOrders($originalShop, $newShop)
-    {
-        $originalOrders = $originalShop->orders()->get();
-        $orderIdMap = [];
-
-        foreach ($originalOrders as $originalOrder) {
-            $newOrder = $originalOrder->replicate();
-            $newOrder->parent = $newShop->id;
-            $newOrder->hash = $this->generateNewOrderHash();
-            $newOrder->save();
-
-            // Speichern der Zuordnung alter Bestell-ID zu neuer Bestell-ID
-            $orderIdMap[$originalOrder->id] = $newOrder->id;
-        }
-
-        return $orderIdMap;
-    }
-
-    protected function generateNewOrderHash()
-    {
-        return hash('sha256', uniqid());
-    }
-
-    protected function generateNewShopNr()
-    {
-        return 'NEW_SHOP_NR_' . uniqid();
-    }
-
-    protected function copyVotes($originalShop, $newShop, $orderIdMap)
-    {
-        $originalVotes = $originalShop->votes()->get();
-
-        foreach ($originalVotes as $originalVote) {
-            $newVote = $originalVote->replicate();
-            $newVote->shop_id = $newShop->id;
-
-            // Verwenden der Zuordnung, um die neue `order_id` zu finden
-            if (isset($orderIdMap[$originalVote->order_id])) {
-                $newVote->order_id = $orderIdMap[$originalVote->order_id];
-            } else {
-                $newVote->order_id = null;
-            }
-
-            // Setze `order_hash` der neuen Bestellung, wenn vorhanden
-            $newOrder = ModOrders::find($newVote->order_id);
-            if ($newOrder) {
-                $newVote->order_hash = $newOrder->hash;
-            } else {
-                $newVote->order_hash = null;
-            }
-
-            $newVote->save();
-        }
-    }
-
-    protected function mapOldOrderIdToNew($oldOrderId, $newShopId)
-    {
-        $oldOrder = ModOrders::find($oldOrderId);
-        if ($oldOrder) {
-            $newOrder = ModOrders::where('hash', $oldOrder->hash)->where('parent', $newShopId)->first();
-            if ($newOrder) {
-                return $newOrder->id;
-            }
-        }
-        return null;
-    }
-
-
-
-    protected function copySizesAndPrices($originalSize, $newShopId, $productIdMap)
+    protected function copySizes($originalShop, $newShop)
     {
         $sizeIdMap = [];
 
-        // Prüfen, ob die Kategorie eine Hauptkategorie ist
-        if ($originalSize->parent == 0) {
-            // Kopiere die Hauptgröße mit parent 0
-            $originalMainSize = ModProductSizes::where('parent', 0)
-                ->where('id', $originalSize->id)
-                ->first();
+        // Alle Größen des Originalshops abrufen
+        $originalSizes = ModProductSizes::where('shop_id', $originalShop->id)->get();
 
-            if ($originalMainSize) {
-                $newMainSize = $originalMainSize->replicate();
-                $newMainSize->shop_id = $newShopId;
-                $newMainSize->parent = 0;
-                $newMainSize->save();
+        foreach ($originalSizes as $originalSize) {
+            // Größe replizieren
+            $newSize = $originalSize->replicate();
+            $newSize->shop_id = $newShop->id;
+            $newSize->save();
 
-                // Setze die neue Hauptgröße als sizes_category in der neuen Kategorie
-                $sizeIdMap[$originalMainSize->id] = $newMainSize->id;
-            }
-        }
+            // Größen-ID-Karte erstellen
+            $sizeIdMap[$originalSize->id] = $newSize->id;
 
-        // Kopiere die Größen, wenn vorhanden
-        $originalSizes = ModProductSizes::where('parent', $originalSize->id)->get();
-
-        if ($originalSizes->isNotEmpty()) {
-            foreach ($originalSizes as $originalSize) {
-                $newSize = $originalSize->replicate();
-                $newSize->shop_id = $newShopId;
-                $newSize->parent = isset($newMainSize) ? $newMainSize->id : ($productIdMap[$originalSize->parent] ?? 0); // Verwende die richtige Logik für parent
-                $newSize->save();
-
-                $sizeIdMap[$originalSize->id] = $newSize->id;
-
-                // Kopiere die Preise für diese Größe, wenn vorhanden
-                $originalPrices = ModProductSizesPrices::where('size_id', $originalSize->id)->get();
-                if ($originalPrices->isNotEmpty()) {
-                    foreach ($originalPrices as $originalPrice) {
-                        if (!isset($productIdMap[$originalPrice->id])) {
-                            // Wenn es keinen gültigen Parent gibt, überspringen wir diesen Preis
-                            Log::warning("Kein gültiger parent-Wert für Preis mit ID: {$originalPrice->id}. Überspringe Kopiervorgang.");
-                            continue;
-                        }
-
-                        $newPrice = $originalPrice->replicate();
-                        $newPrice->shop_id = $newShopId;
-                        $newPrice->size_id = $newSize->id;
-                        $newPrice->parent = $productIdMap[$originalPrice->id]; // Verwende die richtige Logik für parent
-
-                        // Füge Debugging hinzu
-                        Log::info("Original Price ID: {$originalPrice->id}, New Price Parent: {$newPrice->parent}");
-
-                        $newPrice->save();
-                    }
-                }
-            }
-        } else {
-            Log::warning("Keine Größen gefunden für Kategorie mit ID: {$originalSize->id}. Überspringe Kopiervorgang.");
+            Log::info("Größe kopiert: Original ID {$originalSize->id} -> Neue ID {$newSize->id}");
         }
 
         return $sizeIdMap;
     }
 
-
-
-
-
-
-    // Kopiert die Kategorien für einen neuen Shop
-    public function copyCategories($originalCategory, $newShopId, $sizeIdMap)
+    protected function copyProductSizesPrices($originalShop, $newShop, $productIdMap, $sizeIdMap)
     {
-        // Kopiere die Kategorie
-        $newCategory = $originalCategory->replicate();
-        $newCategory->shop_id = $newShopId;
-        $newCategory->sizes_category = 0; // Setze sizes_category auf 0 für Hauptkategorie
-        $newCategory->save();
+        // Alle Preise des Originalshops abrufen
+        $originalPrices = ModProductSizesPrices::where('shop_id', $originalShop->id)->get();
 
-        // Kopiere das Kategoriebild, falls vorhanden
-        $this->copyCategoryImage($originalCategory, $newCategory);
+        foreach ($originalPrices as $originalPrice) {
+            // Preis replizieren
+            $newPrice = $originalPrice->replicate();
+            $newPrice->shop_id = $newShop->id;
+            $newPrice->size_id = $sizeIdMap[$originalPrice->size_id] ?? $originalPrice->size_id;
+            $newPrice->parent = $productIdMap[$originalPrice->parent] ?? $originalPrice->parent;
+            $newPrice->id = null; // Letting Laravel handle the ID
+            $newPrice->save();
 
-        // Aktualisiere die sizes_category in der neuen Kategorie
-        if ($originalCategory->sizes_category && isset($sizeIdMap[$originalCategory->sizes_category])) {
-            $newCategory->sizes_category = $sizeIdMap[$originalCategory->sizes_category];
-            $newCategory->save(); // Speichern der Änderungen an sizes_category
-        } else {
-            Log::warning("Keine passende sizes_category gefunden für Kategorie mit ID: {$originalCategory->id}. Setze auf null.");
-            $newCategory->sizes_category = null; // Optional: Auf null setzen, wenn keine passende gefunden wurde
-            $newCategory->save(); // Speichern der Änderungen an sizes_category
+            Log::info("Preis kopiert: Original ID {$originalPrice->id} -> Neue ID {$newPrice->id}");
         }
-
-        return $newCategory;
     }
 
 
 
-
-    protected function copyCategoryImage($originalCategory, $newCategory)
+    protected function copyIngredients($originalShop, $newShop, $sizeIdMap)
     {
-        $originalShopId = $originalCategory->shop_id;
-        $newShopId = $newCategory->shop_id;
+        $ingredientIdMap = [];
 
-        // Pfad zum Originalbild
-        $originalImagePath = public_path('uploads/shops/' . $originalShopId . '/images/category/' . $originalCategory->category_image);
+        // Alle Zutaten des Originalshops abrufen
+        $originalIngredients = ModProductsIngredients::where('shop_id', $originalShop->id)->get();
 
-        // Zielverzeichnis für das neue Bild im öffentlichen Verzeichnis
-        $targetDirectory = public_path('uploads/shops/' . $newShopId . '/images/category/');
+        foreach ($originalIngredients as $originalIngredient) {
+            // Zutat replizieren
+            $newIngredient = $originalIngredient->replicate();
+            $newIngredient->shop_id = $newShop->id;
+            $newIngredient->parent = $ingredientIdMap[$originalIngredient->parent] ?? $originalIngredient->parent;
 
-        // Dateiname des Bildes
-        $imageName = basename($originalImagePath);
-
-        // Überprüfen, ob das Originalbild existiert
-        if (File::exists($originalImagePath)) {
-            // Prüfen, ob das Zielverzeichnis existiert, andernfalls erstellen
-            if (!File::exists($targetDirectory)) {
-                File::makeDirectory($targetDirectory, 0777, true, true);
+            // Sicherstellen, dass sizes_category ein Array ist
+            $sizesCategoryArray = json_decode($originalIngredient->sizes_category, true);
+            if (!is_array($sizesCategoryArray)) {
+                $sizesCategoryArray = [];
             }
 
-            // Kopieren des Bildes
-            File::copy($originalImagePath, $targetDirectory . $imageName);
+            $newIngredient->sizes_category = json_encode(array_map(function ($sizeCategoryId) use ($sizeIdMap) {
+                return $sizeIdMap[$sizeCategoryId] ?? $sizeCategoryId;
+            }, $sizesCategoryArray));
 
-            // Aktualisieren des Bildpfads in der neuen Kategorie
-            $newCategory->category_image = $imageName;
-            $newCategory->save();
-        } else {
-            Log::info("Bild nicht gefunden: $originalImagePath");
+            $newIngredient->id = null; // Letting Laravel handle the ID
+            $newIngredient->save();
+
+            // Zutaten-ID-Karte erstellen
+            $ingredientIdMap[$originalIngredient->id] = $newIngredient->id;
+
+            // Preise kopieren
+            $this->copyIngredientPrices($originalIngredient, $newIngredient, $sizeIdMap);
+
+            Log::info("Zutat kopiert: Original ID {$originalIngredient->id} -> Neue ID {$newIngredient->id}");
+        }
+
+        return $ingredientIdMap;
+    }
+
+    protected function copyIngredientPrices($originalIngredient, $newIngredient, $sizeIdMap)
+    {
+        $originalPrices = ModProductsIngredientsPrices::where('parent', $originalIngredient->id)->get();
+
+        foreach ($originalPrices as $originalPrice) {
+            $newPrice = $originalPrice->replicate();
+            $newPrice->parent = $newIngredient->id;
+            $newPrice->size_id = $sizeIdMap[$originalPrice->size_id] ?? $originalPrice->size_id;
+            $newPrice->id = null; // Letting Laravel handle the ID
+            $newPrice->save();
+
+            Log::info("Zutatenpreis kopiert: Original ID {$originalPrice->id} -> Neue ID {$newPrice->id}");
         }
     }
 
-    // Kopiert die Produkte für einen neuen Shop
-    public function copyProducts($originalShop, $newShop, $categoryIdMap)
+    protected function copyIngredientNodes($originalShop, $newShop, $productIdMap, $ingredientIdMap)
+    {
+        // Alle Nodes des Originalshops abrufen
+        $originalNodes = ModProductIngredientsNodes::where('shop_id', $originalShop->id)->get();
+
+        foreach ($originalNodes as $originalNode) {
+            // Node replizieren
+            $newNode = $originalNode->replicate();
+            $newNode->shop_id = $newShop->id;
+            $newNode->parent = $productIdMap[$originalNode->parent] ?? $originalNode->parent;
+            $newNode->ingredients_id = $ingredientIdMap[$originalNode->ingredients_id] ?? $originalNode->ingredients_id;
+            $newNode->id = null; // Letting Laravel handle the ID
+            $newNode->save();
+
+            Log::info("Node kopiert: Original ID {$originalNode->id} -> Neue ID {$newNode->id}");
+        }
+    }
+
+    protected function updateCategorySizes($newShop, $categoryIdMap, $sizeIdMap)
+    {
+        // Alle Kategorien des neuen Shops abrufen
+        $newCategories = ModCategory::where('shop_id', $newShop->id)->get();
+
+        foreach ($newCategories as $newCategory) {
+            if (isset($sizeIdMap[$newCategory->sizes_category])) {
+                $newCategory->sizes_category = $sizeIdMap[$newCategory->sizes_category];
+                $newCategory->save();
+
+                Log::info("Kategorie aktualisiert: Neue Kategorie ID {$newCategory->id} mit neuer Größenkategorie ID {$newCategory->sizes_category}");
+            }
+        }
+    }
+
+
+    protected function copyProducts($originalShop, $newShop, $categoryIdMap, $sizeIdMap)
     {
         $productIdMap = [];
 
-        foreach ($originalShop->products as $originalProduct) {
-            // Replizieren des Produkts
+        // Alle Produkte des Originalshops abrufen
+        $originalProducts = ModProducts::where('shop_id', $originalShop->id)->get();
+
+        foreach ($originalProducts as $originalProduct) {
+            // Produkt replizieren
             $newProduct = $originalProduct->replicate();
             $newProduct->shop_id = $newShop->id;
-
-            // Kategorie-ID anpassen
-            if (isset($categoryIdMap[$originalProduct->category_id])) {
-                $newProduct->category_id = $categoryIdMap[$originalProduct->category_id];
-            }
-
-            $newProduct->product_slug = Str::slug($newProduct->product_title . '-' . $newShop->id, '-');
+            $newProduct->category_id = $categoryIdMap[$originalProduct->category_id] ?? $originalProduct->category_id;
             $newProduct->save();
 
             // Bild kopieren
             $this->copyProductImage($originalProduct, $newProduct);
 
+            // Produkt-ID-Karte erstellen
             $productIdMap[$originalProduct->id] = $newProduct->id;
+
+            Log::info("Produkt kopiert: Original ID {$originalProduct->id} -> Neue ID {$newProduct->id}");
         }
+
         return $productIdMap;
     }
-
-public function copyIngredients($originalIngredients, $oldShopId, $newShopId, $sizeIdMap)
-{
-    // Erstelle eine Map für sizes_category basierend auf den alten und neuen shop_id
-    $sizesCategoryMap = $this->createSizesCategoryMap($oldShopId, $newShopId);
-
-    $ingredientIdMap = [];
-    $productIdMap = $this->createProductIdMap($oldShopId, $newShopId);
-
-    try {
-        // Starte eine Datenbank-Transaktion
-        DB::beginTransaction();
-
-        // Erste Schleife: Ingredients kopieren und neue IDs speichern
-        foreach ($originalIngredients as $originalIngredient) {
-            $newIngredient = $originalIngredient->replicate();
-            $newIngredient->shop_id = $newShopId;
-
-            // Aktualisiere die sizes_category falls vorhanden
-            if (!empty($originalIngredient->sizes_category)) {
-                // Extrahiere die sizes_category IDs
-                $originalSizesCategories = json_decode($originalIngredient->sizes_category, true);
-
-                // Falls nur eine ID vorliegt, mache es zu einem Array
-                if (!is_array($originalSizesCategories)) {
-                    $originalSizesCategories = [$originalSizesCategories];
-                }
-
-                // Ersetze jede alte ID durch die neue ID aus der Map
-                $newSizesCategories = [];
-                foreach ($originalSizesCategories as $originalSizeCategory) {
-                    if (isset($sizesCategoryMap[$originalSizeCategory])) {
-                        // ID als String speichern
-                        $newSizesCategories[] = (string)$sizesCategoryMap[$originalSizeCategory];
-                    } else {
-                        $newSizesCategories[] = (string)$originalSizeCategory; // Falls keine Übereinstimmung gefunden wurde
-                    }
-                }
-
-                // Setze die neue sizes_category als JSON-kodierte Zeichenkette
-                $newIngredient->sizes_category = json_encode($newSizesCategories);
-            }
-
-            $newIngredient->save();
-            $ingredientIdMap[$originalIngredient->id] = $newIngredient->id;
-        }
-
-        // Zweite Schleife: Parent-IDs aktualisieren
-        foreach ($originalIngredients as $originalIngredient) {
-            $newIngredientId = $ingredientIdMap[$originalIngredient->id];
-            $newIngredient = ModProductsIngredients::find($newIngredientId);
-
-            if ($originalIngredient->parent != 0 && isset($ingredientIdMap[$originalIngredient->parent])) {
-                $newIngredient->parent = $ingredientIdMap[$originalIngredient->parent];
-            } else {
-                $newIngredient->parent = 0;
-            }
-
-            $newIngredient->save();
-
-            // Kopiere die Preise für diese Zutat
-            $originalPrices = ModProductsIngredientsPrices::where('parent', $originalIngredient->id)->get();
-            if ($originalPrices->isNotEmpty()) {
-                foreach ($originalPrices as $originalPrice) {
-                    $newPrice = $originalPrice->replicate();
-                    $newPrice->shop_id = $newShopId;
-                    $newPrice->parent = $newIngredient->id;
-
-                    // Aktualisiere die size_id falls vorhanden
-                    if (isset($sizeIdMap[$originalPrice->size_id])) {
-                        $newPrice->size_id = $sizeIdMap[$originalPrice->size_id];
-                    } else {
-                        $newPrice->size_id = $originalPrice->size_id;
-                    }
-
-                    $newPrice->save();
-                }
-            }
-        }
-
-        // Commit der Transaktion, wenn alles erfolgreich war
-        DB::commit();
-    } catch (\Exception $e) {
-        // Bei einem Fehler Rollback der Transaktion
-        DB::rollBack();
-        throw $e; // Werfe den Fehler weiter, um ihn anderswo zu behandeln
-    }
-
-    return $ingredientIdMap;
-}
-
-private function createSizesCategoryMap($oldShopId, $newShopId)
-{
-    $sizesCategoryMap = [];
-
-    // Durchsuche die alten sizes nach shop_id und parent = 0
-    $originalSizes = ModProductSizes::where('shop_id', $oldShopId)->where('parent', 0)->pluck('title', 'id')->toArray();
-
-    // Durchsuche die neuen sizes nach shop_id und parent = 0
-    $newSizes = ModProductSizes::where('shop_id', $newShopId)->where('parent', 0)->pluck('id', 'title')->toArray();
-
-    foreach ($originalSizes as $originalId => $title) {
-        if (isset($newSizes[$title])) {
-            $sizesCategoryMap[$originalId] = $newSizes[$title];
-        }
-    }
-
-    // Debug: Map anzeigen
-    Log::info('Sizes Category Map: ' . json_encode($sizesCategoryMap));
-
-    return $sizesCategoryMap;
-}
-
-private function createProductIdMap($oldShopId, $newShopId)
-{
-    $productIdMap = [];
-
-    // Holen Sie sich die Produkte aus dem alten Shop
-    $oldProducts = ModProducts::where('shop_id', $oldShopId)->pluck('id', 'product_title')->toArray();
-
-    // Holen Sie sich die Produkte aus dem neuen Shop
-    $newProducts = ModProducts::where('shop_id', $newShopId)->pluck('id', 'product_title')->toArray();
-
-    // Erstellen Sie das Mapping basierend auf den Produkt-Titeln
-    foreach ($oldProducts as $title => $oldId) {
-        if (isset($newProducts[$title])) {
-            $productIdMap[$oldId] = $newProducts[$title];
-        }
-    }
-
-    // Debug: Map anzeigen
-    Log::info('Product ID Map: ' . json_encode($productIdMap));
-
-    return $productIdMap;
-}
-
-
-
-
-
-    // Kopiert die Ingredients Knoten für einen neuen Shop
-    public function copyIngredientNodes($originalIngredientNodes, $newShopId, $ingredientIdMap)
-    {
-        foreach ($originalIngredientNodes as $originalNode) {
-            $newNode = $originalNode->replicate();
-            $newNode->shop_id = $newShopId;
-
-            // Aktualisiere die ingredient_id falls vorhanden
-            if (isset($ingredientIdMap[$originalNode->ingredients_id])) {
-                $newNode->ingredients_id = $ingredientIdMap[$originalNode->ingredients_id];
-            }
-
-            $newNode->save();
-        }
-    }
-
 
     protected function copyProductImage($originalProduct, $newProduct)
     {
@@ -564,4 +331,155 @@ private function createProductIdMap($oldShopId, $newShopId)
             }
         }
     }
+
+    protected function copyCategoryImage($originalCategory, $newCategory)
+    {
+        $originalShopId = $originalCategory->shop_id;
+        $newShopId = $newCategory->shop_id;
+
+        // Pfad zum Originalbild
+        $originalImagePath = public_path('uploads/shops/' . $originalShopId . '/images/category/' . $originalCategory->category_image);
+
+        // Zielverzeichnis für das neue Bild im öffentlichen Verzeichnis
+        $targetDirectory = public_path('uploads/shops/' . $newShopId . '/images/category/');
+
+        // Dateiname des Bildes
+        $imageName = basename($originalImagePath);
+
+        // Überprüfen, ob das Originalbild existiert
+        if (File::exists($originalImagePath)) {
+            // Prüfen, ob das Zielverzeichnis existiert, andernfalls erstellen
+            if (!File::exists($targetDirectory)) {
+                File::makeDirectory($targetDirectory, 0777, true, true);
+            }
+
+            // Kopieren des Bildes
+            File::copy($originalImagePath, $targetDirectory . $imageName);
+
+            // Aktualisieren des Bildpfads in der neuen Kategorie
+            $newCategory->category_image = $imageName;
+            $newCategory->save();
+        } else {
+            Log::info("Bild nicht gefunden: $originalImagePath");
+        }
+    }
+
+
+    protected function generateNewShopNr()
+    {
+        return 'NEW_SHOP_NR_' . uniqid();
+    }
+
+    protected function copyLogo($originalShop, $newShop)
+    {
+        if ($originalShop->logo) {
+            $newLogoDirectory = public_path('uploads/shops/' . $newShop->id . '/images/');
+            $newLogoPath = $newLogoDirectory . basename($originalShop->logo);
+
+            $originalLogoPath = public_path('uploads/shops/' . $originalShop->id . '/images/' . basename($originalShop->logo));
+
+            // Erstellen des neuen Verzeichnisses, falls es nicht existiert und Schreibrechte setzen
+            if (!File::exists($newLogoDirectory)) {
+                File::makeDirectory($newLogoDirectory, 0777, true);
+            }
+
+            // Kopieren des Logos
+            File::copy($originalLogoPath, $newLogoPath);
+
+            // Aktualisieren des neuen Shop-Eintrags mit dem neuen Logo-Pfad
+            $newShop->logo = $originalShop->logo;
+            $newShop->save();
+
+            Log::info("Logo kopiert für neuen Shop mit ID: {$newShop->id} nach {$newLogoPath}");
+        }
+    }
+
+
+    protected function copyOrders($originalShop, $newShop)
+    {
+        $originalOrders = $originalShop->orders()->get();
+        $orderIdMap = [];
+
+        foreach ($originalOrders as $originalOrder) {
+            $newOrder = $originalOrder->replicate();
+            $newOrder->parent = $newShop->id;
+            $newOrder->hash = $this->generateNewOrderHash();
+            $newOrder->save();
+
+            // Speichern der Zuordnung alter Bestell-ID zu neuer Bestell-ID
+            $orderIdMap[$originalOrder->id] = $newOrder->id;
+        }
+
+        return $orderIdMap;
+    }
+
+    protected function generateNewOrderHash()
+    {
+        return hash('sha256', uniqid());
+    }
+
+
+    protected function copyVotes($originalShop, $newShop, $orderIdMap)
+    {
+        $originalVotes = $originalShop->votes()->get();
+
+        foreach ($originalVotes as $originalVote) {
+            $newVote = $originalVote->replicate();
+            $newVote->shop_id = $newShop->id;
+
+            // Verwenden der Zuordnung, um die neue `order_id` zu finden
+            if (isset($orderIdMap[$originalVote->order_id])) {
+                $newVote->order_id = $orderIdMap[$originalVote->order_id];
+            } else {
+                $newVote->order_id = null;
+            }
+
+            // Setze `order_hash` der neuen Bestellung, wenn vorhanden
+            $newOrder = ModOrders::find($newVote->order_id);
+            if ($newOrder) {
+                $newVote->order_hash = $newOrder->hash;
+            } else {
+                $newVote->order_hash = null;
+            }
+
+            $newVote->save();
+        }
+    }
+
+
+    protected function copyOpeningHours($originalShop, $newShop)
+    {
+        // Öffnungszeiten kopieren
+        $originalOpeningHours = $originalShop->openingHours()->get();
+        foreach ($originalOpeningHours as $originalOpeningHour) {
+            $newOpeningHour = $originalOpeningHour->replicate();
+            $newOpeningHour->shop_id = $newShop->id;
+            $newOpeningHour->save();
+        }
+
+        // Feiertage kopieren, aber nur zukünftige
+        $originalHolidays = $originalShop->holidays()->get();
+        $currentDate = now()->format('Y-m-d'); // Aktuelles Datum im Format YYYY-MM-DD
+
+        foreach ($originalHolidays as $originalHoliday) {
+            // Annahme: das Datum des Feiertages ist in einem Feld namens 'holiday_date'
+            if ($originalHoliday->holiday_date >= $currentDate) {
+                $newHoliday = $originalHoliday->replicate();
+                $newHoliday->shop_id = $newShop->id;
+                $newHoliday->save();
+            }
+        }
+    }
+
+    protected function copyDeliveryAreas($originalShop, $newShop)
+    {
+        $originalDeliveryAreas = $originalShop->deliveryAreas()->get();
+        foreach ($originalDeliveryAreas as $originalDeliveryArea) {
+            $newDeliveryArea = $originalDeliveryArea->replicate();
+            $newDeliveryArea->shop_id = $newShop->id;
+            $newDeliveryArea->save();
+        }
+    }
+
+
 }
