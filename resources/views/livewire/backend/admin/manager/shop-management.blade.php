@@ -150,7 +150,7 @@
 
 <!-- Edit Modal -->
 <div wire:ignore.self class="modal fade" id="editShopModal" tabindex="-1" aria-labelledby="editShopModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editShopModalLabel">Shop bearbeiten</h5>
@@ -164,16 +164,20 @@
                             <div class="card-header">
                                 <h4 class="card-title">Shopdata</h4>
                             </div>
+
+                            @php
+                            //    dd($this->shop);
+                            @endphp
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form>
                                         <div class="mb-3">
-                                            <input type="text" class="form-control" id="shopTitle" value="{{ $shop->title }}" wire:model="shop.title">
+                                            <label for="shopTitle" class="form-label">Shoptitel</label>
+                                            <input type="text" class="form-control" id="shopTitle" wire:model="shop.title">
                                         </div>
                                         <div class="row">
                                             <div class="mb-3 col-md-8">
                                                 <label class="form-label">Street</label>
-                                                <input type="text" wire:model="shop.street" class="form-control" placeholder="Street">
+                                                <input type="text" wire:model="shopedit.street" value="{{ $shopedit->street }}" class="form-control" placeholder="Street">
                                             </div>
                                             <div class="mb-3 col-md-4">
                                                 <label class="form-label">Housenumber</label>
@@ -200,7 +204,6 @@
                                                 <input type="text" wire:model="shop.latitude" class="form-control" disabled>
                                             </div>
                                         </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -211,7 +214,6 @@
                                 <h4 class="card-title">Settings</h4>
                             </div>
                             <div class="card-body">
-                                <form>
                                     <div class="input-group mb-3">
                                         <div class="input-group-text">
                                             <div class="form-check custom-checkbox">
@@ -246,14 +248,13 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Shop Status (select one):</label>
-                                        <select wire:model="shop.status" class="default-select form-control wide ms-0">
+                                        <select wire:model="status.{{ $shopedit->id }}" wire:change="changeStatus({{ $shopedit->id }})" class="form-control">
                                             <option value="on">on</option>
                                             <option value="off">off</option>
                                             <option value="closed">closed</option>
                                             <option value="limited">limited</option>
                                         </select>
                                     </div>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -264,10 +265,9 @@
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form>
                                         <div class="mb-3 col-md-12">
                                             <label class="form-label">Kundennummer</label>
-                                            <input type="text" wire:model="shop.customer_number" class="form-control" value="$title" placeholder="Kundennummer" disabled>
+                                            <input type="text" wire:model="shop.customer_number" class="form-control" value="{{ $shop->shop_nr }}" placeholder="Kundennummer" disabled>
                                         </div>
                                         <div class="row">
                                             <div class="mb-3 col-md-6">
@@ -299,7 +299,6 @@
                                                 <input type="text" wire:model="shop.sms_number" class="form-control" placeholder="optional / falls die Bestellübermittlung fehlschlägt, Alarm-SMS">
                                             </div>
                                         </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -311,7 +310,6 @@
                             </div>
                             <div class="card-body">
                                 <div class="basic-form">
-                                    <form>
                                         <div class="row align-items-center">
                                             <div class="col-auto my-1">
                                                 <label class="me-sm-2">Shop zuweisen</label>
@@ -323,7 +321,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -358,15 +355,15 @@
 
         // Events for closing the modals
         $('#copyModal').on('hidden.bs.modal', function () {
-            Livewire.emit('closeCopyModal');
+            Livewire.dispatch('closeCopyModal');
         });
 
         $('#editShopModal').on('hidden.bs.modal', function () {
-            Livewire.emit('closeEditModal');
+            Livewire.dispatch('closeEditModal');
         });
 
         $('#deleteConfirmationModal').on('hidden.bs.modal', function () {
-            Livewire.emit('closeDeleteConfirmationModal');
+            Livewire.dispatch('closeDeleteConfirmationModal');
         });
     });
 </script>

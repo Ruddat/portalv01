@@ -27,6 +27,9 @@ public $title;
 
     public $selectedShopId;
     public $shop;  // This will hold the shop details being edited
+    public $shopedit;
+    public $shopId;
+
     public $copyOptions = [
         'shopData' => true,
         'logo' => true,
@@ -93,6 +96,10 @@ public $title;
     {
         $this->copyShopService = $copyShopService;
 
+
+        // Initialize default values
+        $this->shopedit = new ModShop();
+//
         $this->status = ModShop::pluck('status', 'id')->toArray();
         $this->onlineStatus = ModShop::pluck('published', 'id')->toArray();
 
@@ -127,11 +134,14 @@ public $title;
 
     public function openEditModal($shopId)
     {
-        $this->shop = ModShop::find($shopId);
-        $this->shopId = $shopId; // Optional, falls Sie die shopId in der Komponente benötigen
-
-        // Hier können Sie zusätzliche Logik ausführen, um das Modal zu öffnen oder weitere Aktionen durchzuführen
+        $this->shopId = $shopId;
+        $this->loadShop($shopId);
         $this->dispatch('openEditModal'); // Event auslösen, um das Modal zu öffnen (optional)
+//dd($this->shop);
+    }
+    public function loadShop($shopId)
+    {
+        $this->shopedit = ModShop::find($shopId);
     }
 
     public function copyShopConfirmed()
@@ -139,15 +149,20 @@ public $title;
         try {
             $this->CopyShopService->copyShop($this->selectedShopId, $this->copyOptions);
             $this->loadData();
-            $this->dispatch('toast', ['message' => 'Shop successfully copied.', 'notify' => 'success']);
+            $this->dispatch('toast', message: 'Shop successfully copied.', notify:'success' );
         } catch (\Exception $e) {
-            $this->dispatch('toast', ['message' => 'Failed to copy shop: ' . $e->getMessage(), 'notify' => 'error']);
+            $this->dispatch('toast', message: 'Failed to copy shop:' . $e->getMessage(), notify:'error' );
         }
     }
 
     public function updateShop()
     {
+
+     //   dd($shop);
+
         $shop = ModShop::find($this->selectedShopId);
+
+       // dd($shop);
         if ($shop) {
             $shop->update($this->shop->toArray());
             $this->loadData();
@@ -187,6 +202,7 @@ public $title;
 
         return view('livewire.backend.admin.manager.shop-management', [
             'shops' => $shops,
+            'shopedit' => $this->shopedit,
         ]);
     }
 }

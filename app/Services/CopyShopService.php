@@ -150,8 +150,8 @@ class CopyShopService
         // Alle Größen des Originalshops abrufen
         $originalSizes = ModProductSizes::where('shop_id', $originalShop->id)->get();
 
+        // Zuerst alle Größen replizieren und speichern
         foreach ($originalSizes as $originalSize) {
-            // Größe replizieren
             $newSize = $originalSize->replicate();
             $newSize->shop_id = $newShop->id;
             $newSize->save();
@@ -162,8 +162,20 @@ class CopyShopService
             Log::info("Größe kopiert: Original ID {$originalSize->id} -> Neue ID {$newSize->id}");
         }
 
+        // Zweiter Durchlauf zum Aktualisieren der parent-IDs
+        foreach ($originalSizes as $originalSize) {
+            if ($originalSize->parent != 0 && isset($sizeIdMap[$originalSize->parent])) {
+                $newSize = ModProductSizes::find($sizeIdMap[$originalSize->id]);
+                $newSize->parent = $sizeIdMap[$originalSize->parent];
+                $newSize->save();
+
+                Log::info("Parent-ID aktualisiert: Neue ID {$newSize->id} -> Parent ID {$newSize->parent}");
+            }
+        }
+
         return $sizeIdMap;
     }
+
 
     protected function copyProductSizesPrices($originalShop, $newShop, $productIdMap, $sizeIdMap)
     {
