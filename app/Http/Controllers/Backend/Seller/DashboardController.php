@@ -8,6 +8,8 @@ use App\Models\ModProducts;
 use App\Models\DeliveryArea;
 use Illuminate\Http\Request;
 use App\Models\ModProductSizes;
+use App\Services\CopyShopService;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\ModProductSizesPrices;
 use Illuminate\Support\Facades\Session;
@@ -16,6 +18,15 @@ class DashboardController extends Controller
 {
     //
 
+
+    protected $copyShopService;
+
+    public function __construct(CopyShopService $copyShopService)
+    {
+        $this->copyShopService = $copyShopService;
+    }
+
+
     public function switchShop(Request $request)
     {
         // Hier kannst du Logik implementieren, um Daten abzurufen oder zu verarbeiten
@@ -23,7 +34,6 @@ class DashboardController extends Controller
 
         $currentShopId = $request->query('id');
         $shop = ModShop::find($request->query('id'));
-//dd($shop);
         // Setzen der Shop-ID in der Sitzung
         Session::put('currentShopId', $currentShopId);
         Session::put('currentShopTitle', $shop->title); // Speichere den Shop-Titel in der Session
@@ -53,9 +63,6 @@ class DashboardController extends Controller
         Session::put('currentShopId', $currentShopId);
         Session::put('shop', $shop);
         Session::put('currentShopTitle', $shop->title); // Speichere den Shop-Titel in der Session
-//dd($currentShopId, $id, $shop);
-
-
 
         return view('backend.pages.seller.dashboard-shop-edit', [
             'currentShopId' => $currentShopId,
@@ -67,8 +74,55 @@ class DashboardController extends Controller
     }
 
 
-    public function copyShop(ModShop $shop)
+    public function copyShop(Request $request, ModShop $shop)
     {
+        // Debugging-Ausgabe
+        // Log::info('copyShop Methode aufgerufen', ['shop_id' => $shop->id, 'request' => $request->all()]);
+        // dd('Method called', $shop->id, $request->all());
+
+        $copyOptions = $request->input('copyOptions', [
+            'shopData' => true,
+            'logo' => true,
+            'articles' => true,
+            'openingHours' => true,
+            'deliveryArea' => true,
+            'orders' => false,
+            'votes' => false,
+        ]);
+
+
+        try {
+            // Weitere Debugging-Ausgabe
+            // Log::info('Versuch den Shop zu kopieren', ['shop' => $shop, 'copyOptions' => $copyOptions]);
+
+            // Den neuen Shop erstellen und Daten kopieren
+            $newShop = $this->copyShopService->copyShop($shop->id, $copyOptions);
+
+            // Debugging-Ausgabe nach Kopieren
+            // Log::info('Shop kopiert', ['newShop' => $newShop]);
+            // dd($newShop, $shop, $copyOptions); // Debugging-Ausgabe
+
+            // Die Beziehung zwischen dem neuen Shop und dem aktuellen Verkäufer eintragen
+            auth()->user()->shops()->attach($newShop->id);
+
+            // Optional: Eine Benachrichtigung oder Bestätigung anzeigen
+            return redirect()->back()->with('success', 'Shop erfolgreich kopiert.');
+        } catch (\Exception $e) {
+            Log::error('Fehler beim Kopieren des Shops', ['error' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Fehler beim Kopieren des Shops: ' . $e->getMessage());
+        }
+    }
+
+
+    public function newcopyShop(Request $request, ModShop $shop)
+    {
+
+dd($copyOptions, $masterShop);
+
+
+    // Ein neues Shop-Objekt erstellen und die Eigenschaften des Master-Shops kopieren
+
+
     // Den Master-Shop abrufen
     $masterShop = ModShop::findOrFail($shop->id);
 

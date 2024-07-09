@@ -642,7 +642,15 @@ a.menu_item:hover h3 {
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Übergangseffekt für die Hintergrundfarbe */
 }
+
+/* Hover-Stil */
+.reviews #review_summary:hover {
+    background-color: #4CAF50; /* Neue Hintergrundfarbe beim Hover */
+}
+
 @media (max-width: 991px) {
   .reviews #review_summary {
     margin-bottom: 15px;

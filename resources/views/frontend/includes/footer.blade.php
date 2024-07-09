@@ -3,25 +3,25 @@
     <div class="container margin_60_40 fix_mobile">
         <div class="row">
             <div class="col-lg-3 col-md-6">
-                <h3 data-bs-target="#collapse_1">{{ app(\App\Services\TranslationService::class)->trans('Quick Links', app()->getLocale()) }}</h3>
+                <h3 data-bs-target="#collapse_1">{{ app(\App\Services\AutoTranslationService::class)->trans('Quick Links', app()->getLocale()) }}</h3>
                 <div class="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
-                        <li><a href="about.html">{{ app(\App\Services\TranslationService::class)->trans('About us', app()->getLocale()) }}</a></li>
-                        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\TranslationService::class)->trans('Add your restaurant', app()->getLocale()) }}</a></li>
-                        <li><a href="help.html">{{ app(\App\Services\TranslationService::class)->trans('Help', app()->getLocale()) }}</a></li>
-                        <li><a href="register.html">{{ app(\App\Services\TranslationService::class)->trans('My account', app()->getLocale()) }}</a></li>
-                        <li><a href="{{ url('/blog') }}">{{ app(\App\Services\TranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
+                        <li><a href="about.html">{{ app(\App\Services\AutoTranslationService::class)->trans('About us', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Add your restaurant', app()->getLocale()) }}</a></li>
+                        <li><a href="help.html">{{ app(\App\Services\AutoTranslationService::class)->trans('Help', app()->getLocale()) }}</a></li>
+                        <li><a href="register.html">{{ app(\App\Services\AutoTranslationService::class)->trans('My account', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ url('/blog') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
                         <li><a href="contacts.html">@autotranslate('Contacts', app()->getLocale())</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                <h3 data-bs-target="#collapse_2">{{ app(\App\Services\TranslationService::class)->trans('Categories', app()->getLocale()) }}</h3>
+                <h3 data-bs-target="#collapse_2">{{ app(\App\Services\AutoTranslationService::class)->trans('Categories', app()->getLocale()) }}</h3>
                 <div class="collapse dont-collapse-sm links" id="collapse_2">
                     <ul>
-                        <li><a href="grid-listing-filterscol.html">{{ app(\App\Services\TranslationService::class)->trans('Top Categories', app()->getLocale()) }}</a></li>
-                        <li><a href="grid-listing-filterscol-full-masonry.html">{{ app(\App\Services\TranslationService::class)->trans('Best Rated', app()->getLocale()) }}</a></li>
-                        <li><a href="grid-listing-filterscol-full-width.html">{{ app(\App\Services\TranslationService::class)->trans('Best Price', app()->getLocale()) }}</a></li>
+                        <li><a href="grid-listing-filterscol.html">{{ app(\App\Services\AutoTranslationService::class)->trans('Top Categories', app()->getLocale()) }}</a></li>
+                        <li><a href="grid-listing-filterscol-full-masonry.html">{{ app(\App\Services\AutoTranslationService::class)->trans('Best Rated', app()->getLocale()) }}</a></li>
+                        <li><a href="grid-listing-filterscol-full-width.html">{{ app(\App\Services\AutoTranslationService::class)->trans('Best Price', app()->getLocale()) }}</a></li>
                         <li><a href="grid-listing-filterscol-full-masonry.html">@autotranslate('Latest Submissions', app()->getLocale())</a></li>
                     </ul>
                 </div>
@@ -55,7 +55,7 @@
                         <div id="message-newsletter"></div>
                         <form method="post" action="assets/newsletter.php" name="newsletter_form" id="newsletter_form">
                             <div class="form-group">
-                                <input type="email" name="email_newsletter" id="email_newsletter" class="form-control" placeholder="{{ app(\App\Services\TranslationService::class)->trans('Your email', app()->getLocale()) }}">
+                                <input type="email" name="email_newsletter" id="email_newsletter" class="form-control" placeholder="{{ app(\App\Services\AutoTranslationService::class)->trans('Your email', app()->getLocale()) }}">
                                 <button type="submit" id="submit-newsletter"><i class="arrow_carrot-right"></i></button>
                             </div>
                         </form>
@@ -83,7 +83,7 @@
                     if ($socialLinks !== null) {
                     ?>
                     <div class="follow_us">
-                        <h5>{{ app(\App\Services\TranslationService::class)->trans('Follow Us', app()->getLocale()) }}</h5>
+                        <h5>{{ app(\App\Services\AutoTranslationService::class)->trans('Follow Us', app()->getLocale()) }}</h5>
                         <ul>
                             @foreach($socialNetworks as $networkName => $columnName)
                                 @if(!empty($socialLinks->$columnName))
@@ -134,9 +134,9 @@
             </div>
             <div class="col-lg-6">
                 <ul class="additional_links">
-                    <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Impressum', app()->getLocale()) }}</a></li>
-                    <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Terms and conditions', app()->getLocale()) }}</a></li>
-                    <li><a href="#0">{{ app(\App\Services\TranslationService::class)->trans('Privacy', app()->getLocale()) }}</a></li>
+                    <li><a href="#0">{{ app(\App\Services\AutoTranslationService::class)->trans('Impressum', app()->getLocale()) }}</a></li>
+                    <li><a href="#0">{{ app(\App\Services\AutoTranslationService::class)->trans('Terms and conditions', app()->getLocale()) }}</a></li>
+                    <li><a href="#0">{{ app(\App\Services\AutoTranslationService::class)->trans('Privacy', app()->getLocale()) }}</a></li>
                     <li><a href="/media-stats">@autotranslate('Media Data', app()->getLocale())</a></li>
                     <li><span>© FooYes</span></li>
                 </ul>

@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreign('parent')->references('id')->on('mod_categories')->onDelete('set null'); // Fremdschlüsselbeziehung zu sich selbst für die Elternkategorie
             $table->timestamps();
         });
+
+        
     }
 
     /**

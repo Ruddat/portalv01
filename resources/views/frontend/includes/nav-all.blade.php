@@ -1,13 +1,13 @@
 <nav class="main-menu">
     <div id="header_menu">
         <a href="#0" class="open_close">
-            <i class="icon_close"></i><span>{{ app(\App\Services\TranslationService::class)->trans('Menu', app()->getLocale()) }}</span>
+            <i class="icon_close"></i><span>{{ app(\App\Services\AutoTranslationService::class)->trans('Menu', app()->getLocale()) }}</span>
         </a>
         <a href="{{ url('/') }}"><img src="{{ asset('frontend/img/logo.svg') }}" width="162" height="35" alt=""></a>
     </div>
     <ul>
         <li class="submenu">
-            <a href="#0" class="show-submenu">{{ app(\App\Services\TranslationService::class)->trans('Home', app()->getLocale()) }}</a>
+            <a href="#0" class="show-submenu">{{ app(\App\Services\AutoTranslationService::class)->trans('Home', app()->getLocale()) }}</a>
             <ul>
                 <li><a href="{{ url('/index-13') }}">KenBurns Slider <strong>New!</strong></a></li>
                 <li><a href="{{ url('/') }}">Address Autocomplete</a></li>
@@ -33,7 +33,7 @@
             </ul>
         </li>
         <li class="submenu">
-            <a href="#0" class="show-submenu">{{ app(\App\Services\TranslationService::class)->trans('Listing', app()->getLocale()) }}</a>
+            <a href="#0" class="show-submenu">{{ app(\App\Services\AutoTranslationService::class)->trans('Listing', app()->getLocale()) }}</a>
             <ul>
                 <li class="third-level"><a href="#0">List pages</a>
                     <ul>
@@ -58,7 +58,7 @@
                         <li><a href="{{ url('/grid-listing-masonry-openstreetmap') }}">List Masonry Filter</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ route('seller.register') }}" {{ app(\App\Services\TranslationService::class)->trans('Add your restaurant', app()->getLocale()) }}">{{ app(\App\Services\TranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
+                <li><a href="{{ route('seller.register') }}" {{ app(\App\Services\AutoTranslationService::class)->trans('Add your restaurant', app()->getLocale()) }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
                 <li><a href="submit-rider.html">Submit Rider</a></li>
                 <li><a href="{{ url('/order-details') }}">Order</a></li>
                 <li><a href="{{ url('/confirm-order') }}">Confirm Order</a></li>
@@ -81,6 +81,6 @@
             <li><a href="shortcodes.html">Shortcodes</a></li>
         </ul>
         </li>
-        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\TranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
+        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
     </ul>
 </nav>

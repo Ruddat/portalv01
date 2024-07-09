@@ -10,7 +10,6 @@ use App\Models\ModAdditives;
 use App\Models\ModAllergens;
 use Illuminate\Http\Request;
 use App\Rules\UniqueArticleNo;
-use Mberecall\Kropify\Kropify;
 use App\Models\ModProductSizes;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -19,6 +18,7 @@ use Intervention\Image\Facades\Image;
 use App\Models\ModProductsIngredients;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Mberecall\Services\Library\Kropify;
 use App\Models\ModProductIngredientsNodes;
 
 
@@ -67,7 +67,9 @@ class ProductController extends Controller
 
         $currentCategory = ModCategory::findOrFail($categoryId);
 
-   //   dd($currentCategory);
+     // dd($currentCategory);
+
+
 
         // Abrufen der aktuellen Produktgrößen für die angegebene Kategorie
         $currentProductSizes = ModProductSizes::where('parent', 0)
@@ -77,12 +79,48 @@ class ProductController extends Controller
             ->get();
 //dd($currentCategory->sizes_category);
 //dd($currentProductSizes);
+
+// Konvertiere sizes_category in ein PHP-Array, falls es noch nicht ist
+$sizesCategoryIds = json_decode($currentCategory->sizes_category, true);
+
+// Überprüfe, ob die Konvertierung erfolgreich war und $sizesCategoryIds ein Array ist
+if (!is_array($sizesCategoryIds)) {
+    $sizesCategoryIds = [$currentCategory->sizes_category]; // Fallback, falls es kein JSON-Array ist
+}
+
+// Konvertiere alle IDs in Strings und Integers
+$sizesCategoryIdsString = array_map('strval', $sizesCategoryIds);
+$sizesCategoryIdsInt = array_map('intval', $sizesCategoryIds);
+
+// Abrufen aller Hauptkategorien für Zutaten
+$ingredientCategories = ModProductsIngredients::where('parent', 0) // Annahme: Hauptkategorien haben parent = 0
+    ->where('shop_id', $shopId) // Filtern nach Shop-ID
+    ->where(function ($query) use ($sizesCategoryIdsString, $sizesCategoryIdsInt) {
+        foreach ($sizesCategoryIdsString as $id) {
+            $query->orWhereJsonContains('sizes_category', $id);
+        }
+        foreach ($sizesCategoryIdsInt as $id) {
+            $query->orWhereJsonContains('sizes_category', $id);
+        }
+    })
+    ->get(); // Alle übereinstimmenden Kategorien abrufen
+
+// Debugging-Ausgabe
+//dd($sizesCategoryIdsString, $sizesCategoryIdsInt, $ingredientCategories);
+
+
+
+
+
         // Abrufen aller Hauptkategorien für Zutaten
-        $ingredientCategories = ModProductsIngredients::where('parent', 0) // Annahme: Hauptkategorien haben parent = 0
-        ->where('shop_id', $shopId) // Filtern nach Shop-ID
-        //->whereJsonContains('sizes_category', [$currentCategory->id]) // Überprüfen, ob die sizes_category die Produktskategorie enthält
-        ->where('sizes_category', 'LIKE', '%"'.$currentCategory->sizes_category.'"%')
-        ->get(); // Alle übereinstimmenden Kategorien abrufen
+   //     $ingredientCategories = ModProductsIngredients::where('parent', 0) // Annahme: Hauptkategorien haben parent = 0
+  //      ->where('shop_id', $shopId) // Filtern nach Shop-ID
+ //       ->whereJsonContains('sizes_category', [$currentCategory->sizes_category]) // Überprüfen, ob die sizes_category die Produktskategorie enthält
+      //  ->where('sizes_category', 'LIKE', '%"'.$currentCategory->sizes_category.'"%')
+  //      ->get(); // Alle übereinstimmenden Kategorien abrufen
+
+
+//dd($ingredientCategories);
 
         $data = [
             'pageTitle' => 'Add Product',
@@ -153,8 +191,9 @@ class ProductController extends Controller
 
 
         // Hole die Bildinformationen aus der Sitzungsvariable
-        $imageInfo = session()->get('temporary_image_info');
-
+    //    $imageInfo = session()->get('temporary_image_info');
+//dd($imageInfo);
+$imageInfo = null;
         // Überprüfe, ob die Bildinformationen vorhanden sind und das Objekt nicht null ist
         if ($imageInfo !== null) {
             // Verarbeite das Bild weiter, z. B.
@@ -173,7 +212,7 @@ class ProductController extends Controller
         File::makeDirectory($destinationPath, 0755, true);
     }
 
-    
+
 
     // Neu generierter Dateiname für das Bild
     $newFilename = Str::slug($product->product_title) . '_' . date('YmdHis') . '.' . pathinfo($imageName, PATHINFO_EXTENSION);
@@ -243,34 +282,45 @@ foreach ($request->all() as $key => $value) {
 // Durchlaufen der Ingredients-Nodes und Speichern in die Datenbank
 if ($request->has('ingredients')) {
     foreach ($request->input('ingredients') as $categoryId => $ingredient) {
-        // Setzen Sie den active-Status basierend auf den Bedingungen
-       // $active = ($ingredient['free_ingredients'] > 0 || $ingredient['min_ingredients'] > 0 || $ingredient['max_ingredients'] > 0) ? true : false;
+        // Standardwerte für Zutaten festlegen
+        $freeIngredients = $ingredient['free_ingredients'] ?? 0;
+        $minIngredients = $ingredient['min_ingredients'] ?? 0;
+        $maxIngredients = $ingredient['max_ingredients'] ?? 0;
 
-// Setzen Sie den active-Status basierend auf den Bedingungen
-$active = false;
+        // Überprüfen, ob der Schlüssel 'active' existiert und setze den Wert
+        $ingredientActive = isset($ingredient['active']) ? $ingredient['active'] : 0;
 
-// Wenn beim Erstellen eine Option ausgewählt, aber keine spezifischen Werte eingegeben wurden, setze active auf true
-if ($request->isMethod('post')) {
-    $active = ($ingredient['free_ingredients'] > 0 || $ingredient['min_ingredients'] > 0 || $ingredient['max_ingredients'] > 0) ? true : false;
-} else {
-    // Wenn beim Bearbeiten Optionen ausgewählt und spezifische Werte eingegeben wurden, aber vergessen wurde, das Kontrollkästchen zu aktivieren, setze active auf true
-    if ($ingredient['free_ingredients'] > 0 || $ingredient['min_ingredients'] > 0 || $ingredient['max_ingredients'] > 0) {
-        $active = true;
-    }
-}
+        // Setzen des active-Status basierend auf den Bedingungen
+        $active = false;
 
+        // Überprüfung, ob eine der Zutaten-Einstellungen größer als 0 ist
+        if ($freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) {
+            $active = true;
+        }
 
+        // Wenn die Anfrage eine POST-Anfrage ist, setze active basierend auf den Eingabewerten
+        if ($request->isMethod('post')) {
+            $active = ($ingredientActive == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) ? true : false;
+        } else {
+            // Bei PUT/PATCH-Anfragen, übernehme den active-Status wie oben
+            if ($ingredientActive == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) {
+                $active = true;
+            }
+        }
+
+        // Speichern der Ingredients-Nodes in die Datenbank
         ModProductIngredientsNodes::create([
             'parent' => $productId,
             'shop_id' => $shopId,
-            'ingredients_id' => $categoryId, // Verwenden Sie $categoryId als die Zutaten-ID
-            'free_ingredients' => $ingredient['free_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
-            'min_ingredients' => $ingredient['min_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
-            'max_ingredients' => $ingredient['max_ingredients'] ?? 0, // Standardwert von 0, wenn kein Wert vorhanden ist
-            'active' => $active, // Setzen Sie den active-Status
+            'ingredients_id' => $categoryId, // Verwenden von $categoryId als die Zutaten-ID
+            'free_ingredients' => $freeIngredients, // Verwenden von Standardwerten, wenn keine Werte vorhanden sind
+            'min_ingredients' => $minIngredients, // Verwenden von Standardwerten, wenn keine Werte vorhanden sind
+            'max_ingredients' => $maxIngredients, // Verwenden von Standardwerten, wenn keine Werte vorhanden sind
+            'active' => $active, // Setzen des active-Status
         ]);
     }
 }
+
 
 
 

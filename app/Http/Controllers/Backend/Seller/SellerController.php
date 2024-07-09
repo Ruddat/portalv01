@@ -168,6 +168,9 @@ class SellerController extends Controller
         $timestamp = now()->format('ymdHi');
         $randomNumber = mt_rand(10, 99);
         $uniqueShopNumber = sprintf('%s-%s', $timestamp, $randomNumber);
+
+        $uniqueShopNumber = generateCopyUniqueShopNumber('Self');
+
         $this->newShop['shop_nr'] = $uniqueShopNumber;
         $defaultPhone = '1234567890';
 
@@ -327,8 +330,11 @@ class SellerController extends Controller
                 ->where('is_finished', false)
                 ->pluck('mod_shop_id');
 
+             //   dd($unfinishedShopIds);
+
             // Lösche die nicht fertigen Shops aus der mod_shops-Tabelle, die diesem Seller zugeordnet sind
-            $deletedShopsCount = ModShop::whereIn('id', $unfinishedShopIds)->delete();
+         //   $deletedShopsCount = ModShop::whereIn('id', $unfinishedShopIds)->delete();
+            $deletedShopsCount = ModShop::whereIn('id', $unfinishedShopIds)->forceDelete();
 
             // Lösche den Seller
             $seller->delete();

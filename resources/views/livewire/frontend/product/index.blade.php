@@ -619,6 +619,16 @@ button.btn.btn-warning.text-end {
     transition: .3s;
 }
 
+
+button.text-end:disabled {
+    background-color: grey; /* Ändere die Hintergrundfarbe, wenn der Button deaktiviert ist */
+    color: darkgrey; /* Ändere die Textfarbe, wenn der Button deaktiviert ist */
+    box-shadow: none; /* Entferne den Schatten, wenn der Button deaktiviert ist */
+    cursor: not-allowed; /* Ändere den Cursor, wenn der Button deaktiviert ist */
+    opacity: 0.6; /* Füge eine leichte Transparenz hinzu, wenn der Button deaktiviert ist */
+}
+
+
 .plakat-box {
     background-color: #f9f9f9; /* Hintergrundfarbe */
     border: 2px solid #ccc; /* Rahmen */

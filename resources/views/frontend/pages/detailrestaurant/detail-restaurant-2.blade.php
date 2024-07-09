@@ -333,6 +333,9 @@
 
 
                 })(window.jQuery);
+
+
+
             </script>
 
 
@@ -341,25 +344,3 @@
         @endpush
     @endif
 
-    <style>
-        .reviews #review_summary {
-            text-align: center;
-            background-color: #66cc66;
-            color: #fff;
-            padding: 20px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s; /* Übergangseffekt für die Hintergrundfarbe */
-        }
-
-        /* Hover-Stil */
-        .reviews #review_summary:hover {
-            background-color: #4CAF50; /* Neue Hintergrundfarbe beim Hover */
-        }
-    </style>
-
-
-
-
-
-        </div>
