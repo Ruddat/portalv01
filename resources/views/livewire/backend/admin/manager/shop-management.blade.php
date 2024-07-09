@@ -86,8 +86,8 @@
 
 <!-- Copy Modal -->
 <div wire:ignore.self class="modal fade" id="copyModal" tabindex="-1" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content animated bounceInRight">
             <div class="modal-header">
                 <h5 class="modal-title" id="copyModalLabel">Shop kopieren</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

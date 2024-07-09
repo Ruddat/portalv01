@@ -142,4 +142,23 @@ if( !function_exists('get_settings')){
             return implode('<br>', $output);
         }
     }
+
+    // ----------------------------------------------------------------
+    // Generate unique shop number
+    if (!function_exists('generateCopyUniqueShopNumber')) {
+        function generateCopyUniqueShopNumber($prefix = '')
+        {
+            $timestamp = now()->format('ymdHi');
+            $randomNumber = mt_rand(10, 99);
+
+            if (!empty($prefix)) {
+                return sprintf('%s-%s-%s', $prefix, $timestamp, $randomNumber);
+            } else {
+                return sprintf('%s-%s', $timestamp, $randomNumber);
+            }
+        }
+    }
+
+
+
 }

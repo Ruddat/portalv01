@@ -168,6 +168,9 @@ class SellerController extends Controller
         $timestamp = now()->format('ymdHi');
         $randomNumber = mt_rand(10, 99);
         $uniqueShopNumber = sprintf('%s-%s', $timestamp, $randomNumber);
+
+        $uniqueShopNumber = generateCopyUniqueShopNumber('Self');
+
         $this->newShop['shop_nr'] = $uniqueShopNumber;
         $defaultPhone = '1234567890';
 

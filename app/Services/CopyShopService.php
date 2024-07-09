@@ -379,7 +379,8 @@ class CopyShopService
 
     protected function generateNewShopNr()
     {
-        return 'NEW_SHOP_NR_' . uniqid();
+        $newShop = generateCopyUniqueShopNumber('Ghost');
+        return $newShop;
     }
 
     protected function copyLogo($originalShop, $newShop)

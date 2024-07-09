@@ -287,6 +287,9 @@ if ($request->has('ingredients')) {
         $minIngredients = $ingredient['min_ingredients'] ?? 0;
         $maxIngredients = $ingredient['max_ingredients'] ?? 0;
 
+        // Überprüfen, ob der Schlüssel 'active' existiert und setze den Wert
+        $ingredientActive = isset($ingredient['active']) ? $ingredient['active'] : 0;
+
         // Setzen des active-Status basierend auf den Bedingungen
         $active = false;
 
@@ -297,10 +300,10 @@ if ($request->has('ingredients')) {
 
         // Wenn die Anfrage eine POST-Anfrage ist, setze active basierend auf den Eingabewerten
         if ($request->isMethod('post')) {
-            $active = ($ingredient['active'] == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) ? true : false;
+            $active = ($ingredientActive == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) ? true : false;
         } else {
             // Bei PUT/PATCH-Anfragen, übernehme den active-Status wie oben
-            if ($ingredient['active'] == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) {
+            if ($ingredientActive == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) {
                 $active = true;
             }
         }
