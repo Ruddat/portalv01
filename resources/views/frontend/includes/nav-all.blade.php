@@ -81,6 +81,7 @@
             <li><a href="shortcodes.html">Shortcodes</a></li>
         </ul>
         </li>
-        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Submit Restaurant', app()->getLocale()) }}</a></li>
+        <li><a href="{{ route('broker.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Job?', app()->getLocale()) }}</a></li>
+        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Restaurant anmelden', app()->getLocale()) }}</a></li>
     </ul>
 </nav>
