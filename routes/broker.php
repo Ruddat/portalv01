@@ -31,6 +31,11 @@ Route::prefix('broker')->name('broker.')->group(function(){
         Route::view('/email_send', 'backend.pages.broker.auth.email-verificaton')->name('email_send');
         Route::get('/verify/{token}', [BrokerController::class, 'verifyEmail'])->name('verify-email');
         Route::post('/register_last_step_handler', [BrokerController::class, 'registerLastStepHandler'])->name('register_last_step_handler');
+        Route::view('/forgot_password', 'backend.pages.broker.auth.forgot-password')->name('forgot-password');
+        Route::post('/send-password-reset-link', [BrokerController::class, 'sendPasswordResetLink'])->name('send-password-reset-link');
+        Route::get('/password/reset/{token}', [BrokerController::class, 'resetPassword'])->name('reset-password');
+        Route::post('/reset-password-handler', [BrokerController::class, 'resetPasswordHandler'])->name('reset-password-handler');
+
 
  //       Route::get('/register', 'Broker\Auth\RegisterController@showRegistrationForm')->name('register');
  //       Route::post('/register', 'Broker\Auth\BrokerController@register')->name('register');
@@ -48,7 +53,7 @@ Route::prefix('broker')->name('broker.')->group(function(){
 
     Route::middleware(['auth:broker', 'PreventBackHistory'])->group(function () {
         Route::get('/dashboard', [BrokerController::class, 'dashboard'])->name('dashboard');
-      //  Route::post('/logout_handler', [SellerController::class, 'logoutHandler'])->name('logout_handler');
+        Route::post('/logout_handler', [BrokerController::class, 'logoutHandler'])->name('logout_handler');
       //  Route::get('/settings', [SellerController::class, 'settings'])->name('settings');
       //  Route::get('/profile', [SellerController::class, 'profileView'])->name('profile');
       //  Route::post('/change-profile-picture', [SellerController::class, 'changeProfilePicture'])->name('change-profile-picture');

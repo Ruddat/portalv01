@@ -23,6 +23,13 @@
                         <span class="nav-text">@autotranslate('Home', app()->getLocale())</span>
                     </a>
                     </li>
+                    @elseif(Auth::guard('broker')->check())
+                    {{-- Aktives Menu wenn Seller eingeloggt --}}
+                    <li><a class="no-arrow " href="{{ route('broker.dashboard') }}" aria-expanded="false">
+                        <i class="bi bi-house"></i>
+                        <span class="nav-text">@autotranslate('Home', app()->getLocale())</span>
+                    </a>
+                    </li>
                     @endif
 
 
