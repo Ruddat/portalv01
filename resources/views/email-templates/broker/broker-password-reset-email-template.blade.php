@@ -59,7 +59,7 @@
             <img src="{{ asset('images/site/' . get_settings()->site_logo) }}" alt="{{ config('app.name') }}">
         </div>
         <div class="email-content">
-            <p>@autotranslate('Hello', app()->getLocale()) {{ $seller->name }},</p>
+            <p>@autotranslate('Hello', app()->getLocale()) {{ $broker->name }},</p>
             <p>@autotranslate('You are receiving this email because we received a password reset request for your account.', app()->getLocale())</p>
             <p>@autotranslate('Click the button below to reset your password:', app()->getLocale())</p>
             <a href="{{ $resetUrl }}" target="_blank" class="email-button">@autotranslate('Reset Password', app()->getLocale())</a>

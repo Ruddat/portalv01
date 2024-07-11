@@ -68,7 +68,7 @@
             <img src="{{ asset('images/site/' . get_settings()->site_logo) }}" alt="{{ config('app.name') }}">
         </div>
         <div class="email-content">
-            <p>@autotranslate('Hello', app()->getLocale()) {{ $seller->name }},</p>
+            <p>@autotranslate('Hello', app()->getLocale()) {{ $broker->name }},</p>
 
             <p>
                 @autotranslate('Your password on the', app()->getLocale()) <span class="email-highlight">{{ config('app.name') }}</span>  @autotranslate('system was changed successfully.', app()->getLocale())
@@ -79,7 +79,7 @@
             </p>
 
             <p>
-                <span class="email-highlight">Email:</span> {{ $seller->email }}<br>
+                <span class="email-highlight">Email:</span> {{ $broker->email }}<br>
                 <span class="email-highlight">Password:</span> {{ $new_password }}
             </p>
 

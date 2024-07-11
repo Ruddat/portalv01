@@ -12,6 +12,7 @@ class AdminSellerHeaderProfileInfo extends Component
 
     public $admin;
     public $seller;
+    public $broker;
 
     public $listeners = [
         'updateAdminSellerHeaderInfo' => '$refresh'
@@ -23,7 +24,10 @@ class AdminSellerHeaderProfileInfo extends Component
             $this->admin = Auth::guard('admin')->user();
         } elseif (Auth::guard('seller')->check()) {
             $this->seller = Auth::guard('seller')->user();
-        }
+        } elseif (Auth::guard('broker')->check()) {
+        $this->broker = Auth::guard('broker')->user();
+    }
+
     }
 
 

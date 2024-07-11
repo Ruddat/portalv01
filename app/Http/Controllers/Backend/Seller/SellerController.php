@@ -8,6 +8,7 @@ use App\Models\Seller;
 use App\Models\ModShop;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Rules\UniqueUsername;
 use App\Models\ModSellerShops;
 use Illuminate\Support\Carbon;
 use App\Services\GeocodeService;
@@ -212,7 +213,7 @@ class SellerController extends Controller
             'email' => $request->email_register,
         ]);
 
-        
+
         $shop = $seller->shops()->create([
             'shop_nr' => $this->newShop['shop_nr'],
             'title' => $request->restaurantname_register,
@@ -367,7 +368,7 @@ class SellerController extends Controller
 
         // Validate the request data after retrieving the seller
         $request->validate([
-            'username' => 'required|min:5|max:50|unique:sellers,username,'.optional($seller)->id,
+            'username' => ['required', 'min:5', 'max:50', new UniqueUsername(optional($seller)->id)],
             'new_password' => 'required|confirmed',
             'new_password_confirmation' => 'required',
             'token' => 'required', // Sicherstellen, dass der Token im Request enthalten ist
@@ -571,7 +572,7 @@ public function sendPasswordResetLink(Request $request)
                 // E-Mail senden
                 if(sendEmail($mailConfig)){
                     session()->flash('success', 'Success Password Reset link sent on your email');
-                    return redirect()->route('seller.forgot-password');
+                    return redirect()->route('seller.login');
                 }else{
                     session()->flash('fail', 'Something went wrong');
                     return redirect()->route('seller.forgot-password');

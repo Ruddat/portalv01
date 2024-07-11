@@ -83,6 +83,13 @@ class Broker extends Authenticatable
         'profile_photo_url',
     ];
 
-
+    public function getPictureAttribute($value)
+    {
+        if ($value ) {
+            return asset('/uploads/images/user/brokers/' . $value);
+        } else {
+            return asset('/uploads/images/user/default-avatar.png');
+        }
+    }
 
 }

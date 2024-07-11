@@ -22,7 +22,7 @@
 									</div>
                                     <h4 class="text-center mb-4">@autotranslate('Forgot Password', app()->getLocale())</h4>
 
-									<form action="{{ route('seller.send-password-reset-link') }}" method="POST">
+									<form action="{{ route('broker.send-password-reset-link') }}" method="POST">
                                         @csrf
 
                                         @include('backend.includes.errorflash')
