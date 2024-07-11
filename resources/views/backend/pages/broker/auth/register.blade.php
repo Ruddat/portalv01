@@ -144,155 +144,31 @@
         </div>
     </div>
 
+
+
+
     <div class="container margin_60_40" id="apply">
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
                 <div class="main_title center">
                     <span><em></em></span>
-                    <h2>@autotranslate('Jetzt Bewerben', app()->getLocale())</h2>
-                    <p>@autotranslate('Hinweis: Du musst über 18 Jahre alt sein', app()->getLocale())</p>
+                    <h2>Jetzt Bewerben</h2>
+                    <p>Hinweis: Du musst über 18 Jahre alt sein</p>
                 </div>
 
                 <div id="wizard_container">
                     <div id="top-wizard">
                         <div id="progressbar"></div>
                     </div>
-                    <form id="registration_form" action="{{ route('broker.register_handler') }}" method="POST">
-                        <input id="website" name="website" type="text" value="">
-                        <div id="middle-wizard">
-                            <div class="step">
-                                <h3 class="main_question"><strong>1/5</strong>@autotranslate('In welcher Stadt möchtest du arbeiten?', app()->getLocale())</h3>
-                                <div class="form-group">
-                                    <div class="custom_select clearfix">
-                                        <select class="wide required" name="location">
-                                            <option value="">@autotranslate('Deine Stadt', app()->getLocale())</option>
-                                            <option value="Frankfurt">Frankfurt</option>
-                                            <option value="München">München</option>
-                                            <option value="Berlin">Berlin</option>
-                                            <option value="Hamburg">Hamburg</option>
-                                            <option value="Köln">Köln</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+                    @livewire('backend.broker.broker-registration')
 
-                            <div class="step">
-                                <h3 class="main_question"><strong>3/5</strong>Welche Fahrzeugart nutzt du?</h3>
-                                <div class="form-group">
-                                    <label class="container_radio version_2">Fahrrad
-                                        <input type="radio" name="vehicle" value="Fahrrad" class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="container_radio version_2">Roller
-                                        <input type="radio" name="vehicle" value="Roller" class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="container_radio version_2">Auto
-                                        <input type="radio" name="vehicle" value="Auto" class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <p>
-                                    <strong><i class="icon_info"></i> Hinweis</strong><br>
-                                    Du benötigst ein Fahrzeug (Fahrrad, Roller oder Auto) und ein Smartphone (iPhone oder
-                                    Android), um als freiberuflicher Verkäufer erfolgreich zu sein.
-                                </p>
-                            </div>
-
-                            <div class="step">
-                                <h3 class="main_question"><strong>4/5</strong>Wie hast du von uns erfahren?</h3>
-                                <div class="form-group">
-                                    <label class="container_check version_2">Google-Suchmaschine
-                                        <input type="checkbox" name="how_hear[]" value="Google-Suchmaschine"
-                                            class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="container_check version_2">Ein Freund von mir
-                                        <input type="checkbox" name="how_hear[]" value="Ein Freund von mir"
-                                            class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="container_check version_2">Printwerbung
-                                        <input type="checkbox" name="how_hear[]" value="Printwerbung" class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="container_check version_2">Zeitung
-                                        <input type="checkbox" name="how_hear[]" value="Zeitung" class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label class="container_check version_2">Sonstiges
-                                        <input type="checkbox" name="how_hear[]" value="Sonstiges" class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="submit step">
-                                <h3 class="main_question"><strong>5/5</strong>Erzähle uns etwas über dich</h3>
-                                <div class="form-group">
-                                    <input type="text" name="firstname" class="form-control required"
-                                        placeholder="Vor- und Nachname">
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" name="email" class="form-control required"
-                                        placeholder="Deine E-Mail">
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="telephone" class="form-control required"
-                                        placeholder="Deine Telefonnummer">
-                                </div>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <div class="form-group">
-                                            <input type="text" name="age" class="form-control required"
-                                                placeholder="Alter">
-                                        </div>
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="form-group radio_input">
-                                            <label class="container_radio">Männlich
-                                                <input type="radio" name="gender" value="Männlich" class="required">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                            <label class="container_radio">Weiblich
-                                                <input type="radio" name="gender" value="Weiblich" class="required">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group terms">
-                                    <label class="container_check">Bitte akzeptiere unsere <a href="#"
-                                            data-bs-toggle="modal" data-bs-target="#terms-txt">Allgemeinen
-                                            Geschäftsbedingungen</a>
-                                        <input type="checkbox" name="terms" value="Ja" class="required">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="bottom-wizard">
-                            <button type="button" name="backward" class="backward">Zurück</button>
-                            <button type="button" name="forward" class="forward">Weiter</button>
-                            <button type="submit" name="process" class="submit">Absenden</button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+
+
 
 
     @push('specific-scripts')
@@ -312,8 +188,13 @@
             });
         </script>
 
-        <!-- SPECIFIC SCRIPTS -->
-        <script src="{{ asset('frontend/js/wizard/wizard_scripts.js') }}"></script>
-        <script src="{{ asset('frontend/js/wizard/wizard_func.js') }}"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
     @endpush
 @endsection

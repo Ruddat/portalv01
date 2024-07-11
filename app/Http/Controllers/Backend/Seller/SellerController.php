@@ -212,6 +212,7 @@ class SellerController extends Controller
             'email' => $request->email_register,
         ]);
 
+        
         $shop = $seller->shops()->create([
             'shop_nr' => $this->newShop['shop_nr'],
             'title' => $request->restaurantname_register,

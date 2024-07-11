@@ -33,6 +33,11 @@ return [
         'model' => App\Models\Client::class,
     ],
 
+    'broker' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Broker::class,
+    ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -70,6 +75,11 @@ return [
         'client' => [
             'driver' => 'session',
             'provider' => 'clients',
+        ],
+
+        'broker' => [
+            'driver' => 'session',
+            'provider' => 'brokers',
         ],
     ],
 
@@ -110,6 +120,11 @@ return [
         'clients' => [
             'driver' => 'eloquent',
             'model' => App\Models\Client::class,
+        ],
+
+        'brokers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Broker::class,
         ],
 
         // 'users' => [
@@ -159,7 +174,12 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Client::class,
         ],
-        
+
+        'brokers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Broker::class,
+        ],
+
     ],
 
     /*
