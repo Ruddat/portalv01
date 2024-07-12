@@ -268,10 +268,10 @@
                                             <li>
                                                 <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}">
                                                     <figure>
-                                                        <img src="{{ $restaurant->logo ? $restaurant->logo : asset('frontend/img/location_list_placeholder.png') }}"
-                                                             data-src="{{ $restaurant->logo ? $restaurant->logo : asset('frontend/img/location_list_placeholder.png') }}"
+                                                        <img src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
+                                                             data-src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
                                                              alt="{{ $restaurant->title }}"
-                                                             class="lazy" width="350" height="233">
+                                                             class="lazy" width="350" height="233" style="max-width: 50%; height: auto;">
                                                     </figure>
                                                     <div class="score"><strong>{{ $restaurant->voting_average }}</strong></div>
                                                     <em>{{ $restaurant->categories }}</em>

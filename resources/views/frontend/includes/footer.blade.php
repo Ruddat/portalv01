@@ -134,11 +134,11 @@
             </div>
             <div class="col-lg-6">
                 <ul class="additional_links">
-                    <li><a href="#0">{{ app(\App\Services\AutoTranslationService::class)->trans('Impressum', app()->getLocale()) }}</a></li>
+                    <li><a href="/impressum">{{ app(\App\Services\AutoTranslationService::class)->trans('Impressum', app()->getLocale()) }}</a></li>
                     <li><a href="#0">{{ app(\App\Services\AutoTranslationService::class)->trans('Terms and conditions', app()->getLocale()) }}</a></li>
                     <li><a href="#0">{{ app(\App\Services\AutoTranslationService::class)->trans('Privacy', app()->getLocale()) }}</a></li>
                     <li><a href="/media-stats">@autotranslate('Media Data', app()->getLocale())</a></li>
-                    <li><span>© FooYes</span></li>
+                    <li><span>© {{ config('app.name') }}</span></li>
                 </ul>
             </div>
         </div>

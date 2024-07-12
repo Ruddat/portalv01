@@ -206,10 +206,10 @@
                     <div class="col-lg-4 col-md-6">
                             <div class="box_list">
                                 <figure>
-                                    <img src="{{ $restaurant->logo ? asset('storage/' . $restaurant->logo) : asset('frontend/img/location_list_placeholder.png') }}"
-                                         data-src="{{ $restaurant->logo ? asset('storage/' . $restaurant->logo) : asset('frontend/img/location_list_placeholder.png') }}"
+                                    <img src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
+                                         data-src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
                                          alt="{{ $restaurant->title }}"
-                                         class="lazy" width="350" height="233">
+                                         class="lazy" width="350" height="233" style="max-width: 50%; height: auto;">
                                 </figure>
                                 <div class="wrapper">
                                     <h3><a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}">{{ $restaurant->title }}</a></h3>
