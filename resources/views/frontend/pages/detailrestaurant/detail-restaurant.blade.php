@@ -154,6 +154,7 @@
 		                    <!-- /head -->
 		                    <div class="main">
                                 @include('backend.includes.errorflash')
+                                
                                 <livewire:frontend.card.cart-component />
 
 		                        <div class="row opt_order">
