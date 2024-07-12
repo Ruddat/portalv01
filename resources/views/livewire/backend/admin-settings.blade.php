@@ -21,6 +21,11 @@
                     class="nav-link {{ $tab == 'payment_methods' ? 'active' : '' }}" data-bs-toggle="tab"
                     href="#payment_methods"><i class="las la-cash-register me-2"></i> Payment methods</a>
             </li>
+            <li class="nav-item">
+                <a wire:click.prevent='selectTab("seller_commissions")'
+                    class="nav-link {{ $tab == 'seller_commissions' ? 'active' : '' }}" data-bs-toggle="tab"
+                    href="#seller_commissions"><i class="las la-cash-register me-2"></i>Seller Commission</a>
+            </li>
         </ul>
 
 
@@ -324,6 +329,14 @@
                     </div>
 
                 </div>
+
+                <div class="tab-pane fade {{ $tab == 'seller_commissions' ? 'show active' : '' }}" id="seller_commissions"
+                role="tabpanel">
+                <div class="pt-4">
+                    ------------------- seller_commissions --------------------------------
+                </div>
+
+            </div>
             </div>
 
         </div>
