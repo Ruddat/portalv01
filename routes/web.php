@@ -65,6 +65,9 @@ use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 
 Route::get('/get-location', [LocationController::class, 'getLocation']);
 Route::get('/media-stats', [MediaStatsController::class, 'index'])->name('media.stats.index');
+Route::get('/impressum', function () {
+    return view('frontend/pages/otherpages.impressum');
+});
 
 
 

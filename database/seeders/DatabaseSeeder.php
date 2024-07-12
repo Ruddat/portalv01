@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ModAdditivesSeeder::class);
         $this->call(ModAllergensSeeder::class);
         $this->call(AdminPromoBannerSeeder::class);
+        $this->call(ModOrderSeeder::class);
 
 
     }

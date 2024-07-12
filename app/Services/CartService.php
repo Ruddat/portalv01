@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Session;
 
 class CartService {
     const MINIMUM_QUANTITY = 1;
-    const DEFAULT_INSTANCE = 'shopping-cart';
 
     protected $session;
     protected $instance;
@@ -21,6 +20,7 @@ class CartService {
     public function __construct(SessionManager $session)
     {
         $this->session = $session;
+        $this->instance = 'shopping-cart-' . $this->getShopId();
     }
 
     /**
@@ -50,8 +50,7 @@ class CartService {
         $content->put($id, $cartItem);
 
         // Update the cart in the session storage
-        $this->session->put(self::DEFAULT_INSTANCE, $content);
-
+        $this->session->put($this->instance, $content);
     }
 
     /**
@@ -85,7 +84,7 @@ class CartService {
 
             $content->put($id, $cartItem);
 
-            $this->session->put(self::DEFAULT_INSTANCE, $content);
+            $this->session->put($this->instance, $content);
         }
     }
 
@@ -100,7 +99,7 @@ class CartService {
         $content = $this->getContent();
 
         if ($content->has($id)) {
-            $this->session->put(self::DEFAULT_INSTANCE, $content->except($id));
+            $this->session->put($this->instance, $content->except($id));
         }
     }
 
@@ -111,7 +110,7 @@ class CartService {
      */
     public function clear(): void
     {
-        $this->session->forget(self::DEFAULT_INSTANCE);
+        $this->session->forget($this->instance);
     }
 
     /**
@@ -121,44 +120,36 @@ class CartService {
      */
     public function content(): Collection
     {
-        return is_null($this->session->get(self::DEFAULT_INSTANCE)) ? collect([]) : $this->session->get(self::DEFAULT_INSTANCE);
+        return is_null($this->session->get($this->instance)) ? collect([]) : $this->session->get($this->instance);
     }
 
-/**
- * Returns total price of the items in the cart including delivery fee if applicable.
- *
- * @return string
- */
-public function total(): string
-{
-    $content = $this->getContent();
+    /**
+     * Returns total price of the items in the cart including delivery fee if applicable.
+     *
+     * @return string
+     */
+    public function total(): string
+    {
+        $content = $this->getContent();
 
-    $total = $content->reduce(function ($total, $item) {
-        return $total += $item->get('price') * $item->get('quantity');
-    }, 0); // initialisiere $total mit 0
+        $total = $content->reduce(function ($total, $item) {
+            return $total += $item->get('price') * $item->get('quantity');
+        }, 0);
 
-    // Hole die Shop-ID aus der Session
-    $shopId = Session::get('shopId');
+        $shopId = $this->getShopId();
+        $status = Session::get('status', 'delivery');
 
-    // Überprüfe den Liefermodus
-    $status = Session::get('status', 'delivery');
+        if ($status === 'delivery') {
+            $deliveryFee = Session::get("delivery_cost_$shopId", 0);
+            $deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0);
 
-    if ($status === 'delivery') {
-        // Hole die Liefergebühr und den Schwellenwert für kostenlose Lieferung aus der Session
-        $deliveryFee = Session::get("delivery_cost_$shopId", 0);
-        $deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0); // Beispielwert 30
-//dd($deliveryFreeThreshold);
-        // Füge die Liefergebühr nur hinzu, wenn der Bestellwert unter dem Schwellenwert liegt
-        if ($total < $deliveryFreeThreshold) {
-            $total += $deliveryFee;
+            if ($total < $deliveryFreeThreshold) {
+                $total += $deliveryFee;
+            }
         }
+
+        return number_format($total, 2);
     }
-
-    return number_format($total, 2);
-}
-
-
-
 
     /**
      * Returns total price of the items in the cart.
@@ -168,16 +159,13 @@ public function total(): string
     public function subTotal(): string
     {
         $content = $this->getContent();
-//dd($content);
+
         $total = $content->reduce(function ($total, $item) {
             return $total += $item->get('price') * $item->get('quantity');
-        });
+        }, 0);
 
         return number_format($total, 2);
     }
-
-
-
 
     /**
      * Returns the content of the cart.
@@ -186,13 +174,12 @@ public function total(): string
      */
     protected function getContent(): Collection
     {
-        return $this->session->has(self::DEFAULT_INSTANCE) ? $this->session->get(self::DEFAULT_INSTANCE) : collect([]);
+        return $this->session->has($this->instance) ? $this->session->get($this->instance) : collect([]);
     }
 
     /**
      * Creates a new cart item from given inputs.
      *
-     * @param array $code
      * @param string $name
      * @param string $price
      * @param string $quantity
@@ -218,7 +205,6 @@ public function total(): string
             'size' => $size,
         ];
 
-        // Fügen Sie die Optionen nur hinzu, wenn sie vorhanden sind
         if (!is_null($options)) {
             $cartItem['options'] = $options;
         }
@@ -236,4 +222,13 @@ public function total(): string
         return $this->content()->isEmpty();
     }
 
+    /**
+     * Gets the current shop ID from the session.
+     *
+     * @return string|null
+     */
+    protected function getShopId(): ?string
+    {
+        return Session::get('shopId');
+    }
 }

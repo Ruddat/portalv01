@@ -99,99 +99,20 @@
                                 <livewire:frontend.card.cart-component />
                                 <livewire:frontend.cart.timepicker-component :shopId="$restaurant" />
                                 <livewire:frontend.cart.tip-component />
+                                @livewire('frontend.cart.order-button-component', ['restaurantId' => $restaurant->id, 'minimumOrderValue' => $restaurant->minimum_order_value])
 
-                                <div class="dropdown day">
-                                    <a href="#" data-bs-toggle="dropdown">Day <span id="selected_day"></span></a>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-menu-content">
-                                            <h4>Which day delivered?</h4>
-                                            <div class="radio_select chose_day">
-                                                <ul>
-                                                    <li>
-                                                        <input type="radio" id="day_1" name="day" value="Today">
-                                                        <label for="day_1">Today<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="day_2" name="day"
-                                                            value="Tomorrow">
-                                                        <label for="day_2">Tomorrow<em>-40%</em></label>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- /people_select -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /dropdown -->
-                                <div class="dropdown time">
-                                    <a href="#" data-bs-toggle="dropdown">Time <span id="selected_time"></span></a>
-                                    <div class="dropdown-menu">
-                                        <div class="dropdown-menu-content">
-                                            <h4>Lunch</h4>
-                                            <div class="radio_select add_bottom_15">
-                                                <ul>
-                                                    <li>
-                                                        <input type="radio" id="time_1" name="time"
-                                                            value="12.00am">
-                                                        <label for="time_1">12.00<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_2" name="time"
-                                                            value="08.30pm">
-                                                        <label for="time_2">12.30<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_3" name="time"
-                                                            value="09.00pm">
-                                                        <label for="time_3">1.00<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_4" name="time"
-                                                            value="09.30pm">
-                                                        <label for="time_4">1.30<em>-40%</em></label>
-                                                    </li>
-                                                </ul>
-                                            </div>
-
-
-                                            <!-- /time_select -->
-                                            <h4>Dinner</h4>
-                                            <div class="radio_select">
-                                                <ul>
-                                                    <li>
-                                                        <input type="radio" id="time_5" name="time"
-                                                            value="08.00pm">
-                                                        <label for="time_1">20.00<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_6" name="time"
-                                                            value="08.30pm">
-                                                        <label for="time_2">20.30<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_7" name="time"
-                                                            value="09.00pm">
-                                                        <label for="time_3">21.00<em>-40%</em></label>
-                                                    </li>
-                                                    <li>
-                                                        <input type="radio" id="time_8" name="time"
-                                                            value="09.30pm">
-                                                        <label for="time_4">21.30<em>-40%</em></label>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <!-- /time_select -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /dropdown -->
                                 <div class="btn_1_mobile">
                                     <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}"
                                         class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</a>
-                                    <div class="text-center">
+
+
+
+                                        <div class="text-center">
                                         <small>@autotranslate('No money charged on this steps', app()->getLocale())</small>
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
                         <!-- /box_order -->
