@@ -221,8 +221,8 @@
                 }
             @endphp
 
-<div class="cart-select-container d-flex flex-row">
-    <div class="cart-button-box flex-grow-1 d-flex justify-content-between align-items-center" id="cart-button-box">
+<div class="cart-select-container d-flex flex-row flex-wrap">
+    <div class="cart-button-box flex-grow-1 d-flex justify-content-between align-items-center mb-2" id="cart-button-box">
         <select wire:model="selectedQuantity" wire:change="updateQuantity" class="addtocart_qty left">
             @for ($i = 1; $i <= 10; $i++)
                 <option value="{{ $i }}">{{ $i }}</option>
@@ -231,22 +231,20 @@
         </select>
         <input type="number" class="js_addtocart_qty addtocart_qty left" value="1" min="1" maxlength="2" style="display:none">
 
-        <button type="button"
-        class="text-end"
-        @php
-        //    dd($selectedSizeId)
-        @endphp
-        wire:click="addToCartProduct({{ $productId }}, '{{ $productTitle }}', {{ $totalPrice }}, {{ $selectedSizeId }}, '{{ $productSize }}', 1)"
-        @if($disableAddToCartButton) disabled @endif>
-    <span class="btn-icon-start text-primary">
-        <i class="feather-shopping-bag"></i>
-    </span>
-    In den Warenkorb für
-    <span class="regular-price" id="product-price-592">
-        <span class="price">{{ number_format($totalPrice, 2, ',', '.') }} €</span>
-    </span>
-</button>
-
+        <button type="button" class="text-end"
+            @php
+                // dd($selectedSizeId)
+            @endphp
+            wire:click="addToCartProduct({{ $productId }}, '{{ $productTitle }}', {{ $totalPrice }}, {{ $selectedSizeId }}, '{{ $productSize }}', 1)"
+            @if($disableAddToCartButton) disabled @endif>
+            <span class="btn-icon-start text-primary">
+                <i class="feather-shopping-bag"></i>
+            </span>
+            In den Warenkorb für
+            <span class="regular-price" id="product-price-592">
+                <span class="price">{{ number_format($totalPrice, 2, ',', '.') }} €</span>
+            </span>
+        </button>
     </div>
     <div class="placeholder"></div>
 </div>
@@ -476,19 +474,45 @@
 
 .cart-select-container {
     /* Stile für den Container zur Auswahl des Warenkorbs */
-}
-
-.cart-button-box {
-    /* Stile für den Button-Container des Warenkorbs */
+    gap: 10px;
 
 }
 
-.card.card-body.row {
-                        flex-wrap: wrap;
-                        flex-direction: row;
-                        cursor: pointer;
-                        /* color: chocolate; */
-                    }
+.cart-button-box select {
+        width: auto;
+    }
+
+    .cart-button-box button {
+        white-space: nowrap;
+    }
+
+
+@media (max-width: 768px) {
+        .cart-select-container {
+            flex-direction: column;
+        }
+        .cart-button-box {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .cart-button-box select {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .cart-button-box button {
+            width: 100%;
+        }
+    }
+
+
+.card.card-body.row
+ {
+
+    flex-wrap: wrap;
+    flex-direction: row;
+    cursor: pointer;
+    /* color: chocolate; */
+}
 
 .placeholder {
     /* Platzhalterstil */
