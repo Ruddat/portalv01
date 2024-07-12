@@ -470,49 +470,4 @@ $token = DB::table('password_reset_tokens')
         return redirect()->route('broker.login');
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    public function registerHandler(Request $request)
-    {
-
-      //  dd($request->all());
-
-
-        $request->validate([
-            'location' => 'required|string',
-            'vehicle' => 'required|string',
-            'how_hear' => 'required|array',
-            'how_hear.*' => 'required|string',
-            'firstname' => 'required|string|max:255',
-            'surname' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'telephone' => 'required|string|max:20',
-            'age' => 'required|integer|min:18',
-            'gender' => 'required|string|in:Männlich,Weiblich',
-            'terms' => 'required|accepted',
-        ], [
-            'location.required' => 'Bitte geben Sie Ihren Standort an',
-            'vehicle.required' => 'Bitte geben Sie Ihr Fahrzeug an',
-            'how_hear.required' => 'Bitte geben Sie an, wie Sie von uns erfahren haben',
-            'firstname.required' => 'Bitte geben Sie Ihren Vornamen an',
-            'surname.required' => 'Bitte geben Sie Ihren Nachnamen an',
-            'email.required' => 'Bitte geben Sie Ihre E-Mail-Adresse an',
-            'telephone.required' => 'Bitte geben Sie Ihre Telefonnummer an',
-            'age.required' => 'Bitte geben Sie Ihr Alter an',
-        ]);
-
-
-
-
-
-    }
 }
