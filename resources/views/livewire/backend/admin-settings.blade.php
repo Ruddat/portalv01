@@ -24,7 +24,7 @@
             <li class="nav-item">
                 <a wire:click.prevent='selectTab("seller_commissions")'
                     class="nav-link {{ $tab == 'seller_commissions' ? 'active' : '' }}" data-bs-toggle="tab"
-                    href="#seller_commissions"><i class="las la-cash-register me-2"></i>Seller Commission</a>
+                    href="#seller_commissions"><i class="las la-percentage me-2"></i>Seller Commission</a>
             </li>
         </ul>
 
