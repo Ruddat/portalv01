@@ -107,9 +107,11 @@
             }
         }
 
-        Livewire.on('showNewOrder', function (order) {
-            addNewOrder(order);
-        });
+        document.addEventListener('livewire:init', () => {
+       Livewire.on('showNewOrder', (event) => {
+        addNewOrder(order);
+    });
+    });
 
         function addNewOrder(order) {
             const ordersContainer = document.getElementById('customerWhoPurchased');

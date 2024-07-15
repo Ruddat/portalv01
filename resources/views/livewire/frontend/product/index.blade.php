@@ -246,7 +246,6 @@
             </span>
         </button>
     </div>
-    <div class="placeholder"></div>
 </div>
 
             </div>

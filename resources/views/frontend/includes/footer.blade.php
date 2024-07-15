@@ -142,7 +142,7 @@
                 </ul>
             </div>
 
-            <div id="install-instructions">
+            <div id="install-instructions" style="display: none;">
                 <p>Um die App zu installieren, tippe auf <strong>Teilen</strong> und dann auf <strong>Zum Startbildschirm hinzufügen</strong>.</p>
             </div>
             <button id="install-button" style="display: none;">Zum Startbildschirm hinzufügen</button>
@@ -233,11 +233,11 @@
         </div>
     </div>
 </footer>
+<!-- Hier wire:poll einsetzen -->
+<livewire:frontend.social-toast.social-proof/>
+
 @cookieconsentview
 <!--/footer-->
-
-
-
 
 @stack('scripts')
 

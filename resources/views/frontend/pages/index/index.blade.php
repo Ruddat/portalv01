@@ -359,9 +359,6 @@
         </div>
         <!-- /shape_element_2 -->
 
-<!-- Hier wire:poll einsetzen -->
-<livewire:frontend.social-toast.social-proof/>
-
 
 @push('specific-scripts')
 
