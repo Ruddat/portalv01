@@ -9,6 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+
     <!-- Favicons-->
     @if(!empty(get_settings()->site_favicon))
     <link rel="shortcut icon" href="/images/site/{{ get_settings()->site_favicon }}" type="image/x-icon">
@@ -19,8 +20,7 @@
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('frontend/img/apple-touch-icon-72x72-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('frontend/img/apple-touch-icon-114x114-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('frontend/img/apple-touch-icon-144x144-precomposed.png') }}">
-    
-    <link rel="manifest" href="{{ url('/manifest.json') }}">
+
 
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -42,5 +42,30 @@
 
     <!-- Styles -->
     @livewireStyles
+
+    <!-- JavaScript zur dynamischen Setzung des start_url -->
+    <script>
+        // Funktion zur Extraktion des Shop-Slugs aus der aktuellen URL
+        function getStartUrl() {
+            // Beispiel: Aktuelle URL extrahieren
+            var currentUrl = window.location.href;
+
+            // Hier kannst du die Logik anpassen, um den gewünschten Teil der URL zu extrahieren
+            // Zum Beispiel: Extraktion des Shop-Slugs aus der URL (angepasst an deine URL-Struktur)
+            var shopSlug = currentUrl.split('/').pop();
+
+            // Aufbau der URL für den start_url im manifest.json
+            var startUrl = '/shop/' + shopSlug; // Hier die Logik für deine URL-Konstruktion einfügen
+
+            return startUrl;
+        }
+
+        // Dynamisches Setzen des manifest.json-Links
+        var manifestLink = document.createElement('link');
+        manifestLink.rel = 'manifest';
+        manifestLink.href = '/manifest.json';
+        document.head.appendChild(manifestLink);
+    </script>
+
 
 </head>

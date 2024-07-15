@@ -14,34 +14,32 @@ self.addEventListener('install', (event) => {
     );
 });
 
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                if (response) {
-                    return response;
-                }
+self.addEventListener('fetch', function(event) {
+    if (event.request.url.startsWith(self.location.origin)) {
+        event.respondWith(
+            caches.open(CACHE_NAME).then(function(cache) {
+                return cache.match(event.request).then(function(response) {
+                    if (response) {
+                        return response;
+                    }
 
-                const fetchRequest = event.request.clone();
+                    var fetchRequest = event.request.clone();
 
-                return fetch(fetchRequest).then(
-                    (response) => {
+                    return fetch(fetchRequest).then(function(response) {
                         if (!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
 
-                        const responseToCache = response.clone();
+                        var responseToCache = response.clone();
 
-                        caches.open(CACHE_NAME)
-                            .then((cache) => {
-                                cache.put(event.request, responseToCache);
-                            });
+                        cache.put(event.request, responseToCache);
 
                         return response;
-                    }
-                );
+                    });
+                });
             })
-    );
+        );
+    }
 });
 
 self.addEventListener('activate', (event) => {

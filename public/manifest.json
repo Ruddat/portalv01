@@ -1,7 +1,7 @@
 {
     "name": "Dein App-Name",
     "short_name": "App",
-    "start_url": "/shop/{{ $shop->id }}",
+    "start_url": "/placeholder_for_js",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",

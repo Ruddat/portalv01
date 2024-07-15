@@ -6,6 +6,7 @@ use App\Http\Livewire\Frontend\Card\ProductList;
 use App\Http\Controllers\GoogleTranslateController;
 use App\Http\Controllers\Frontend\ShopCardController;
 use App\Http\Controllers\Frontend\Card\CardController;
+use App\Http\Controllers\MobileApp\ManifestController;
 use App\Http\Controllers\Frontend\ShopSearchController;
 use App\Http\Controllers\Frontend\Cart\NewCartController;
 use App\Http\Controllers\Frontend\Geoip\LocationController;
@@ -71,10 +72,10 @@ Route::get('/impressum', function () {
     return view('frontend/pages/otherpages.impressum');
 });
 
-// Create a new page with the specified index and name
-Route::get('/manifest.json', function () {
-    return response()->view('manifest')->header('Content-Type', 'application/json');
-});
+
+// Mobile Application
+Route::get('/manifest.json/{shopSlug}', [ManifestController::class, 'index']);
+
 
 
 Route::get('/index-2', function () {
