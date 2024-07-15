@@ -48,7 +48,7 @@ class GenerateWeeklyInvoices extends Command
             // Prepare JSON data
             $orderJsonData = $this->formatOrderDataToJson($shopOrders);
 
-            $invoiceJsonData = json_encode([
+            $invoiceJsonData = [
                 'total_amount' => $totalAmount,
                 'cash_amount' => $cashAmount,
                 'ec_card_amount' => $ecCardAmount,
@@ -56,7 +56,7 @@ class GenerateWeeklyInvoices extends Command
                 'other_amounts' => $otherAmounts,
                 'total_orders' => $totalOrders,
                 'average_order_value' => $averageOrderValue,
-            ]);
+            ];
 
             // Check if an invoice already exists for the current week
             $existingInvoice = ModSysInvoices::where('shop_id', $shopId)
@@ -68,10 +68,25 @@ class GenerateWeeklyInvoices extends Command
                 // Use existing invoice number
                 $invoiceNumber = $existingInvoice->invoice_number;
                 $invoiceData = $existingInvoice->toArray();
+                // Update the existing invoice data
+                $invoiceData['total_amount'] = $totalAmount;
+                $invoiceData['cash_amount'] = $cashAmount;
+                $invoiceData['ec_card_amount'] = $ecCardAmount;
+                $invoiceData['paypal_amount'] = $paypalAmount;
+                $invoiceData['other_amounts'] = $otherAmounts;
+                $invoiceData['total_orders'] = $totalOrders;
+                $invoiceData['average_order_value'] = $averageOrderValue;
+                $invoiceData['order_json_data'] = $orderJsonData;
+                $invoiceData['invoice_json_data'] = json_encode($invoiceJsonData);
+                $invoiceData['generated_at'] = $now;
+                $filePath = $existingInvoice->pdf_path; // Use existing PDF path
             } else {
                 // Generate a unique invoice number
                 $latestInvoice = ModSysInvoices::orderBy('invoice_number', 'desc')->first();
                 $invoiceNumber = $latestInvoice ? $latestInvoice->invoice_number + 1 : 1;
+//                $filePath = 'uploads/shops/' . $shopId . '/invoice_' . $invoiceNumber . '_' . $startOfWeek . '_' . $endOfWeek . '.pdf';
+                $filePath = 'uploads/shops/' . $shopId . '/invoice_' . $invoiceNumber . '_' . $startOfWeek . '_' . $endOfWeek . '.pdf';
+
                 $invoiceData = [
                     'shop_id' => $shopId,
                     'total_amount' => $totalAmount,
@@ -85,11 +100,24 @@ class GenerateWeeklyInvoices extends Command
                     'end_date' => $endOfWeek,
                     'generated_at' => $now,
                     'order_json_data' => $orderJsonData,
-                    'invoice_json_data' => $invoiceJsonData,
+                    'invoice_json_data' => json_encode($invoiceJsonData),
                     'payment_json_data' => json_encode([]), // Placeholder for future payment data
                     'invoice_number' => $invoiceNumber,
+                    'pdf_path' => $filePath // Add PDF path to invoice data
                 ];
             }
+
+            // Generate PDF
+            $pdf = PDF::loadView('pdf.invoice', [
+                'shopId' => $shopId,
+                'startOfWeek' => $startOfWeek,
+                'endOfWeek' => $endOfWeek,
+                'orders' => json_decode($orderJsonData, true),
+                'invoiceData' => $invoiceJsonData
+            ])->setPaper('a4', 'portrait');
+
+            // Save PDF to storage
+            Storage::put($filePath, $pdf->output());
 
             if ($existingInvoice) {
                 // Update the existing invoice
@@ -98,19 +126,6 @@ class GenerateWeeklyInvoices extends Command
                 // Create a new invoice
                 ModSysInvoices::create($invoiceData);
             }
-
-            // Generate PDF
-            $pdf = PDF::loadView('pdf/invoice',  [
-                'shopId' => $shopId,
-                'startOfWeek' => $startOfWeek,
-                'endOfWeek' => $endOfWeek,
-                'orders' => json_decode($orderJsonData, true),
-                'invoiceData' => $invoiceData
-            ])->setPaper('a4', 'portrait');
-
-            // Save PDF to storage
-            $filePath = 'uploads/shops/' . $shopId . '/invoice_' . $invoiceNumber . '_' . $startOfWeek . '_' . $endOfWeek . '.pdf';
-            Storage::put($filePath, $pdf->output());
         }
 
         $this->info('Weekly invoices have been generated successfully!');

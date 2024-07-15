@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\Geoip\LocationController;
 use App\Http\Controllers\Frontend\Search\GeocodeController;
 use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
+use App\Http\Controllers\Backend\Admin\Invoice\InvoicePdfController;
 use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
 use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 
@@ -62,6 +63,7 @@ use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 //    return view('frontend/pages/index.index');
 //});
 
+Route::get('invoices/{shopId}/{fileName}', [InvoicePdfController::class, 'show'])->name('invoices.show');
 
 Route::get('/get-location', [LocationController::class, 'getLocation']);
 Route::get('/media-stats', [MediaStatsController::class, 'index'])->name('media.stats.index');

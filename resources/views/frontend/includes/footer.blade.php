@@ -141,6 +141,52 @@
                     <li><span>© {{ config('app.name') }}</span></li>
                 </ul>
             </div>
+
+    <script>
+
+    if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js')
+    .then(registration => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch(error => {
+      console.log('Service Worker registration failed:', error);
+    });
+}
+</script>
+
+    <button id="install-button" style="display: none;">Zum Startbildschirm hinzufügen</button>
+
+    <script>
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+          // Verhindern, dass der Standarddialog angezeigt wird
+          e.preventDefault();
+          // Das Event auf eine globale Variable setzen, damit es später ausgelöst werden kann
+          deferredPrompt = e;
+          // Den Installationsbutton anzeigen
+          document.getElementById('install-button').style.display = 'block';
+        });
+
+        document.getElementById('install-button').addEventListener('click', (e) => {
+          // Verstecke den Installationsbutton
+          document.getElementById('install-button').style.display = 'none';
+          if (deferredPrompt) {
+            // Zeige den Installationsdialog an
+            deferredPrompt.prompt();
+            // Warte auf die Wahl des Benutzers
+            deferredPrompt.userChoice.then((choiceResult) => {
+              if (choiceResult.outcome === 'accepted') {
+                console.log('Benutzer hat die Installation akzeptiert');
+              } else {
+                console.log('Benutzer hat die Installation abgelehnt');
+              }
+              deferredPrompt = null;
+            });
+          }
+        });
+      </script>
         </div>
     </div>
 </footer>

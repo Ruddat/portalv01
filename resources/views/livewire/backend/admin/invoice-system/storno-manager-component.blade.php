@@ -18,9 +18,9 @@
                                 <th wire:click="sortBy('surname')">Nachname</th>
                                 <th wire:click="sortBy('payment_type')">Zahlungsmethode</th>
                                 <th wire:click="sortBy('order_date')">Bestelldatum</th>
-                                <th>Storno Betrag</th>
-                                <th>Storno Grund</th>
-                                <th>Storno in Abrechnung</th>
+                                <th wire:click="sortBy('mod_sys_stornos.refund_amount')">Storno Betrag</th>
+                                <th wire:click="sortBy('mod_sys_stornos.refund_reason')">Storno Grund</th>
+                                <th wire:click="sortBy('mod_sys_stornos.included_in_invoice')">Storno in Abrechnung</th>
                                 <th>Aktion</th>
                             </tr>
                         </thead>
@@ -48,7 +48,7 @@
 
                 @if ($orderId)
                     <div class="mt-4" id="storno-form">
-                        <h2>Storno bearbeiten</h2>
+                        <h2>Storno bearbeiten {{ $orderId }}</h2>
                         <form wire:submit.prevent="processRefund">
                             <div>
                                 <label for="refundAmount">Rückerstattungsbetrag</label>
