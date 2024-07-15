@@ -86,7 +86,6 @@ class LifeTracking extends Component
                 // Setze die Artikel auf ein leeres Array, wenn der Schlüssel nicht existiert oder die Daten fehlen
                 $this->orderItems = [];
             }
-//dd($orderItems, $orderData);
 
         }
     }

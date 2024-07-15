@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Response;
 use Whitecube\LaravelCookieConsent\Cookie;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Redirect as Redirector;
+use App\Services\CartService;
+
 
 class CartOrderDetails extends Component
 {
@@ -111,10 +113,12 @@ class CartOrderDetails extends Component
 
     }
 
-    public function orderNowForm()
+    public function orderNowForm(CartService $cartService)
     {
         // Überprüfen, ob der Warenkorb leer ist
-        $order = session()->get('shopping-cart');
+        $order = $cartService->content();
+        // dd($order, $cart);
+        Session::put('shopping-cart', $order);
         if (empty($order)) {
             return redirect()->back()->with('error', 'Der Warenkorb ist leer oder die Sitzung ist abgelaufen.');
         }
@@ -191,7 +195,6 @@ class CartOrderDetails extends Component
 
         $lastOrderNumber = ModOrders::where('parent', $shopId)->max('order_nr');
         $newOrderNumber = $lastOrderNumber + 1;
-
         Session::put('newOrderNumber', $newOrderNumber);
         Session::put('orderHash', $orderHash);
 
@@ -293,8 +296,9 @@ public function generateNewClient($data)
 public function generateNewPdf($orderHash)
 {
 
-    $newOrderNumber = $this->newOrderNumber;
+    $newOrderNumber = Session::get('newOrderNumber');
 
+//dd($newOrderNumber);
 
     // Kaufdaten aus der Datenbank abrufen
     $orderForPdf = ModOrders::where('hash', $orderHash)->first();
@@ -409,6 +413,8 @@ public function createXml()
     $orderIDValue = Session::get('orderHash');
 
     $articles = session()->get('shopping-cart');
+//dd($articles);
+
 
     //dd($orderHash);
    // $delivery_option = 'Lieferung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
@@ -507,6 +513,7 @@ if (!empty($articles)) {
     $articleList = $order->addChild('ArticleList');
 
     foreach ($articles as $article) {
+    //    dd($article);
         $articleNode = $articleList->addChild('Article');
         $articleNode->addChild('ArticleNo', $article['code']);
    //     $articleNode->addChild('ArticleName', $article['name']);

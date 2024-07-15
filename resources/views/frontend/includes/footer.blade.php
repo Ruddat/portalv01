@@ -143,60 +143,23 @@
             </div>
 
 
-            <div class="footer-copyright border-top py-3 bg-light">
+            <div class="footer-copyright py-3">
                 <div class="container d-flex align-items-center">
                 <p class="mb-0"> © 2023 {{ config('app.name') }} All rights reserved </p>
                 <p class="text-muted mb-0 ms-auto d-flex align-items-center">
 
 
-                <a href="#" class="d-block"><img alt="#" src="frontend/img/appstore.png" height="40"></a>
+                <a href="#" class="d-block"><img alt="#" src="{{ asset('frontend/img/appstore.png') }}" height="40"></a>
 
                 <button id="install-button" style="display: none; border: none; background: none;">
-                    <img src="frontend/img/playmarket.png" alt="Install Icon" style="height: 40px;">
+                    <img src="{{ asset('frontend/img/playmarket.png') }}" alt="Install Icon" style="height: 40px;">
                 </button>
                 </p>
                 </div>
                 </div>
 
 
-<style>
-    .section-footer .border-top {
-    border-top: 1px solid rgb(222 226 230 / 9%) !important;
-}
-
-.bg-light {
-    --bs-bg-opacity: 1;
-    background-color: #f6f1d3 !important;
-}
-
-.py-3 {
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-}
-.align-items-center {
-    align-items: center !important;
-}
-.mb-0 {
-    margin-bottom: 0 !important;
-}
-footer .text-muted {
-    color: #bdbdbd !important;
-}
-.ms-auto {
-    margin-left: auto !important;
-}
-.d-block {
-    display: block !important;
-}
-.ms-3 {
-    margin-left: 1rem !important;
-}
-</style>
-
-
-
-
-
+            </div>
 
 
             <div id="install-instructions" style="display: none;">

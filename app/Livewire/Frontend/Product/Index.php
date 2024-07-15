@@ -202,6 +202,8 @@ if ($product) {
 
     //dd($options);
    // dd($extendedProductId, $productName, $selectedPrice, $sizeTitle->title, $selectedQuantity, $productId, $options);
+   $productData = ModProducts::where('id', $productId)->first();
+   dd($productData->product_code);
         // Produkt zum Warenkorb hinzufügen
         Cart::add($extendedProductId, $productName, $selectedPrice, $sizeTitle->title, $selectedQuantity, $productId, $options);
 
@@ -438,15 +440,15 @@ dd($productId, $selectedSize, $selectedPrice, $productName);
         $sizeTitle = ModProductSizes::where('id', $selectedSize)->first();
 
       //  dd($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity, $extendedProductId);
+      $productData = ModProducts::where('id', $productId)->first();
+      $productCode = $productData->product_code ?? 0;
+      //   dd($productCode);
 
-
-  //dd($options);
-
-
+//dd($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productId, $options);
 
         // Produkt zum Warenkorb hinzufügen
-        Cart::add($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productId, $options);
-
+        Cart::add($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productCode, $options);
+      //  Cart::add($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productId, $options);
         // Erfolgsmeldung anzeigen
         $this->dispatch('toast', message: 'Das Produkt wurde zum Warenkorb hinzugefügt.', notify:'success');
 

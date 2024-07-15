@@ -473,17 +473,24 @@
 
 .cart-select-container {
     /* Stile für den Container zur Auswahl des Warenkorbs */
-    gap: 10px;
+    width: 100%;
+    max-width: 100%;
 
 }
 
-.cart-button-box select {
-        width: auto;
-    }
+.cart-button-box {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
-    .cart-button-box button {
-        white-space: nowrap;
-    }
+
+.cart-button-box select,
+.cart-button-box button {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 48%;
+}
 
 
 @media (max-width: 768px) {
@@ -494,13 +501,13 @@
             flex-direction: column;
             align-items: stretch;
         }
-        .cart-button-box select {
-            width: 100%;
-            margin-bottom: 10px;
-        }
+
+        .cart-button-box select,
         .cart-button-box button {
+            max-width: 100%;
             width: 100%;
-        }
+    }
+
     }
 
 

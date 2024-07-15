@@ -119,6 +119,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @php
+                                                        $totalPrice = 0; // Initialisieren der Gesamtsumme
+                                                    @endphp
                                                     @foreach($orderItems as $item)
                                                         <tr class="items">
                                                             <td>{{ $item->ArticleNo }}</td>
@@ -127,26 +130,28 @@
                                                                 @if(isset($item->Price))
                                                                     {{ number_format($item->Price, 2, '.', '') }}
                                                                     @php
-                                                                        $totalPrice += $item->Price; // Addieren Sie den Preis jedes Artikels zur Gesamtsumme
+                                                                        $totalPrice += $item->Price; // Preis jedes Artikels zur Gesamtsumme addieren
                                                                     @endphp
                                                                 @else
-                                                                @autotranslate('Gratis', app()->getLocale())
+                                                                    @autotranslate('Gratis', app()->getLocale())
                                                                 @endif
                                                             </td>
                                                         </tr>
-                                                        @if (!empty($item->SubArticleList) && is_array($item->SubArticleList->SubArticle))
-                                                            @foreach ($item->SubArticleList->SubArticle as $subArticle)
+                                                        @if (!empty($item->SubArticleList) && isset($item->SubArticleList->SubArticle))
+                                                            @php
+                                                                $subArticles = is_array($item->SubArticleList->SubArticle)
+                                                                               ? $item->SubArticleList->SubArticle
+                                                                               : [$item->SubArticleList->SubArticle];
+                                                            @endphp
+                                                            @foreach ($subArticles as $subArticle)
                                                                 <tr class="subitems">
                                                                     <td></td>
                                                                     <td>-- {{ $subArticle->ArticleName }}</td>
                                                                     <td>
                                                                         @if(isset($subArticle->Price) && is_numeric($subArticle->Price))
                                                                             {{ number_format($subArticle->Price, 2, '.', '') }}
-                                                                            @php
-                                                                                $totalPrice += $subArticle->Price; // Addieren Sie den Preis jedes Subartikels zur Gesamtsumme
-                                                                            @endphp
                                                                         @else
-                                                                        @autotranslate('Gratis', app()->getLocale())
+                                                                            @autotranslate('Gratis', app()->getLocale())
                                                                         @endif
                                                                     </td>
                                                                 </tr>
@@ -157,9 +162,14 @@
                                             </table>
                                             <p class="total-price">@autotranslate('Total Price:', app()->getLocale()) {{ number_format($totalPrice, 2, '.', '') }}</p>
                                         </div>
+
                                     </li>
                                 </ul>
                             </div>
+
+
+
+
 
 
                         </div>

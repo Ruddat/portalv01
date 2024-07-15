@@ -108,27 +108,65 @@
                 <p><strong>Bestellzeit:</strong> {{ $order['created_at']->format('d.m.Y H:i') }}</p>
             </div>
 
+
             <div class="order-items">
-                <h2>Gekaufte Artikel</h2>
+                <h2>@autotranslate('Gekaufte Artikel', app()->getLocale())</h2>
+                @php
+                    $totalMainItemsPrice = 0; // Gesamtpreis der Hauptartikel
+                    $totalSubItemsPrice = 0; // Gesamtpreis der Subartikel
+                    $totalPrice = 0; // Initialisierung der Gesamtsumme
+                @endphp
                 @foreach ($orderItems['items'] as $item)
-                <p>- <strong>{{ $item->ArticleName }} {{ $item->ArticleSize }} ({{ $item->Count }}x) -
-                    {{ $item->Price }} {{ $order['currency'] }}</strong></p>
-                    @if (!empty($item->SubArticleList) && is_array($item->SubArticleList->SubArticle))
-                    <ul>
-                        @foreach ($item->SubArticleList->SubArticle as $subArticle)
-                            <li>{{ $subArticle->ArticleName }}</li>
-                        @endforeach
-                    </ul>
-                @endif
+                    <p>
+                        - {{ $item->ArticleNo }} <strong>{{ $item->ArticleName }} {{ $item->ArticleSize }} ({{ $item->Count }}x) -
+                            @if(isset($item->Price))
+                            {{ number_format($item->Price, 2, '.', '') }} {{ $order['currency'] }}
+                            @php
+                                $totalPrice += $item->Price; // Preis jedes Artikels zur Gesamtsumme addieren
+                            @endphp
+                        @else
+                            @autotranslate('Gratis', app()->getLocale())
+                        @endif
+                    </strong>
+                    </p>
+
+                    @php
+                        $totalMainItemsPrice += $item->Price * $item->Count; // Gesamtpreis des aktuellen Hauptartikels
+                    @endphp
+
+                    @if (!empty($item->SubArticleList) && isset($item->SubArticleList->SubArticle))
+                        @php
+                            $subArticles = is_array($item->SubArticleList->SubArticle)
+                                           ? $item->SubArticleList->SubArticle
+                                           : [$item->SubArticleList->SubArticle];
+                        @endphp
+
+                        <ul>
+                            @foreach ($subArticles as $subArticle)
+                                <li>{{ $subArticle->ArticleName }} -
+
+                                    @if(isset($subArticle->Price) && is_numeric($subArticle->Price))
+                                    {{ number_format($subArticle->Price, 2, '.', '') }} {{ $order['currency'] }}
+                                    @php
+                                        $totalPrice += $subArticle->Price; // Preis jedes Subartikels zur Gesamtsumme addieren
+                                    @endphp
+                                @else
+                                    @autotranslate('Gratis', app()->getLocale())
+                                @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 @endforeach
             </div>
 
-            <p><strong>Gesamtbetrag:</strong> {{ $order['total'] }} {{ $order['currency'] }}</p>
-            <p><strong>Zahlungsart:</strong> {{ $order['payment_type'] }}</p>
-            <p>Vielen Dank für Ihre Bestellung bei {{ $order['shop_name'] }}.</p>
+
+            <p><strong>@autotranslate('Gesamtpreis:', app()->getLocale())</strong> {{ number_format($totalMainItemsPrice, 2, ',', '.') }} {{ $order['currency'] }}</p>
+            <p><strong>@autotranslate('Zahlungsart:', app()->getLocale())</strong> {{ $order['payment_type'] }}</p>
+            <p>@autotranslate('Vielen Dank für Ihre Bestellung bei', app()->getLocale()) {{ $order['shop_name'] }}.</p>
         </div>
         <div class="footer">
-            Bei Fragen oder Anmerkungen kontaktieren Sie uns bitte unter support@example.com.
+            @autotranslate('Bei Fragen oder Anmerkungen kontaktieren Sie uns bitte unter', app()->getLocale()) support@example.com.
         </div>
     </div>
 </body>
