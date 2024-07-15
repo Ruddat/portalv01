@@ -185,7 +185,7 @@
                     }
                 });
 
-                // Überprüfung, ob das Gerät ein iOS-Gerät ist
+                // Überprüfung, ob das Gerät ein iOS-Gerät ist (iPhone oder iPad)
                 const isIos = () => {
                     const userAgent = window.navigator.userAgent.toLowerCase();
                     return /iphone|ipad|ipod/.test(userAgent);
@@ -198,7 +198,36 @@
                 if (isIos() && !isInStandaloneMode()) {
                     document.getElementById('install-instructions').style.display = 'block';
                 }
+
+                // Dynamisch das Manifest erstellen und einfügen
+                const dynamicManifest = {
+                    name: "Dein App-Name",
+                    short_name: "App",
+                    start_url: window.location.origin + window.location.pathname,
+                    display: "standalone",
+                    background_color: "#ffffff",
+                    theme_color: "#000000",
+                    icons: [
+                        {
+                            src: window.location.origin + "/frontend/img/apple-touch-icon-57x57-precomposed.png",
+                            sizes: "57x57",
+                            type: "image/png"
+                        },
+                        {
+                            src: window.location.origin + "/frontend/img/apple-touch-icon-114x114-precomposed.png",
+                            sizes: "114x114",
+                            type: "image/png"
+                        }
+                    ]
+                };
+
+                const stringManifest = JSON.stringify(dynamicManifest);
+                const blob = new Blob([stringManifest], {type: 'application/json'});
+                const manifestURL = URL.createObjectURL(blob);
+                document.querySelector('link[rel="manifest"]').setAttribute('href', manifestURL);
             </script>
+
+
 
 
         </div>

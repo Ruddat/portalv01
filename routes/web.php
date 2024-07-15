@@ -74,7 +74,7 @@ Route::get('/impressum', function () {
 
 
 // Mobile Application
-Route::get('/manifest.json/{shopSlug}', [ManifestController::class, 'index']);
+//Route::get('/manifest.json/{shopSlug}', [ManifestController::class, 'index']);
 
 
 
