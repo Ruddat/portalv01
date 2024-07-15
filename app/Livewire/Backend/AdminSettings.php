@@ -18,6 +18,7 @@ class AdminSettings extends Component
     public $facebook_url, $twitter_url, $instagram_url, $linkedin_url, $printerest_url, $youtube_url, $tiktok_url,
     $whatsapp_number, $github_url, $telegram_url, $snapchat_url, $twitch_url;
 
+    public $paypal_express_fee_fixed, $paypal_express_fee_percentage, $emergency_sms_cost, $service_fee_non_paypal, $instant_payout_fee_percentage, $sales_commission;
 
     public function selectTab($tab){
     $this->tab = $tab;
@@ -51,7 +52,13 @@ class AdminSettings extends Component
         $this->snapchat_url = get_social_network()->snapchat_url;
         $this->twitch_url = get_social_network()->twitch_url;
 
-
+        // populate payment settings
+        $this->paypal_express_fee_fixed = get_settings()->paypal_express_fee_fixed;
+        $this->paypal_express_fee_percentage = get_settings()->paypal_express_fee_percentage;
+        $this->emergency_sms_cost = get_settings()->emergency_sms_cost;
+        $this->service_fee_non_paypal = get_settings()->service_fee_non_paypal;
+        $this->instant_payout_fee_percentage = get_settings()->instant_payout_fee_percentage;
+        $this->sales_commission = get_settings()->sales_commission;
     }
 
 

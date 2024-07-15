@@ -86,6 +86,15 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');
     });
 
+    Route::prefix('invoices')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+        Route::view('/invoices_all', 'backend.pages.admin.invoices.invoices-index')->name('invoices-all');
+        Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
+
+        //  Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');
+      //  Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');
+    });
+
+
         // Managers
         Route::prefix('manager')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
             Route::view('/translations', 'backend.pages.admin.manager.translations-manager')->name('translations');

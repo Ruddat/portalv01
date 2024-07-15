@@ -59,8 +59,14 @@ if( !function_exists('get_settings')){
             $results = $settings_data;
         }else{
             $settings->insert([
-                'site_name' => 'PizzaPortal Dev',
-                'site_email' => 'info@pizzaportal.com',
+                'site_name' => 'Mamas Express',
+                'site_email' => 'info@mamasexpress.com',
+                'paypal_express_fee_fixed' => 0.39, // Beispielwert
+                'paypal_express_fee_percentage' => 2.99, // Beispielwert
+                'emergency_sms_cost' => 0.59, // Beispielwert
+                'service_fee_non_paypal' => 0.59, // Beispielwert
+                'instant_payout_fee_percentage' => 0.5, // Beispielwert
+                'sales_commission' => 8.00 // Beispielwert
             ]);
             $new_settings_data = $settings->first();
             $results = $new_settings_data;
@@ -103,6 +109,10 @@ if( !function_exists('get_settings')){
         }
 
     }
+
+
+
+
 
     if (!function_exists('custom_env')) {
         /**

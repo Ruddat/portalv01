@@ -22,13 +22,30 @@ class SocialProof extends Component
     {
         // Fetch the latest three orders without caching lastOrder
         $newOrders = ModOrders::latest()->take(3)->get()->map(function ($order) {
-            $orderData = json_decode($order->order_json_data, true);
-            return [
-                'name' => substr($orderData['OrderList']['Order']['Customer']['DeliveryAddress']['LastName'], 0, 2) . str_repeat('*', strlen($orderData['OrderList']['Order']['Customer']['DeliveryAddress']['LastName']) - 2) ?? 'Kunde',
-                'product' => $orderData['OrderList']['Order']['ArticleList']['Article'][0]['ArticleName'] ?? 'Produkt',
-                'created_at' => Carbon::parse($orderData['OrderList']['CreateDateTime'] ?? now())->diffForHumans()
-            ];
-        })->toArray();
+            try {
+                $orderData = json_decode($order->order_json_data, true);
+
+                // Überprüfen, ob die notwendigen Schlüssel vorhanden sind
+                if (!isset($orderData['OrderList']['Order']['Customer']['DeliveryAddress']['LastName']) ||
+                    !isset($orderData['OrderList']['Order']['ArticleList']['Article'][0]['ArticleName']) ||
+                    !isset($orderData['OrderList']['CreateDateTime'])) {
+                    throw new \Exception('Missing keys in order JSON');
+                }
+
+                $name = substr($orderData['OrderList']['Order']['Customer']['DeliveryAddress']['LastName'], 0, 2) . str_repeat('*', strlen($orderData['OrderList']['Order']['Customer']['DeliveryAddress']['LastName']) - 2) ?? 'Kunde';
+                $product = $orderData['OrderList']['Order']['ArticleList']['Article'][0]['ArticleName'] ?? 'Produkt';
+                $createdAt = Carbon::parse($orderData['OrderList']['CreateDateTime'] ?? now())->diffForHumans();
+
+                return [
+                    'name' => $name,
+                    'product' => $product,
+                    'created_at' => $createdAt,
+                ];
+            } catch (\Exception $e) {
+                // Fehlerhafte JSON-Daten überspringen
+                return null;
+            }
+        })->filter()->toArray(); // Filtert null-Werte heraus
 
         // Always update orders array with the latest fetched orders
         $this->orders = $newOrders;
@@ -36,6 +53,7 @@ class SocialProof extends Component
         // Show the container only if there are orders to display
         $this->showContainer = !empty($newOrders);
     }
+
 
     public function addNewOrder($order)
     {

@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\Geoip\LocationController;
 use App\Http\Controllers\Frontend\Search\GeocodeController;
 use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
+use App\Http\Controllers\Backend\Admin\Invoice\InvoicePdfController;
 use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
 use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 
@@ -62,6 +63,7 @@ use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 //    return view('frontend/pages/index.index');
 //});
 
+Route::get('invoices/{shopId}/{fileName}', [InvoicePdfController::class, 'show'])->name('invoices.show');
 
 Route::get('/get-location', [LocationController::class, 'getLocation']);
 Route::get('/media-stats', [MediaStatsController::class, 'index'])->name('media.stats.index');
@@ -69,8 +71,29 @@ Route::get('/impressum', function () {
     return view('frontend/pages/otherpages.impressum');
 });
 
-
-
+// Create a new page with the specified index and name
+Route::get('/manifest.json', function () {
+    return response()->json([
+        "name" => "Dein App-Name",
+        "short_name" => "App",
+        "start_url" => url()->current(),
+        "display" => "standalone",
+        "background_color" => "#ffffff",
+        "theme_color" => "#000000",
+        "icons" => [
+            [
+                "src" => "/frontend/img/apple-touch-icon-57x57-precomposed.png",
+                "sizes" => "57x57",
+                "type" => "image/png"
+            ],
+            [
+                "src" => "/frontend/img/apple-touch-icon-114x114-precomposed.png",
+                "sizes" => "114x114",
+                "type" => "image/png"
+            ]
+        ]
+    ]);
+});
 
 Route::get('/index-2', function () {
     return view('frontend/pages/index.index-2');

@@ -42,6 +42,7 @@ return new class extends Migration
             $table->string('shipping_type', 50)->comment('[pickup, delivery]');
             $table->string('order_comment')->nullable();
             $table->string('payment_type', 50)->comment('[cab, cash, ec-card, paypal, ueberweisung, ..]');
+            // ----------------------------------------------------------------
             $table->decimal('price_products', 10, 2);
             $table->integer('price_bottles')->default(0);
             $table->decimal('price_shipping', 10, 2);

@@ -16,11 +16,18 @@ class ModOrderSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $start = strtotime('2023-01-01');
-        $end = strtotime('2023-12-31');
+        $start = '2024-07-01 00:00:00';
+        $end = '2024-07-31 23:59:59';
 
         for ($i = 0; $i < 5000; $i++) {
             $restaurantId = $faker->numberBetween(1, 400);
+
+            // Generiere gültige Zeitstempel und überprüfe auf null
+            $orderDate = $this->getValidDate($faker->dateTimeBetween($start, $end));
+            $deliveryTime = $this->getValidDate($faker->dateTimeBetween('-1 hours', '+3 hours'));
+            $transferTime = $this->getValidDate($faker->optional()->dateTimeThisYear);
+            $createdAt = $this->getValidDate($faker->dateTimeThisYear);
+            $updatedAt = $this->getValidDate($faker->dateTimeThisYear);
 
             ModOrders::create([
                 'order_nr' => $faker->randomNumber(),
@@ -46,7 +53,7 @@ class ModOrderSeeder extends Seeder
                 'shipping_lat' => $faker->latitude,
                 'shipping_lng' => $faker->longitude,
                 'shipping_comment' => $faker->sentence,
-                'delivery_time' => $faker->dateTimeBetween('-1 hours', '+3 hours'),
+                'delivery_time' => $deliveryTime,
                 'shipping_type' => $faker->randomElement(['pickup', 'delivery']),
                 'order_comment' => $faker->sentence,
                 'payment_type' => $faker->randomElement(['cash', 'ec-card', 'paypal', 'ueberweisung']),
@@ -62,7 +69,7 @@ class ModOrderSeeder extends Seeder
                 'soap_status' => $faker->numberBetween(0, 3),
                 'transfer_type' => $faker->optional()->numberBetween(1, 5),
                 'transfer_by_email' => $faker->boolean,
-                'transfer_time' => $faker->optional()->dateTimeThisYear,
+                'transfer_time' => $transferTime,
                 'subscribe_news' => $faker->boolean,
                 'save_data' => $faker->boolean,
                 'published' => $faker->boolean,
@@ -75,16 +82,27 @@ class ModOrderSeeder extends Seeder
                 'coupon_code' => $faker->word,
                 'rand_id' => $faker->regexify('[A-Za-z0-9]{20}'),
                 'user_status' => $faker->numberBetween(0, 500),
-                'order_date' => $faker->dateTimeBetween($start, $end),
+                'order_date' => $orderDate,
                 'order_tracking_status' => $faker->randomElement(['999999', '1', '2', '3', '4', '5', '6', '400', '500']),
                 'deliver_eta' => $faker->optional()->time,
                 'message' => $faker->optional()->sentence,
                 'deliver_minutes' => $faker->optional()->numberBetween(0, 120),
                 'reject_reason' => $faker->optional()->sentence,
                 'order_json_data' => json_encode($faker->words(10)),
-                'created_at' => $faker->dateTimeThisYear,
-                'updated_at' => $faker->dateTimeThisYear
+                'created_at' => $createdAt,
+                'updated_at' => $updatedAt
             ]);
         }
     }
+
+    /**
+     * Validiert das Datum und stellt sicher, dass es im gültigen Bereich liegt.
+     */
+    private function getValidDate($date)
+    {
+        return $date ? $date->format('Y-m-d H:i:s') : '2024-07-01 00:00:00';
+    }
+
+
+
 }
