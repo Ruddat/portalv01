@@ -16,11 +16,14 @@
     @else
     <link rel="shortcut icon" href="{{ asset('frontend/img/favicon.ico') }}" type="image/x-icon">
     @endif
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+
     <link rel="apple-touch-icon" type="image/x-icon" href="{{ asset('frontend/img/apple-touch-icon-57x57-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('frontend/img/apple-touch-icon-72x72-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('frontend/img/apple-touch-icon-114x114-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('frontend/img/apple-touch-icon-144x144-precomposed.png') }}">
-
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -42,7 +45,15 @@
 
     <!-- Styles -->
     @livewireStyles
-
+    <style>
+        #install-instructions {
+            display: none;
+            background: #f8f8f8;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+    
     <!-- JavaScript zur dynamischen Setzung des start_url -->
     <script>
         // Funktion zur Extraktion des Shop-Slugs aus der aktuellen URL

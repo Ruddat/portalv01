@@ -142,46 +142,62 @@
                 </ul>
             </div>
 
+            <div id="install-instructions">
+                <p>Um die App zu installieren, tippe auf <strong>Teilen</strong> und dann auf <strong>Zum Startbildschirm hinzufügen</strong>.</p>
+            </div>
             <button id="install-button" style="display: none;">Zum Startbildschirm hinzufügen</button>
 
             <script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/serviceworker.js')
-        .then(function(registration) {
-            console.log('Service Worker registriert mit Scope:', registration.scope);
-        }).catch(function(error) {
-            console.log('Service Worker Registrierung fehlgeschlagen:', error);
-        });
-}
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/serviceworker.js')
+                        .then(function(registration) {
+                            console.log('Service Worker registriert mit Scope:', registration.scope);
+                        }).catch(function(error) {
+                            console.log('Service Worker Registrierung fehlgeschlagen:', error);
+                        });
+                }
 
-let deferredPrompt;
+                let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('beforeinstallprompt Event ausgelöst');
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('install-button').style.display = 'block';
-});
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    console.log('beforeinstallprompt Event ausgelöst');
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    document.getElementById('install-button').style.display = 'block';
+                });
 
-window.addEventListener('appinstalled', (event) => {
-    console.log('PWA wurde installiert');
-});
+                window.addEventListener('appinstalled', (event) => {
+                    console.log('PWA wurde installiert');
+                });
 
-document.getElementById('install-button').addEventListener('click', (e) => {
-    document.getElementById('install-button').style.display = 'none';
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('Benutzer hat die Installation akzeptiert');
-            } else {
-                console.log('Benutzer hat die Installation abgelehnt');
-            }
-            deferredPrompt = null;
-        });
-    }
-});
+                document.getElementById('install-button').addEventListener('click', (e) => {
+                    document.getElementById('install-button').style.display = 'none';
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('Benutzer hat die Installation akzeptiert');
+                            } else {
+                                console.log('Benutzer hat die Installation abgelehnt');
+                            }
+                            deferredPrompt = null;
+                        });
+                    }
+                });
 
+                // Überprüfung, ob das Gerät ein iOS-Gerät ist
+                const isIos = () => {
+                    const userAgent = window.navigator.userAgent.toLowerCase();
+                    return /iphone|ipad|ipod/.test(userAgent);
+                };
+
+                // Überprüfung, ob die App bereits als PWA installiert ist
+                const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+                // Wenn das Gerät ein iOS-Gerät ist und die App nicht im Standalone-Modus ist, zeige die Installationsanweisungen
+                if (isIos() && !isInStandaloneMode()) {
+                    document.getElementById('install-instructions').style.display = 'block';
+                }
             </script>
 
 
