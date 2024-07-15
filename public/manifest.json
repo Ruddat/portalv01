@@ -1,7 +1,7 @@
 {
     "name": "Dein App-Name",
     "short_name": "App",
-    "start_url": "/placeholder_for_js",
+    "start_url": "https://foodieblitz.de/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",
