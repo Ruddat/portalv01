@@ -145,37 +145,43 @@
             <button id="install-button" style="display: none;">Zum Startbildschirm hinzufügen</button>
 
             <script>
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('/serviceworker.js')
-                        .then(function(registration) {
-                            console.log('Service Worker registriert mit Scope:', registration.scope);
-                        }).catch(function(error) {
-                            console.log('Service Worker Registrierung fehlgeschlagen:', error);
-                        });
-                }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/serviceworker.js')
+        .then(function(registration) {
+            console.log('Service Worker registriert mit Scope:', registration.scope);
+        }).catch(function(error) {
+            console.log('Service Worker Registrierung fehlgeschlagen:', error);
+        });
+}
 
-                let deferredPrompt;
+let deferredPrompt;
 
-                window.addEventListener('beforeinstallprompt', (e) => {
-                    e.preventDefault();
-                    deferredPrompt = e;
-                    document.getElementById('install-button').style.display = 'block';
-                });
+window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('beforeinstallprompt Event ausgelöst');
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('install-button').style.display = 'block';
+});
 
-                document.getElementById('install-button').addEventListener('click', (e) => {
-                    document.getElementById('install-button').style.display = 'none';
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                        deferredPrompt.userChoice.then((choiceResult) => {
-                            if (choiceResult.outcome === 'accepted') {
-                                console.log('Benutzer hat die Installation akzeptiert');
-                            } else {
-                                console.log('Benutzer hat die Installation abgelehnt');
-                            }
-                            deferredPrompt = null;
-                        });
-                    }
-                });
+window.addEventListener('appinstalled', (event) => {
+    console.log('PWA wurde installiert');
+});
+
+document.getElementById('install-button').addEventListener('click', (e) => {
+    document.getElementById('install-button').style.display = 'none';
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('Benutzer hat die Installation akzeptiert');
+            } else {
+                console.log('Benutzer hat die Installation abgelehnt');
+            }
+            deferredPrompt = null;
+        });
+    }
+});
+
             </script>
 
 
