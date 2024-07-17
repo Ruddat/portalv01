@@ -40,7 +40,8 @@ Dieses Projekt is open-sourced software licensed under the [MIT license](https:/
 - <strong>Plugins:</strong>
 - https://apexcharts.com/
 - https://github.com/whitecube/laravel-cookie-consent
-
+- <strong>Demo</strong>
+- https://foodieblitz.de/
 
 ## Installation
 
@@ -54,3 +55,5 @@ Dieses Projekt is open-sourced software licensed under the [MIT license](https:/
 5. Starten Sie den Laravel-Entwicklungsserver mit dem Befehl php artisan serve.
 6. Öffnen Sie Ihren Webbrowser und navigieren Sie zur URL des lokalen Servers, um auf das Bestellportal zuzugreifen
 
+## Demo
+- https://foodieblitz.de
