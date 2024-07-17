@@ -150,8 +150,14 @@ class StorePopup extends Component
             'city' => 'required|string',
         ]);
 
-        // Adresse in der Session speichern
-        Session::put('address_data', $validatedData);
+        // Lade vorhandene Daten aus der Session
+        $existingData = Session::get('address_data', []);
+        // Zusammenführen der vorhandenen Daten mit den neuen Daten
+        $mergedData = array_merge($existingData, $validatedData);
+        // Aktualisierte Daten in der Session speichern
+        //dd($mergedData, $existingData, $validatedData);
+
+        Session::put('address_data', $mergedData);
 
 
         // Speichern der shopId und den Status in der Session

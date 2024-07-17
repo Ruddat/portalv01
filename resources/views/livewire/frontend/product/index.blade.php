@@ -67,7 +67,7 @@
                                                 @if ($hasProductPrices)
                                                     @foreach ($sizesWithPrices as $size)
                                                         @if ($size->parent === $product->id)
-                                                            <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $size->price }}, {{ $size->size_id }}, '{{ $size->size }}', 1)"
+                                                            <div wire:click="addToCartNew({{ $product->id }}, '{{ addslashes($product->product_title) }}', {{ $size->price }}, {{ $size->size_id }}, '{{ $size->size }}', 1)"
                                                                 role="button"
                                                                 class="price-box add-to-cart animated-box"
                                                                 title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
@@ -235,7 +235,7 @@
             @php
                 // dd($selectedSizeId)
             @endphp
-            wire:click="addToCartProduct({{ $productId }}, '{{ $productTitle }}', {{ $totalPrice }}, {{ $selectedSizeId }}, '{{ $productSize }}', 1)"
+            wire:click="addToCartProduct({{ $productId }}, '{{ addslashes($productTitle) }}', {{ $totalPrice }}, {{ $selectedSizeId }}, '{{ $productSize }}', 1)"
             @if($disableAddToCartButton) disabled @endif>
             <span class="btn-icon-start text-primary">
                 <i class="feather-shopping-bag"></i>

@@ -173,9 +173,15 @@ $ingredientCategories = ModProductsIngredients::where('parent', 0) // Annahme: H
         $product = new ModProducts();
         $product->shop_id = $shopId;
         $product->category_id = $categoryId;
-        $product->product_title = $request->input('product_title');
+        //$product->product_title = $request->input('product_title');
+        //$product->product_title = utf8_encode($request->input('product_title'));
         $product->product_description = $request->input('product_description');
         $product->product_anonce = $request->input('product_short_description');
+        //$product->product_title = utf8_encode(trim($request->input('product_title')));
+        $product->product_title = trim($request->input('product_title'));
+        //$product->product_description = utf8_encode(trim($request->input('product_description')));
+        //$product->product_anonce = utf8_encode(trim($request->input('product_short_description')));
+
         $product->base_price = $request->input('base_price');
         $product->product_code = $request->input('product_article_no');
         $product->bottles_id = $request->input('bottle_id');
@@ -552,7 +558,8 @@ if ($existingNodes->isNotEmpty()) {
         // Produktinformationen aktualisieren
         $product->shop_id = $shopId;
         $product->category_id = $categoryId;
-        $product->product_title = $request->input('product_title');
+        //$product->product_title = $request->input('product_title');
+        $product->product_title = trim($request->input('product_title'));
         $product->product_description = $request->input('product_description');
         $product->product_anonce = $request->input('product_short_description');
         $product->product_code = $request->input('product_article_no');

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Session;
 
 class TipComponent extends Component
 {
-    public $tipType = 'amount'; // 'amount', 'percentage', 'none'
+    public $tipType = 'percentage'; // 'amount', 'percentage', 'none'
     public $tipPercentage = null; // '5', '10', '15', '20', null (for no tip)
     public $tipAmount = 0;
 

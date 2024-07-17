@@ -442,9 +442,36 @@ dd($productId, $selectedSize, $selectedPrice, $productName);
       //  dd($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity, $extendedProductId);
       $productData = ModProducts::where('id', $productId)->first();
       $productCode = $productData->product_code ?? 0;
-      //   dd($productCode);
+        // dd($productCode);
 
 //dd($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productId, $options);
+
+$bottles = $productData->bottles_id;
+
+//dd($bottles);
+
+if ($bottles) {
+    $bottlesPrices = ModBottles::where('id', $bottles)->first();
+
+    $size = 'standard';
+
+    // Annahme: Standardgröße
+    $quantity = '1';
+
+    if ($bottlesPrices) {
+        // Füge die Produktoptionen zum $options-Array hinzu
+        $options[] = [
+            'productCode' => 'deposit',
+            'productName' => $bottlesPrices->bottles_title,
+            'price' => $bottlesPrices->bottles_value,
+            'size' => $size,
+            'quantity' => $quantity,
+        ];
+        // Erhöhe den Preis um $additionalPrice
+        $totalPrice += $bottlesPrices->bottles_value;
+    }
+}
+
 
         // Produkt zum Warenkorb hinzufügen
         Cart::add($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productCode, $options);

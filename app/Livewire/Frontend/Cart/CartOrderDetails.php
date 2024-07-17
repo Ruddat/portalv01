@@ -51,7 +51,9 @@ class CartOrderDetails extends Component
     public $OrderNumber;
     public $orderHash;
     public $selectedTime;
-
+    public $newData = [];
+    public $paypal_express_fee_fixed;
+    public $paypal_express_fee_percent;
 
     protected $rules = [
         'selectedOption' => 'required',
@@ -77,14 +79,14 @@ class CartOrderDetails extends Component
     {
         // Abrufen der Shop-Daten anhand der ID oder eine Fehlermeldung anzeigen, falls nicht gefunden
         $this->shopData = ModShop::findOrFail($restaurantId);
-      //  dd($this->shopData);
-     //   $this->createXml();
+        //  dd($this->shopData);
+        //   $this->createXml();
         $this->ipAddress = $_SERVER['REMOTE_ADDR'];
 
+        // Lade vorhandene Daten aus der Session, falls verfügbar
         $addressData = Session::get('address_data');
-//dd($addressData);
+       // dd($addressData);
 
-      //  dd($addressData);
         // Überprüfe, ob die Daten vorhanden sind
         if ($addressData) {
             // Verwende die Sessiondaten hier weiter
@@ -111,6 +113,12 @@ class CartOrderDetails extends Component
 
         }
 
+        $this->paypal_express_fee_fixed = get_settings()->paypal_express_fee_fixed;
+        $this->paypal_express_fee_percent = get_settings()->paypal_express_fee_percentage;
+        $this->sales_commission = get_settings()->sales_commission;
+     //   dd($this->paypal_express_fee_fixed, $this->paypal_express_fee_percent, $this->sales_commission);
+
+
     }
 
     public function orderNowForm(CartService $cartService)
@@ -126,7 +134,7 @@ class CartOrderDetails extends Component
         // Validierung der Benutzereingaben
         $validatedData = $this->validate();
 
-      //  dd($validatedData);
+        //dd($validatedData);
 
         // Adresse für Geokodierung vorbereiten
         $street = $validatedData['shipping_street'];
@@ -200,6 +208,23 @@ class CartOrderDetails extends Component
 
         $deliveryorpickup = Session::get('delivery_or_pickup_'. $shopId);
 
+
+        // Berechne die Preise
+        $prices = $this->calculatePrices($order);
+
+        // Liefergebühr basierend auf dem Bestellwert festlegen
+        $deliveryFee = Session::get("delivery_cost_$shopId", 0);
+        $deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0);
+
+        if ($prices['price_products'] > $deliveryFreeThreshold) {
+            $deliveryFee = 0;
+        }
+
+
+        // PayPal-Gebühren berechnen
+        $paypalFee = ($prices['price_products'] + $prices['price_bottles']) * ($this->paypal_express_fee_percent / 100) + $this->paypal_express_fee_fixed;
+
+      //  dd($order, $prices);
         // Neue Bestellung erstellen und in die Datenbank speichern
         $order = ModOrders::create([
             'order_nr' => $newOrderNumber,
@@ -220,12 +245,12 @@ class CartOrderDetails extends Component
             'shipping_type' => $deliveryorpickup,
             'shipping_lng' => $longitude,
             'shipping_lat' => $latitude,
-            'price_products' => '0.00',
-            'price_shipping' => '0.00',
-            'price_bottles' => '0.00',
-            'price_payment' => '0.00',
+            'price_products' => $prices['price_products'],
+            'price_shipping' => number_format($deliveryFee, 2),
+            'price_bottles' => $prices['price_bottles'],
+            'price_payment' => number_format($paypalFee, 2),
             'price_tips' => '0.00',
-            'price_total' => '12.90',
+            'price_total' => number_format($prices['price_products'] + $deliveryFee + $prices['price_bottles'] + $paypalFee, 2),
             'eshop_discount' => '0.00',
             'cart_in_session' => '0',
             'coupon_code' => '',
@@ -241,11 +266,91 @@ class CartOrderDetails extends Component
         $this->generateNewPDF($orderHash);
         $this->generateNewClient($validatedData);
         $this->generateConfirmationEmail($orderHash);
+        $this->updateAddressData($validatedData);
+
 
         return redirect()->route('life-tracking', ['orderHash' => $orderHash]);
     }
 
-public function generateNewClient($data)
+
+    public function calculatePrices($order)
+    {
+     //  dd($order);
+
+        $priceProducts = 0.00;
+        $priceBottles = 0.00;
+
+        foreach ($order as $item) {
+            // Preis des Hauptprodukts berechnen
+            $priceProducts += $item['price'] * $item['quantity'];
+
+            // Optionen (Subartikel) durchlaufen
+            foreach ($item['options'] as $option) {
+                if ($option['productCode'] == 'deposit') {
+                    // Preis der Flaschen berechnen
+                    $priceBottles += $option['price'] * $option['quantity'];
+                }
+            }
+        }
+
+        return [
+            'price_products' => number_format($priceProducts, 2),
+            'price_bottles' => number_format($priceBottles, 2),
+        ];
+    }
+
+    public function updateAddressData($newData)
+    {
+        // Validiere die eingehenden Daten (hier kannst du deine Validierung einfügen)
+        $validatedData = $newData; // In der Praxis solltest du hier validieren
+        //dd($validatedData, $newData, $this->opt_save_data);
+
+        // Überprüfe, ob opt_save_data auf true gesetzt ist
+        if ($this->opt_save_data) {
+            // Lade vorhandene Daten aus der Session
+            $existingData = Session::get('address_data', []);
+            // Zusammenführen der vorhandenen Daten mit den neuen Daten
+            $mergedData = array_merge($existingData, $validatedData);
+
+            // Aktualisierte Daten in der Session speichern
+            Session::put('address_data', $mergedData);
+
+            // Lokale Kopie der Daten aktualisieren
+            $this->addressData = $mergedData;
+
+            // Optional: Feedback an den Benutzer geben
+            $this->dispatch('toast', message: 'Address data updated successfully!', notify:'success' );
+
+        } else {
+            // Lösche die persönlichen Daten, aber behalte die Lieferadresse
+            $existingData = Session::get('address_data', []);
+            $deliveryData = [
+                'shipping_street' => $existingData['shipping_street'],
+                'shipping_house_no' => $existingData['shipping_house_no'],
+                'city' => $existingData['city'],
+                'postal_code' => $existingData['postal_code'],
+                'payment_method' => $existingData['payment_method'],
+                'opt_news_coupons' => $existingData['opt_news_coupons'],
+                'order_comment' => $existingData['order_comment'],
+                'description_of_way' => $existingData['description_of_way'],
+                'opt_save_data' => $existingData['opt_save_data'],
+            ];
+
+            // Aktualisierte Lieferadresse in der Session speichern
+            Session::put('address_data', $deliveryData);
+
+            // Lokale Kopie der Daten aktualisieren
+            $this->addressData = $deliveryData;
+
+            // Optional: Feedback an den Benutzer geben
+            $this->dispatch('toast', message: 'Delivery address updated successfully, personal data not saved.', notify:'success' );
+        }
+    }
+
+
+
+
+    public function generateNewClient($data)
 {
     // Geokoordinaten (Beispielwerte)
     $latitude = Session::get('latitude');
