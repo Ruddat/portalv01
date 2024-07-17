@@ -68,11 +68,10 @@ class GenerateWeeklyInvoices extends Command
 
 
             // Get shop-specific sales commission if available
-            $shop = ModShop::find($shopId);
-            $commission = ($shop && $shop->charge !== null && $shop->charge !== 0) ? $shop->charge : $this->sales_commission;
-
-            // Calculate commission amount
-            $commissionAmount = ($commission / 100) * $totalAmount;
+			$shop = ModShop::find($shopId);
+			$commission = ($shop && $shop->charge !== null && $shop->charge > 0) ? $shop->charge : $this->sales_commission;
+			// Calculate commission amount
+			$commissionAmount = ($commission / 100) * $totalAmount;
             // Example output
             //echo "Shop-specific commission: " . $commission . "%<br>";
             //echo "Commission amount: " . $commissionAmount . "<br>";
