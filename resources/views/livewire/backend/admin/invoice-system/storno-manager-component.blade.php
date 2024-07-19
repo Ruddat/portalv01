@@ -7,10 +7,12 @@
             <div class="card-body">
                 <div class="row">
                 <div class="mb-3 col-md-4">
+                    <label for="search">Suchen:</label>
                     <input wire:model.live="search" type="text" placeholder="Suche nach Bestellungen..." class="form-control"/>
                 </div>
 
                 <div class="mb-3 col-md-4">
+                    <label for="paymentTypeFilter">Zahlungsart Filtern:</label>
                     <select wire:model.live="paymentTypeFilter" class="form-control">
                         <option value="">Alle Zahlungsmethoden</option>
                         @foreach ($paymentTypes as $paymentType)
@@ -20,8 +22,9 @@
                 </div>
 
                 <div class="mb-3 col-md-4">
-                    <select wire:model.live="recordsPerPage" class="form-control">
-                        @foreach ($perPageOptions as $option)
+                    <label for="recordsPerPage">Einträge pro Seite:</label>
+                    <select wire:model.live="recordsPerPage" id="recordsPerPage" class="form-control">
+                        @foreach($perPageOptions as $option)
                             <option value="{{ $option }}">{{ $option }}</option>
                         @endforeach
                     </select>
@@ -62,7 +65,7 @@
                                     <td>{{ $order->paypal_total }}</td> <!-- Hinzugefügt -->
                                     <td>
                                      <div class="d-flex">
-                                        <button wire:click="setOrder({{ $order->id }}, {{ $order->paypal_total }})" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></button>
+                                        <button wire:click="setOrder({{ $order->id }}, {{ $order->paypal_total }}, {{ $order->parent }})" class="btn btn-primary shadow btn-xs sharp me-1"><i class="fa fa-pencil"></i></button>
                                         @if(!$order->storno_included_in_invoice)
                                         <button wire:click="deleteStorno({{ $order->id }})" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></button>
                                         @endif
@@ -72,9 +75,15 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="d-flex">
+                    {{ $orders->links() }}
+                    </div>
                 </div>
 
-                    {{ $orders->links('pagination::bootstrap-5') }}
+
+
+
+
 
 
                 @if ($orderId)

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\ModOrders;
 use Livewire\WithPagination;
 use App\Models\ModSysStornos;
+use Livewire\WithoutUrlPagination;
 
 class StornoManagerComponent extends Component
 {
@@ -13,14 +14,16 @@ class StornoManagerComponent extends Component
 
     public $search = '';
     public $sortField = 'order_date';
-    public $sortDirection = 'asc';
+    public $sortDirection = 'desc';
     public $recordsPerPage = 10; // Standardwert
     public $paymentTypeFilter = ''; // Hinzugefügt
     public $refundAmount;
     public $refundReason;
     public $orderId;
     public $stornoId;
+    public $shopId;
     public $maxRefundAmount; // Maximaler Storno-Betrag
+    //public $page;
 
     public $refundReasons = [ // Standard-Optionen für den Storno-Grund
         'Restaurant geschlossen',
@@ -32,6 +35,9 @@ class StornoManagerComponent extends Component
         'search' => ['except' => ''],
         'sortField' => ['except' => 'order_date'],
         'sortDirection' => ['except' => 'asc'],
+        'recordsPerPage' => ['except' => 10], // Hinzugefügt
+        'perPage' => ['except' => 1],
+        'paymentTypeFilter' => ['except' => ''], // Hinzugefügt
     ];
 
     public function render()
@@ -56,7 +62,7 @@ class StornoManagerComponent extends Component
             ->when($this->paymentTypeFilter, function($query, $paymentType) {
                 return $query->where('mod_orders.payment_type', $paymentType);
             })
-            ->orderBy($this->sortField, $this->sortDirection)
+            ->orderBy($this->sortField, $this->sortDirection) // Sortierung nach Feld und Richtung
             ->paginate($perPage);
 
         $paymentTypes = ModOrders::distinct()->pluck('payment_type')->toArray();
@@ -66,10 +72,14 @@ class StornoManagerComponent extends Component
             'orders' => $orders,
             'paymentTypes' => $paymentTypes,
             'perPageOptions' => $perPageOptions,
-          //  'stronoId' => $stornoId,
         ]);
     }
 
+
+    public function updatingRecordsPerPage()
+    {
+        $this->resetPage();
+    }
 
     public function sortBy($field)
     {
@@ -82,7 +92,7 @@ class StornoManagerComponent extends Component
         $this->sortField = $field;
     }
 
-    public function setOrder($orderId, $refundAmount)
+    public function setOrder($orderId, $refundAmount, $shopId)
     {
         $order = ModOrders::where('id', $orderId)->first();
 
@@ -97,6 +107,9 @@ class StornoManagerComponent extends Component
 
             // Immer die Storno ID als Bestellnummer setzen
             $this->stornoId = $order->order_nr;
+            $this->shopId = $order->parent;
+
+
             $this->refundAmount = $refundAmount;  // Setze den Storno-Betrag auf den Gesamtbetrag der Bestellung
             $this->maxRefundAmount = $refundAmount;  // Setze den maximalen Storno-Betrag
 
@@ -137,6 +150,7 @@ class StornoManagerComponent extends Component
             [
                 'refund_amount' => $this->refundAmount,
                 'refund_reason' => $this->refundReason,
+                'shop_id' => $this->shopId,
                 'included_in_invoice' => false,
             ]
         );

@@ -93,7 +93,7 @@
 
                 setTimeout(() => {
                     order.classList.remove('active');
-                }, (index + 1) * 5000);
+                }, (index + 1) * 3000);
             });
         });
 
@@ -147,7 +147,7 @@
                 setTimeout(() => {
                     newOrderElement.remove();
                 }, 300); // Anpassen der Wartezeit zur Synchronisierung mit der CSS-Transition
-            }, 5000);
+            }, 3000);
         }
     </script>
 

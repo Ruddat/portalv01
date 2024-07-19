@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ModShop;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ModSysStornos extends Model
 {
@@ -11,5 +12,4 @@ class ModSysStornos extends Model
 
     protected $guarded = [];
 
-    
 }

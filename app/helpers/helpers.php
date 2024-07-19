@@ -66,7 +66,20 @@ if( !function_exists('get_settings')){
                 'emergency_sms_cost' => 0.59, // Beispielwert
                 'service_fee_non_paypal' => 0.59, // Beispielwert
                 'instant_payout_fee_percentage' => 0.5, // Beispielwert
-                'sales_commission' => 8.00 // Beispielwert
+                'sales_commission' => 8.00, // Beispielwert
+                'company_name' => 'Mamas Express',
+                'address' => 'Rebenring 18',
+                'postal_code' => '38118',
+                'city' => 'Braunschweig',
+                'country' => 'Deutschland',
+                'ceo_name' => 'Ingo Ruddat',
+                'phone' => '+49',
+                'bank_name' => 'Commerzbank',
+                'iban' => 'xxxxxxxxxx',
+                'register_court' => 'Amtsgericht Braunschweig',
+                'hrb' => 'HRB',
+                'vat_number' => 'USt.-Nr. DE'
+
             ]);
             $new_settings_data = $settings->first();
             $results = $new_settings_data;

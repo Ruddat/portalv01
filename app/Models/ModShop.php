@@ -9,6 +9,7 @@ use App\Models\ModCategory;
 use App\Models\ModProducts;
 use Illuminate\Support\Str;
 use App\Models\DeliveryArea;
+use App\Models\ModSysStornos;
 use App\Models\ModSellerHoliDay;
 use App\Models\ModSellerVotings;
 use App\Models\ModSellerWorktimes;
@@ -158,4 +159,11 @@ class ModShop extends Model
     {
         return $this->hasMany(ModSellerVotings::class, 'shop_id');
     }
+
+
+    public function stornos()
+    {
+        return $this->hasMany(ModSysStornos::class, 'shop_id');
+    }
+
 }
