@@ -110,6 +110,8 @@
                             <hr>
 
                             <li><a href="{{ route('seller.indexOrderOverview', ['shopId' => $shopId]) }}">@autotranslate('Order overview', app()->getLocale())</a></li>
+                            <li><a href="{{ route('seller.invoices-all', ['shopId' => $shopId]) }}">@autotranslate('Rechnungen', app()->getLocale())</a></li>
+
                             <li><a href="{{ route('seller.reviews-overview', ['shopId' => $shopId]) }}">@autotranslate('Customer reviews', app()->getLocale())</a></li>
                             <li><a href="#">Stornierungen</a></li>
                             <hr>
