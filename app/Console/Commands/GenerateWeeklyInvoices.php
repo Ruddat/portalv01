@@ -140,6 +140,7 @@ class GenerateWeeklyInvoices extends Command
 
                     $invoiceData = array_merge($invoiceJsonData, [
                         'shop_id' => $shopId,
+                        'parent' => $shopId,
                         'start_date' => $startOfWeek,
                         'end_date' => $endOfWeek,
                         'generated_at' => $now,
@@ -154,6 +155,7 @@ class GenerateWeeklyInvoices extends Command
                 // Generate PDF
                 $pdf = PDF::loadView('pdf.invoice', [
                     'shopId' => $shopId,
+                    'shop' => $shop, // Shop-Daten an die Ansicht übergeben
                     'startOfWeek' => $startOfWeek,
                     'endOfWeek' => $endOfWeek,
                     'orders' => json_decode($orderJsonData, true),

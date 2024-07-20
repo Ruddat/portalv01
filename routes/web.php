@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RobotsController;
 use App\Livewire\Frontend\ShopSearchResults;
 use App\Http\Livewire\Frontend\Card\ProductList;
 use App\Http\Controllers\GoogleTranslateController;
@@ -71,6 +72,11 @@ Route::get('/media-stats', [MediaStatsController::class, 'index'])->name('media.
 Route::get('/impressum', function () {
     return view('frontend/pages/otherpages.impressum');
 });
+
+// Robots.txt file
+Route::get('/robots.txt', [RobotsController::class, 'index']);
+
+
 
 
 // Mobile Application

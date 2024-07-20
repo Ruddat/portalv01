@@ -3,20 +3,52 @@
 namespace App\Livewire\Backend\Admin\InvoiceSystem;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\ModSysInvoices;
+use Livewire\WithoutUrlPagination;
 
 class InvoiceComponent extends Component
 {
-    public $invoices;
+    use WithPagination, WithoutUrlPagination;
 
-    public function mount()
+    public $search = '';
+    public $filterStatus = '';
+    public $perPage = 10;
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'filterStatus' => ['except' => ''],
+        'page' => ['except' => 1],
+    ];
+
+    public function updatingSearch()
     {
-        $this->loadInvoices();
+        $this->resetPage();
     }
 
-    public function loadInvoices()
+    public function updatingFilterStatus()
     {
-        $this->invoices = ModSysInvoices::with('shop')->orderBy('generated_at', 'desc')->get();
+        $this->resetPage();
+    }
+
+    public function render()
+    {
+        $query = ModSysInvoices::with('shop')
+            ->when($this->search, function($query) {
+                $query->whereHas('shop', function($query) {
+                    $query->where('title', 'like', '%'.$this->search.'%')
+                          ->orWhere('shop_nr', 'like', '%'.$this->search.'%');
+                })
+                ->orWhere('invoice_number', 'like', '%'.$this->search.'%');
+            })
+            ->when($this->filterStatus, function($query) {
+                $query->where('payment_status', $this->filterStatus);
+            })
+            ->orderBy('invoice_number', 'desc');
+
+        return view('livewire.backend.admin.invoice-system.invoice-component', [
+            'invoices' => $query->paginate($this->perPage)
+        ]);
     }
 
     public function togglePaymentStatus($invoiceId)
@@ -25,12 +57,6 @@ class InvoiceComponent extends Component
         if ($invoice) {
             $invoice->payment_status = $invoice->payment_status === 'paid' ? 'open' : 'paid';
             $invoice->save();
-            $this->loadInvoices(); // Reload invoices to reflect the change
         }
-    }
-
-    public function render()
-    {
-        return view('livewire.backend.admin.invoice-system.invoice-component');
     }
 }
