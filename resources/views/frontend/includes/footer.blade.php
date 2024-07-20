@@ -145,7 +145,7 @@
 
             <div class="footer-copyright py-3">
                 <div class="container d-flex align-items-center">
-                <p class="mb-0"> © 2023 {{ config('app.name') }} All rights reserved </p>
+                <p class="mb-0"> © 2023 {{ config('app.name') }} @autotranslate('All rights reserved', app()->getLocale())</p>
                 <p class="text-muted mb-0 ms-auto d-flex align-items-center">
 
 
@@ -220,8 +220,8 @@
 
                 // Dynamisch das Manifest erstellen und einfügen
                 const dynamicManifest = {
-                    name: "Dein App-Name",
-                    short_name: "App",
+                    name: "Mamas Express",
+                    short_name: "Express",
                     start_url: window.location.origin + window.location.pathname,
                     display: "standalone",
                     background_color: "#ffffff",
