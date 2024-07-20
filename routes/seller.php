@@ -43,12 +43,21 @@ Route::prefix('seller')->name('seller.')->group(function(){
     });
 
     // Dashboard routes
-        Route::prefix('shop')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
-            Route::get('/details', [DashboardController::class, 'sellerDetails'])->name('sellerDetails');
-            Route::post('/shops/{shop}/copy', [DashboardController::class, 'copyShop'])->name('copyShop');
-            Route::delete('/shops/{shop}/delete', [DashboardController::class, 'deleteShop'])->name('deleteShop');
-            Route::get('/switchshop', [DashboardController::class, 'switchShop'])->name('switchShop');
-        });
+    Route::prefix('shop')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::get('/details', [DashboardController::class, 'sellerDetails'])->name('sellerDetails');
+        Route::post('/shops/{shop}/copy', [DashboardController::class, 'copyShop'])->name('copyShop');
+        Route::delete('/shops/{shop}/delete', [DashboardController::class, 'deleteShop'])->name('deleteShop');
+        Route::get('/switchshop', [DashboardController::class, 'switchShop'])->name('switchShop');
+    });
+
+
+    Route::prefix('invoicesmanager')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::view('/invoices_all/{shopId}', 'backend.pages.seller.invoices.invoices-index')->name('invoices-all');
+   //     Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
+
+        //  Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');
+      //  Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');
+    });
 
 
         // DeliveryArea Routes
