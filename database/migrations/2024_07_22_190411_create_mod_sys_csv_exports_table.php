@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('translations', function (Blueprint $table) {
+        Schema::create('mod_sys_csv_exports', function (Blueprint $table) {
             $table->id();
-            $table->string('key', 1500);  // Erhöhen der Länge des `key`-Feldes
-            $table->string('locale', 5);  // Standard ISO 639-1 (z.B. 'en', 'de')
-            $table->text('text');
+            $table->string('filename');
+            $table->text('file_content'); // Hier speichern wir den Inhalt der CSV-Datei
             $table->timestamps();
-            $table->unique(['key', 'locale']);
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('translations');
+        Schema::dropIfExists('csv_exports');
     }
 };

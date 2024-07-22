@@ -14,9 +14,11 @@ use App\Http\Controllers\Frontend\Geoip\LocationController;
 use App\Http\Controllers\Frontend\Search\GeocodeController;
 use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
+use App\Http\Controllers\Backend\Admin\Invoice\CsvExportController;
 use App\Http\Controllers\Backend\Admin\Invoice\InvoicePdfController;
 use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
 use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
+use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
 
 
 /*
@@ -75,6 +77,7 @@ Route::get('/impressum', function () {
 
 // Robots.txt file
 Route::get('/robots.txt', [RobotsController::class, 'index']);
+Route::get('/csv/download/{id}', [CsvExportController::class, 'download'])->name('csv.download');
 
 
 

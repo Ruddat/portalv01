@@ -26,8 +26,9 @@
                 <div class="row">
 
 
-                    <livewire:backend.admin.invoice-system.invoice-component wire:poll.10000ms="nextBanner" />
+                    <livewire:backend.admin.invoice-system.invoice-component />
 
+                    <livewire:backend.admin.invoice-system.csv-export-manager />
 
                 </div>
             </div>

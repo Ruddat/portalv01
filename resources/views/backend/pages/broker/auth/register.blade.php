@@ -37,9 +37,9 @@
                     <div class="box_topic submit">
                         <figure><img src="{{ asset('frontend/img/icon_submit_1.svg') }}" alt="" width="110" height="100"></figure>
                         <h3>@autotranslate('Dein Verdienst', app()->getLocale())</h3>
-                        <p>Verdiene eine attraktive Provision für jede Bestellvermittlung eines geworbenen Restaurants.
+                        <p>@autotranslate('Verdiene eine attraktive Provision für jede Bestellvermittlung eines geworbenen Restaurants.
                             Beispiel: Bei einer monatlichen Provision von 1.000 Euro pro Restaurant, erhältst du 300 Euro.
-                            Werbe 5 Restaurants und du kannst monatlich 1.500 Euro verdienen!</p>
+                            Werbe 5 Restaurants und du kannst monatlich 1.500 Euro verdienen!', app()->getLocale())</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">

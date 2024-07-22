@@ -13,7 +13,8 @@ use Illuminate\Console\Command;
 
 class GenerateWeeklyInvoices extends Command
 {
-        protected $signature = 'invoices:generate';
+
+        protected $signature = 'invoices:generate {startOfWeek?} {endOfWeek?}';
         protected $description = 'Generates weekly invoices for shops';
 
         protected $paypal_express_fee_fixed;
@@ -33,10 +34,23 @@ class GenerateWeeklyInvoices extends Command
             $this->sales_commission = get_settings()->sales_commission;
 
             // Set start of the week to Sunday and end of the week to Saturday
+        // Check if arguments were provided
+        $startOfWeek = $this->argument('startOfWeek');
+        $endOfWeek = $this->argument('endOfWeek');
+
+        if ($startOfWeek && $endOfWeek) {
+            // Use provided arguments
+            $startOfWeek = Carbon::parse($startOfWeek)->toDateString();
+            $endOfWeek = Carbon::parse($endOfWeek)->toDateString();
+        } else {
+            // Use the current week if no arguments are provided
             $startOfWeek = Carbon::now()->startOfWeek(Carbon::SUNDAY)->toDateString();
             $endOfWeek = Carbon::now()->endOfWeek(Carbon::SATURDAY)->toDateString();
-            $now = Carbon::now();
+        }
 
+        $now = Carbon::now();
+
+        
             // Fetch orders within the week
             $orders = ModOrders::whereBetween('order_date', [$startOfWeek, $endOfWeek])->get();
 
@@ -140,7 +154,6 @@ class GenerateWeeklyInvoices extends Command
 
                     $invoiceData = array_merge($invoiceJsonData, [
                         'shop_id' => $shopId,
-                        'parent' => $shopId,
                         'start_date' => $startOfWeek,
                         'end_date' => $endOfWeek,
                         'generated_at' => $now,
