@@ -36,10 +36,10 @@
                     </div>
                 @endif
                 <div class="table-responsive">
-                    <table class="table header-border table-responsive-sm">
+                    <table class="table table-responsive-md">
                         <thead>
                             <tr>
-                                <th wire:click="sortBy('order_nr')">#</th>
+                                <th style="width:80px;" wire:click="sortBy('order_nr')"><strong>#</strong></th>
                                 <th wire:click="sortBy('name')">Name</th>
                                 <th wire:click="sortBy('surname')">Nachname</th>
                                 <th wire:click="sortBy('payment_type')">Zahlungsmethode</th>
@@ -47,7 +47,7 @@
                                 <th wire:click="sortBy('mod_sys_stornos.refund_amount')">Storno Betrag</th>
                                 <th wire:click="sortBy('mod_sys_stornos.refund_reason')">Storno Grund</th>
                                 <th wire:click="sortBy('mod_sys_stornos.included_in_invoice')">Storno in Abrechnung</th>
-                                <th wire:click="sortBy('paypal_total')">Paypal Betrag</th> <!-- Hinzugefügt -->
+                                <th wire:click="sortBy('paypal_total')">Paypal Betrag</th>
                                 <th>Aktion</th>
                             </tr>
                         </thead>

@@ -358,6 +358,36 @@
             </div>
         </div>
         <!-- /shape_element_2 -->
+        <div class="container margin_60_0">
+            <div class="row justify-content-center">
+                <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box_info_1 pr-lg-3">
+                                <div class="wrapper_img">
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-600-400.png') }}" data-src="{{ asset('frontend/img/submit_restaurant_home.jpg') }}" alt="" class="img-fluid lazy"></figure><span></span>
+                                </div>
+                                <h3>Add Your Restaurant</h3>
+                                <p>Neque sodales ut etiam sit amet nisl purus in. Et leo duis ut diam. Tristique senectus et netus et malesuada. Est ultricies integer quis auctor elit.</p>
+                                <p><a href="{{ route('seller.register') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Tragen Sie Ihr Restaurant ein', app()->getLocale())</a>
+                                    <a href="{{ route('broker.register') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Become a broker', app()->getLocale())</a></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ">
+                            <div class="box_info_1 pl-lg-3">
+                                <div class="wrapper_img">
+                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-600-400.png') }}" data-src="{{ asset('frontend/img/submit_rider_home.jpg') }}" alt="" class="img-fluid lazy"></figure><span></span>
+                                </div>
+                                <h3>Already a partner</h3>
+                                <p>Pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies. Diam maecenas ultricies mi eget mauris pharetra et ultrices neque. Id leo in vitae massa sed duis diam.</p>
+                                <p><a href="{{ route('seller.login') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Partnercenter', app()->getLocale())</a>
+                                <a href="{{ route('broker.login') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate(' Broker Portal ', app()->getLocale())</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 @push('specific-scripts')

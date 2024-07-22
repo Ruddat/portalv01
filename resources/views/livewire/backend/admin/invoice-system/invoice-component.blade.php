@@ -19,9 +19,12 @@
                     </select>
                 </div>
                 <div class="col-md-8">
-                    <button class="btn btn-primary" wire:click="generateInvoicesForWeek" wire:loading.attr="disabled"
-                        wire:target="generateInvoicesForWeek">
-                        Rechnungen erstellen
+                    <button class="btn btn-primary" wire:click="generateInvoicesForWeek" wire:loading.attr="disabled" wire:target="generateInvoicesForWeek">
+                        <span wire:loading.remove wire:target="generateInvoicesForWeek">Rechnungen erstellen</span>
+                        <span wire:loading wire:target="generateInvoicesForWeek">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Erstelle Rechungen...
+                        </span>
                     </button>
                 </div>
             </div>

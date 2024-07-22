@@ -1,6 +1,7 @@
 <footer>
 
     <div class="container margin_60_40 fix_mobile">
+
         <div class="row">
             <div class="col-lg-3 col-md-6">
                 <h3 data-bs-target="#collapse_1">{{ app(\App\Services\AutoTranslationService::class)->trans('Quick Links', app()->getLocale()) }}</h3>
