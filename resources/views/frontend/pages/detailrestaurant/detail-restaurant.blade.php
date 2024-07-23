@@ -63,18 +63,20 @@
 			</div>
 		</div>
 		<!--/hero_in-->
-
         <nav class="secondary_nav sticky_horizontal">
             <div class="container">
                 <ul id="secondary_nav">
                     @foreach($categories as $category)
                         <li><a href="#section-{{ $category->id }}">{{ $category->category_name }}</a></li>
                     @endforeach
+
                     <li><a href="#section-20"><i class="icon_chat_alt"></i>Reviews</a></li>
+
                 </ul>
             </div>
             <span></span>
         </nav>
+
 
 		<!-- /secondary_nav -->
         <div class="bg_gray">
@@ -154,7 +156,7 @@
 		                    <!-- /head -->
 		                    <div class="main">
                                 @include('backend.includes.errorflash')
-                                
+
                                 <livewire:frontend.card.cart-component />
 
 		                        <div class="row opt_order">
