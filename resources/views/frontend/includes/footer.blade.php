@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
-                <h3 data-bs-target="#collapse_2">{{ app(\App\Services\AutoTranslationService::class)->trans('Categories', app()->getLocale()) }}</h3>
+                <h3 data-bs-target="#collapse_2">{{ app(\App\Services\AutoTranslationService::class)->trans('Brands', app()->getLocale()) }}</h3>
                 <div class="collapse dont-collapse-sm links" id="collapse_2">
                     <ul>
                         <li><a href="grid-listing-filterscol.html">{{ app(\App\Services\AutoTranslationService::class)->trans('Top Categories', app()->getLocale()) }}</a></li>

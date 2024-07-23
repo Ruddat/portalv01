@@ -316,48 +316,8 @@
         </div>
         <!-- /bg_gray -->
 
-        <div class="shape_element_2">
-            <div class="container margin_60_0">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_1.svg') }}" alt="" width="150" height="167" class="lazy"></figure>
-                                    <h3>@autotranslate('Easily Order', app()->getLocale())</h3>
-                                    <p>@autotranslate('Order your favorite meals with just a few clicks. Fast and easy!', app()->getLocale())</p>
-                                </div>
-                                <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_2.svg') }}" alt="" width="130" height="145" class="lazy"></figure>
-                                    <h3>@autotranslate('Quick Delivery', app()->getLocale())</h3>
-                                    <p>@autotranslate('Enjoy fast delivery. Your food, hot and fresh, right on time.', app()->getLocale())</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 align-self-center">
-                                <div class="box_how">
-                                    <figure><img src="{{ asset('frontend/img/lazy-placeholder-100-100-white.png') }}" data-src="{{ asset('frontend/img/how_3.svg') }}" alt="" width="150" height="132" class="lazy"></figure>
-                                    <h3>@autotranslate('Enjoy Food', app()->getLocale())</h3>
-                                    <p>@autotranslate('Savor your meal, whether dining alone or with loved ones.', app()->getLocale())</p>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-center mt-3 d-block d-lg-none"><a href="#0" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Register Now!', app()->getLocale())</a></p>
-                    </div>
-                    <div class="col-lg-5 offset-lg-1 align-self-center">
-                        <div class="intro_txt">
-                            <div class="main_title">
-                                <span><em></em></span>
-                                <h2>@autotranslate('Start Ordering Now', app()->getLocale())</h2>
-                            </div>
-                            <p class="lead">@autotranslate('Order your favorite dishes online and get them delivered fast.', app()->getLocale())</p>
-                            <p>@autotranslate('Our platform is user-friendly, ensuring a smooth experience.', app()->getLocale())</p>
-                            <p><a href="#0" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Register', app()->getLocale())</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- /shape_element_2 -->
+        <div class="shape_element_2">
         <div class="container margin_60_0">
             <div class="row justify-content-center">
                 <div class="col-xl-12">
@@ -367,8 +327,8 @@
                                 <div class="wrapper_img">
                                     <figure><img src="{{ asset('frontend/img/lazy-placeholder-600-400.png') }}" data-src="{{ asset('frontend/img/submit_restaurant_home.jpg') }}" alt="" class="img-fluid lazy"></figure><span></span>
                                 </div>
-                                <h3>Add Your Restaurant</h3>
-                                <p>Neque sodales ut etiam sit amet nisl purus in. Et leo duis ut diam. Tristique senectus et netus et malesuada. Est ultricies integer quis auctor elit.</p>
+                                <h3>@autotranslate('Add Your Restaurant', app()->getLocale())</h3>
+                                <p>Willkommen in unserem Netzwerk! Hier haben Sie die Möglichkeit, Ihr Restaurant schnell und einfach hinzuzufügen. Schließen Sie sich uns an und profitieren Sie von zahlreichen Vorteilen.</p>
                                 <p><a href="{{ route('seller.register') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Tragen Sie Ihr Restaurant ein', app()->getLocale())</a>
                                     <a href="{{ route('broker.register') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Become a broker', app()->getLocale())</a></p>
                             </div>
@@ -378,8 +338,8 @@
                                 <div class="wrapper_img">
                                     <figure><img src="{{ asset('frontend/img/lazy-placeholder-600-400.png') }}" data-src="{{ asset('frontend/img/submit_rider_home.jpg') }}" alt="" class="img-fluid lazy"></figure><span></span>
                                 </div>
-                                <h3>Already a partner</h3>
-                                <p>Pharetra diam sit amet nisl suscipit adipiscing bibendum est ultricies. Diam maecenas ultricies mi eget mauris pharetra et ultrices neque. Id leo in vitae massa sed duis diam.</p>
+                                <h3>@autotranslate('Already a partner', app()->getLocale())</h3>
+                                <p>Wenn Sie bereits ein Partner sind, können Sie sich hier einloggen und auf das Partnercenter oder das Broker-Portal zugreifen.</p>
                                 <p><a href="{{ route('seller.login') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Partnercenter', app()->getLocale())</a>
                                 <a href="{{ route('broker.login') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate(' Broker Portal ', app()->getLocale())</a></p>
                             </div>
@@ -388,7 +348,7 @@
                 </div>
             </div>
         </div>
-
+        </div>
 
 @push('specific-scripts')
 
