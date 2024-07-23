@@ -59,6 +59,10 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
     Route::post('/vote', [NewCartController::class, 'vote'])->name('vote-restaurant.vote');
     Route::post('/reply', [NewCartController::class, 'reply'])->name('vote-restaurant.reply');
 
+    Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
+
+    Route::view('/help/', 'frontend.pages.otherpages.help')->name('help');
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});
