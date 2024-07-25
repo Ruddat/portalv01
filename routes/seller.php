@@ -51,6 +51,15 @@ Route::prefix('seller')->name('seller.')->group(function(){
     });
 
 
+    Route::prefix('marketing')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::view('/toprank/{shopId}', 'backend.pages.seller.marketing.toprank-index')->name('toprank');
+   //     Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
+
+        //  Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');
+      //  Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');
+    });
+
+
     Route::prefix('invoicesmanager')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
         Route::view('/invoices_all/{shopId}', 'backend.pages.seller.invoices.invoices-index')->name('invoices-all');
    //     Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');

@@ -10,6 +10,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Services\AutoTranslationService;
+use App\Services\TopRankPriceCalculator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,13 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(AutoTranslationService::class, function ($app) {
             return new AutoTranslationService($app->make(\App\Repositories\TranslationRepository::class));
         });
+
+        $this->app->bind(TopRankPriceCalculator::class, function ($app) {
+            // Setze hier den Basispreis, falls erforderlich
+            $basePrice = 0.50;
+            return new TopRankPriceCalculator($basePrice);
+        });
+
     }
 
     /**
