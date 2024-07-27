@@ -53,6 +53,7 @@ Route::prefix('seller')->name('seller.')->group(function(){
 
     Route::prefix('marketing')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
         Route::view('/toprank/{shopId}', 'backend.pages.seller.marketing.toprank-index')->name('toprank');
+        Route::view('/stampcard/{shopId}', 'backend.pages.seller.marketing.stampcard-index')->name('stampcard');
    //     Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
 
         //  Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');

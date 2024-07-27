@@ -106,7 +106,7 @@
 
                             <li><a href="#">Trinkgeld</a></li>
                             <li><a href="#">Gutscheine</a></li>
-                            <li><a href="#">Stempelkarte</a></li>
+                            <li><a href="{{ route('seller.stampcard', ['shopId' => $shopId]) }}">@autotranslate('Stempelkarte', app()->getLocale())</a></li>
                             <li><a href="{{ route('seller.toprank', ['shopId' => $shopId]) }}">@autotranslate('Top Rank', app()->getLocale())</a></li>
                             <hr>
 
