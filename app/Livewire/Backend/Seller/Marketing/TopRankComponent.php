@@ -7,6 +7,7 @@ use App\Models\ModShop;
 use Livewire\Component;
 use App\Models\GeneralSettings;
 use App\Models\ModTopRankPrice;
+use App\Models\ModTopRankPriceArchived;
 
 class TopRankComponent extends Component
 {
@@ -16,28 +17,154 @@ class TopRankComponent extends Component
     public $startTime;
     public $endTime;
     public $currentPrice = 0.5;
+    public $minimumBidFactorPrice = 0.08;
     public $targetRank = 1;
     public $topRankPosition;
+    public $initialTopRankPosition;
+    public $shopLat;
+    public $shopLng;
+    public $topRanks = [];
 
+    protected $rules = [
+        'startTime' => 'required|date|after_or_equal:now',
+        'endTime' => 'required|date|after:startTime',
+    ];
 
     public function mount($shopId)
     {
         $this->shopId = $shopId;
-        $this->startTime = Carbon::now()->format('Y-m-d\TH:i');
+        $this->startTime = Carbon::now()->addHour(1)->format('Y-m-d\TH:i');
         $this->endTime = Carbon::now()->addDays(7)->format('Y-m-d\TH:i');
 
         $minimumBidSetting = GeneralSettings::whereNotNull('minimum_bid')->first();
         $this->currentPrice = $minimumBidSetting ? $minimumBidSetting->minimum_bid : 0.50;
 
+        $minimumBidFactorSetting = GeneralSettings::whereNotNull('minimum_bid_factor')->first();
+        $this->minimumBidFactorPrice = $minimumBidFactorSetting ? $minimumBidFactorSetting->minimum_bid_factor : 0.08;
+
+        $shop = ModShop::find($this->shopId);
+        if ($shop) {
+            $this->shopLat = $shop->lat;
+            $this->shopLng = $shop->lng;
+        }
+
         \Log::info('Initial current price set to: ' . $this->currentPrice);
 
-        $this->calculateCurrentRank();
+        // Initialen Rang berechnen und targetRank setzen
+        $this->calculateRank();
+        $this->initialTopRankPosition = $this->topRankPosition; // Speichern des initialen Werts
+        $this->targetRank = $this->initialTopRankPosition;
+        $this->calculatePrice();
+
+        // TopRank-Daten laden
+        $this->loadTopRanks();
+    }
+
+    public function calculateRank()
+    {
+        $similarShops = $this->getSimilarShops($this->shopLat, $this->shopLng);
+
+        $existingTopRanks = ModTopRankPrice::whereIn('shop_id', $similarShops->pluck('id'))
+                                           ->where('start_time', '<=', $this->endTime)
+                                           ->where('end_time', '>=', $this->startTime)
+                                           ->orderBy('rank', 'asc')
+                                           ->get();
+
+        $this->topRankPosition = count($similarShops) + 1;
+
+        if ($existingTopRanks->count() > 0) {
+            $highestRank = $existingTopRanks->max('rank');
+            $this->topRankPosition = $highestRank + 1;
+
+            foreach ($existingTopRanks as $topRank) {
+                if ($this->currentPrice > $topRank->current_price) {
+                    $this->topRankPosition = $topRank->rank;
+                    break;
+                }
+            }
+        }
+
+        // Initialen Top-Rank-Position setzen, wenn sie nicht bereits gesetzt ist
+        if (!$this->initialTopRankPosition) {
+            $this->initialTopRankPosition = $this->topRankPosition;
+        }
+
+        \Log::info('Calculated rank position: ' . $this->topRankPosition);
+    }
+
+    private function getSimilarShops($lat, $lng)
+    {
+        $radius = $this->maxRadius; // Radius in Kilometern
+        $earthRadius = 6371; // Radius der Erde in Kilometern
+
+        return ModShop::selectRaw("*, ( $earthRadius * acos( cos( radians(?) ) * cos( radians( lat ) ) * cos( radians( lng ) - radians(?) ) + sin( radians(?) ) * sin( radians( lat ) ) ) ) AS distance", [$lat, $lng, $lat])
+            ->havingRaw("distance < ?", [$radius])
+            ->orderBy('distance')
+            ->limit(30)
+            ->get();
+    }
+
+    public function updatedShopLat()
+    {
+        $this->calculateRank();
+        $this->calculatePrice();
+        $this->loadTopRanks();
+    }
+
+    public function updatedShopLng()
+    {
+        $this->calculateRank();
+        $this->calculatePrice();
+        $this->loadTopRanks();
+    }
+
+    public function updatedTargetRank()
+    {
+        // Sicherstellen, dass der Zielrang nicht höher als der initiale Top-Rank-Position ist
+        $this->targetRank = min($this->targetRank, $this->initialTopRankPosition);
+        $this->calculatePrice();
+    }
+
+    public function calculatePrice()
+    {
+        $basePrice = $this->currentPrice;
+        $pricePerRank = $this->minimumBidFactorPrice;
+
+        // Sicherstellen, dass der Zielrang nicht höher als der initiale Top-Rank-Position ist
+        $targetRank = min($this->targetRank, $this->initialTopRankPosition);
+
+        $similarShops = $this->getSimilarShops($this->shopLat, $this->shopLng);
+
+        $existingTopRanks = ModTopRankPrice::whereIn('shop_id', $similarShops->pluck('id'))
+                                           ->where('start_time', '<=', $this->endTime)
+                                           ->where('end_time', '>=', $this->startTime)
+                                           ->orderBy('rank', 'asc')
+                                           ->get();
+
+        // Initialisiere das Preis-Array mit Basispreis
+        $rankPrices = array_fill(1, $this->initialTopRankPosition, $basePrice);
+
+        // Fülle das Preis-Array mit bestehenden Preisen
+        foreach ($existingTopRanks as $topRank) {
+            $rankPrices[$topRank->rank] = $topRank->current_price;
+        }
+
+        // Berechne den neuen Preis basierend auf dem Zielrang
+        if ($targetRank == 1) {
+            $this->currentPrice = max($rankPrices) + $pricePerRank;
+        } else {
+            $this->currentPrice = max(array_slice($rankPrices, 0, $targetRank)) + $pricePerRank;
+        }
+
+        \Log::info('Calculated current price: ' . $this->currentPrice);
     }
 
     public function submit()
     {
         \Log::info('Submitting top rank with current price: ' . $this->currentPrice);
 
+        $this->validate();
+
         $shop = ModShop::find($this->shopId);
 
         if (!$shop) {
@@ -45,184 +172,88 @@ class TopRankComponent extends Component
             return;
         }
 
-        $calculatedCoordinates = $this->calculateCoordinates($shop->lat, $shop->lng, $this->minRadius, $this->maxRadius);
+        $existingEntry = ModTopRankPrice::where('shop_id', $this->shopId)
+                                        ->where('start_time', '<=', $this->endTime)
+                                        ->where('end_time', '>=', $this->startTime)
+                                        ->first();
 
-        \Log::info('Calculated coordinates: ' . json_encode($calculatedCoordinates));
-
-        // Preisberechnung basierend auf der Ziel-Rang-Position
-        $targetRank = $this->targetRank;
-        $currentTopRanks = ModTopRankPrice::orderBy('rank', 'asc')->get();
-
-        if ($currentTopRanks->isEmpty()) {
-            $this->currentPrice = 0.5;
-            $rank = 1;
-        } else {
-            // Sicherstellen, dass der Ziel-Rang innerhalb der Grenzen liegt
-            if ($targetRank < 1) {
-                $targetRank = 1;
-            } elseif ($targetRank > 10) {
-                $targetRank = 10;
-            }
-
-            // Berechnung des Preises für den Ziel-Rang
-            $rankedPrices = $currentTopRanks->pluck('current_price', 'rank')->toArray();
-            $rankedPrices = array_merge([0 => 0.5], $rankedPrices); // Mindestpreis für Rang 1
-
-            $this->currentPrice = $rankedPrices[$targetRank - 1] + 0.1; // Preis für den Ziel-Rang
-            $rank = $targetRank;
-dd($this->currentPrice);
-
-            // Alle Ränge unterhalb des neuen Rangs aktualisieren
-            foreach ($currentTopRanks as $topRank) {
-                if ($topRank->rank >= $targetRank) {
-                    $topRank->rank++;
-                    $topRank->save();
-                }
-            }
+        if ($existingEntry) {
+            \Log::error('Entry with the same shop and time range already exists.');
+            session()->flash('error', 'Eintrag für diesen Zeitraum und Shop existiert bereits.');
+            return;
         }
 
-        \Log::info('Calculated new price: ' . $this->currentPrice);
+        // Berechnung des Rangs für den neuen Eintrag
+        $this->calculateRank();
+        $newRank = $this->targetRank;
 
+        // Aktualisierung der Ränge der bestehenden Einträge
+        $this->updateExistingRanks($newRank);
+
+        // Erstellen des neuen Eintrags
         ModTopRankPrice::create([
             'shop_id' => $this->shopId,
+            'lat' => $this->shopLat,
+            'lng' => $this->shopLng,
             'current_price' => $this->currentPrice,
-            'calculated_coordinates' => $calculatedCoordinates['min_lat'] . ',' . $calculatedCoordinates['min_lng'] . ' - ' . $calculatedCoordinates['max_lat'] . ',' . $calculatedCoordinates['max_lng'],
-            'original_coordinates' => $shop->lat . ',' . $shop->lng,
-            'start_time' => Carbon::now(),
-            'end_time' => Carbon::now()->addDays(7),
-            'lat' => $shop->lat,
-            'lng' => $shop->lng,
-            'rank' => $rank // Initialwert für rank
+            'rank' => $newRank,
+            'start_time' => $this->startTime,
+            'end_time' => $this->endTime,
         ]);
 
-        $this->calculateRankings();
-
-        \Log::info('Top rank submission complete.');
+        session()->flash('success', 'Eintrag erfolgreich gespeichert.');
+        $this->loadTopRanks(); // TopRank-Daten neu laden
     }
 
-    public function calculateCoordinates($lat, $lng, $minRadius, $maxRadius)
+    public function updateExistingRanks($newRank)
     {
-        $earthRadius = 6371;
+        $similarShops = $this->getSimilarShops($this->shopLat, $this->shopLng);
 
-        $coordinatesMin = $this->calculateCoordinatesForRadius($lat, $lng, $minRadius, $earthRadius);
-        $coordinatesMax = $this->calculateCoordinatesForRadius($lat, $lng, $maxRadius, $earthRadius);
+        $existingTopRanks = ModTopRankPrice::whereIn('shop_id', $similarShops->pluck('id'))
+                                           ->where('start_time', '<=', $this->endTime)
+                                           ->where('end_time', '>=', $this->startTime)
+                                           ->orderBy('rank', 'asc')
+                                           ->get();
 
-        return [
-            'min_lat' => $coordinatesMin['lat'],
-            'min_lng' => $coordinatesMin['lng'],
-            'max_lat' => $coordinatesMax['lat'],
-            'max_lng' => $coordinatesMax['lng']
-        ];
-    }
-
-    private function calculateCoordinatesForRadius($lat, $lng, $radius, $earthRadius)
-    {
-        $latFrom = deg2rad($lat);
-        $lngFrom = deg2rad($lng);
-
-        $radiusInDegrees = $radius / $earthRadius;
-
-        $newLat = $latFrom + $radiusInDegrees;
-        $newLng = $lngFrom + ($radiusInDegrees / cos(deg2rad($latFrom)));
-
-        return [
-            'lat' => rad2deg($newLat),
-            'lng' => rad2deg($newLng)
-        ];
-    }
-
-    public function updatedStartTime()
-    {
-        $this->updatePriceAndRank();
-    }
-
-    public function updatedEndTime()
-    {
-        $this->updatePriceAndRank();
-    }
-
-    public function updatePriceAndRank()
-    {
-        $shop = ModShop::find($this->shopId);
-
-        if (!$shop) {
-            \Log::error('Shop not found.');
-            return;
-        }
-
-        $calculatedCoordinates = $this->calculateCoordinates($shop->lat, $shop->lng, $this->minRadius, $this->maxRadius);
-
-        \Log::info('Calculated coordinates for update: ' . json_encode($calculatedCoordinates));
-
-        $demandFactor = $this->calculateDemandFactor($shop, $this->minRadius, $this->maxRadius);
-
-        $this->currentPrice = $this->currentPrice + $demandFactor;
-
-        $this->topRankPosition = $this->calculateTopRankPosition();
-    }
-
-    public function calculateDemandFactor($shop, $minRadius, $maxRadius)
-    {
-        $otherShopsCount = ModShop::where('id', '!=', $shop->id)
-            ->whereRaw("ST_Distance_Sphere(point(lng, lat), point(?, ?)) BETWEEN ? AND ?", [
-                $shop->lng, $shop->lat, $minRadius * 1000, $maxRadius * 1000
-            ])->count();
-
-        \Log::info('Other shops in the auction within the radius: ' . $otherShopsCount);
-
-        $demandFactor = $otherShopsCount * 0.1;
-        \Log::info('Calculated demand factor: ' . $demandFactor);
-
-        return $demandFactor;
-    }
-
-    public function calculateRankings()
-    {
-        $shop = ModShop::find($this->shopId);
-        if (!$shop) {
-            \Log::error('Shop not found.');
-            return;
-        }
-
-        $topRankPrices = ModTopRankPrice::orderBy('current_price', 'desc')->get();
-
-        $rank = 1;
-        foreach ($topRankPrices as $price) {
-            $price->update(['rank' => $rank]);
-            $rank++;
-        }
-
-        \Log::info('Rankings updated successfully.');
-    }
-
-    public function calculateTopRankPosition()
-    {
-        $topRankPrices = ModTopRankPrice::orderBy('current_price', 'desc')->get();
-
-        $position = 1;
-        foreach ($topRankPrices as $price) {
-            if ($price->shop_id == $this->shopId) {
-                return $position;
+        foreach ($existingTopRanks as $topRank) {
+            if ($topRank->rank >= $newRank) {
+                $topRank->rank += 1;
+                $topRank->save();
             }
-            $position++;
         }
-
-        return null;
     }
 
-    public function calculateCurrentRank()
+    public function loadTopRanks()
     {
-        $shop = ModShop::find($this->shopId);
-        if (!$shop) {
-            \Log::error('Shop not found.');
-            return;
-        }
+        $this->topRanks = ModTopRankPrice::where('shop_id', $this->shopId)
+                                         ->whereNull('deleted_at')
+                                         ->orderBy('rank', 'asc')
+                                         ->get();
+    }
 
-        $this->topRankPosition = $this->calculateTopRankPosition();
+    public function deleteTopRank($id)
+    {
+        $topRank = ModTopRankPrice::find($id);
+
+        if ($topRank) {
+        // Konvertiere das Modell in ein Array und füge 'deleted_at' hinzu
+        $data = $topRank->toArray();
+        $data['deleted_at'] = now();
+
+        // Archivieren des Eintrags
+        ModTopRankPriceArchived::create($data);
+        // Eintrag aus der originalen Tabelle löschen
+        $topRank->delete();
+        // TopRank-Daten neu laden
+        $this->loadTopRanks();
+        }
     }
 
     public function render()
     {
-        return view('livewire.backend.seller.marketing.top-rank-component');
+        return view('livewire.backend.seller.marketing.top-rank-component', [
+            'topRanks' => $this->topRanks,
+        ]);
     }
 }
+

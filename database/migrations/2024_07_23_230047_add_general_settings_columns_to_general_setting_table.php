@@ -15,6 +15,7 @@ return new class extends Migration
             //
             $table->string('key')->unique();
             $table->decimal('minimum_bid', 8, 2)->default(0.50);
+            $table->decimal('minimum_bid_factor', 8, 2)->default(0.08);
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
             //
             $table->dropColumn('minimum_bid');
             $table->dropColumn('key');
+            $table->dropColumn('minimum_bid_factor');
 
         });
     }

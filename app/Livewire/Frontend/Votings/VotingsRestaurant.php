@@ -118,20 +118,14 @@ class VotingsRestaurant extends Component
     $shop->voting_average = $votingAverage;
     $shop->save();
 
-
-
       //  dd($request->all());
 
         // Hier könntest du die eingereichten Daten validieren und in der Datenbank speichern
 
         // Erfolgsmeldung anzeigen oder Benutzer weiterleiten
         session()->flash('success', 'Your review has been submitted successfully!');
-     //     return redirect()->route('home');
-
-     return redirect()->route('restaurant.index', ['slug' => $this->restaurant->shop_slug ?? $this->restaurant->id]);
-
-//          return redirect()->route('detail-restaurant-2.index', ['restaurantId' => $this->restaurant->id]);
-//          return redirect()->route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]);
+     $shopSlug = ModShop::find($this->restaurant->id);
+     return redirect()->route('restaurant.index', ['slug' => $shopSlug->shop_slug ?? $shopSlug->id]);
     }
 
 

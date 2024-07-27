@@ -8,6 +8,8 @@ use App\Models\ModShop;
 use Livewire\Component;
 use App\Models\ModOrders;
 use Illuminate\Support\Str;
+use App\Services\CartService;
+use App\Models\ModTopRankPrice;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Services\GeocodeService;
 use App\Models\ModVendorAddressData;
@@ -20,7 +22,6 @@ use Illuminate\Support\Facades\Response;
 use Whitecube\LaravelCookieConsent\Cookie;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Redirect as Redirector;
-use App\Services\CartService;
 
 
 class CartOrderDetails extends Component
@@ -220,6 +221,31 @@ class CartOrderDetails extends Component
             $deliveryFee = 0;
         }
 
+        // sponsored eintraege default ist = 0
+        $sponsoredPrice = 0;
+
+        // Überprüfen, ob der Nutzer über einen gesponserten Eintrag gekommen ist
+        if (session('came_from_sponsored')) {
+
+        // Aktuelles Datum und Uhrzeit
+        $now = now();
+
+        // Abrufen des gesponserten Eintrags, der noch aktiv ist
+        $cameFromSponsored = ModTopRankPrice::where('shop_id', $shopId)
+            ->where('start_time', '<=', $now)
+            ->where('end_time', '>=', $now)
+            ->first();
+
+            // Session-Information vergessen
+            session()->forget('came_from_sponsored');
+
+            // Wenn ein aktiver gesponserter Eintrag gefunden wurde, den Preis holen
+            if ($cameFromSponsored) {
+                $sponsoredPrice = $cameFromSponsored->current_price;
+                // Hier Preis weiterverarbeiten oder speichern
+            }
+        }
+
 
         // PayPal-Gebühren berechnen
         $paypalFee = ($prices['price_products'] + $prices['price_bottles']) * ($this->paypal_express_fee_percent / 100) + $this->paypal_express_fee_fixed;
@@ -252,6 +278,7 @@ class CartOrderDetails extends Component
             'price_tips' => '0.00',
             'price_total' => number_format($prices['price_products'] + $deliveryFee + $prices['price_bottles'] + $paypalFee, 2),
             'eshop_discount' => '0.00',
+            'came_from_sponsored' => $sponsoredPrice,
             'cart_in_session' => '0',
             'coupon_code' => '',
             'rand_id' => '0',

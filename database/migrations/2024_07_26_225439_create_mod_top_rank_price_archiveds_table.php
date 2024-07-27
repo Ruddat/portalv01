@@ -11,22 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mod_top_rank_prices', function (Blueprint $table) {
+        Schema::create('mod_top_rank_price_archiveds', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('shop_id');
+            $table->foreignId('shop_id')->constrained('mod_shops');
             $table->decimal('current_price', 8, 2);
             $table->decimal('lat', 10, 7);
             $table->decimal('lng', 10, 7);
-            $table->integer('rank')->nullable();
-            $table->string('calculated_coordinates')->nullable();
-            $table->string('original_coordinates')->nullable();
+            $table->integer('rank');
             $table->timestamp('start_time');
             $table->timestamp('end_time');
             $table->timestamps();
-            $table->softDeletes(); // Fügt ein deleted_at Feld hinzu
-
-
-            $table->foreign('shop_id')->references('id')->on('mod_shops')->onDelete('cascade');
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mod_top_rank_prices');
+        Schema::dropIfExists('mod_top_rank_price_archiveds');
     }
 };

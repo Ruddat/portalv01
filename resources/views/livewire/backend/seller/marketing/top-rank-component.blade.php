@@ -5,6 +5,17 @@
             </div>
             <div class="card-body">
                 <div class="basic-form">
+                    @if (session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session()->has('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
                     <div class="d-profile">
                         <div class="d-flex justify-content-between mb-3 mb-sm-0">
@@ -77,45 +88,108 @@
 
                                 <div class="mb-3 col-md-12">
                                     <label for="target-rank-slider">Boost your Desired Rank:</label>
-                                    <input class="custom-slider-burn" type="range" id="target-rank-slider" min="1" max="10" step="1" value="{{ $targetRank }}" wire:model.change="targetRank">
+                                    <input class="custom-slider-burn" type="range" id="target-rank-slider" min="1" max="{{ $initialTopRankPosition }}" step="1" value="{{ $targetRank }}" wire:model.change="targetRank">
                                 </div>
 
-                    <div class="row">
-
-                        <div class="mb-3 col-md-6">
-                        <label for="start-time">Start Time:</label>
-                        <input type="datetime-local" id="start-time" wire:model="startTime" class="form-control input-default">
-                        </div>
-                        <div class="mb-3 col-md-6">
-                        <label for="end-time">End Time:</label>
-                        <input type="datetime-local" id="end-time" wire:model="endTime" class="form-control input-default">
-                        </div>
-                    </div>
-
-
 
                     <div class="row">
+
                         <div class="mb-3 col-md-6">
-                            <label for="min-radius-slider">Min Radius (km):</label>
-                            <input type="range" id="min-radius-slider" min="0" max="20" step="0.1" wire:model.change="minRadius" class="custom-slider">
-                            <span id="min-radius-value">{{ $minRadius }}</span> km
+                            <label for="startTime" class="form-label">Startdatum</label>
+                            <input type="datetime-local" class="form-control" id="startTime" wire:model="startTime">
+                            @error('startTime') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                         <div class="mb-3 col-md-6">
-                            <label for="max-radius-slider">Max Radius (km):</label>
-                            <input type="range" id="max-radius-slider" min="0" max="20" step="0.1" wire:model="maxRadius" class="custom-slider">
-                            <span id="max-radius-value">{{ $maxRadius }}</span> km
+                            <label for="endTime" class="form-label">Enddatum</label>
+                            <input type="datetime-local" class="form-control" id="endTime" wire:model="endTime">
+                            @error('endTime') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
                     </div>
-
-
 
 
                     <button type="submit" class="btn btn-primary" wire:click="submit">Submit</button>
 
 
+<hr />
+<hr />
+<div class="table-responsive">
+    <h2>TopRank Buchungen</h2>
+    @if (count($topRanks) > 0)
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Preis</th>
+                    <th>Startzeit</th>
+                    <th>Endzeit</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($topRanks as $topRank)
+                    <tr>
+                        <td>{{ $topRank->rank }}</td>
+                        <td>{{ number_format($topRank->current_price, 2) }} €</td>
+                        <td>{{ $topRank->start_time }}</td>
+                        <td>{{ $topRank->end_time }}</td>
+                        <td>
+                            <button wire:click="deleteTopRank({{ $topRank->id }})" class="btn btn-danger btn-sm">
+                                Löschen
+                            </button>
+                            <button wire:click="editTopRank({{ $topRank->id }})" class="btn btn-primary btn-sm">
+                                Bearbeiten
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p>Keine TopRank-Buchungen gefunden.</p>
+    @endif
+</div>
+
+<hr />
+<div class="table-responsive">
+    <h2>Archivierte TopRank Buchungen</h2>
+    @php
+        $archivedTopRanks = \App\Models\ModTopRankPriceArchived::where('shop_id', $shopId)->get();
+    @endphp
+    @if (count($archivedTopRanks) > 0)
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Preis</th>
+                    <th>Startzeit</th>
+                    <th>Endzeit</th>
+                    <th>Gelöscht am</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($archivedTopRanks as $topRank)
+                    <tr>
+                        <td>{{ $topRank->rank }}</td>
+                        <td>{{ number_format($topRank->current_price, 2) }} €</td>
+                        <td>{{ $topRank->start_time }}</td>
+                        <td>{{ $topRank->end_time }}</td>
+                        <td>{{ $topRank->deleted_at }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p>Keine archivierten TopRank-Buchungen gefunden.</p>
+    @endif
+</div>
+
+
             </div>
             </div>
         </div>
+
+
+
 
         <style>
             .custom-slider {

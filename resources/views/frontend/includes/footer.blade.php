@@ -157,8 +157,6 @@
         </div>
     </div>
 </footer>
-<!-- Hier wire:poll einsetzen -->
-<livewire:frontend.social-toast.social-proof/>
 
 @cookieconsentview
 <!--/footer-->
