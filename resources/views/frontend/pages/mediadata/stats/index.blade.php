@@ -327,4 +327,7 @@
   color: whitesmoke;
 }
 </style>
+
+<!-- Hier wire:poll einsetzen -->
+<livewire:frontend.social-toast.social-proof/>
 @endsection

@@ -103,10 +103,11 @@
                             <li><a href="#">Aktionszeiten</a></li>
                             <li><a href="#">Zahlungsmethoden</a></li>
                             <hr>
+
                             <li><a href="#">Trinkgeld</a></li>
                             <li><a href="#">Gutscheine</a></li>
                             <li><a href="#">Stempelkarte</a></li>
-                            <li><a href="#">Top Rank</a></li>
+                            <li><a href="{{ route('seller.toprank', ['shopId' => $shopId]) }}">@autotranslate('Top Rank', app()->getLocale())</a></li>
                             <hr>
 
                             <li><a href="{{ route('seller.indexOrderOverview', ['shopId' => $shopId]) }}">@autotranslate('Order overview', app()->getLocale())</a></li>

@@ -319,30 +319,31 @@
 
 
                 <div class="row">
-
                     <hr>
-                    @if (count($restaurants) < 0)
-                        @foreach ($restaurants as $restaurant)
+
+                    <!-- gesponsert start -->
+                    @if($sponsoredRestaurants->count())
+                        @foreach ($sponsoredRestaurants as $restaurant)
                             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
                                 <div class="strip">
                                     <figure>
                                         <span class="ribbon off">15% off</span>
                                         <span class="ribbon_sponsored on">Sponsored</span>
                                         <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
-                                            data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
-                                            alt="">
-                                        <a href="{{ route('detail-restaurant-2.index', ['slug' => $restaurant->slug]) }}"
+                                            data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
+                                            <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}" class="strip_info">
+
+
                                             class="strip_info">
                                             <small>@autotranslate('Pizza, Burger', app()->getLocale())</small>
-                                        </a>
-                                        <div style="display: flex; align-items: center;">
-                                            <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
+                                            <div style="display: flex; align-items: center;">
+                                                <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
                                                 style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
-                                            <div class="item_title">
-                                                <h3>{{ $restaurant->title }}</h3>
-                                                <small>{{ $restaurant->street }}</small>
+                                                <div class="item_title">
+                                                    <h3>{{ $restaurant->title }}</h3>
+                                                    <small>{{ $restaurant->street }}</small>
+                                                </div>
                                             </div>
-                                        </div>
                                         </a>
                                     </figure>
                                     <ul>
@@ -352,36 +353,26 @@
                                             <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}"
                                                 title="Delivery">@autotranslate('Delivery', app()->getLocale())</span>
                                             <strong class="icon-food_icon_shop fs2">
-                                                {{ number_format($restaurant->distance, 2) }} km</strong>
+                                                {{ number_format($restaurant->distance, 2) }} km
+                                            </strong>
                                         </li>
                                         <li>
                                             @if ($restaurant->voting_average !== null)
                                                 <div class="score" title="Bewertung durchschnitt">
                                                     <strong>{{ number_format($restaurant->voting_average, 1) }}</strong>
                                                 </div>
-                                            @else
                                             @endif
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-
-                            @foreach ($restaurant->openingHours as $openingHour)
-                                <li>{{ $openingHour->day_of_week }}: {{ $openingHour->open_time }} -
-                                    {{ $openingHour->close_time }}</li>
-                            @endforeach
                         @endforeach
-                        <!-- /strip grid -->
                     @else
                         <p>@autotranslate('No sponsored restaurants found.', app()->getLocale())</p>
                     @endif
-
-
-
-
-
                 </div>
 
+<!-- gesponsert end -->
 
 
 

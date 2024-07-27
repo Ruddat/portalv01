@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\ShopSearchController;
 use App\Http\Controllers\Frontend\Cart\NewCartController;
 use App\Http\Controllers\Frontend\Geoip\LocationController;
 use App\Http\Controllers\Frontend\Search\GeocodeController;
+use App\Http\Controllers\Backend\GlobalController\BidController;
 use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 use App\Http\Controllers\Backend\Admin\Invoice\CsvExportController;
@@ -34,12 +35,17 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
 
 
 
+
     // Shopping card  routes
     Route::prefix('card')->group(function() {
         Route::post('/add', [CardController::class, 'addCard'])->name('cart-add');
       //  Route::get('/products/{restaurantId}', [ProductList::class, '__invoke'])->name('products');
         Route::get('/order/{restaurantId}', [App\Http\Controllers\Frontend\Cart\OrderController::class, 'index'])->name('order');
     });
+
+    // Bid Routes
+    Route::get('/increase-bid/{shop_id}/{current_price}', [BidController::class, 'increaseBid'])->name('increaseBid');
+
 
     Route::get('/life-tracking/{orderHash}', [LifeTrackingController::class, 'show'])->name('life-tracking');
     //Route::view('/life-tracking/{orderHash}', 'frontend.lifetracking.life-tracking')->name('life-tracking');

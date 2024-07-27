@@ -201,7 +201,7 @@ return [
         \Torann\GeoIP\GeoIPServiceProvider::class,
         Jaybizzle\LaravelCrawlerDetect\LaravelCrawlerDetectServiceProvider::class,
         App\Providers\GeocodeServiceProvider::class,
-
+        App\Providers\TopRankServiceProvider::class,
 
     ])->toArray(),
 

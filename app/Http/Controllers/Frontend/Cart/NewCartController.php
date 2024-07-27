@@ -22,8 +22,13 @@ class NewCartController extends Controller
      * @param  int  $restaurantId
      * @return \Illuminate\Http\Response
      */
-    public function index($restaurantIdOrSlug)
+    public function index(Request $request, $restaurantIdOrSlug)
     {
+        // Überprüfen, ob der Benutzer von einer gesponserten Quelle kommt
+        if ($request->query('source') == 'sponsored') {
+            session(['came_from_sponsored' => true]);
+        }
+
 
     // Restaurant anhand des Slugs finden
     $restaurant = ModShop::where('shop_slug', $restaurantIdOrSlug)->first();
