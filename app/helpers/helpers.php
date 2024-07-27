@@ -12,9 +12,9 @@ if( !function_exists('send_mail')){
 
     function sendEmail($mailConfig){
 
-    require 'PHPMailer/src/Exception.php';
-    require 'PHPMailer/src/PHPMailer.php';
-    require 'PHPMailer/src/SMTP.php';
+        require_once public_path('PHPMailer/src/Exception.php');
+        require_once public_path('PHPMailer/src/PHPMailer.php');
+        require_once public_path('PHPMailer/src/SMTP.php');
 
     $mail = new PHPMailer(true);
     $mail->SMTPDebug = 0;                                        // Enable verbose debug output

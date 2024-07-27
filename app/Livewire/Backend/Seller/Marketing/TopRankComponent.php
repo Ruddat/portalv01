@@ -190,6 +190,7 @@ class TopRankComponent extends Component
         // Aktualisierung der Ränge der bestehenden Einträge
         $this->updateExistingRanks($newRank);
 
+       // dd($this->currentPrice, $newRank, $this->startTime, $this->endTime, $this->notify_on_outbid);
         // Erstellen des neuen Eintrags
         ModTopRankPrice::create([
             'shop_id' => $this->shopId,
@@ -197,8 +198,10 @@ class TopRankComponent extends Component
             'lng' => $this->shopLng,
             'current_price' => $this->currentPrice,
             'rank' => $newRank,
+            'original_rank' => $newRank,
             'start_time' => $this->startTime,
             'end_time' => $this->endTime,
+
         ]);
 
         session()->flash('success', 'Eintrag erfolgreich gespeichert.');

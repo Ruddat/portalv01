@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('lotto:download')->dailyAt('00:00');
         $schedule->command('sitemap:generate')->daily('00:00');
         $schedule->command('invoices:generate')->weeklyOn(6, '23:59');
-
+        $schedule->command('notify:outbid')->hourly();
 
     }
 

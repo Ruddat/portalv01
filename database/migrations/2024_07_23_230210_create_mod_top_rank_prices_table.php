@@ -18,10 +18,12 @@ return new class extends Migration
             $table->decimal('lat', 10, 7);
             $table->decimal('lng', 10, 7);
             $table->integer('rank')->nullable();
+            $table->integer('original_rank')->nullable();
             $table->string('calculated_coordinates')->nullable();
             $table->string('original_coordinates')->nullable();
             $table->timestamp('start_time');
             $table->timestamp('end_time');
+            $table->boolean('notify_on_outbid')->default(false);
             $table->timestamps();
             $table->softDeletes(); // Fügt ein deleted_at Feld hinzu
 

@@ -106,6 +106,12 @@
                         </div>
                     </div>
 
+                    <div class="col-xl-4 col-xxl-6 col-6">
+                        <div class="form-check custom-checkbox mb-3 checkbox-success">
+                            <input type="checkbox" class="form-check-input" checked="" id="notify_on_outbid" name="notify_on_outbid" value="1">
+                            <label class="form-check-label" for="customCheckBox3"> Benachrichtigen Sie mich, wenn mein Gebot überboten wird!</label>
+                        </div>
+                    </div>
 
                     <button type="submit" class="btn btn-primary" wire:click="submit">Submit</button>
 
