@@ -87,8 +87,17 @@ Route::prefix('admin')->name('admin.')->group(function(){
     });
 
     Route::prefix('invoices')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
-        Route::view('/invoices_all', 'backend.pages.admin.invoices.invoices-index')->name('invoices-all');
+        Route::view('/invoices_all', 'backend.pages.admin.blog.invoices-index')->name('invoices-all');
         Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
+
+        //  Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');
+      //  Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');
+    });
+
+
+    Route::prefix('blog')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+        Route::view('/blog_all', 'backend.pages.admin.blog.blog-index')->name('blog-all');
+//        Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
 
         //  Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');
       //  Route::get('/promo-banners', PromoBannerIndex::class)->name('promo-banners.index');

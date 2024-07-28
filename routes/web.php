@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\ModAdminBlogTag;
+use App\Models\ModAdminBlogPost;
+use App\Models\ModAdminBlogCategory;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RobotsController;
 use App\Livewire\Frontend\ShopSearchResults;
@@ -65,9 +68,29 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
     Route::post('/vote', [NewCartController::class, 'vote'])->name('vote-restaurant.vote');
     Route::post('/reply', [NewCartController::class, 'reply'])->name('vote-restaurant.reply');
 
-    Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
 
+
+    Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
     Route::view('/help/', 'frontend.pages.otherpages.help')->name('help');
+    Route::view('/blog/', 'frontend.pages.otherpages.blog')->name('blog');
+    Route::get('/blog-post/{identifier}', function ($identifier) {
+        // Find the post by slug or ID
+        $post = ModAdminBlogPost::where('slug', $identifier)->orWhere('id', $identifier)->firstOrFail();
+
+        // Get the latest posts
+        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+
+        // Get all categories with the count of posts
+        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+            $query->where('start_date', '<=', now());
+        }])->get();
+
+        // Get all tags
+        $allTags = ModAdminBlogTag::all();
+
+        // Pass the data to the view
+        return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags'));
+    });
 
 //Route::get('/', function () {
 //    return view('welcome');
