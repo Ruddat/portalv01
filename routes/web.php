@@ -88,9 +88,46 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
         // Get all tags
         $allTags = ModAdminBlogTag::all();
 
+        // Generate breadcrumbs
+        $breadcrumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Blog', 'url' => url('/blog')],
+            ['label' => $post->category->name ?? 'No Category', 'url' => url('/category', $post->category->id ?? '')],
+            ['label' => $post->title]
+        ];
+
         // Pass the data to the view
-        return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags'));
+        return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags', 'breadcrumbs'));
     });
+
+    Route::get('/category/{categoryId}', function ($categoryId) {
+        $category = ModAdminBlogCategory::findOrFail($categoryId);
+        $posts = ModAdminBlogPost::where('category_id', $categoryId)->latest()->paginate(6);
+        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+            $query->where('start_date', '<=', now());
+        }])->get();
+        $allTags = ModAdminBlogTag::all();
+
+        return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'category'));
+    });
+
+    Route::get('/tag/{tagId}', function ($tagId) {
+        $tag = ModAdminBlogTag::findOrFail($tagId);
+        $posts = ModAdminBlogPost::whereHas('tags', function ($query) use ($tagId) {
+            $query->where('tag_id', $tagId);
+        })->latest()->paginate(6);
+        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+            $query->where('start_date', '<=', now());
+        }])->get();
+        $allTags = ModAdminBlogTag::all();
+
+        return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'tag'));
+    });
+
+
+
 
 //Route::get('/', function () {
 //    return view('welcome');

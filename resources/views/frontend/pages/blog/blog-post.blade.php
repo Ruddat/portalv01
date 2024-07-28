@@ -1,33 +1,36 @@
 @extends('frontend.layouts.default')
 @section('content')
-    <!-- seitenabhengig css -->
     @push('specific-css')
         <link href="{{ asset('frontend/css/blog.css') }}" rel="stylesheet">
+        <link href="{{ asset('frontend/css/breadcrumb-styles.css') }}" rel="stylesheet">
     @endpush
 
     <body>
         @include('frontend.includes.header-in-clearfix')
 
-
-		<div class="page_header blog element_to_stick">
-		    <div class="container">
-		    	<div class="row">
-		    		<div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-block">
-		    			<h1>Blog and Articles</h1>
-		    		</div>
-		    		<div class="col-xl-4 col-lg-5 col-md-5">
-		    			<div class="search_bar_list">
-						    <input type="text" class="form-control" placeholder="Dishes, restaurants or cuisines">
-						    <button type="submit"><i class="icon_search"></i></button>
-						</div>
-		    		</div>
-		    	</div>
-		    	<!-- /row -->
-		    </div>
-		</div>
-		<!-- /page_header -->
+        <div class="page_header blog element_to_stick">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-block">
+                        <h1>Blog and Articles</h1>
+                    </div>
+                    <div class="col-xl-4 col-lg-5 col-md-5">
+                        <div class="search_bar_list">
+                            <input type="text" class="form-control" placeholder="Dishes, restaurants or cuisines">
+                            <button type="submit"><i class="icon_search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="container margin_60_20">
+            <div class="row">
+                <div class="col-lg-12">
+                    {!! \App\Http\Breadcrumbs::generate($breadcrumbs) !!}
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-lg-9">
                     <div class="singlepost">
@@ -37,7 +40,7 @@
                         <h1>{{ $post->title }}</h1>
                         <div class="postmeta">
                             <ul>
-                                <li><a href="#"><i class="icon_folder-alt"></i> {{ $post->category->name ?? 'No Category' }}</a></li>
+                                <li><a href="{{ url('/category', $post->category->id ?? '') }}"><i class="icon_folder-alt"></i> {{ $post->category->name ?? 'No Category' }}</a></li>
                                 <li><i class="icon_calendar"></i> {{ $post->created_at->format('d/m/Y') }}</li>
                                 <li><a href="#"><i class="icon_pencil-edit"></i> {{ $post->author->name ?? 'Admin' }}</a></li>
                                 <li><a href="#"><i class="icon_comment_alt"></i> ({{ $post->comments_count ?? 0 }}) Comments</a></li>
@@ -49,6 +52,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div id="comments">
                         <h5>Comments</h5>
                         <ul>
@@ -168,7 +172,4 @@
                 </aside>
             </div>
         </div>
-
-
-
     @endsection
