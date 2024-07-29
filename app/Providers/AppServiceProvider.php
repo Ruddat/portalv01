@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Blade;
+use Livewire\Livewire;
 use App\Services\CopyShopService;
 use Illuminate\Support\Facades\App;
 use App\Services\TranslationService;
@@ -11,6 +12,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Services\AutoTranslationService;
 use App\Services\TopRankPriceCalculator;
+use App\Livewire\Frontend\Blog\AddComment;
+use App\Livewire\Frontend\Blog\BlogComments;
+use App\Livewire\Frontend\Blog\AddReplyComponent;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -78,7 +82,10 @@ class AppServiceProvider extends ServiceProvider
 
         Schema::defaultStringLength(191);
 
-
+        // Livewire Components
+        Livewire::component('frontend.blog.blog-comments', BlogComments::class);
+        Livewire::component('frontend.blog.add-comment', AddComment::class);
+        Livewire::component('frontend.blog.add-reply-component', AddReplyComponent::class);
 
     }
 }

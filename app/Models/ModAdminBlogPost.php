@@ -55,4 +55,10 @@ class ModAdminBlogPost extends Model
         return $this->belongsTo(Admin::class, 'user_id'); // Referencing the Admin model
     }
 
+    public function comments()
+    {
+        return $this->hasMany(ModAdminBlogComment::class, 'post_id');
+    }
+
+
 }

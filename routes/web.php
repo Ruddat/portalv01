@@ -23,6 +23,7 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoicePdfController;
 use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
 use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
+use App\Http\Controllers\SystemComponent\CommentVerificationController;
 
 
 /*
@@ -72,10 +73,13 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
 
     Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
     Route::view('/help/', 'frontend.pages.otherpages.help')->name('help');
-    Route::view('/blog/', 'frontend.pages.otherpages.blog')->name('blog');
+    Route::view('/blog/', 'frontend.pages.blog.blog')->name('blog');
     Route::get('/blog-post/{identifier}', function ($identifier) {
-        // Find the post by slug or ID
-        $post = ModAdminBlogPost::where('slug', $identifier)->orWhere('id', $identifier)->firstOrFail();
+        // Find the post by slug or ID and load the comments count
+        $post = ModAdminBlogPost::withCount('comments')
+                    ->where('slug', $identifier)
+                    ->orWhere('id', $identifier)
+                    ->firstOrFail();
 
         // Get the latest posts
         $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
@@ -98,7 +102,7 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
 
         // Pass the data to the view
         return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags', 'breadcrumbs'));
-    });
+    })->name('blog-post');
 
     Route::get('/category/{categoryId}', function ($categoryId) {
         $category = ModAdminBlogCategory::findOrFail($categoryId);
@@ -125,6 +129,9 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
 
         return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'tag'));
     });
+    Route::get('/verify-comment/{token}/{email}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
+
+
 
 
 
@@ -175,9 +182,7 @@ Route::get('/index-5', function () {
 });
 
 
-Route::get('/index-6', function () {
-    return view('frontend/pages/index.index-6');
-});
+
 
 
 Route::get('/index-7', function () {
@@ -220,14 +225,6 @@ Route::get('/detail-restaurant-3', function () {
 
 Route::get('/detail-restaurant-4', function () {
     return view('frontend/pages/detailrestaurant.detail-restaurant-4');
-});
-
-Route::get('/blog', function () {
-    return view('frontend/pages/blog.blog');
-});
-
-Route::get('/blog-post', function () {
-    return view('frontend/pages/blog.blog-post');
 });
 
 

@@ -33,6 +33,19 @@
 
             <div class="row">
                 <div class="col-lg-9">
+
+    @if (session()->has('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+@endif
+
+@if (session()->has('fail'))
+    <div class="alert alert-danger">
+        {{ session('fail') }}
+    </div>
+@endif
+
                     <div class="singlepost">
                         <figure>
                             <img alt="" class="img-fluid" src="{{ asset($post->image_large) }}">
@@ -53,74 +66,13 @@
                         </div>
                     </div>
 
-                    <div id="comments">
-                        <h5>Comments</h5>
-                        <ul>
-                            @if($post->comments && $post->comments->count())
-                                @foreach($post->comments as $comment)
-                                    <li>
-                                        <div class="avatar">
-                                            <a href="#"><img src="{{ asset('frontend/img/avatar1.jpg') }}" alt=""></a>
-                                        </div>
-                                        <div class="comment_right clearfix">
-                                            <div class="comment_info">
-                                                By <a href="#">{{ $comment->author->name ?? 'Anonymous' }}</a>
-                                                <span>|</span>{{ $comment->created_at->format('d/m/Y') }}
-                                                <span>|</span><a href="#">Reply</a>
-                                            </div>
-                                            <p>{{ $comment->content }}</p>
-                                        </div>
-                                        @if($comment->replies && $comment->replies->count())
-                                            <ul class="replied-to">
-                                                @foreach($comment->replies as $reply)
-                                                    <li>
-                                                        <div class="avatar">
-                                                            <a href="#"><img src="{{ asset('frontend/img/avatar4.jpg') }}" alt=""></a>
-                                                        </div>
-                                                        <div class="comment_right clearfix">
-                                                            <div class="comment_info">
-                                                                By <a href="#">{{ $reply->author->name ?? 'Anonymous' }}</a>
-                                                                <span>|</span>{{ $reply->created_at->format('d/m/Y') }}
-                                                                <span>|</span><a href="#">Reply</a>
-                                                            </div>
-                                                            <p>{{ $reply->content }}</p>
-                                                        </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </li>
-                                @endforeach
-                            @else
-                                <li>No comments yet. Be the first to comment!</li>
-                            @endif
-                        </ul>
-                    </div>
+                    <livewire:frontend.blog.blog-comments :postId="$post->id" />
+
                     <hr>
+
                     <h5>Leave a comment</h5>
-                    <div class="row">
-                        <div class="col-md-4 col-sm-6">
-                            <div class="form-group">
-                                <input type="text" name="name" id="name2" class="form-control" placeholder="Name">
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="form-group">
-                                <input type="text" name="email" id="email2" class="form-control" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <input type="text" name="website" id="website3" class="form-control" placeholder="Website">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" name="comments" id="comments2" rows="6" placeholder="Comment"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" id="submit2" class="btn_1 add_bottom_15">Submit</button>
-                    </div>
+                    <livewire:frontend.blog.add-comment :postId="$post->id" />
+
                 </div>
                 <aside class="col-lg-3">
                     <div class="widget">

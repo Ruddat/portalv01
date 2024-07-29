@@ -1,6 +1,19 @@
 <div class="container margin_60_20">
+
+
     <div class="row">
         <div class="col-lg-9">
+            @if (session()->has('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
+            </div>
+        @endif
+
+        @if (session()->has('fail'))
+            <div class="alert alert-danger">
+                {{ session('fail') }}
+            </div>
+        @endif
             <div class="row">
                 @foreach($posts as $post)
                 <div class="col-md-6">
