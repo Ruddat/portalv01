@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\ModAdminBlogTag;
+use App\Models\ModAdminBlogPost;
+use App\Models\ModAdminBlogCategory;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RobotsController;
 use App\Livewire\Frontend\ShopSearchResults;
@@ -20,6 +23,7 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoicePdfController;
 use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
 use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
+use App\Http\Controllers\SystemComponent\CommentVerificationController;
 
 
 /*
@@ -65,9 +69,76 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
     Route::post('/vote', [NewCartController::class, 'vote'])->name('vote-restaurant.vote');
     Route::post('/reply', [NewCartController::class, 'reply'])->name('vote-restaurant.reply');
 
-    Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
 
+
+    Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
     Route::view('/help/', 'frontend.pages.otherpages.help')->name('help');
+
+    // Blog routes start
+    Route::view('/blog/', 'frontend.pages.blog.blog')->name('blog');
+    Route::get('/blog-post/{identifier}', function ($identifier) {
+        $post = ModAdminBlogPost::with(['comments' => function ($query) {
+            $query->whereNull('parent_id')
+                  ->where('approved', true)
+                  ->with(['replies' => function ($query) {
+                      $query->where('approved', true);
+                  }]);
+        }])
+        ->where('slug', $identifier)
+        ->orWhere('id', $identifier)
+        ->firstOrFail();
+
+        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+            $query->where('start_date', '<=', now());
+        }])->get();
+        $allTags = ModAdminBlogTag::all();
+
+        $breadcrumbs = [
+            ['label' => 'Home', 'url' => url('/')],
+            ['label' => 'Blog', 'url' => url('/blog')],
+            ['label' => $post->category->name ?? 'No Category', 'url' => url('/category', $post->category->id ?? '')],
+            ['label' => $post->title]
+        ];
+
+        return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags', 'breadcrumbs'));
+    })->name('blog-post');
+
+
+
+
+
+    Route::get('/category/{categoryId}', function ($categoryId) {
+        $category = ModAdminBlogCategory::findOrFail($categoryId);
+        $posts = ModAdminBlogPost::where('category_id', $categoryId)->latest()->paginate(6);
+        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+            $query->where('start_date', '<=', now());
+        }])->get();
+        $allTags = ModAdminBlogTag::all();
+
+        return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'category'));
+    });
+
+    Route::get('/tag/{tagId}', function ($tagId) {
+        $tag = ModAdminBlogTag::findOrFail($tagId);
+        $posts = ModAdminBlogPost::whereHas('tags', function ($query) use ($tagId) {
+            $query->where('tag_id', $tagId);
+        })->latest()->paginate(6);
+        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+            $query->where('start_date', '<=', now());
+        }])->get();
+        $allTags = ModAdminBlogTag::all();
+
+        return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'tag'));
+    });
+    Route::get('/verify-comment/{token}/{email}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
+    // Blog routes end
+
+
+
+
 
 //Route::get('/', function () {
 //    return view('welcome');
@@ -115,9 +186,7 @@ Route::get('/index-5', function () {
 });
 
 
-Route::get('/index-6', function () {
-    return view('frontend/pages/index.index-6');
-});
+
 
 
 Route::get('/index-7', function () {
@@ -160,14 +229,6 @@ Route::get('/detail-restaurant-3', function () {
 
 Route::get('/detail-restaurant-4', function () {
     return view('frontend/pages/detailrestaurant.detail-restaurant-4');
-});
-
-Route::get('/blog', function () {
-    return view('frontend/pages/blog.blog');
-});
-
-Route::get('/blog-post', function () {
-    return view('frontend/pages/blog.blog-post');
 });
 
 

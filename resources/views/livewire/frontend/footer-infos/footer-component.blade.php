@@ -20,7 +20,7 @@
                         @foreach($restaurants as $restaurant)
                             <li>
                                 <a href="{{ url('restaurant/' . ($restaurant->shop_slug ?? $restaurant->id)) }}">
-                                    {{ app(\App\Services\AutoTranslationService::class)->trans($restaurant->title, app()->getLocale()) }}
+                                    {{ $restaurant->title }}
                                 </a>
                             </li>
                         @endforeach
@@ -54,6 +54,7 @@
                         <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Restaurant anmelden', app()->getLocale()) }}</a></li>
                         <li><a href="help.html">{{ app(\App\Services\AutoTranslationService::class)->trans('Help', app()->getLocale()) }}</a></li>
                         <li><a href="{{ url('/bugzilla') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Bug-Zilla', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ url('/blog') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
                         <li><a href="contacts.html">@autotranslate('Contact', app()->getLocale())</a></li>
                     </ul>
                 </div>
