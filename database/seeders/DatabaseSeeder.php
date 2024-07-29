@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ModAllergensSeeder::class);
         $this->call(AdminPromoBannerSeeder::class);
         $this->call(ModOrderSeeder::class);
+        $this->call(BadwordsTableSeeder::class);
 
 
     }

@@ -38,7 +38,7 @@
         @error('content') <span class="text-danger">{{ $message }}</span> @enderror
     </div>
     <div class="form-group">
-        <button type="submit" id="submit" class="btn_1 add_bottom_15">Submit Comment</button>
+        <button type="submit" id="submit" class="btn_1 add_bottom_15">@autotranslate('Submit Comment', app()->getLocale())</button>
     </div>
     </form>
 

@@ -11,24 +11,16 @@ class ModAdminBlogComment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'post_id',
-        'author',
-        'email',
-        'content',
-        'parent_id',
-        'approved',
-        'verification_token',
-        
+        'post_id', 'author', 'email', 'content', 'approved', 'verification_token', 'avatar', 'avatar_reply', 'parent_id', 'moderate'
     ];
-
-    public function post()
-    {
-        return $this->belongsTo(ModAdminBlogPost::class);
-    }
 
     public function replies()
     {
-        return $this->hasMany(ModAdminBlogComment::class, 'parent_id')->latest();
+        return $this->hasMany(ModAdminBlogComment::class, 'parent_id')->where('approved', true);
+    }
+    public function post()
+    {
+        return $this->belongsTo(ModAdminBlogPost::class);
     }
 
 

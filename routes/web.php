@@ -73,26 +73,27 @@ use App\Http\Controllers\SystemComponent\CommentVerificationController;
 
     Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
     Route::view('/help/', 'frontend.pages.otherpages.help')->name('help');
+
+    // Blog routes start
     Route::view('/blog/', 'frontend.pages.blog.blog')->name('blog');
     Route::get('/blog-post/{identifier}', function ($identifier) {
-        // Find the post by slug or ID and load the comments count
-        $post = ModAdminBlogPost::withCount('comments')
-                    ->where('slug', $identifier)
-                    ->orWhere('id', $identifier)
-                    ->firstOrFail();
+        $post = ModAdminBlogPost::with(['comments' => function ($query) {
+            $query->whereNull('parent_id')
+                  ->where('approved', true)
+                  ->with(['replies' => function ($query) {
+                      $query->where('approved', true);
+                  }]);
+        }])
+        ->where('slug', $identifier)
+        ->orWhere('id', $identifier)
+        ->firstOrFail();
 
-        // Get the latest posts
         $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
-
-        // Get all categories with the count of posts
         $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
             $query->where('start_date', '<=', now());
         }])->get();
-
-        // Get all tags
         $allTags = ModAdminBlogTag::all();
 
-        // Generate breadcrumbs
         $breadcrumbs = [
             ['label' => 'Home', 'url' => url('/')],
             ['label' => 'Blog', 'url' => url('/blog')],
@@ -100,9 +101,12 @@ use App\Http\Controllers\SystemComponent\CommentVerificationController;
             ['label' => $post->title]
         ];
 
-        // Pass the data to the view
         return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags', 'breadcrumbs'));
     })->name('blog-post');
+
+
+
+
 
     Route::get('/category/{categoryId}', function ($categoryId) {
         $category = ModAdminBlogCategory::findOrFail($categoryId);
@@ -130,7 +134,7 @@ use App\Http\Controllers\SystemComponent\CommentVerificationController;
         return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'tag'));
     });
     Route::get('/verify-comment/{token}/{email}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
-
+    // Blog routes end
 
 
 

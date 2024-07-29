@@ -12,7 +12,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-block">
-                        <h1>Blog and Articles</h1>
+                        <h1>@autotranslate('Blogdetails and Articles', app()->getLocale())</h1>
                     </div>
                     <div class="col-xl-4 col-lg-5 col-md-5">
                         <div class="search_bar_list">
@@ -56,7 +56,7 @@
                                 <li><a href="{{ url('/category', $post->category->id ?? '') }}"><i class="icon_folder-alt"></i> {{ $post->category->name ?? 'No Category' }}</a></li>
                                 <li><i class="icon_calendar"></i> {{ $post->created_at->format('d/m/Y') }}</li>
                                 <li><a href="#"><i class="icon_pencil-edit"></i> {{ $post->author->name ?? 'Admin' }}</a></li>
-                                <li><a href="#"><i class="icon_comment_alt"></i> ({{ $post->comments_count ?? 0 }}) Comments</a></li>
+                                <li><a href="#"><i class="icon_comment_alt"></i> ({{ $post->comments_count ?? 0 }}) @autotranslate('Comments', app()->getLocale())</a></li>
                             </ul>
                         </div>
                         <div class="post-content">
@@ -70,14 +70,14 @@
 
                     <hr>
 
-                    <h5>Leave a comment</h5>
+                    <h5>@autotranslate('Leave a comment', app()->getLocale())</h5>
                     <livewire:frontend.blog.add-comment :postId="$post->id" />
 
                 </div>
                 <aside class="col-lg-3">
                     <div class="widget">
                         <div class="widget-title first">
-                            <h4>Latest Post</h4>
+                            <h4>@autotranslate('Latest Post', app()->getLocale())</h4>
                         </div>
                         <ul class="comments-list">
                             @foreach($latestPosts as $latestPost)
@@ -99,12 +99,12 @@
                     </div>
                     <div class="widget">
                         <div class="widget-title">
-                            <h4>Categories</h4>
+                            <h4>@autotranslate('Categories', app()->getLocale())</h4>
                         </div>
                         <ul class="cats">
                             @foreach($categories as $category)
                             <li>
-                                <a href="#" wire:click.prevent="updatedCategory({{ $category->id }})">
+                                <a href="#" wire:click.prevent="setCategory({{ $category->id }})">
                                     {{ $category->name }} <span>({{ $category->posts_count }})</span>
                                 </a>
                             </li>
@@ -113,15 +113,34 @@
                     </div>
                     <div class="widget">
                         <div class="widget-title">
-                            <h4>Popular Tags</h4>
+                            <h4>@autotranslate('Popular Tags', app()->getLocale())</h4>
                         </div>
                         <div class="tags">
                             @foreach($allTags as $tag)
-                            <a href="#">{{ $tag->name }}</a>
+                            <a href="#" wire:click.prevent="toggleTag({{ $tag->id }})">{{ $tag->name }}</a>
                             @endforeach
                         </div>
                     </div>
                 </aside>
             </div>
         </div>
+
+
+
+
+
+
+
+
+        <style>
+            .tags a {
+                margin-right: 10px;
+                text-decoration: none;
+                color: #3498db;
+            }
+            .tags a.active {
+                font-weight: bold;
+                color: #e67e22;
+            }
+        </style>
     @endsection

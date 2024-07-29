@@ -13,7 +13,7 @@
 		    <div class="container">
 		    	<div class="row">
 		    		<div class="col-xl-8 col-lg-7 col-md-7 d-none d-md-block">
-		    			<h1>Blog and Articles</h1>
+		    			<h1>@autotranslate('Blog and Articles', app()->getLocale())</h1>
 		    		</div>
 		    		<div class="col-xl-4 col-lg-5 col-md-5">
 		    			<div class="search_bar_list">
@@ -42,7 +42,7 @@
                                     <div class="wrapper_img">
                                         <figure><img src="https://portal-v01.test/frontend/img/submit_restaurant_home.jpg" data-src="https://portal-v01.test/frontend/img/submit_restaurant_home.jpg" alt="" class="img-fluid lazy loaded" data-was-processed="true"></figure><span></span>
                                     </div>
-                                    <h3>Fügen Sie Ihr Restaurant hinzu</h3>
+                                    <h3>@autotranslate('Fügen Sie Ihr Restaurant hinzu', app()->getLocale())</h3>
                                     <p>Willkommen in unserem Netzwerk! Hier haben Sie die Möglichkeit, Ihr Restaurant schnell und einfach hinzuzufügen. Schließen Sie sich uns an und profitieren Sie von zahlreichen Vorteilen.</p>
                                     <p><a href="https://portal-v01.test/seller/register" class="btn_1 medium gradient pulse_bt mt-2">Tragen Sie Ihr Restaurant ein</a>
                                         <a href="https://portal-v01.test/broker/register" class="btn_1 medium gradient pulse_bt mt-2">Werden Sie Makler</a></p>
@@ -53,7 +53,7 @@
                                     <div class="wrapper_img">
                                         <figure><img src="https://portal-v01.test/frontend/img/submit_rider_home.jpg" data-src="https://portal-v01.test/frontend/img/submit_rider_home.jpg" alt="" class="img-fluid lazy loaded" data-was-processed="true"></figure><span></span>
                                     </div>
-                                    <h3>Bereits Partner</h3>
+                                    <h3>@autotranslate('Bereits Partner', app()->getLocale())</h3>
                                     <p>Wenn Sie bereits ein Partner sind, können Sie sich hier einloggen und auf das Partnercenter oder das Broker-Portal zugreifen.</p>
                                     <p><a href="https://portal-v01.test/seller/login" class="btn_1 medium gradient pulse_bt mt-2">Partnercenter</a>
                                     <a href="https://portal-v01.test/broker/login" class="btn_1 medium gradient pulse_bt mt-2">Broker-Portal</a></p>

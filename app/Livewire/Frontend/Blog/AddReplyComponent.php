@@ -4,6 +4,7 @@ namespace App\Livewire\Frontend\Blog;
 
 use Livewire\Component;
 use Illuminate\Support\Str;
+use App\Helpers\AvatarHelper;
 use App\Models\ModAdminBlogComment;
 
 class AddReplyComponent extends Component
@@ -32,6 +33,9 @@ class AddReplyComponent extends Component
         $encodedToken = base64_encode($token);
 
 
+        // Generiere den Avatar für den Kommentar
+        $avatarUrl = AvatarHelper::createAvatar($this->author);
+
         ModAdminBlogComment::create([
             'post_id' => ModAdminBlogComment::findOrFail($this->commentId)->post_id,
             'parent_id' => $this->commentId,
@@ -39,6 +43,8 @@ class AddReplyComponent extends Component
             'content' => $this->content,
             'email' => $this->email,
             'approved' => false,
+            'moderate' => true,
+            'avatar_reply' => $avatarUrl, // Speichern des Avatar-URLs
             'verification_token' => $encodedToken,
         ]);
 

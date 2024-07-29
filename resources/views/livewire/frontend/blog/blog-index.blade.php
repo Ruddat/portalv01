@@ -1,37 +1,25 @@
 <div class="container margin_60_20">
-
-
     <div class="row">
         <div class="col-lg-9">
-            @if (session()->has('message'))
-            <div class="alert alert-success">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        @if (session()->has('fail'))
-            <div class="alert alert-danger">
-                {{ session('fail') }}
-            </div>
-        @endif
             <div class="row">
+
                 @foreach($posts as $post)
                 <div class="col-md-6">
                     <article class="blog">
                         <figure>
                             <a href="{{ url('/blog-post', $post->slug ?? $post->id) }}"><img src="{{ asset($post->image_medium) }}" alt="">
-                                <div class="preview"><span>Read more</span></div>
+                                <div class="preview"><span>@autotranslate('Read more', app()->getLocale())</span></div>
                             </a>
                         </figure>
                         <div class="post_info">
-                            <small>{{ $post->category->name ?? 'No Category' }} - {{ $post->created_at->format('d M. Y') }}</small>
+                            <small>{{ $post->category->name ?? 'No Category' }} - {{ $post->created_at->format('d M. Y H:m:s') }}</small>
                             <h2><a href="{{ url('/blog-post', $post->slug ?? $post->id) }}">{{ $post->title }}</a></h2>
-                            <p>{!! Str::limit($post->content, 100) !!}</p>
+                            <p>{{ Str::limit(strip_tags($post->content), 100) }}</p>
                             <ul>
                                 <li>
                                     <div class="thumb"><img src="{{ asset('frontend/img/avatar.jpg') }}" alt=""></div> {{ $post->author->name ?? 'Unknown' }}
                                 </li>
-                                <li><i class="icon_comment_alt"></i>20</li>
+                                <li><i class="icon_comment_alt"></i>({{ $post->comments_count ?? 0 }})</li>
                             </ul>
                         </div>
                     </article>
@@ -39,6 +27,8 @@
                 </div>
                 <!-- /col -->
                 @endforeach
+
+
             </div>
             <!-- /row -->
 
@@ -52,7 +42,7 @@
         <aside class="col-lg-3">
             <div class="widget">
                 <div class="widget-title first">
-                    <h4>Latest Post</h4>
+                    <h4>@autotranslate('Latest Post', app()->getLocale())</h4>
                 </div>
                 <ul class="comments-list">
                     @foreach($posts->take(3) as $latestPost)
@@ -69,7 +59,7 @@
             <!-- /widget -->
             <div class="widget">
                 <div class="widget-title">
-                    <h4>Categories</h4>
+                    <h4>@autotranslate('Categories', app()->getLocale())</h4>
                 </div>
                 <ul class="cats">
                     @foreach($categories as $category)
@@ -80,7 +70,7 @@
             <!-- /widget -->
             <div class="widget">
                 <div class="widget-title">
-                    <h4>Popular Tags</h4>
+                    <h4>@autotranslate('Popular Tags', app()->getLocale())</h4>
                 </div>
                 <div class="tags">
                     @foreach($allTags as $tag)
@@ -93,5 +83,4 @@
         <!-- /aside -->
     </div>
     <!-- /row -->
-
 </div>

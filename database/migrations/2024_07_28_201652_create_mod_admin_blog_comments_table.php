@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('email');
             $table->text('content');
             $table->boolean('approved')->default(false);
+            $table->boolean('moderate')->default(true);
             $table->string('verification_token')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('avatar_reply')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('mod_admin_blog_comments')->onDelete('cascade');
             $table->timestamps();
         });

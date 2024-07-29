@@ -4,7 +4,9 @@ namespace App\Livewire\Frontend\Blog;
 
 use Livewire\Component;
 use Illuminate\Support\Str;
+use App\Helpers\AvatarHelper;
 use App\Models\ModAdminBlogComment;
+use App\Helpers\BadWordsFilterHelper;
 
 class AddComment extends Component
 {
@@ -28,16 +30,30 @@ class AddComment extends Component
         $token = Str::random(32);
         $encodedToken = base64_encode($token);
 
+        // Generiere den Avatar für den Kommentar
+        $avatarUrl = AvatarHelper::createAvatar($this->author);
+
+
+        // Filtere den Inhalt mit BadWordsFilterHelper
+        $filterResult = BadWordsFilterHelper::filterComment($this->content);
+        $filteredContent = $filterResult['filteredContent'];
+        $containsBadwords = $filterResult['containsBadwords'];
+
+//dd($containsBadwords);
+
 
         $comment = ModAdminBlogComment::create([
             'post_id' => $this->postId,
             'author' => $this->author,
             'email' => $this->email,
-            'content' => $this->content,
+            'content' => $filteredContent,
             'website' => $this->website,
             'approved' => false,
+            'moderate' => $containsBadwords, // Setzt moderate auf true oder false
+            'avatar' => $avatarUrl, // Speichern des Avatar-URLs
             'verification_token' => $encodedToken,
         ]);
+
 
 
 

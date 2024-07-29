@@ -38,6 +38,8 @@ class BlogIndex extends Component
     public function setCategory($categoryId)
     {
         $this->category = $categoryId;
+        $this->perPage = 1;
+
     }
 
     public function toggleTag($tagId)
@@ -47,7 +49,13 @@ class BlogIndex extends Component
         } else {
             $this->selectedTags[] = $tagId;
         }
+        $this->perPage = 1;
     }
+
+
+
+
+
 
     public function updatedSearch($value)
     {
@@ -63,7 +71,8 @@ class BlogIndex extends Component
 
         $this->allTags = ModAdminBlogTag::all();
 
-        $query = ModAdminBlogPost::with('author', 'category')
+        $query = ModAdminBlogPost::with(['author', 'category'])
+            ->withCount('comments') // Füge dies hinzu, um die Anzahl der Kommentare zu zählen
             ->where('start_date', '<=', now());
 
         if ($this->category !== 'all') {
@@ -93,5 +102,7 @@ class BlogIndex extends Component
             'selectedTags' => $this->selectedTags,
         ]);
     }
+
+
 
 }
