@@ -50,7 +50,9 @@
 
         "files":[
             "app/helpers/helpers.php",
-            "app/helpers/constans.php"
+            "app/helpers/constans.php",
+            "app/helpers/AvatarHelper.php",
+            "app/helpers/BadWordsFilterHelper.php"
         ]
     },
     "autoload-dev": {

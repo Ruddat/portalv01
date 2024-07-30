@@ -43,20 +43,18 @@ class BlogComponent extends Component
             'large' => [980, 464],
             'medium' => [800, 533],
             'thumbnail' => [120, 80],
-            'custom' => [320, 213] // Example with rounded integer dimensions
+            'custom' => [320, 213]
         ];
 
         foreach ($sizes as $size => $dimensions) {
             $img = Image::make($image->getRealPath());
 
             if ($dimensions[0] && $dimensions[1]) {
-                // Resize to the larger dimension while maintaining aspect ratio
                 $img->resize($dimensions[0], null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
 
-                // Resize again to ensure it fits both dimensions
                 if ($img->height() < $dimensions[1]) {
                     $img->resize(null, $dimensions[1], function ($constraint) {
                         $constraint->aspectRatio();
@@ -64,22 +62,20 @@ class BlogComponent extends Component
                     });
                 }
 
-                // Calculate cropping coordinates to center the image
                 $x = round(($img->width() - $dimensions[0]) / 2);
                 $y = round(($img->height() - $dimensions[1]) / 2);
-
-                // Ensure the dimensions are integers for the crop method
                 $cropWidth = round($dimensions[0]);
                 $cropHeight = round($dimensions[1]);
-
-                // Crop the image to the exact dimensions
                 $img->crop($cropWidth, $cropHeight, $x, $y);
             }
 
             $filename = $size . '_' . time() . '.' . $image->getClientOriginalExtension();
             $path = 'images/' . $filename;
-            $fullPath = storage_path('app/public/' . $path);
 
+            // Ensure the directory exists
+            Storage::disk('public')->makeDirectory('images');
+
+            $fullPath = storage_path('app/public/' . $path);
             $img->save($fullPath);
 
             $imagePaths[$size] = 'storage/' . $path;
