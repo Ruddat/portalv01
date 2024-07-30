@@ -9,6 +9,7 @@ class ModAdminBadword extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['word'];
-    
+    protected $fillable = ['word', 'count'];
+
+
 }

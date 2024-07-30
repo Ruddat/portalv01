@@ -193,7 +193,11 @@
                                     {{ app(\App\Services\AutoTranslationService::class)->trans('Allergenes', app()->getLocale()) }}</a></li>
                                 </a>
                             </li>
-
+                            <li>
+                                <a href="{{ route('admin.badwords-list') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.badwords-list' ? 'active' : '' }}">
+                                    @autotranslate('Bad Words', app()->getLocale())
+                                </a>
+                            </li>
                           </ul>
                       </li>
 

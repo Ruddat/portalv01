@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('mod_admin_badwords', function (Blueprint $table) {
             $table->id();
             $table->string('word')->unique();
+            $table->integer('count')->default(0);
             $table->timestamps();
         });
     }

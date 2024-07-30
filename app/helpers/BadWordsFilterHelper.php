@@ -9,13 +9,15 @@ class BadWordsFilterHelper
 {
     public static function filterComment($content)
     {
-        $badwords = ModAdminBadword::pluck('word')->toArray();
+        $badwords = ModAdminBadword::all();
         $containsBadwords = false;
 
         foreach ($badwords as $badword) {
-            if (stripos($content, $badword) !== false) {
+            if (stripos($content, $badword->word) !== false) {
                 $containsBadwords = true;
-                $content = str_ireplace($badword, '****', $content);
+                $content = str_ireplace($badword->word, '****', $content);
+                // Increment the count for the badword
+                $badword->increment('count');
             }
         }
 
