@@ -45,11 +45,15 @@ class AddReplyComponent extends Component
             'approved' => false,
             'moderate' => true,
             'avatar_reply' => $avatarUrl, // Speichern des Avatar-URLs
-            'verification_token' => $encodedToken,
+            'verification_token' => $token,
         ]);
 
-        $verificationUrl = route('comment-verify-email', ['token' => $encodedToken, 'email' => $this->email]);
-      //  dd($verificationUrl);
+
+        // $verificationUrl = route('comment-verify-email', ['token' => $encodedToken, 'email' => $this->email]);
+        $verificationUrl = route('comment-verify-email', ['token' => $encodedToken]);
+
+
+        //  dd($verificationUrl);
         $data = [
             'author' => $this->author,
             'verificationUrl' => $verificationUrl

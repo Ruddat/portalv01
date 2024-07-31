@@ -51,7 +51,7 @@ class AddComment extends Component
             'approved' => false,
             'moderate' => $containsBadwords, // Setzt moderate auf true oder false
             'avatar' => $avatarUrl, // Speichern des Avatar-URLs
-            'verification_token' => $encodedToken,
+            'verification_token' => $token,
         ]);
 
 

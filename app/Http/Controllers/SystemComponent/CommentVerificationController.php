@@ -13,10 +13,10 @@ class CommentVerificationController extends Controller
 
         // Dekodiere den Token
         $decodedToken = base64_decode($token);
-
+        // dd($decodedToken);
         // Find the comment by token and email
         // $comment = ModAdminBlogComment::where('verification_token', $token)->where('email', $email)->first();
-        $comment = ModAdminBlogComment::where('verification_token', $token)->first();
+        $comment = ModAdminBlogComment::where('verification_token', $decodedToken)->first();
 
         if ($comment) {
             // Verify the comment

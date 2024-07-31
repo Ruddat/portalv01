@@ -6,6 +6,8 @@ use App\Models\ModShop;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
 use Illuminate\Console\Command;
+use App\Models\ModAdminBlogPost;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL as LaravelURL;
 
 class GenerateSitemap extends Command
@@ -18,32 +20,53 @@ class GenerateSitemap extends Command
         parent::__construct();
     }
 
-    public function handle()
-    {
-        $sitemap = Sitemap::create();
+        public function handle()
+        {
+            $sitemap = Sitemap::create();
 
-        // Statische Seiten hinzufügen
-        $sitemap->add(Url::create('/'));
-     //   $sitemap->add(Url::create('/about'));
-        $sitemap->add(Url::create('/register'));
-        $sitemap->add(Url::create('/seller/register'));
-        $sitemap->add(Url::create('/media-stats'));
+            // Statische Seiten hinzufügen
+            $sitemap->add(Url::create('/'));
+            $sitemap->add(Url::create('/register'));
+            $sitemap->add(Url::create('/seller/register'));
+            $sitemap->add(Url::create('/media-stats'));
+            $sitemap->add(Url::create('/blog'));
+            $sitemap->add(Url::create('/impressum'));
 
-        // Dynamische Seiten aus ModShop hinzufügen (nur 'limited' oder 'on', sortiert nach updated_at)
-        $shops = ModShop::whereIn('status', ['limited', 'on'])
-                        ->orderBy('updated_at', 'desc')
-                        ->get();
+            // Dynamische Seiten aus ModShop hinzufügen (nur 'limited' oder 'on', sortiert nach updated_at)
+            $shops = ModShop::whereIn('status', ['limited', 'on'])
+                            ->orderBy('updated_at', 'desc')
+                            ->get();
 
-        foreach ($shops as $shop) {
-            $sitemap->add(Url::create("/shop/{$shop->shop_slug}")
-                ->setLastModificationDate($shop->updated_at)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.8));
+            foreach ($shops as $shop) {
+                $sitemap->add(Url::create("/shop/{$shop->shop_slug}")
+                    ->setLastModificationDate($shop->updated_at)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                    ->setPriority(0.8));
+            }
+
+            // Dynamische Seiten aus ModAdminBlogPost hinzufügen
+            $posts = ModAdminBlogPost::orderBy('updated_at', 'desc')->get();
+
+            foreach ($posts as $post) {
+                $sitemap->add(Url::create("/blog/{$post->slug}")
+                    ->setLastModificationDate($post->updated_at)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                    ->setPriority(0.8));
+            }
+
+            // Alle Routen aus der web.php hinzufügen
+            // $routes = Route::getRoutes();
+
+            // foreach ($routes as $route) {
+               // if (in_array('GET', $route->methods()) && $route->uri() !== '/') {
+                    // Hier kannst du spezifische Routen ausschließen oder anpassen
+                 //   $sitemap->add(Url::create($route->uri()));
+               // }
+           // }
+
+            // Sitemap in eine Datei speichern
+            $sitemap->writeToFile(public_path('sitemap.xml'));
+
+            $this->info('Sitemap erfolgreich generiert!');
         }
-
-        // Sitemap in eine Datei speichern
-        $sitemap->writeToFile(public_path('sitemap.xml'));
-
-        $this->info('Sitemap erfolgreich generiert!');
     }
-}

@@ -2,1337 +2,2556 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
         <loc>https://portal-v01.test</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
+    
             </url>
     <url>
         <loc>https://portal-v01.test/register</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
+    
             </url>
     <url>
         <loc>https://portal-v01.test/seller/register</loc>
-            <changefreq>daily</changefreq>
-        <priority>0.8</priority>
+    
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/gourmet-beast-pizza</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/media-stats</loc>
+    
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-sushi-spot</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/blog</loc>
+    
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/impressum</loc>
+    
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/savory-sushi-bar</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-wipshausen-2</loc>
+        <lastmod>2024-07-27T09:31:26+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-ristorante</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/burger-dieb-wipshausen</loc>
+        <lastmod>2024-07-27T09:29:45+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/divine-eatery</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/wendeburg-pizza-wendeburg</loc>
+        <lastmod>2024-07-27T03:08:15+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/divine-spot</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/hamburg-pizza-hamburg</loc>
+        <lastmod>2024-07-26T16:08:59+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/berlin-pizza-berlin</loc>
+        <lastmod>2024-07-26T16:06:54+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-kitchen</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/ramingo-shop-peine</loc>
+        <lastmod>2024-07-24T18:55:21+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-tavern</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/pizza-and-more-braunschweig</loc>
+        <lastmod>2024-07-20T12:08:03+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/watering-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-sushi-house-husum</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-hangout</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/sizzling-sashimi-reinbek</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-kitchen</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-eatery-eutin</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-corner</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/flavorful-beast-pizza-eutin</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-cafe</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-trattoria-marknesse</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-tavern</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-kitchen-marknesse</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/aromatic-eatery</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-osteria-marknesse</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-pizzeria</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-brasserie-lelystad</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-bar</loc>
-        <lastmod>2024-05-31T13:08:05+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/savory-cafe-lelystad</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-beast-pizza</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/hearty-corner-lelystad</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-pizzeria</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-sushi-lounge-dronten</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-steakhouse</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-spot-dronten</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-hideaway</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/tasty-hideaway-dronten</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-beast-pizza</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-sushi-lounge-urk</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-bistro</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-spot-urk</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-place</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/hearty-sushi-lounge-zeewolde</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-sushi-spot</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-pizza-place-swifterbant</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-bar</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-diner-swifterbant</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-brasserie</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-osteria-swifterbant</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-sashimi</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-spot-biddinghuizen</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/aromatic-sashimi</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-tavern-biddinghuizen</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-cafe</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-cafe-biddinghuizen</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/spicy-bar</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/zesty-spot-tollebeek</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-place</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-sushi-house-tollebeek</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/delicious-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/homemade-bistro-espel</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/spicy-ristorante</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-pizza-express-espel</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-ristorante</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/flavorful-bar-creil</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-tavern</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-joint-creil</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-tavern</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-sushi-spot-creil-1</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/aromatic-pub</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-eatery-nagele</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-steakhouse</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-hangout-nagele</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-bistro</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-bistro-ens</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-brasserie</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/homemade-lounge-ens</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-place</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/sizzling-brasserie-ens</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-pizza-place</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-sushi-house-kraggenburg</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/aromatic-cafe</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-sushi-lounge-kraggenburg</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-sushi-spot</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-sashimi-rutten</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/savory-hangout-luttelgeest</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-pub</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-brasserie-luttelgeest</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-pizzeria</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-kitchen-bant</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-eatery</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-pizza-place-bant</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/hearty-pizza-express</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-pizzeria-bant</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-corner</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/delicious-trattoria-bant</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-cafe</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-restaurant-bant</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-pub</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-place-ketelhaven</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-canteen</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/mouthwatering-ristorante-ketelhaven</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-tavern</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-pub-kuinre</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/savory-pub</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/authentic-hideaway-kuinre</loc>
+        <lastmod>2024-07-12T17:09:36+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-ristorante</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/mouthwatering-pub-duisburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-sushi-lounge</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-sushi-spot-mainz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-lounge</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-pizza-place-mainz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-pizzeria</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/hearty-hideaway-mainz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/savory-trattoria</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-grill-mainz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-kitchen</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/mouthwatering-sashimi-ludwigshafen-am-rhein</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-hangout</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-hangout-ludwigshafen-am-rhein</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-joint</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/authentic-eatery-ludwigshafen-am-rhein</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-house-koblenz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-pub</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-sushi-spot-koblenz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/spicy-kitchen</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-hideaway-koblenz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-pub</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-eatery-trier</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/gourmet-cafe</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-canteen-saarbrucken</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-sushi-lounge</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-diner-saarbrucken</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-brasserie</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/juicy-hangout-saarbrucken</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/savory-eatery</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-bar-dresden</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/spicy-cafe</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/homemade-sushi-spot-dresden</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-sashimi</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-place-leipzig</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-eatery</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/smoky-cafe-leipzig</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-bar</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-cafe-leipzig</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-trattoria</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-sushi-spot-chemnitz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/gourmet-izakaya</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-cafe-chemnitz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-house</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-sushi-spot-chemnitz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-canteen</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-sushi-bar-chemnitz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-eatery</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/homemade-ristorante-chemnitz</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-place</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/authentic-pizza-express-magdeburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-trattoria</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-house-magdeburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-osteria</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/mouthwatering-sushi-lounge-magdeburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-steakhouse</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/sizzling-eatery-halle-saale</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/gourmet-place</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/savory-beast-pizza-halle-saale</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/aromatic-diner</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-pizzeria-halle-saale</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-pizza-place</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-sushi-lounge-dessau-rosslau</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-spot</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/sizzling-pub-dessau-rosslau</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/spicy-tavern</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-pizza-place-dessau-rosslau</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-house</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/exquisite-ristorante-kiel</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-pizza-express</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-bistro-lubeck</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-diner</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-pizzeria-lubeck</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/crispy-lounge</loc>
-        <lastmod>2024-05-31T13:08:04+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-hangout-flensburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-lounge</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-bar-flensburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-diner</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-hideaway-flensburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/delicious-cafe</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-izakaya-flensburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/divine-beast-pizza</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-grill-neumunster</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-beast-pizza</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/juicy-cafe-neumunster</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-hangout</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/hearty-pizza-express-neumunster</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-place</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-eatery-norderstedt</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-restaurant</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/exquisite-cafe-norderstedt</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-cafe</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-cafe-norderstedt</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-sashimi</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-joint-norderstedt</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-eatery</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/zesty-sushi-spot-elmshorn</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/hearty-kitchen</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/smoky-eatery-elmshorn</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/savory-cafe</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-tavern-elmshorn</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-hangout</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/savory-house-pinneberg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/watering-pizza-place</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-tavern-pinneberg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-restaurant</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-bar-pinneberg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/delicious-pizzeria</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-bistro-itzehoe</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-izakaya</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/delicious-sushi-bar-itzehoe</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-pizzeria</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-corner-itzehoe</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-brasserie</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-izakaya-wedel</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/tasty-tavern</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-eatery-wedel</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-corner</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/authentic-cafe-wedel</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-trattoria</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/tasty-sushi-spot-wedel</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-hangout</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-spot-rendsburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-pizzeria</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-pizza-place-rendsburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-sushi-spot</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-house-ahrensburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-beast-pizza</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/smoky-lounge-ahrensburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-eatery</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/tasty-pizza-express-ahrensburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/spicy-beast-pizza</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-pizza-express-geesthacht</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/crispy-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-cafe-henstedt-ulzburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-sushi-bar</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-osteria-henstedt-ulzburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/tasty-sashimi</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-diner-henstedt-ulzburg</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/savory-canteen</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-joint-husum</loc>
+        <lastmod>2024-07-12T17:09:35+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/watering-pizza-express</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-cafe-hannover</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-hideaway</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-pizza-place-hannover</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-diner</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-eatery-braunschweig</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-canteen</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/tasty-cafe-oldenburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-izakaya</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-sashimi-oldenburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-bar</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-hangout-oldenburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-cafe</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-spot-oldenburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/tasty-hangout</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/homemade-canteen-osnabruck</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/aromatic-ristorante</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/hearty-spot-osnabruck</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/tasty-corner</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-canteen-osnabruck</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-joint</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-house-osnabruck</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-trattoria</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-tavern-wolfsburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/crispy-corner</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/sizzling-restaurant-wolfsburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/gourmet-sushi-lounge</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-sushi-lounge-wolfsburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-bistro</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-beast-pizza-wolfsburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/delicious-eatery</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-tavern-wolfsburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-bistro</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-pub-gottingen</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/hearty-corner</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/aromatic-eatery-salzgitter</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/watering-osteria</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/exquisite-bar-salzgitter</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-sashimi</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/sizzling-joint-salzgitter</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-diner</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/zesty-hangout-hildesheim</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/crispy-joint</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-steakhouse-hildesheim</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-sashimi</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/juicy-lounge-hildesheim</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-house</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-ristorante-hildesheim</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-house</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/succulent-diner-celle</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-ristorante</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/juicy-pizza-express-luneburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/tasty-bistro</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/hearty-pizza-express-luneburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-bar</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-izakaya-delmenhorst</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/creamy-kitchen</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-eatery-delmenhorst</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/crispy-osteria</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/authentic-tavern-wilhelmshaven</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-kitchen</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-house-wilhelmshaven</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/spicy-trattoria</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/mouthwatering-tavern-wilhelmshaven</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-eatery</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-house-salzgitter</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-pizza-place</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/buttery-eatery-salzgitter</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-kitchen</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-lounge-hameln</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/gourmet-diner</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/spicy-bistro-hameln</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-izakaya-hameln</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/tasty-eatery</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-joint-nordhorn</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/zesty-sushi-spot</loc>
-        <lastmod>2024-05-31T13:08:03+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-osteria-nordhorn</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/watering-corner</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/mouthwatering-beast-pizza-wunstorf</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-grill</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/tasty-pizzeria-wunstorf</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-grill</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/juicy-trattoria-wunstorf</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-pub</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/homemade-house-wunstorf</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/juicy-pizza-express</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-brasserie-wunstorf</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/hearty-spot</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/mouthwatering-corner-peine</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/delicious-sushi-lounge</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-sashimi-peine</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-house</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/divine-joint-edemissen</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-corner</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-sushi-spot-edemissen</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/tasty-sushi-bar</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-bar-edemissen</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/hearty-joint</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-sushi-bar-hillerse</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-sushi-lounge</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/flavorful-sushi-bar-hillerse</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/tasty-trattoria</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-eatery-koln</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-trattoria</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/exquisite-hangout-koln</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-sashimi</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/delicious-grill-koln</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-grill</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/delicious-house-dusseldorf</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/smoky-bistro</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/tasty-grill-dusseldorf</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-hideaway</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/smoky-hangout-dortmund</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-steakhouse</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-kitchen-dortmund</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-cafe</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/smoky-sushi-house-dortmund</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-kitchen</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/tasty-grill-dortmund</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/traditional-sashimi</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/sizzling-ristorante-essen</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/savory-place</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/savory-diner-essen</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/gourmet-ristorante</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-restaurant-essen</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/aromatic-place</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-pizzeria-duisburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-pizza-place</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-corner-duisburg</loc>
+        <lastmod>2024-07-12T17:09:34+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/succulent-lounge</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/homemade-eatery-stuttgart</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/savory-restaurant</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-trattoria-stuttgart</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/exquisite-pizza-express</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-kitchen-stuttgart</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/divine-grill</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-pizzeria-stuttgart</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/gourmet-sushi-spot</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-lounge-stuttgart</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-corner</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/flavorful-lounge-karlsruhe</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/crispy-pizza-express</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/crispy-sushi-lounge-mannheim</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/crispy-pizza-place</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/savory-hangout-mannheim</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-joint</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/juicy-joint-mannheim</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-place</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/exquisite-hideaway-freiburg-im-breisgau</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/delicious-pub</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/mouthwatering-grill-freiburg-im-breisgau</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-sushi-house</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/watering-cafe-freiburg-im-breisgau</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/sizzling-osteria</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/fresh-kitchen-munchen</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/fresh-eatery</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/traditional-eatery-munchen</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-osteria</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/gourmet-izakaya-nurnberg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-hideaway</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/yummy-pizza-place-augsburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-tavern</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/tasty-eatery-augsburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/flavorful-izakaya</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/exquisite-grill-regensburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/delicious-brasserie</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/juicy-restaurant-regensburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-sushi-bar</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/flavorful-pub-regensburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/buttery-trattoria</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/authentic-trattoria-wurzburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/mouthwatering-brasserie</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/zesty-sushi-house-wurzburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/authentic-cafe</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/zesty-canteen-wurzburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/homemade-diner</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-grill-wurzburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/spicy-bistro</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/creamy-place-berlin</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
             </url>
     <url>
-        <loc>https://portal-v01.test/shop/yummy-diner</loc>
-        <lastmod>2024-05-31T13:08:02+02:00</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://portal-v01.test/shop/sizzling-corner-berlin</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-steakhouse-berlin</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/mouthwatering-bar-potsdam</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-pizza-place-potsdam</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-tavern-cottbus</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-lounge-cottbus</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-corner-brandenburg-an-der-havel</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-ristorante-brandenburg-an-der-havel</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/mouthwatering-hideaway-frankfurt-oder</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-sushi-bar-frankfurt-oder</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-trattoria-bremen</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-joint-bremerhaven</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/savory-beast-pizza-bremerhaven</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-sashimi-bremerhaven</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-sushi-lounge-hamburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-beast-pizza-hamburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-beast-pizza-frankfurt-am-main</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/fresh-bar-frankfurt-am-main</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-kitchen-frankfurt-am-main</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-spot-wiesbaden</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-bistro-wiesbaden</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-brasserie-kassel</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-grill-kassel</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-kitchen-kassel</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-spot-darmstadt</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-eatery-darmstadt</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/mouthwatering-sushi-spot-rostock</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-pizza-express-rostock</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-hideaway-schwerin</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-hideaway-schwerin</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-izakaya-neubrandenburg</loc>
+        <lastmod>2024-07-12T17:09:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-wipshausen-10</loc>
+        <lastmod>2024-07-12T16:50:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-copy-copy-wipshausen</loc>
+        <lastmod>2024-07-09T16:04:25+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-copy-wipshausen</loc>
+        <lastmod>2024-07-09T16:04:05+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-strassenpizza-wipshausen</loc>
+        <lastmod>2024-07-09T12:15:25+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-wipshausen-12</loc>
+        <lastmod>2024-07-09T12:11:05+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-wipshausen-8</loc>
+        <lastmod>2024-07-09T12:05:24+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-wipshausen-5</loc>
+        <lastmod>2024-07-09T11:54:33+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-wipshausen-4</loc>
+        <lastmod>2024-07-09T11:36:14+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-canteen-berlin-1</loc>
+        <lastmod>2024-07-09T11:10:20+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/mouthwatering-bistro-flensburg-1</loc>
+        <lastmod>2024-07-09T11:10:15+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-wipshausen-1</loc>
+        <lastmod>2024-07-09T03:02:22+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/express-futzi-pizza-copy-wipshausen</loc>
+        <lastmod>2024-07-09T03:02:18+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-copy-wipshausen</loc>
+        <lastmod>2024-07-09T02:31:45+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-19</loc>
+        <lastmod>2024-07-08T23:51:35+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-18</loc>
+        <lastmod>2024-07-08T23:51:18+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-17</loc>
+        <lastmod>2024-07-08T23:51:06+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-16</loc>
+        <lastmod>2024-07-08T23:17:19+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-15</loc>
+        <lastmod>2024-07-08T15:57:26+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-express-copy-wipshausen-1</loc>
+        <lastmod>2024-07-08T12:32:38+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-14</loc>
+        <lastmod>2024-07-08T12:17:10+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-13</loc>
+        <lastmod>2024-07-08T12:14:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-12</loc>
+        <lastmod>2024-07-08T12:14:04+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-11</loc>
+        <lastmod>2024-07-08T12:14:03+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-10</loc>
+        <lastmod>2024-07-08T12:14:02+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-9</loc>
+        <lastmod>2024-07-08T12:14:01+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-8</loc>
+        <lastmod>2024-07-08T12:14:00+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-7</loc>
+        <lastmod>2024-07-08T12:13:59+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-6</loc>
+        <lastmod>2024-07-08T12:13:57+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-5</loc>
+        <lastmod>2024-07-08T12:13:56+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-4</loc>
+        <lastmod>2024-07-08T12:12:13+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-3</loc>
+        <lastmod>2024-07-08T12:08:55+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-2</loc>
+        <lastmod>2024-07-08T12:06:03+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen-1</loc>
+        <lastmod>2024-07-08T12:04:05+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/pizza-futzi-copy-wipshausen</loc>
+        <lastmod>2024-07-08T12:00:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-pub-rendsburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-beast-pizza-ahrensburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-canteen-ahrensburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-eatery-ahrensburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-corner-ahrensburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-place-geesthacht</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-tavern-henstedt-ulzburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-trattoria-henstedt-ulzburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-joint-henstedt-ulzburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-osteria-henstedt-ulzburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-tavern-husum</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-lounge-husum</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-eatery-husum</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/savory-izakaya-husum</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-pizza-place-reinbek</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/succulent-pub-reinbek</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-eatery-eutin</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-steakhouse-eutin</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-sashimi-eutin</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-sushi-bar-lelystad</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-ristorante-lelystad</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-ristorante-emmeloord</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-joint-emmeloord</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/crispy-restaurant-emmeloord</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-spot-dronten</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-place-dronten</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-sushi-lounge-urk</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-trattoria-urk</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-eatery-urk</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-osteria-zeewolde</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-izakaya-swifterbant</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-sushi-lounge-swifterbant</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/buttery-pizzeria-swifterbant</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-pizza-express-biddinghuizen</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-brasserie-biddinghuizen</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-joint-tollebeek</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-sushi-house-tollebeek</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-beast-pizza-tollebeek</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-sushi-lounge-espel</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/buttery-hangout-creil</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/gourmet-izakaya-creil</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-bar-creil</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/buttery-sushi-spot-creil</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-osteria-nagele</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-izakaya-nagele</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-sashimi-kraggenburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-canteen-kraggenburg</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-beast-pizza-rutten</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/mouthwatering-joint-luttelgeest</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-spot-luttelgeest</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/fresh-diner-luttelgeest</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-sushi-lounge-luttelgeest</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-sushi-lounge-luttelgeest</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-brasserie-bant</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-corner-ketelhaven</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-house-ketelhaven</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-ristorante-kuinre</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-ristorante-kuinre</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/crispy-hangout-kuinre</loc>
+        <lastmod>2024-07-08T11:55:54+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/crispy-joint-edemissen</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-tavern-hillerse</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-sushi-bar-hillerse</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-pizzeria-hillerse</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/crispy-izakaya-koln</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/fresh-house-dusseldorf</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-ristorante-dusseldorf</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-eatery-dusseldorf</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-joint-dortmund</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-steakhouse-dortmund</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-sushi-spot-dortmund</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-canteen-dortmund</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-hideaway-essen</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-sushi-lounge-essen</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/succulent-tavern-duisburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-osteria-duisburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-tavern-duisburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-steakhouse-mainz</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-sushi-spot-mainz</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/gourmet-sushi-spot-ludwigshafen-am-rhein</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-house-ludwigshafen-am-rhein</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-steakhouse-ludwigshafen-am-rhein</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-joint-trier</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-sushi-spot-trier</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-trattoria-trier</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/fresh-lounge-saarbrucken</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-sashimi-saarbrucken</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-hideaway-saarbrucken</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-hangout-dresden</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/crispy-joint-dresden</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-pizza-express-leipzig</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-brasserie-leipzig</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/fresh-sushi-spot-chemnitz</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-house-chemnitz</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-ristorante-magdeburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-izakaya-magdeburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-sushi-spot-halle-saale</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-corner-halle-saale</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-lounge-halle-saale</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-house-halle-saale</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/succulent-pizzeria-dessau-rosslau</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/buttery-house-dessau-rosslau</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-joint-dessau-rosslau</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-sushi-house-dessau-rosslau</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-tavern-kiel</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-kitchen-kiel</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-hangout-lubeck</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-bar-lubeck</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-cafe-lubeck</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-izakaya-flensburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-cafe-flensburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-ristorante-flensburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-trattoria-neumunster</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-sushi-house-neumunster</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-diner-norderstedt</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/sizzling-pizzeria-elmshorn</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-bistro-pinneberg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/savory-sushi-lounge-pinneberg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-sushi-lounge-pinneberg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-corner-pinneberg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-tavern-pinneberg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-steakhouse-itzehoe</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-brasserie-wedel</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-kitchen-wedel</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-brasserie-wedel</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-sushi-bar-rendsburg</loc>
+        <lastmod>2024-07-08T11:55:53+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/crispy-sashimi-brandenburg-an-der-havel</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-place-brandenburg-an-der-havel</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-lounge-frankfurt-oder</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-hangout-frankfurt-oder</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/crispy-pizzeria-frankfurt-oder</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-izakaya-bremen</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-tavern-bremen</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-joint-bremerhaven</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-cafe-bremerhaven</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/mouthwatering-pizzeria-bremerhaven</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-tavern-bremerhaven</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/fresh-sashimi-hamburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-trattoria-hamburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/savory-place-hamburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/savory-sushi-bar-hamburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/mouthwatering-ristorante-frankfurt-am-main</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-pub-wiesbaden</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-house-wiesbaden</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-brasserie-kassel</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-trattoria-kassel</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-kitchen-darmstadt</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-pizza-express-darmstadt</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-beast-pizza-rostock</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-hideaway-rostock</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-osteria-rostock</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-hangout-rostock</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/mouthwatering-pizza-express-schwerin</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-izakaya-schwerin</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/gourmet-pub-schwerin</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-kitchen-schwerin</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-canteen-neubrandenburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-corner-neubrandenburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/buttery-pizza-place-neubrandenburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-brasserie-hannover</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-eatery-hannover</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-osteria-braunschweig</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/buttery-restaurant-braunschweig</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-spot-oldenburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-house-oldenburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/savory-hideaway-osnabruck</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/crispy-pizzeria-osnabruck</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-house-osnabruck</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-pizza-express-wolfsburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-canteen-wolfsburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-eatery-wolfsburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-house-wolfsburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-place-gottingen</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-spot-gottingen</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-sushi-spot-gottingen</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-sushi-house-salzgitter</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-hideaway-hildesheim</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-canteen-hildesheim</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/fresh-bistro-hildesheim</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/creamy-hideaway-celle</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-sashimi-celle</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-trattoria-celle</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-pizzeria-celle</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-kitchen-luneburg</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/gourmet-brasserie-delmenhorst</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/succulent-sushi-lounge-delmenhorst</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-sushi-bar-wilhelmshaven</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-brasserie-wilhelmshaven</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/buttery-bar-salzgitter</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-pizza-express-salzgitter</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-grill-hameln</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/divine-hideaway-nordhorn</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-hangout-wunstorf</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/spicy-cafe-peine</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-brasserie-peine</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/savory-hangout-peine</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-sushi-house-edemissen</loc>
+        <lastmod>2024-07-08T11:55:52+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/traditional-cafe-stuttgart</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-bistro-stuttgart</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-brasserie-karlsruhe</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/homemade-trattoria-karlsruhe</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/flavorful-osteria-karlsruhe</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-joint-mannheim</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-spot-mannheim</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-diner-freiburg-im-breisgau</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/juicy-tavern-heidelberg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-ristorante-heidelberg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/watering-pub-heidelberg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-beast-pizza-munchen</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/hearty-canteen-nurnberg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-corner-augsburg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/tasty-hangout-augsburg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/smoky-sashimi-augsburg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/yummy-joint-augsburg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/exquisite-hideaway-regensburg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/gourmet-pub-wurzburg</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/zesty-grill-berlin</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/savory-trattoria-berlin</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-tavern-potsdam</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/gourmet-sushi-house-potsdam</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/aromatic-sushi-lounge-cottbus</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/delicious-hideaway-cottbus</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/authentic-hideaway-cottbus</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/succulent-bar-cottbus</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/shop/succulent-tavern-brandenburg-an-der-havel</loc>
+        <lastmod>2024-07-08T11:55:51+02:00</lastmod>
+
+            </url>
+    <url>
+        <loc>https://portal-v01.test/blog/toprank</loc>
+        <lastmod>2024-07-31T08:10:07+02:00</lastmod>
+
             </url>
 </urlset>
