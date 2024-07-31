@@ -38,7 +38,8 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/uploads/shops'), // Hier den richtigen Pfad angeben
+//            'root' => storage_path('app/uploads/shops'), // Hier den richtigen Pfad angeben
+            'root' => storage_path('app/public'), // Korrigiere den Pfad
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

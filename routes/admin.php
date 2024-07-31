@@ -97,6 +97,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
     Route::prefix('blog')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
         Route::view('/blog_all', 'backend.pages.admin.blog.blog-index')->name('blog-all');
+        Route::view('/reply_all', 'backend.pages.admin.blog.reply-index')->name('reply-all');
 //        Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
 
         //  Route::get('/promo-banners/list', [PromoBannerController::class, 'index'])->name('promo-banner-index');
