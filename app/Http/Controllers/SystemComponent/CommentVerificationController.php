@@ -8,10 +8,15 @@ use App\Http\Controllers\Controller;
 
 class CommentVerificationController extends Controller
 {
-    public function verify($token, $email)
+    public function verify($token)
     {
+
+        // Dekodiere den Token
+        $decodedToken = base64_decode($token);
+
         // Find the comment by token and email
-        $comment = ModAdminBlogComment::where('verification_token', $token)->where('email', $email)->first();
+        // $comment = ModAdminBlogComment::where('verification_token', $token)->where('email', $email)->first();
+        $comment = ModAdminBlogComment::where('verification_token', $token)->first();
 
         if ($comment) {
             // Verify the comment

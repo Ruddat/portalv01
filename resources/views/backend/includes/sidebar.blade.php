@@ -72,8 +72,6 @@
 							<li><a href="notification.html">Notification</a></li>
 							<li><a href="{{ route('admin.live-orders-list') }}">@autotranslate('LiveOrders', app()->getLocale())</a></li>
                             <li><a href="{{ route('admin.blog-all') }}">@autotranslate('Blog', app()->getLocale())</a></li>
-                            <li><a href="{{ route('admin.blog-all') }}">@autotranslate('Blog', app()->getLocale())</a></li>
-
                             <li><a href="{{ route('admin.reply-all') }}">@autotranslate('Reply Moderator', app()->getLocale())</a></li>
                             <li><a href="{{ url('/roles-permissons') }}">Roles and Permission</a></li>
 							<li><a href="setting.html">Setting</a></li>

@@ -133,7 +133,9 @@ use App\Http\Controllers\SystemComponent\CommentVerificationController;
 
         return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'tag'));
     });
-    Route::get('/verify-comment/{token}/{email}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
+    //Route::get('/verify-comment/{token}/{email}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
+    Route::get('/verify-comment/{token}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
+
     // Blog routes end
 
 

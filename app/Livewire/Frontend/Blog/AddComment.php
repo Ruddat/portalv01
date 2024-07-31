@@ -57,8 +57,10 @@ class AddComment extends Component
 
 
 
-        $verificationUrl = route('comment-verify-email', ['token' => $encodedToken, 'email' => $this->email]);
-      //  dd($verificationUrl);
+        // $verificationUrl = route('comment-verify-email', ['token' => $encodedToken, 'email' => $this->email]);
+        $verificationUrl = route('comment-verify-email', ['token' => $encodedToken]);
+
+        //  dd($verificationUrl);
         $data = [
             'author' => $this->author,
             'verificationUrl' => $verificationUrl
