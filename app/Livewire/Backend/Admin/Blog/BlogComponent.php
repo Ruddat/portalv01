@@ -27,6 +27,9 @@ class BlogComponent extends Component
     public $allTags;
     public $content = '';
 
+    public $confirmingPostId;
+    public $showDeleteOverlay = false;
+    public $postTitle;
 
     public function mount()
     {
@@ -84,15 +87,12 @@ class BlogComponent extends Component
         return $imagePaths;
     }
 
-
-
-
     public function savePost()
     {
         $this->validate([
             'title' => 'required',
             'content' => 'required',
-            'image' => 'image|max:1024', // 1MB Max
+            'image' => 'image|max:2048', // 2MB Max
             'category_id' => 'required',
             'tags' => 'required|array',
             'start_date' => 'required|date'
@@ -121,7 +121,7 @@ class BlogComponent extends Component
     public function saveCategory()
     {
         $this->validate([
-            'newCategoryName' => 'required',
+            'newCategoryName' => 'required|unique:mod_admin_blog_categories,name',
         ]);
 
         ModAdminBlogCategory::create([
@@ -137,7 +137,7 @@ class BlogComponent extends Component
     public function saveTag()
     {
         $this->validate([
-            'newTagName' => 'required',
+            'newTagName' => 'required|unique:mod_admin_blog_tags,name',
         ]);
 
         ModAdminBlogTag::create([
@@ -150,6 +150,53 @@ class BlogComponent extends Component
         session()->flash('message', 'Tag successfully created.');
     }
 
+    public function confirmDelete($id)
+    {
+        $post = ModAdminBlogPost::find($id);
+        if ($post) {
+            $this->confirmingPostId = $id;
+            $this->postTitle = $post->title;
+            $this->showDeleteOverlay = true;
+        }
+    }
+
+    public function deletePost()
+    {
+        $post = ModAdminBlogPost::find($this->confirmingPostId);
+        if ($post) {
+            // Lösche die Bilddateien
+            $imagePaths = [
+                str_replace('storage/', '', $post->image_original),
+                str_replace('storage/', '', $post->image_large),
+                str_replace('storage/', '', $post->image_medium),
+                str_replace('storage/', '', $post->image_thumbnail)
+            ];
+
+            foreach ($imagePaths as $path) {
+                \Log::info("Checking path: " . $path);
+
+                if (Storage::disk('public')->exists($path)) {
+                    \Log::info("Deleting path: " . $path);
+                    Storage::disk('public')->delete($path);
+                } else {
+                    \Log::info("Path does not exist: " . $path);
+                }
+            }
+
+            // Entferne die Verknüpfungen zu den Tags und lösche den Beitrag
+            $post->tags()->detach();
+            $post->delete();
+
+            session()->flash('message', 'Post successfully deleted.');
+        }
+        $this->confirmingPostId = null;
+        $this->postTitle = '';
+        $this->showDeleteOverlay = false;
+        $this->render();  // Aktualisiere die Komponente
+    }
+
+
+
     public function resetForm()
     {
         $this->title = '';
@@ -158,6 +205,7 @@ class BlogComponent extends Component
         $this->category_id = '';
         $this->tags = [];
         $this->start_date = Carbon::now()->toDateString();
+        $this->dispatch('resetForm'); // Trigger the reset event in JavaScript
     }
 
     public function render()

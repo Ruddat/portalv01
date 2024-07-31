@@ -26,7 +26,7 @@
                 <div class="row">
 
 
-                    <livewire:backend.admin.blog.blog-component />
+                    <livewire:backend.admin.blog.reply-component />
 
 
 
@@ -37,7 +37,12 @@
 
 
 
-
+            <style>
+                .form-control {
+                    width: 100%;
+                    resize: vertical;
+                }
+            </style>
 
 
 
