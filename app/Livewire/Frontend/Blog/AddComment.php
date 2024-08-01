@@ -5,6 +5,9 @@ namespace App\Livewire\Frontend\Blog;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use App\Helpers\AvatarHelper;
+use App\Helpers\AvatarApiHelper;
+use App\Helpers\CoolAvatarHelper;
+use App\Helpers\FunnyAvatarHelper;
 use App\Models\ModAdminBlogComment;
 use App\Helpers\BadWordsFilterHelper;
 
@@ -32,6 +35,9 @@ class AddComment extends Component
 
         // Generiere den Avatar für den Kommentar
         $avatarUrl = AvatarHelper::createAvatar($this->author);
+
+        //$avatarUrl = FunnyAvatarHelper::createFunnyAvatar($this->author);
+       // $avatarUrl = AvatarApiHelper::createAvatar($this->author);
 
 
         // Filtere den Inhalt mit BadWordsFilterHelper

@@ -5,7 +5,7 @@
             @foreach($post->comments->where('approved', true)->whereNull('parent_id') as $comment)
                 <li>
                     <div class="avatar">
-                        <a href="#"><img src="{{ $comment->avatar }}" alt="Avatar"></a>
+                        <a href="#"><img src="{!! $comment->avatar !!}" alt="Avatar"></a>
                     </div>
                     <div class="comment_right clearfix">
                         <div class="comment_info">

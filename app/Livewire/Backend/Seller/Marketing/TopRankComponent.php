@@ -24,6 +24,7 @@ class TopRankComponent extends Component
     public $shopLat;
     public $shopLng;
     public $topRanks = [];
+    public $notify_on_outbid = false;
 
     protected $rules = [
         'startTime' => 'required|date|after_or_equal:now',
@@ -172,6 +173,8 @@ class TopRankComponent extends Component
             return;
         }
 
+        // dd($this->currentPrice, $this->targetRank, $this->startTime, $this->endTime, $this->notify_on_outbid);
+
         $existingEntry = ModTopRankPrice::where('shop_id', $this->shopId)
                                         ->where('start_time', '<=', $this->endTime)
                                         ->where('end_time', '>=', $this->startTime)
@@ -201,6 +204,7 @@ class TopRankComponent extends Component
             'original_rank' => $newRank,
             'start_time' => $this->startTime,
             'end_time' => $this->endTime,
+            'notify_on_outbid' => $this->notify_on_outbid,
 
         ]);
 
