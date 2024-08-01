@@ -104,10 +104,6 @@ use App\Http\Controllers\SystemComponent\CommentVerificationController;
         return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags', 'breadcrumbs'));
     })->name('blog-post');
 
-
-
-
-
     Route::get('/category/{categoryId}', function ($categoryId) {
         $category = ModAdminBlogCategory::findOrFail($categoryId);
         $posts = ModAdminBlogPost::where('category_id', $categoryId)->latest()->paginate(6);
