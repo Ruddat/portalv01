@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SystemComponent;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class RobotsController extends Controller
 {
