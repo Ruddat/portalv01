@@ -169,7 +169,6 @@ public function search(Request $request)
                     ->where('city', $parsedAddress['city'])
                     ->first();
 
-//dd($addressData);
 
                 if ($addressData) {
                     // Adresse aus der Datenbank verwenden
@@ -179,6 +178,7 @@ public function search(Request $request)
                     session(['userLatitude' => $userLatitude]);
                     session(['userLongitude' => $userLongitude]);
                     session(['selectedLocation' => $query]);
+                    session()->put('selectedName', $addressData->city);
                 } else {
                     // Geocoding-Service verwenden, um Geokoordinaten zu erhalten
                     $results = $this->geocodeService->searchByAddress($query);
@@ -202,6 +202,7 @@ public function search(Request $request)
 
                         session(['userLatitude' => $userLatitude]);
                         session(['userLongitude' => $userLongitude]);
+                        session(['selectedName' => $userCity]);
                         session(['selectedLocation' => $query]);
                     }
                 }

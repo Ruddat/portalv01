@@ -4,7 +4,6 @@ use App\Models\ModAdminBlogTag;
 use App\Models\ModAdminBlogPost;
 use App\Models\ModAdminBlogCategory;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RobotsController;
 use App\Livewire\Frontend\ShopSearchResults;
 use App\Http\Livewire\Frontend\Card\ProductList;
 use App\Http\Controllers\GoogleTranslateController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\Frontend\Card\CardController;
 use App\Http\Controllers\MobileApp\ManifestController;
 use App\Http\Controllers\Frontend\ShopSearchController;
 use App\Http\Controllers\Frontend\Cart\NewCartController;
+use App\Http\Controllers\SystemComponent\RobotsController;
 use App\Http\Controllers\Frontend\Geoip\LocationController;
 use App\Http\Controllers\Frontend\Search\GeocodeController;
 use App\Http\Controllers\Backend\GlobalController\BidController;
@@ -39,6 +39,12 @@ use App\Http\Controllers\SystemComponent\CommentVerificationController;
 
 
 
+    // Login Logout Routes
+    Route::view('/login', 'frontend.pages.buyer.auth.login')->name('login');
+    Route::view('/forgot_password', 'frontend.pages.buyer.auth.forgot-password')->name('forgot-password');
+    Route::view('/register', 'frontend.pages.buyer.auth.register')->name('register');
+
+    
 
     // Shopping card  routes
     Route::prefix('card')->group(function() {
@@ -267,13 +273,6 @@ Route::get('/submit-restaurant', function () {
     return view('frontend/pages/otherpages/submit-restaurant');
 });
 
-Route::get('/register', function () {
-    return view('frontend/pages/otherpages/register');
-});
-
-Route::get('/login', function () {
-    return view('frontend/pages/otherpages/login');
-});
 
 Route::get('/contacts', function () {
     return view('frontend/pages/otherpages/contacts');

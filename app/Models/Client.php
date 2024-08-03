@@ -30,12 +30,16 @@ class Client extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
         'username',
         'email',
+        'avatar',
         'password',
         'picture',
         'phone',
         'address',
+        'shipping_street',
+        'shipping_house_no',
         'city',
         'state',
         'country',
@@ -43,6 +47,10 @@ class Client extends Authenticatable
         'latitude',
         'longitude',
         'status',
+        'email_verified_at',
+        'role',
+
+
     ];
 
     /**
