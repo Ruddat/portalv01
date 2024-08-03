@@ -52,7 +52,11 @@
             "app/helpers/helpers.php",
             "app/helpers/constans.php",
             "app/helpers/AvatarHelper.php",
-            "app/helpers/BadWordsFilterHelper.php"
+            "app/helpers/FunnyAvatarHelper.php",
+            "app/helpers/AvatarApiHelper.php",
+            "app/helpers/BadWordsFilterHelper.php",
+            "app/helpers/CoolUsernameHelper.php",
+            "app/helpers/CoolAvatarHelper.php"
         ]
     },
     "autoload-dev": {
