@@ -506,7 +506,7 @@ class ClientController extends Controller
                 Auth::guard('client')->login($client, true);
 
                 // Redirect to the seller dashboard with success message
-                return redirect()->route('seller.dashboard')->with('success', 'Registration completed successfully.');
+                return redirect()->route('client.dashboard')->with('success', 'Registration completed successfully.');
             } else {
                 session()->flash('fail', 'Something went wrong');
                 return redirect()->route('client.register')->with('fail', 'Failed to send verification email.');
