@@ -412,6 +412,10 @@ class ClientController extends Controller
 
         $avatarUrl = AvatarHelper::createAvatar($nameString);
 
+        $avatarUrl = AvatarHelper::createAvatar($nameString);
+
+
+
         // Extract and construct the complete address
         $street = $request->input('shipping_street');
         $houseNo = $request->input('shipping_house_no');
@@ -445,6 +449,7 @@ class ClientController extends Controller
             session(['address_data' => $correctedAddress]);
             session(['userLatitude' => $latitude]);
             session(['userLongitude' => $longitude]);
+
 
             // Build the full address string
             $addressString = "{$correctedAddress['street']} {$request->shipping_house_no}, {$correctedAddress['postal_code']} {$correctedAddress['city']}";

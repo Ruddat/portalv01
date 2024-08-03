@@ -123,10 +123,6 @@ if( !function_exists('get_settings')){
 
     }
 
-
-
-
-
     if (!function_exists('custom_env')) {
         /**
          * Gets the value of an environment variable.
