@@ -21,14 +21,14 @@
                 <div class="divider"><span>Or</span></div>
 
                 <!-- Start of Form -->
-                <form method="POST" action="{{ route('client.register_handler') }}" autocomplete="on">
+                <form method="POST" action="{{ route('client.register_handler') }}" autocomplete="on" id="registerForm">
                     @csrf
 
                     @if ($errors->any())
-                        <div class="alert alert-danger">
+                        <div class="alert alert-warning solid alert-dismissible fade show">
                             <ul>
                                 @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                    <li>{{ app(\App\Services\AutoTranslationService::class)->trans($error, app()->getLocale()) }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -58,7 +58,13 @@
                         <input class="form-control" type="text" name="bot_trap" placeholder="Bot Trap">
                     </div>
                     <div id="pass-info" class="clearfix"></div>
-                    <button type="submit" class="btn_1 gradient full-width">@autotranslate('Register Now!', app()->getLocale())</button>
+
+                    <button type="submit" class="btn_1 gradient full-width" id="submitBtn">@autotranslate('Register Now!', app()->getLocale())</button>
+                    <button class="btn_1 gradient full-width" type="button" id="loadingBtn" style="display: none;">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        @autotranslate('Loading...', app()->getLocale())
+                    </button>
+
                     <div class="text-center mt-2"><small>@autotranslate('Already have an account?', app()->getLocale()) <strong><a href="{{ url('/login') }}">@autotranslate('Sign In', app()->getLocale())</a></strong></small></div>
                 </form>
                 <!-- End of Form -->
@@ -71,5 +77,11 @@
         @push('specific-scripts')
             <!-- SPECIFIC SCRIPTS -->
             <script src="{{ asset('frontend/js/pw_strenght.js') }}"></script>
-        @endpush
-    @endsection
+            <script>
+                document.getElementById('registerForm').addEventListener('submit', function() {
+                    document.getElementById('submitBtn').style.display = 'none';
+                    document.getElementById('loadingBtn').style.display = 'block';
+                });
+            </script>
+@endpush
+@endsection

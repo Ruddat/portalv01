@@ -37,7 +37,7 @@
                                             </div>
                                         </div>
                                         @error('new_password')
-                                        <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">{{ $message }}</div>
+                                        <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
                                         @enderror
 
                                         <div class="mb-3">
@@ -48,7 +48,7 @@
                                             </div>
                                         </div>
                                         @error('new_password_confirmation')
-                                        <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">{{ $message }}</div>
+                                        <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
                                         @enderror
 
                                         <div class="text-center">

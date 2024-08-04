@@ -64,12 +64,12 @@
 
 <body>
     <div class="container">
-        <h1>>@autotranslate('Account Verification', app()->getLocale())</h1>
-        <p class="greeting">Hello {{ $buyer['name'] }},</p>
-        <p>Thank you for registering with our service. To complete your registration, please click the link below to verify your account:</p>
+        <h1>@autotranslate('Account Verification', app()->getLocale())</h1>
+        <p class="greeting">@autotranslate('Hello', app()->getLocale()) {{ $buyer['name'] }},</p>
+        <p>@autotranslate('Thank you for registering with our service. To complete your registration, please click the link below to verify your account:', app()->getLocale())</p>
         <p style="text-align: center;"><a class="button" href="{{ $verificationUrl }}">Verify Account</a></p>
         <p>@autotranslate('Please note that the verification link will expire in 30 minutes. If you do not use the link within this timeframe, you will need to register again.', app()->getLocale())</p>
-        <p class="signature">Thank you,<br>{{ config('app.name') }}</p>
+        <p class="signature">@autotranslate('Thank you,', app()->getLocale())<br>{{ config('app.name') }}</p>
     </div>
 </body>
 
