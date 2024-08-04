@@ -59,7 +59,7 @@ class StorePopup extends Component
         // Hole SessionData
         $sessionData = $this->getSessionData();
         $addressData = Session::get('address_data');
-     //   dd($addressData);
+      //  dd($addressData);
         if ($addressData) {
             $this->shipping_street = $addressData['shipping_street'] ?? '';
             $this->shipping_house_no = $addressData['shipping_house_no'] ?? '';
@@ -152,6 +152,7 @@ class StorePopup extends Component
 
         // Lade vorhandene Daten aus der Session
         $existingData = Session::get('address_data', []);
+
         // Zusammenführen der vorhandenen Daten mit den neuen Daten
         $mergedData = array_merge($existingData, $validatedData);
         // Aktualisierte Daten in der Session speichern
@@ -262,7 +263,7 @@ class StorePopup extends Component
                     'latitude' => $userLatitude,
                     'longitude' => $userLongitude,
                 ];
-
+//dd($correctedAddress);
                 Session::put('address_data', $correctedAddress);
 
                 session(['userLatitude' => $userLatitude]);

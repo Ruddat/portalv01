@@ -24,7 +24,7 @@
                     <div class="dropdown-menu" style="">
                         <div class="dropdown-menu-content">
                             <ul>
-                                <li><a href="#"><i class="icon_cog"></i>Dashboard</a></li>
+                                <li><a href="{{ route('client.dashboard') }}"><i class="icon_cog"></i>Dashboard</a></li>
                                 <li><a href="#"><i class="icon_document"></i>Bookings</a></li>
                                 <li><a href="#"><i class="icon_heart"></i>Wish List</a></li>
                                 <li><a href="{{ route('client.logout-handler') }}"><i class="icon_key"></i>Log out</a></li>

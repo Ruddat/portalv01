@@ -24,7 +24,9 @@ Route::prefix('client')->name('client.')->group(function(){
 
 
     Route::middleware(['auth:client', 'PreventBackHistory'])->group(function () {
-        Route::get('/dashboard', [ClientController::class, 'dashboard'])->name('dashboard');
+        Route::view('/dashboard', 'frontend.pages.buyer.dashboard-index')->name('dashboard');
+       // Route::get('/dashboard', [ClientController::class, 'dashboard'])->name('dashboard');
+
   //      Route::post('/logout_handler', [SellerController::class, 'logoutHandler'])->name('logout_handler');
   //      Route::get('/settings', [SellerController::class, 'settings'])->name('settings');
   //      Route::get('/profile', [SellerController::class, 'profileView'])->name('profile');

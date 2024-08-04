@@ -97,11 +97,14 @@ class SellerController extends Controller
         // Check if the user exists
         $user = Seller::where($fieldType, $request->login_id)->first();
 
+        // Prüfen, ob "Remember Me" ausgewählt wurde
+        $remember = $request->has('remember') ? true : false;
+
         if ($user) {
             // Check if the password has been set
             if (!is_null($user->password)) {
                 // Authenticate the user
-                if (Auth::guard('seller')->attempt($creds, $request->remember)) {
+                if (Auth::guard('seller')->attempt($creds, $remember)) {
                     // Check email verification status
                     if ($user->email_verified_at) {
                         // Redirect to dashboard or another protected page

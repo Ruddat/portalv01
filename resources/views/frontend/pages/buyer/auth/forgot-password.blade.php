@@ -12,7 +12,7 @@
                 <figure>
                     <a href="index.html"><img src="img/logo_sticky.svg" width="140" height="35" alt=""></a>
                 </figure>
-                <h4 class="title text-center">Passwort vergessen!</h4>
+                <h4 class="title text-center">@autotranslate('Passwort vergessen!', app()->getLocale())</h4>
 
                 <div class="divider"></div>
                 <form method="POST" action="{{ route('client.send-password-reset-link') }}" autocomplete="on">
@@ -21,23 +21,23 @@
                         <input class="form-control @error('email') is-invalid @enderror" type="text" name="email" placeholder="Email or Username" value="{{ old('email') }}" required>
                         <i class="icon_mail_alt"></i>
                         @error('email')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
                         @enderror
                     </div>
-                    <button type="submit" class="btn_1 gradient full-width">Abschicken!</button>
+                    <button type="submit" class="btn_1 gradient full-width">@autotranslate('Abschicken!', app()->getLocale())</button>
                     <div class="text-center mt-2">
-                        <small>Noch kein Konto? <strong><a href="{{ route('client.register') }}">Registrieren</a></strong></small>
+                        <small>@autotranslate('Noch kein Konto?', app()->getLocale()) <strong><a href="{{ route('client.register') }}">@autotranslate('Registrieren', app()->getLocale())</a></strong></small>
                     </div>
                 </form>
                 @include('backend.includes.errorflash')
                 @if ($errors->any())
-                    <div class="alert alert-danger mt-3">
+                    <div class="alert alert-warning solid alert-dismissible fade show">
                         @foreach ($errors->all() as $error)
-                            <div>{{ $error }}</div>
+                            <div>{{ app(\App\Services\AutoTranslationService::class)->trans($error, app()->getLocale()) }}</div>
                         @endforeach
                     </div>
                 @endif
-                <div class="copy">© 2020 FooYes</div>
+                <div class="copy">&copy; {{ date('Y') }} {{ config('app.name') }}. @autotranslate('All rights reserved.', app()->getLocale())</div>
             </aside>
         </div>
 

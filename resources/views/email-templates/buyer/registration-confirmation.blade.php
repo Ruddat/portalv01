@@ -79,11 +79,11 @@
         <p>@autotranslate('Vielen Dank für Ihre Registrierung! Ihr Konto wurde erfolgreich erstellt.', app()->getLocale())</p>
         <br /><br />
         <hr>
-        <p>Hier sind Ihre Anmeldedaten:</p>
+        <p>@autotranslate('Hier sind Ihre Anmeldedaten', app()->getLocale()):</p>
         <p>Benutzername: <strong>{{ $buyer['username'] }}</strong> oder <strong>{{ $buyer['email'] }}</strong></p>
         <p>Passwort: Ihr Passwort</p>
         <hr>
-        <p>Bitte klicken Sie auf den untenstehenden Link, um sich in Ihr Konto einzuloggen:</p>
+        <p>@autotranslate('Bitte klicken Sie auf den untenstehenden Link, um sich in Ihr Konto einzuloggen', app()->getLocale()):</p>
         <p><a class="button" href="{{ $verificationUrl }}">Login</a></p>
         <p>Bei Fragen oder weiteren Anliegen steht Ihnen unser Support-Team unter support@example.com gerne zur Verfügung.</p>
         <p>Vielen Dank!</p>

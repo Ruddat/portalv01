@@ -16,6 +16,7 @@ use App\Services\GeocodeService;
 use App\Models\PasswordResetToken;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\CoolUsernameHelper;
+use app\helpers\ShopVariablesHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -102,13 +103,15 @@ class ClientController extends Controller
                         $latitude = $user->latitude;
                         $longitude = $user->longitude;
 
+                       // dd($latitude, $longitude, $correctedAddress);
+
                         // Adresse in der Session speichern
                         session(['address_data' => $correctedAddress]);
                         session(['userLatitude' => $latitude]);
                         session(['userLongitude' => $longitude]);
 
                         // Vollständige Adresse zusammensetzen
-                        $addressString = "{$correctedAddress['street']} {$correctedAddress['houseno']}, {$correctedAddress['postal_code']} {$correctedAddress['city']}";
+                        $addressString = "{$correctedAddress['shipping_street']} {$correctedAddress['shipping_house_no']}, {$correctedAddress['postal_code']} {$correctedAddress['city']}";
                         session(['selectedLocation' => $addressString]);
 
                         return redirect()->route('home');
@@ -135,12 +138,43 @@ class ClientController extends Controller
     {
         // Hier könnte eine API-Abfrage oder eine andere Logik zur Adresskorrektur stehen
         return [
-            'street' => $user->shipping_street,
-            'houseno' => $user->shipping_house_no,
+            'shipping_street' => $user->shipping_street,
+            'shipping_house_no' => $user->shipping_house_no,
             'postal_code' => $user->postal_code,
             'city' => $user->city
         ];
     }
+
+    public function login(Request $request)
+    {
+
+
+      //  dd($request->all());
+
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        // Prüfen, ob "Remember Me" ausgewählt wurde
+        $remember = $request->has('remember') ? true : false;
+
+
+
+        if (Auth::guard('client')->attempt($credentials, $remember)) {
+            // Login erfolgreich, leiten Sie den Benutzer zur Client-Dashboard-Seite weiter
+        return redirect()->intended(route('client.dashboard'));
+        }
+
+        // Login fehlgeschlagen, leiten Sie zurück zur Login-Seite mit einer Fehlermeldung
+        return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors([
+        'email' => 'Diese Anmeldeinformationen stimmen nicht mit unseren Aufzeichnungen überein.',
+    ]);
+}
+
+
 
 
     public function logoutHandler(Request $request)
@@ -412,7 +446,29 @@ class ClientController extends Controller
 
         $avatarUrl = AvatarHelper::createAvatar($nameString);
 
-        $avatarUrl = AvatarHelper::createAvatar($nameString);
+
+
+
+        // Process address using ShopHelper
+        $street = $request->input('shipping_street');
+        $houseNo = $request->input('shipping_house_no');
+        $zip = $request->input('postal_code');
+        $city = $request->input('city');
+        $userInput = "$street $houseNo, $zip $city";
+
+       // dd($street, $houseNo, $zip, $city, $userInput);
+
+       $addressFound = ShopVariablesHelper::processAddress($userInput, $street, $houseNo, $zip, $city, $request);
+
+//dd($addressFound);
+
+        if ($addressFound) {
+
+            // Adresse gefunden
+
+        } else {
+            return redirect()->back()->withInput()->withErrors(['fail' => 'Die Adresse konnte nicht gefunden werden.']);
+        }
 
 
 
@@ -446,7 +502,7 @@ class ClientController extends Controller
             ];
 
             // Store the corrected address in the session
-            session(['address_data' => $correctedAddress]);
+         //   session(['address_data' => $correctedAddress]);
             session(['userLatitude' => $latitude]);
             session(['userLongitude' => $longitude]);
 
@@ -523,34 +579,6 @@ class ClientController extends Controller
 
 
 
-    public function login(Request $request)
-    {
-
-
-      //  dd($request->all());
-
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
-        ]);
-
-        $credentials = $request->only('email', 'password');
-
-        // Prüfen, ob "Remember Me" ausgewählt wurde
-        $remember = $request->has('remember') ? true : false;
-
-
-
-        if (Auth::guard('client')->attempt($credentials, $remember)) {
-            // Login erfolgreich, leiten Sie den Benutzer zur Client-Dashboard-Seite weiter
-        return redirect()->intended(route('client.dashboard'));
-        }
-
-        // Login fehlgeschlagen, leiten Sie zurück zur Login-Seite mit einer Fehlermeldung
-        return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors([
-        'email' => 'Diese Anmeldeinformationen stimmen nicht mit unseren Aufzeichnungen überein.',
-    ]);
-}
 
 
 
@@ -641,7 +669,7 @@ public function sendPasswordResetLink(Request $request)
             }
         } else {
             // Der Verkäufer wurde nicht gefunden
-            return redirect()->route('client.forgot-password')->with('fail', 'Seller not found.');
+            return redirect()->route('client.forgot-password')->with('fail', 'Client not found.');
         }
     } else {
         // Die E-Mail-Adresse ist nicht im Request enthalten
