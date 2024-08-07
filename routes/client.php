@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Frontend\Buyer\DashboardIndex;
+use App\Livewire\Frontend\Buyer\DashboardProfile;
+use App\Livewire\Frontend\Buyer\DashboardSecurity;
+use App\Livewire\Frontend\Buyer\DashboardNotifications;
 use App\Http\Controllers\Backend\Buyer\ClientController;
 
 
@@ -24,7 +28,15 @@ Route::prefix('client')->name('client.')->group(function(){
 
 
     Route::middleware(['auth:client', 'PreventBackHistory'])->group(function () {
-        Route::view('/dashboard', 'frontend.pages.buyer.dashboard-index')->name('dashboard');
+      //  Route::view('/dashboard', 'frontend.pages.buyer.dashboard-index')->name('dashboard');
+      Route::get('/dashboard', DashboardIndex::class)->name('dashboard');
+      Route::get('/profile', DashboardProfile::class)->name('profile');
+      Route::get('/security', DashboardSecurity::class)->name('security');
+      Route::get('/notifications', DashboardNotifications::class)->name('notifications');
+
+
+      //  Route::get('/orders', Orders::class)->name('client.orders');
+      //  Route::get('/coupons', Coupons::class)->name('client.coupons');
        // Route::get('/dashboard', [ClientController::class, 'dashboard'])->name('dashboard');
 
   //      Route::post('/logout_handler', [SellerController::class, 'logoutHandler'])->name('logout_handler');

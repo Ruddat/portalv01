@@ -42,3 +42,49 @@
     </div>
 </header>
 <!-- /header -->
+
+
+<style>
+#top_menu .dropdown-menu {
+    right: 0 !important; /* Align the menu to the right of the container */
+    left: auto !important;
+    transform: translateX(0) !important; /* Ensure the menu does not shift */
+    will-change: auto !important; /* Override Bootstrap will-change to prevent issues */
+    top: 100% !important; /* Ensure the dropdown is positioned correctly */
+}
+
+#top_menu .dropdown-menu-content {
+    position: relative;
+    padding: 15px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    z-index: 1000;
+    min-width: 200px;
+}
+
+#top_menu .dropdown-menu-content ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#top_menu .dropdown-menu-content ul li {
+    margin-bottom: 10px;
+}
+
+#top_menu .dropdown-menu-content ul li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+#top_menu .dropdown-menu-content ul li a:hover {
+    background: #f8f9fa;
+}
+
+
+</style>

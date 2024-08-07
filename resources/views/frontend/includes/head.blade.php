@@ -53,7 +53,7 @@
             border: 1px solid #ccc;
         }
     </style>
-    
+
     <!-- JavaScript zur dynamischen Setzung des start_url -->
     <script>
         // Funktion zur Extraktion des Shop-Slugs aus der aktuellen URL

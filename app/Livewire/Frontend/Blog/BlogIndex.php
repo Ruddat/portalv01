@@ -52,11 +52,6 @@ class BlogIndex extends Component
         $this->perPage = 1;
     }
 
-
-
-
-
-
     public function updatedSearch($value)
     {
         $this->search = $value;
