@@ -2,6 +2,7 @@
 
 namespace app\helpers;
 
+use app\helpers\GenderHelper;
 use Illuminate\Support\Facades\Http;
 
 class AvatarApiHelper
@@ -11,15 +12,27 @@ class AvatarApiHelper
         // API-URL
         $apiUrl = 'https://avataaars.io/';
 
+        // Geschlecht des Namens bestimmen
+        $gender = GenderHelper::determineGender($name);
+
         // Generiere einzigartige Parameter basierend auf dem Namen
         $hash = md5($name);
         $hairColor = '#' . substr($hash, 0, 6); // Haarfarbe basierend auf dem Namen
         $clotheColor = '#' . substr($hash, 6, 6); // Kleidungfarbe basierend auf dem Namen
 
-        // Zufällige Auswahl von Parametern
-        $topTypes = ['NoHair', 'ShortHairDreads01', 'LongHairStraight', 'LongHairCurly'];
+        // Zufällige Auswahl von Parametern basierend auf dem Geschlecht
+        if ($gender === 'male') {
+            $topTypes = ['ShortHairDreads01', 'ShortHairShortCurly', 'ShortHairShortFlat'];
+            $facialHairTypes = ['BeardMedium', 'BeardLight', 'MoustacheFancy'];
+        } else if ($gender === 'female') {
+            $topTypes = ['LongHairStraight', 'LongHairCurly', 'Hijab'];
+            $facialHairTypes = ['Blank'];
+        } else {
+            $topTypes = ['NoHair', 'ShortHairDreads01', 'LongHairStraight', 'LongHairCurly'];
+            $facialHairTypes = ['Blank', 'BeardMedium', 'MoustacheFancy'];
+        }
+
         $accessoriesTypes = ['Blank', 'Kurt', 'Prescription01', 'Round'];
-        $facialHairTypes = ['Blank', 'BeardMedium', 'MoustacheFancy'];
         $clotheTypes = ['BlazerShirt', 'BlazerSweater', 'Hoodie', 'Overall'];
         $eyeTypes = ['Default', 'Happy', 'Side', 'Wink'];
         $eyebrowTypes = ['Default', 'RaisedExcited', 'SadConcerned', 'UnibrowNatural'];

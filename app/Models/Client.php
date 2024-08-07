@@ -49,8 +49,21 @@ class Client extends Authenticatable
         'status',
         'email_verified_at',
         'role',
-
-
+        'email_notifications',
+        'push_notifications',
+        'auto_group_subscribe',
+        'auto_product_subscribe',
+        'account_changes',
+        'group_changes',
+        'product_updates',
+        'new_products',
+        'promotional_offers',
+        'comment_notifications',
+        'share_notifications',
+        'follow_notifications',
+        'group_post_notifications',
+        'private_message_notifications',
+        'two_factor_recovery_codes',
     ];
 
     /**

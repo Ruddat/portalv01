@@ -16,6 +16,7 @@ use App\Http\Controllers\SystemComponent\RobotsController;
 use App\Http\Controllers\Frontend\Geoip\LocationController;
 use App\Http\Controllers\Frontend\Search\GeocodeController;
 use App\Http\Controllers\Backend\GlobalController\BidController;
+use App\Http\Controllers\SystemComponent\BuyerAccountController;
 use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
 use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 use App\Http\Controllers\Backend\Admin\Invoice\CsvExportController;
@@ -44,7 +45,7 @@ use App\Http\Controllers\SystemComponent\CommentVerificationController;
     Route::view('/forgot_password', 'frontend.pages.buyer.auth.forgot-password')->name('forgot-password');
     Route::view('/register', 'frontend.pages.buyer.auth.register')->name('register');
 
-    
+
 
     // Shopping card  routes
     Route::prefix('card')->group(function() {
@@ -56,6 +57,8 @@ use App\Http\Controllers\SystemComponent\CommentVerificationController;
     // Bid Routes
     Route::get('/increase-bid/{shop_id}/{current_price}', [BidController::class, 'increaseBid'])->name('increaseBid');
 
+    // Account Delete route
+    Route::get('/delete-account/{token}', [BuyerAccountController::class, 'confirmDeletion'])->name('account.confirmDeletion');
 
     Route::get('/life-tracking/{orderHash}', [LifeTrackingController::class, 'show'])->name('life-tracking');
     //Route::view('/life-tracking/{orderHash}', 'frontend.lifetracking.life-tracking')->name('life-tracking');

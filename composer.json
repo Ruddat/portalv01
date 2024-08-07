@@ -57,7 +57,8 @@
             "app/helpers/BadWordsFilterHelper.php",
             "app/helpers/CoolUsernameHelper.php",
             "app/helpers/CoolAvatarHelper.php",
-            "app/helpers/ShopVariablesHelper.php"
+            "app/helpers/ShopVariablesHelper.php",
+            "app/helpers/GenderHelper.php"
 
         ]
     },

@@ -329,6 +329,7 @@
                                     <figure>
                                         <span class="ribbon off">15% off</span>
                                         <span class="ribbon_sponsored on">Sponsored</span>
+                                        <span class="ribbon_stampcard on">StampCard</span>
                                         <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
                                             data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
                                             <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}" class="strip_info">
@@ -519,6 +520,31 @@
 
             .ribbon_sponsored.on {
                 background-color: #D63920;
+            }
+
+
+            .ribbon_stampcard {
+                color: #fff;
+                display: inline-block;
+                position: absolute;
+                top: 60px;
+                right: 15px;
+                font-weight: 500;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                -ms-border-radius: 3px;
+                border-radius: 3px;
+                padding: 2px 2px 2px 2px;
+                line-height: 1;
+                font-size: 12px;
+                font-size: 0.85rem;
+                z-index: 9;
+            }
+
+
+
+            .ribbon_stampcard.on {
+                background-color: #f1b40b;
             }
 
 
