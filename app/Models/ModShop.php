@@ -80,7 +80,7 @@ class ModShop extends Model
 
     public function categories()
     {
-        return $this->hasMany(ModCategory::class);
+        return $this->hasMany(ModCategory::class, 'shop_id');
     }
 
 

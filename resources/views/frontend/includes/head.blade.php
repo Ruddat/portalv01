@@ -1,9 +1,20 @@
 <head>
     <meta charset="utf-8">
+    <x-meta-tags
+    :description="$meta_description ?? 'Default description'"
+    :keywords="$meta_keywords ?? 'Default keywords'"
+    :ogTitle="$og_title ?? 'Default title'"
+    :ogDescription="$og_description ?? 'Default description'"
+    :ogImage="$og_image ?? asset('default-image.jpg')"
+    :title="$restaurant->title ?? 'Default title'"
+    />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ get_settings()->site_meta_description }}">
     <meta name="keywords" content="{{ get_settings()->site_meta_keywords }}">
     <meta name="author" content="Ingo Ruddat">
+
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 

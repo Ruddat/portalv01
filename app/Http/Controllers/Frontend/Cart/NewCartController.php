@@ -24,175 +24,119 @@ class NewCartController extends Controller
      */
     public function index(Request $request, $restaurantIdOrSlug)
     {
-        // Überprüfen, ob der Benutzer von einer gesponserten Quelle kommt
         if ($request->query('source') == 'sponsored') {
             session(['came_from_sponsored' => true]);
         }
 
+        $restaurant = ModShop::with('categories')->where('shop_slug', $restaurantIdOrSlug)->first();
 
-    // Restaurant anhand des Slugs finden
-    $restaurant = ModShop::where('shop_slug', $restaurantIdOrSlug)->first();
-
-    // Wenn das Restaurant nicht anhand des Slugs gefunden wurde, versuchen es anhand der ID zu finden
-    if (!$restaurant) {
-        $restaurant = ModShop::find($restaurantIdOrSlug);
-    }
-
-    // Überprüfen ob das Restaurant gefunden wurde
-    if ($restaurant) {
-        // Das Restaurant wurde gefunden, verwenden der $restaurant->id oder $restaurant->slug je nach Bedarf
-        // Hier können Sie die weitere Logik für die Restaurant-Ansicht implementieren
-        $restaurantId = $restaurant->id;
-       // dd($restaurant->id);
-    } else {
-        // Wenn weder der Slug noch die ID ein gültiges Restaurant ergeben haben, entsprechend reagieren
-        // Zum Beispiel eine Fehlermeldung anzeigen oder auf eine Standardseite weiterleiten
-        abort(404); // Seite nicht gefunden
-    }
-
-
-    // Überprüfen, ob die Session-Variablen vorhanden sind
-    if (!session()->has('userLatitude') || !session()->has('userLongitude')) {
-        // Session-Variablen nicht vorhanden, leite zur Startseite zurück mit einer Meldung
-        return redirect()->route('home')->with('error', 'Die Standortdaten sind nicht verfügbar. Bitte erlauben Sie den Zugriff auf Ihren Standort.');
-
-    }
-
-        // Restaurant anhand der ID finden
-        $restaurant = ModShop::findOrFail($restaurantId);
+        if (!$restaurant) {
+            $restaurant = ModShop::with('categories')->find($restaurantIdOrSlug);
+        }
 
         if ($restaurant) {
-            // Produkte des Geschäfts mit den dazugehörigen Kategorien abrufen
+            $restaurantId = $restaurant->id;
+        } else {
+            abort(404); // Seite nicht gefunden
+        }
+
+        if (!session()->has('userLatitude') || !session()->has('userLongitude')) {
+            return redirect()->route('home')->with('error', 'Die Standortdaten sind nicht verfügbar. Bitte erlauben Sie den Zugriff auf Ihren Standort.');
+        }
+
+        $restaurant = ModShop::with('categories')->findOrFail($restaurantId);
+
+        if ($restaurant) {
             $productsByCategory = [];
 
-            // Kategorien des Shops abrufen
             $categories = ModCategory::where('shop_id', $restaurant->id)
-                            ->where('show_in_list', true)
-                            ->where('published', true)
-                            ->orderBy('ordering')
-                            ->get();
+                ->where('show_in_list', true)
+                ->where('published', true)
+                ->orderBy('ordering')
+                ->get();
 
+            $sizesWithPrices = DB::table('mod_product_sizes')
+                ->join('mod_product_sizes_prices', 'mod_product_sizes.id', '=', 'mod_product_sizes_prices.size_id')
+                ->select('mod_product_sizes.title as size', 'mod_product_sizes_prices.price', 'mod_product_sizes_prices.size_id', 'mod_product_sizes_prices.parent')
+                ->where('mod_product_sizes.shop_id', $restaurant->id)
+                ->get();
 
-                            $sizesWithPrices = DB::table('mod_product_sizes')
-                            ->join('mod_product_sizes_prices', 'mod_product_sizes.id', '=', 'mod_product_sizes_prices.size_id')
-                            ->select('mod_product_sizes.title as size', 'mod_product_sizes_prices.price', 'mod_product_sizes_prices.size_id', 'mod_product_sizes_prices.parent')
-                            ->where('mod_product_sizes.shop_id', $restaurant->id)
-                            ->get();
-//dd($sizesWithPrices);
-            // Berechnen Sie die Gesamtbewertung für das Restaurant
-         //   $overallRating = $this->calculateOverallRating($restaurant->id);
-        // Berechnen Sie die Gesamtbewertung für das Restaurant
-
-
-
-            // Für jede Kategorie die entsprechenden Produkte abrufen und zuweisen
             foreach ($categories as $category) {
-                // Produkte der Kategorie abrufen und nach deinem Kriterium sortieren
                 $products = ModProducts::where('shop_id', $restaurant->id)
-                                        ->where('category_id', $category->id)
-                                        ->where('product_published', true)
-                                        ->orderBy('product_ordering', 'ASC')
-                                        ->get();
+                    ->where('category_id', $category->id)
+                    ->where('product_published', true)
+                    ->orderBy('product_ordering', 'ASC')
+                    ->get();
 
-
-             //   dd($products);
-                // Für jedes Produkt den richtigen Preis abrufen und zuweisen
                 foreach ($products as $product) {
-                    // Hier wird die Methode getProductPrice aufgerufen, um den Preis für das aktuelle Produkt abzurufen
                     $product->minPrice = $this->getProductPrice($product->id);
                 }
 
                 $productsByCategory[$category->category_name] = $products;
             }
 
-
-
-            // Retrieve latitude and longitude from session // TODO - Shop Sperren fuer lieferungen // TODO - Lieferkosten berechnen
             $userLatitude = session('userLatitude');
             $userLongitude = session('userLongitude');
 
-
-            // Holen des Standort vom Restaurant
             $shopLocation = ModShop::where('id', $restaurant->id)->first();
             $distance = $this->calculateDistance($userLatitude, $userLongitude, $shopLocation->lat, $shopLocation->lng);
             $distance = round($distance, 2);
 
-            // Holen der Lieferbereiche für den bestimmten Shop
             $deliveryAreas = DeliveryArea::where('shop_id', $restaurant->id)
-            ->orderBy('distance_km', 'asc')
-            ->get();
+                ->orderBy('distance_km', 'asc')
+                ->get();
 
-            // Überprüfen, ob der Benutzer innerhalb eines Lieferbereichs liegt
             $foundInDeliveryArea = false;
             foreach ($deliveryAreas as $area) {
-                // Überprüfen, ob die Entfernung des Benutzers innerhalb der maximalen Entfernung des Lieferbereichs liegt
                 if ($distance <= $area->distance_km) {
+                    $oldShopId = Session::get('shopId');
+                    if ($oldShopId !== null) {
+                        Session::forget('delivery_cost_' . $oldShopId);
+                        Session::forget('delivery_charge_' . $oldShopId);
+                        Session::forget('delivery_free_' . $oldShopId);
+                    }
 
-                    // Der Benutzer liegt innerhalb dieses Lieferbereichs
-                    // Hier können Sie weitere Aktionen ausführen, wenn der Benutzer innerhalb des Lieferbereichs liegt
-                    // Zum Beispiel, eine Bestellung zulassen, spezielle Nachrichten anzeigen usw.
-                    // Für jetzt drucken wir nur eine Nachricht aus
-                //    echo "Der Benutzer liegt innerhalb des Lieferbereichs mit einer maximalen Entfernung von " . $area->distance_km . " km";
-                //    echo "Kosten" . $area->delivery_cost . " euro";
-                //    echo "Frei ab" . $area->free_delivery_threshold . " euro";
-
-
-// Lösche die alten Daten für den vorherigen Shop, wenn vorhanden
-$oldShopId = Session::get('shopId');
-if ($oldShopId !== null) {
-    Session::forget('delivery_cost_' . $oldShopId);
-    Session::forget('delivery_charge_' . $oldShopId);
-    Session::forget('delivery_free_' . $oldShopId);
-}
-
-// Speichere die Lieferkosten in der Sitzung für den neuen Shop
-session(['delivery_cost_' . $restaurantId => $area->delivery_cost]);
-// Speichere den Mindestbestellwert in der Sitzung für den neuen Shop
-session(['delivery_charge_' . $restaurantId => $area->delivery_charge]);
-// Speichere Anfahrtkostenfrei in der Sitzung für den neuen Shop
-session(['delivery_free_' . $restaurantId => $area->free_delivery_threshold]);
-
-// Speichere die ID des neuen Shops in der Sitzung
-session(['shopId' => $restaurantId]);
-
-                //   dd(session()->all());
-
-
-               //     dd($area->delivery_cost);
-
+                    session(['delivery_cost_' . $restaurantId => $area->delivery_cost]);
+                    session(['delivery_charge_' . $restaurantId => $area->delivery_charge]);
+                    session(['delivery_free_' . $restaurantId => $area->free_delivery_threshold]);
+                    session(['shopId' => $restaurantId]);
 
                     $foundInDeliveryArea = true;
                     $modalScript = false;
-                    break; // Keine Notwendigkeit, andere Bereiche zu überprüfen, sobald ein Übereinstimmung gefunden wurde
+                    break;
                 }
             }
 
-            // Wenn der Benutzer nicht in einem Lieferbereich gefunden wurde
             if (!$foundInDeliveryArea) {
-                // echo "Der Benutzer liegt nicht innerhalb eines Lieferbereichs.";
                 $oldShopId = Session::get('shopId');
-if ($oldShopId !== null) {
-    Session::forget('delivery_cost_' . $oldShopId);
-    Session::forget('delivery_charge_' . $oldShopId);
-    Session::forget('delivery_free_' . $oldShopId);
-}
+                if ($oldShopId !== null) {
+                    Session::forget('delivery_cost_' . $oldShopId);
+                    Session::forget('delivery_charge_' . $oldShopId);
+                    Session::forget('delivery_free_' . $oldShopId);
+                }
                 $modalScript = false;
             }
 
-//dd($productsByCategory);
+            $metaDescription = $restaurant->description ?? "Willkommen bei " . $restaurant->title . ", genießen Sie unser tolles Angebot an Speisen und Getränken.";
+            $metaKeywords = implode(', ', $categories->pluck('category_name')->toArray());
+            $ogTitle = $restaurant->title;
+            $ogDescription = $metaDescription;
+            $ogImage = $restaurant->logo_url ?? asset('default-image.jpg');
+//dd($metaDescription, $ogTitle, $ogDescription, $ogImage, $metaKeywords);
 
-            // Restaurant gefunden, geben Sie die Detailansicht zurück
             return view('frontend.pages.detailrestaurant.detail-restaurant-2', [
                 'restaurant' => $restaurant,
                 'categories' => $categories,
-                'productsByCategory' => $productsByCategory, // Übergeben Sie die Produkte nach Kategorien an die Blade-Vorlage
-                'modalScript' => $modalScript, // Das Skript für das Modal übergeben
+                'productsByCategory' => $productsByCategory,
+                'modalScript' => $modalScript,
                 'sizesWithPrices' => $sizesWithPrices,
-           //     'overallRatingSingle' => $ratingData['overallRatingSingle'], // Übergeben Sie die Gesamtbewertung für jede Kategorie an die Blade-Vorlage
-
+                'meta_description' => $metaDescription,
+                'meta_keywords' => $metaKeywords,
+                'og_title' => $ogTitle,
+                'og_description' => $ogDescription,
+                'og_image' => $ogImage,
             ]);
         } else {
-            // Restaurant nicht gefunden, geben Sie eine Fehlermeldung zurück oder leiten Sie weiter
             return redirect()->route('home')->with('error', 'Restaurant nicht gefunden.');
         }
     }
