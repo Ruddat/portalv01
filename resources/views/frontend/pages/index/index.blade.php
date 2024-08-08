@@ -1,4 +1,6 @@
 @extends('frontend.layouts.default')
+
+
 @section('content')
     <!-- seitenabhengig css -->
     @push('specific-css')

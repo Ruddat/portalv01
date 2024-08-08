@@ -88,7 +88,27 @@ class ShopSearchController extends Controller
         // Debugging für Koordinaten
         // dd($userLatitude, $userLongitude);
 
-        return view('frontend.pages.index.index', compact('restaurants'));
+        $appName = config('app.name', 'Laravel');
+        $defaultDescription = "Finde die besten Restaurants in deiner Nähe. Genieße eine Vielzahl von köstlichen Gerichten.";
+        $defaultKeywords = "Restaurants, Essen, Lieferung, Qualität, Service";
+
+        // Meta-Beschreibung und Keywords aus den Einstellungen abrufen
+        $metaDescription = get_settings()->site_meta_description ?: $defaultDescription;
+        $metaKeywords = get_settings()->site_meta_keywords ?: $defaultKeywords;
+        $ogTitle = "Entdecke die besten Restaurants in deiner Nähe";
+        $ogDescription = $metaDescription;
+        $ogImage = asset('images/default-og-image.jpg');
+        $title = "$appName - Willkommen bei unserem Restaurantführer";
+
+        return view('frontend.pages.index.index', [
+            'restaurants' => $restaurants,
+            'metaDescription' => $metaDescription,
+            'metaKeywords' => $metaKeywords,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription,
+            'ogImage' => $ogImage,
+            'title' => $title
+        ]);
     }
 
 
@@ -140,6 +160,26 @@ class ShopSearchController extends Controller
         ]);
 
         return view('frontend.pages.index.index-2', compact('paginatedRestaurants'));
+
+            // SEO-Daten definieren
+    $metaDescription = "Finde //die besten Restaurants in deiner Nähe. Genieße eine Vielzahl von köstlichen Gerichten.";
+    $metaKeywords = "Restaurants, Essen, Lieferung, Qualität, Service";
+
+    $ogTitle = "Entdecke die besten Restaurants in deiner Nähe";
+    $ogDescription = $metaDescription;
+    $ogImage = asset('images/default-og-image.jpg');
+    $title = "Willkommen bei unserem Restaurantführer";
+
+    return view('frontend.pages.index.index', compact(
+        'restaurants',
+        'metaDescription',
+        'metaKeywords',
+        'ogTitle',
+        'ogDescription',
+        'ogImage',
+        'title'
+    ));
+
     }
 
 
@@ -153,6 +193,7 @@ class ShopSearchController extends Controller
  */
 public function search(Request $request)
 {
+
     try {
         $query = $request->input('query', '');
         $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
@@ -161,14 +202,16 @@ public function search(Request $request)
             // Adresse parsen
             $parsedAddress = $this->parseAddress($query);
 
+           // dd($selectedDistance, $parsedAddress);
+
             if ($parsedAddress) {
+                
                 // Adresse in der Datenbank suchen
                 $addressData = ModVendorAddressData::where('street', $parsedAddress['street'])
                     ->where('housenumber', $parsedAddress['housenumber'])
                     ->where('postal_code', $parsedAddress['postal_code'])
                     ->where('city', $parsedAddress['city'])
                     ->first();
-
 
                 if ($addressData) {
                     // Adresse aus der Datenbank verwenden
@@ -241,7 +284,6 @@ public function search(Request $request)
             )
             ->having('distance', '<', $selectedDistance)
             ->get();
-//dd($sponsoredRestaurants);
 
         // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
         if ($userLatitude !== null && $userLongitude !== null) {
@@ -258,7 +300,6 @@ public function search(Request $request)
                 ->where('published', true)
                 ->orderBy('distance')
                 ->paginate($this->perPage);
-//dd($sponsoredRestaurants, $restaurants);
 
             if (!empty($query)) {
                 $request->session()->put('selectedDistance', $selectedDistance);
@@ -307,6 +348,18 @@ public function search(Request $request)
         $restaurants->appends($request->only(['query', 'distance']));
         $findCityName = $request->session()->get('selectedName');
 
+        $appName = config('app.name', 'Laravel');
+        $defaultDescription = "Finde die besten Restaurants in $findCityName. Genieße eine Vielzahl von köstlichen Gerichten.";
+        $defaultKeywords = "Restaurants, Essen, Lieferung, Qualität, Service";
+
+        // Meta-Beschreibung und Keywords aus den Einstellungen abrufen
+        $metaDescription = get_settings()->site_meta_description ?: $defaultDescription;
+        $metaKeywords = get_settings()->site_meta_keywords ?: $defaultKeywords;
+        $ogTitle = "Entdecke die besten Restaurants in $findCityName";
+        $ogDescription = $metaDescription;
+        $ogImage = asset('images/default-og-image.jpg');
+        $title = "$appName - Willkommen bei unserem Restaurantführer";
+
         return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
             'restaurants' => $restaurants,
             'userLatitude' => $userLatitude,
@@ -315,6 +368,13 @@ public function search(Request $request)
             'findCityName' => $findCityName,
             'restaurantStatus' => $restaurantStatus,
             'sponsoredRestaurants' => $sponsoredRestaurants, // Gesponserte Restaurants hinzufügen
+
+            'metaDescription' => $metaDescription,
+            'metaKeywords' => $metaKeywords,
+            'ogTitle' => $ogTitle,
+            'ogDescription' => $ogDescription,
+            'ogImage' => $ogImage,
+            'title' => $title
         ]);
 
     } catch (\Exception $e) {
@@ -491,19 +551,45 @@ return response()->json(['success' => true, 'message' => 'Geokoordinaten erfolgr
      * @param string $query
      * @return array|null
      */
-    private function parseAddress($query)
-    {
-        $pattern = '/^(.+?)\s+(\d+),\s+(\d{5})\s+(.+)$/';
-        if (preg_match($pattern, $query, $matches)) {
-            return [
-                'street' => $matches[1],
-                'housenumber' => $matches[2],
-                'postal_code' => $matches[3],
-                'city' => $matches[4]
-            ];
-        }
-        return null;
+private function parseAddress($query)
+{
+    // Prüft auf vollständige Adresse: Straße Hausnummer, PLZ Stadt
+    $patternFullAddress = '/^(.+?)\s+(\d+),\s+(\d{5})\s+(.+)$/';
+    if (preg_match($patternFullAddress, $query, $matches)) {
+        return [
+            'street' => $matches[1],
+            'housenumber' => $matches[2],
+            'postal_code' => $matches[3],
+            'city' => $matches[4]
+        ];
     }
+
+    // Prüft auf Adresse ohne Hausnummer: Straße, PLZ Stadt
+    $patternStreetPostalCity = '/^(.+?),\s+(\d{5})\s+(.+)$/';
+    if (preg_match($patternStreetPostalCity, $query, $matches)) {
+        return [
+            'street' => $matches[1],
+            'housenumber' => null,
+            'postal_code' => $matches[2],
+            'city' => $matches[3]
+        ];
+    }
+
+    // Prüft auf Eingabe nur einer Stadt
+    $patternCityOnly = '/^(.+?)$/';
+    if (preg_match($patternCityOnly, $query, $matches)) {
+        return [
+            'street' => null,
+            'housenumber' => null,
+            'postal_code' => null,
+            'city' => $matches[1]
+        ];
+    }
+
+    // Falls kein Muster passt, gib null zurück
+    return null;
+}
+
 
 
     /**

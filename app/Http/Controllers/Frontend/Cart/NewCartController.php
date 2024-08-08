@@ -122,7 +122,6 @@ class NewCartController extends Controller
             $ogTitle = $restaurant->title;
             $ogDescription = $metaDescription;
             $ogImage = $restaurant->logo_url ?? asset('default-image.jpg');
-//dd($metaDescription, $ogTitle, $ogDescription, $ogImage, $metaKeywords);
 
             return view('frontend.pages.detailrestaurant.detail-restaurant-2', [
                 'restaurant' => $restaurant,
@@ -130,11 +129,12 @@ class NewCartController extends Controller
                 'productsByCategory' => $productsByCategory,
                 'modalScript' => $modalScript,
                 'sizesWithPrices' => $sizesWithPrices,
-                'meta_description' => $metaDescription,
-                'meta_keywords' => $metaKeywords,
-                'og_title' => $ogTitle,
-                'og_description' => $ogDescription,
-                'og_image' => $ogImage,
+                'metaDescription' => $metaDescription,
+                'metaKeywords' => $metaKeywords,
+                'ogTitle' => $ogTitle,
+                'ogDescription' => $ogDescription,
+                'ogImage' => $ogImage,
+                'title' => $restaurant->title,
             ]);
         } else {
             return redirect()->route('home')->with('error', 'Restaurant nicht gefunden.');
