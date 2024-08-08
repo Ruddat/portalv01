@@ -68,7 +68,11 @@ class SearchLocation extends Component
         Session::put('userLongitude', $location['lon']);
 
         // Jetzt, da wir die Standortdaten haben, können wir den Controller aufrufen
-        return redirect()->route('search.index');
+        //return redirect()->route('search.index');
+        return redirect()->route('search.index', [
+            'latitude' => $location['lat'],
+            'longitude' => $location['lon']
+        ]);
     }
 
     private function retrieveLocationFromNominatim($latitude, $longitude)
@@ -148,6 +152,7 @@ class SearchLocation extends Component
         } else {
             // Fehlerbehandlung
             session()->flash('error', 'Es gab ein Problem beim Abrufen der Daten.');
+
         }
     }
 

@@ -106,9 +106,6 @@
                                                 id="autocomplete"
                                                 placeholder="@autotranslate('Street or location...', app()->getLocale())"
                                                 value="{{ session('selectedLocation') }}">
-                                            @error('query')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-3 button-container">
@@ -116,6 +113,13 @@
                                             type="submit">@autotranslate('Search', app()->getLocale())</button>
                                     </div>
                                 </div>
+                                @error('query')
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    <strong>Hunger!</strong> {{ $message }}.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                 </div>
+                                @enderror
+
                             </form>
                             <!-- /row -->
                             <div class="search_trends">

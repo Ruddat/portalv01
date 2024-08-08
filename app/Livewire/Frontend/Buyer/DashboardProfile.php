@@ -45,6 +45,7 @@ class DashboardProfile extends Component
             $this->shipping_house_no = $client->shipping_house_no;
             $this->postal_code = $client->postal_code;
             $this->city = $client->city;
+            $this->phone = $client->phone;
         }
 
     }
@@ -144,7 +145,7 @@ class DashboardProfile extends Component
 
         if ($addressChanged === true) {
             $userInput = "{$this->shipping_street} {$this->shipping_house_no}, {$this->postal_code} {$this->city}";
-         //   dd($userInput);
+
             $addressProcessed = ShopVariablesHelper::processAddress(
                 $userInput,
                 $this->shipping_street,
@@ -154,11 +155,32 @@ class DashboardProfile extends Component
                 request()
             );
 
+//dd($addressProcessed);
+
             if (!$addressProcessed) {
                 session()->flash('error', 'Address could not be verified or not found.');
                 return;
             }
         }
+
+
+    // Die Adresse wurde geändert und erfolgreich verarbeitet.
+    // Nun die neuen Daten in der Session speichern:
+    session([
+        'address_data' => [
+            'shipping_street' => $this->shipping_street,
+            'shipping_house_no' => $this->shipping_house_no,
+            'postal_code' => $this->postal_code,
+            'city' => $this->city,
+        ],
+    //    'userLatitude' => $addressProcessed['latitude'] ?? null,
+    //    'userLongitude' => $addressProcessed['longitude'] ?? null,
+
+    // Speichern der neuen Adresse unter 'selectedLocation'
+    'selectedLocation' => "{$this->shipping_street} {$this->shipping_house_no}, {$this->postal_code} {$this->city}",
+
+    ]);
+
 
         $client = Client::find(auth()->id());
         if ($client) {
@@ -168,10 +190,9 @@ class DashboardProfile extends Component
             $client->email = $this->email;
             $client->phone = $this->phone;
 
-            
+
             if ($addressChanged === true) {
                 $addressData = session('address_data', []);
-//dd($addressData);
 
 
                 if (!empty($addressData)) {

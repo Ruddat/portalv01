@@ -11,6 +11,9 @@ class ShopVariablesHelper
 
     public static function processAddress($userInput, $street, $houseNo, $zip, $city, $request)
     {
+
+        //dd($userInput, $houseNo);
+
         $geocodeService = new GeocodeService();
         $results = $geocodeService->searchByAddress($userInput);
 
@@ -34,7 +37,7 @@ class ShopVariablesHelper
             session(['userLatitude' => $latitude]);
             session(['userLongitude' => $longitude]);
 
-            $addressString = "{$correctedAddress['street']} {$request->shipping_house_no}, {$correctedAddress['postal_code']} {$correctedAddress['city']}";
+            $addressString = "{$correctedAddress['street']} {$houseNo}, {$correctedAddress['postal_code']} {$correctedAddress['city']}";
             session(['selectedLocation' => $addressString]);
 
             $newAddressData = [

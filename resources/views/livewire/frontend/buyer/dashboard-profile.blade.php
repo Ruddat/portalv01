@@ -98,7 +98,7 @@
                                                     <!-- Form Group (postal code)-->
                                                     <div class="col-md-4">
                                                         <label class="small mb-1" for="inputPostalCode">Zip</label>
-                                                        <input class="form-control @error('client.postal_code') is-invalid @enderror" id="inputPostalCode" type="text" wire:model="postal_code" placeholder="Enter your Zip">
+                                                        <input class="form-control @error('postal_code') is-invalid @enderror" id="inputPostalCode" type="text" wire:model="postal_code" placeholder="Enter your Zip">
 
                                                     </div>
                                                     <!-- Form Group (city)-->
@@ -111,7 +111,7 @@
                                                 <!-- Form Group (email address)-->
                                                 <div class="mb-3">
                                                     <label class="small mb-1" for="inputEmailAddress">Email address</label>
-                                                    <input class="form-control @error('client.email') is-invalid @enderror" id="inputEmailAddress" type="email" wire:model="email" placeholder="Enter your email address" disabled>
+                                                    <input class="form-control @error('email') is-invalid @enderror" id="inputEmailAddress" type="email" wire:model="email" placeholder="Enter your email address" disabled>
 
                                                 </div>
                                                 <!-- Form Row-->
