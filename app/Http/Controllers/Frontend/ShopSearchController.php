@@ -54,7 +54,12 @@ class ShopSearchController extends Controller
         // Standardwert für die Entfernung verwenden, wenn nicht gesetzt
         $selectedDistance = $request->session()->get('selectedDistance', 20);
         $selectedLocation = $request->session()->get('selectedLocation');
-//dd($selectedLocation);
+
+       // dd($selectedLocation);
+
+
+
+
 
         if ($userLatitude !== null && $userLongitude !== null) {
             // Wenn Geokoordinaten in der Session vorhanden sind, Restaurants in der Umgebung auswählen
@@ -196,7 +201,16 @@ public function search(Request $request)
 
     try {
         $query = $request->input('query', '');
+        $latitude = $request->input('latitude', Session::get('userLatitude'));
+        $longitude = $request->input('longitude', Session::get('userLongitude'));
+
         $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
+
+        // Überprüfen, ob eine Suchanfrage oder Standortdaten vorhanden sind
+        if (empty($query) && (empty($latitude) || empty($longitude))) {
+            return redirect()->back()->withErrors(['query' => 'Bitte geben Sie eine Adresse ein oder nutzen Sie die Standorterkennung.']);
+        }
+
 
         if (!empty($query)) {
             // Adresse parsen
@@ -204,25 +218,17 @@ public function search(Request $request)
 
            // dd($selectedDistance, $parsedAddress);
 
-            if ($parsedAddress) {
-                
-                // Adresse in der Datenbank suchen
+           if ($parsedAddress) {
+            // Überprüfen, ob die Adresse vollständig ist (Straße, Hausnummer, PLZ und Stadt sind nicht null)
+            if (!is_null($parsedAddress['street']) && !is_null($parsedAddress['housenumber']) && !is_null($parsedAddress['postal_code'])) {
+                // Adresse in der Datenbank suchen und ggf. speichern
                 $addressData = ModVendorAddressData::where('street', $parsedAddress['street'])
                     ->where('housenumber', $parsedAddress['housenumber'])
                     ->where('postal_code', $parsedAddress['postal_code'])
                     ->where('city', $parsedAddress['city'])
                     ->first();
 
-                if ($addressData) {
-                    // Adresse aus der Datenbank verwenden
-                    $userLatitude = $addressData->latitude;
-                    $userLongitude = $addressData->longitude;
-
-                    session(['userLatitude' => $userLatitude]);
-                    session(['userLongitude' => $userLongitude]);
-                    session(['selectedLocation' => $query]);
-                    session()->put('selectedName', $addressData->city);
-                } else {
+                if (!$addressData) {
                     // Geocoding-Service verwenden, um Geokoordinaten zu erhalten
                     $results = $this->geocodeService->searchByAddress($query);
 
@@ -248,9 +254,34 @@ public function search(Request $request)
                         session(['selectedName' => $userCity]);
                         session(['selectedLocation' => $query]);
                     }
+                } else {
+                    // Wenn die Adresse bereits existiert, benutze die gespeicherten Koordinaten
+                    $userLatitude = $addressData->latitude;
+                    $userLongitude = $addressData->longitude;
+
+                    session(['userLatitude' => $userLatitude]);
+                    session(['userLongitude' => $userLongitude]);
+                    session(['selectedName' => $addressData->city]);
+                    session(['selectedLocation' => $query]);
+                }
+            } else {
+                // Nur die Stadt wurde eingegeben
+                $results = $this->geocodeService->searchByAddress($query);
+
+                if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+                    $userLatitude = $results[0]['lat'];
+                    $userLongitude = $results[0]['lon'];
+                    $userCity = $results[0]['name'];
+
+                    session(['userLatitude' => $userLatitude]);
+                    session(['userLongitude' => $userLongitude]);
+                    session(['selectedName' => $userCity]);
+                    session(['selectedLocation' => $query]);
                 }
             }
         }
+
+    }
 
         // Session-Werte abrufen
         $userLatitude = $request->session()->get('userLatitude', null);
