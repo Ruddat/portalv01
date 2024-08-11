@@ -22,6 +22,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('shop_id'); // Shop-ID hinzufügen
             $table->integer('quantity');
+            $table->string('size')->nullable(); // Größe hinzufügen
+            $table->decimal('price', 10, 2)->nullable(); // Preis hinzufügen
             $table->date('sale_date');
             $table->timestamps();
 

@@ -61,6 +61,13 @@ Route::prefix('seller')->name('seller.')->group(function(){
     });
 
 
+
+    // Product Statistic
+    Route::prefix('manage-product-statisti')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::view('/productstatitik/{shopId}', 'backend.pages.seller.productstats.product-stats')->name('product-stats');
+    });
+
+
     Route::prefix('invoicesmanager')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
         Route::view('/invoices_all/{shopId}', 'backend.pages.seller.invoices.invoices-index')->name('invoices-all');
    //     Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
