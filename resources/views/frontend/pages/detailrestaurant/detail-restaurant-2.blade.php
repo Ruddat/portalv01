@@ -228,7 +228,74 @@
             </div>
         </div>
 
+<style>
+    /* Desktop */
+.secondary_nav {
+    display: flex;
+}
 
+#secondary_nav {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+}
+
+#secondary_nav li {
+    margin-right: 20px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .secondary_nav {
+        position: relative;
+    }
+
+    #secondary_nav {
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    #secondary_nav.show {
+        display: flex;
+    }
+
+    #secondary_nav li {
+        margin: 10px 0;
+    }
+
+    .hamburger {
+        display: block;
+        cursor: pointer;
+    }
+}
+
+.secondary_nav {
+    --bg-color: #f8f9fa;
+    --active-color: #007bff;
+    background-color: var(--bg-color);
+}
+
+#secondary_nav li a {
+    text-decoration: none;
+    color: #333;
+    padding: 10px 15px;
+    display: block;
+}
+
+#secondary_nav li a.active {
+    color: var(--active-color);
+    border-bottom: 2px solid var(--active-color);
+}
+
+
+</style>
 
 
         @push('specific-scripts')
@@ -263,5 +330,7 @@
 
 
         @endpush
+
+
     @endif
 

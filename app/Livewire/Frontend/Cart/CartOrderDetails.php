@@ -7,8 +7,10 @@ use App\Models\Client;
 use App\Models\ModShop;
 use Livewire\Component;
 use App\Models\ModOrders;
+use App\Models\ModProducts;
 use Illuminate\Support\Str;
 use App\Services\CartService;
+use App\Models\ModProductSales;
 use App\Models\ModTopRankPrice;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Services\GeocodeService;
@@ -290,6 +292,7 @@ class CartOrderDetails extends Component
         ]);
 
         $this->createXml();
+        $this->productsSalesCount();
         $this->generateNewPDF($orderHash);
         $this->generateNewClient($validatedData);
         $this->generateConfirmationEmail($orderHash);
@@ -298,6 +301,11 @@ class CartOrderDetails extends Component
 
         return redirect()->route('life-tracking', ['orderHash' => $orderHash]);
     }
+
+
+
+
+
 
 
     public function calculatePrices($order)
@@ -422,6 +430,96 @@ class CartOrderDetails extends Component
     return $order;
 }
 
+public function productsSalesCount()
+{
+    // Den Einkaufswagen und die Shop-ID aus der Session abrufen
+    $productsSales = Session::get('shopping-cart');
+    $shopId = Session::get('shopId');
+
+    if (!$productsSales || !$shopId) {
+        // Wenn der Einkaufswagen oder die Shop-ID nicht vorhanden sind, nichts tun
+        return;
+    }
+
+    // Durch alle Artikel im Einkaufswagen iterieren
+    foreach ($productsSales as $item) {
+        // Hauptprodukt und Shop-ID abgleichen
+        $productCode = $item->get('code');
+        $quantity = $item->get('quantity');
+        $size = $item->get('size'); // Größe abrufen
+        $price = $item->get('price'); // Preis abrufen
+
+        // Produkt in der Datenbank finden, das zur Shop-ID gehört
+        $product = ModProducts::where('product_code', $productCode)
+                               ->where('shop_id', $shopId)
+                               ->first();
+
+        if ($product) {
+            // Prüfen, ob bereits ein Eintrag mit derselben Größe, demselben Preis, und demselben Datum existiert
+            $sale = ModProductSales::where('product_id', $product->id)
+                                   ->where('shop_id', $shopId)
+                                   ->where('size', $size) // Größe berücksichtigen
+                                   ->where('price', $price) // Preis berücksichtigen
+                                   ->whereDate('sale_date', now()->toDateString())
+                                   ->first();
+
+            if ($sale) {
+                // Menge erhöhen, falls Eintrag existiert
+                $sale->increment('quantity', $quantity);
+            } else {
+                // Neuen Eintrag erstellen, falls keiner existiert
+                ModProductSales::create([
+                    'product_id' => $product->id,
+                    'shop_id' => $shopId,
+                    'quantity' => $quantity,
+                    'size' => $size,
+                    'price' => $price,
+                    'sale_date' => now(),
+                ]);
+            }
+        }
+
+        // Optionen (Zusatzprodukte) aktualisieren
+        $options = $item->get('options');
+
+        foreach ($options as $option) {
+            $optionCode = $option['productCode'];
+            $optionQuantity = $option['quantity'];
+            $optionSize = $option['size']; // Größe der Option
+            $optionPrice = $option['price']; // Preis der Option
+
+            // Zusatzprodukt in der Datenbank finden, das zur Shop-ID gehört
+            $optionProduct = ModProducts::where('product_code', $optionCode)
+                                        ->where('shop_id', $shopId)
+                                        ->first();
+
+            if ($optionProduct) {
+                // Prüfen, ob bereits ein Eintrag mit derselben Größe, demselben Preis, und demselben Datum existiert
+                $optionSale = ModProductSales::where('product_id', $optionProduct->id)
+                                             ->where('shop_id', $shopId)
+                                             ->where('size', $optionSize) // Größe berücksichtigen
+                                             ->where('price', $optionPrice) // Preis berücksichtigen
+                                             ->whereDate('sale_date', now()->toDateString())
+                                             ->first();
+
+                if ($optionSale) {
+                    // Menge erhöhen, falls Eintrag existiert
+                    $optionSale->increment('quantity', $optionQuantity);
+                } else {
+                    // Neuen Eintrag erstellen, falls keiner existiert
+                    ModProductSales::create([
+                        'product_id' => $optionProduct->id,
+                        'shop_id' => $shopId,
+                        'quantity' => $optionQuantity,
+                        'size' => $optionSize,
+                        'price' => $optionPrice,
+                        'sale_date' => now(),
+                    ]);
+                }
+            }
+        }
+    }
+}
 
 
 

@@ -115,6 +115,13 @@ Route::prefix('admin')->name('admin.')->group(function(){
         });
 
 
+        // Managers
+        Route::prefix('gallery')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+            Route::view('/gallery-manager', 'backend.pages.admin.globalgallery.gallery-manager')->name('gallerymananer');
+
+        });
+
+
 
 });
 

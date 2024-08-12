@@ -88,7 +88,8 @@
 
                     @if ($shopId)
                     {{-- Aktiver Shop, zeige das entsprechende Menü --}}
-                    <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="true">
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="true">
                             <i class="bi bi-shop-window"></i>
                             <span class="nav-text"> {{ Str::limit(session('currentShopTitle'), 13) }}</span>
                             </a>
@@ -97,6 +98,7 @@
                             <ul aria-expanded="false">
                             <li><a href="{{ route('seller.switchShop', ['id' => $shopId]) }}">Dashboard</a></li>
 
+
                             <li><a href="{{ route('seller.restoData', ['shop' => $shopId]) }}">Shopdaten</a></li>
                             <li><a href="#">Domains</a></li>
                             <li><a href="#">Logo & Design</a></li>
@@ -104,6 +106,7 @@
                             <li><a href="{{ route('seller.worktimes-list', ['shopId' => $shopId]) }}">Öffnungszeiten</a></li>
                             <li><a href="#">Aktionszeiten</a></li>
                             <li><a href="#">Zahlungsmethoden</a></li>
+                            <li><a href="{{ route('seller.product-stats', ['shopId' => $shopId]) }}">@autotranslate('Productstatistik', app()->getLocale())</a></li>
                             <hr>
 
                             <li><a href="#">Trinkgeld</a></li>
@@ -215,6 +218,20 @@
                             <li><a href="{{ route('admin.storno-manager') }}">@autotranslate('StornoManager', app()->getLocale())</a></li>
                           </ul>
                       </li>
+
+
+
+                      <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="bi bi-info-circle"></i>
+                            <span class="nav-text">@autotranslate('Gallery', app()->getLocale())</span>
+                        </a>
+                         <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.gallerymananer') }}">@autotranslate('Gallery Manager', app()->getLocale())</a></li>
+                          </ul>
+                      </li>
+
+
                       @elseif(Auth::guard('seller')->check())
                        {{-- Aktives Menu wenn Seller eingeloggt --}}
 

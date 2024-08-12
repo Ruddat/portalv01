@@ -322,7 +322,7 @@
                     <hr>
 
                     <!-- gesponsert start -->
-                    @if($sponsoredRestaurants->count())
+                    @if ($sponsoredRestaurants->count())
                         @foreach ($sponsoredRestaurants as $restaurant)
                             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
                                 <div class="strip">
@@ -331,15 +331,15 @@
                                         <span class="ribbon_sponsored on">Sponsored</span>
                                         <span class="ribbon_stampcard on">StampCard</span>
                                         <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
-                                            data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy" alt="">
-                                            <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}" class="strip_info">
-
-
+                                            data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
+                                            alt="">
+                                        <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}"
                                             class="strip_info">
+
                                             <small>@autotranslate('Pizza, Burger', app()->getLocale())</small>
                                             <div style="display: flex; align-items: center;">
                                                 <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
-                                                style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
+                                                    style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
                                                 <div class="item_title">
                                                     <h3>{{ $restaurant->title }}</h3>
                                                     <small>{{ $restaurant->street }}</small>
@@ -373,7 +373,7 @@
                     @endif
                 </div>
 
-<!-- gesponsert end -->
+                <!-- gesponsert end -->
 
 
 

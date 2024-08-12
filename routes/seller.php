@@ -61,6 +61,13 @@ Route::prefix('seller')->name('seller.')->group(function(){
     });
 
 
+
+    // Product Statistic
+    Route::prefix('manage-product-statisti')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::view('/productstatitik/{shopId}', 'backend.pages.seller.productstats.product-stats')->name('product-stats');
+    });
+
+
     Route::prefix('invoicesmanager')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
         Route::view('/invoices_all/{shopId}', 'backend.pages.seller.invoices.invoices-index')->name('invoices-all');
    //     Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
@@ -97,6 +104,8 @@ Route::prefix('manage-categories')->name('manage-categories.')->middleware(['aut
     Route::post('toggle-category-status', [CategoriesController::class, 'toggleCategoryStatus'])->name('toggle-category-status');
     Route::post('/toggle-show-in-list', [CategoriesController::class, 'toggleShowInList'])->name('toggle-show-in-list');
     Route::post('/toggle-show-status', [CategoriesController::class, 'toggleShowStatus'])->name('toggle-show-status');
+    // Neue Route für das Abrufen der Galerie mit der gefilterten Kategorie
+    Route::get('/get-gallery-images/{categoryId}/{subcategoryId}', [CategoriesController::class, 'getGalleryImages']);
 
 });
 

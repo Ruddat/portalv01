@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('lotto:download')->dailyAt('00:00');
-        $schedule->command('sitemap:generate')->daily('00:00');
+        $schedule->command('sitemap:generate')->dailyAt('23:00');
         $schedule->command('invoices:generate')->weeklyOn(6, '23:59');
         $schedule->command('notify:outbid')->hourly();
         $schedule->command('comments:delete-unverified')->hourly();
