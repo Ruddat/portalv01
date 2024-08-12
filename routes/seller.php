@@ -104,6 +104,8 @@ Route::prefix('manage-categories')->name('manage-categories.')->middleware(['aut
     Route::post('toggle-category-status', [CategoriesController::class, 'toggleCategoryStatus'])->name('toggle-category-status');
     Route::post('/toggle-show-in-list', [CategoriesController::class, 'toggleShowInList'])->name('toggle-show-in-list');
     Route::post('/toggle-show-status', [CategoriesController::class, 'toggleShowStatus'])->name('toggle-show-status');
+    // Neue Route für das Abrufen der Galerie mit der gefilterten Kategorie
+    Route::get('/get-gallery-images/{categoryId}/{subcategoryId}', [CategoriesController::class, 'getGalleryImages']);
 
 });
 

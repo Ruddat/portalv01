@@ -29,9 +29,15 @@ class GalleryComponent extends Component
     public $newSubcategoryName;
     public $showOverlay;  // Property to control the overlay display
     public $showUploadOverlay = false;
+    public $showEditOverlay = false;
     public $uploadMessage = '';
     public $uploadSuccess = false;
     public $uploadError = false;
+    public $editImageId;
+    public $editImageTitle;
+    public $selectedImage;
+
+
 
     public function mount()
     {
@@ -140,6 +146,62 @@ class GalleryComponent extends Component
         ];
     }
 
+public function openEditModal($imageId)
+{
+    $image = ModSharedToolsGallery::find($imageId);
+   // dd($image);
+    $this->editImageId = $imageId;
+    $this->editImageTitle = $image->title;
+    $this->overlayImageUrl = asset('storage/' . $image->image_path);
+    $this->showEditOverlay = true;
+}
+
+public function updateImage()
+{
+    // Finde das Bild anhand der gespeicherten editImageId
+    $image = ModSharedToolsGallery::find($this->editImageId);
+
+    // Wenn das Bild existiert, aktualisiere den Titel
+    if ($image) {
+        $image->title = $this->editImageTitle;
+        $image->save();  // Speichere die Änderung in der Datenbank
+    }
+
+    // Schließe das Overlay
+    $this->closeEditOverlay();
+}
+
+public function deleteImage($imageId)
+{
+
+    // Bild anhand der ID finden
+    $image = ModSharedToolsGallery::find($this->editImageId);
+
+    // Dateien von der Platte löschen
+    \Storage::delete('public/' . $image->image_path);
+    \Storage::delete('public/' . $image->thumbnail_path);
+    \Storage::delete('public/' . $image->category_image_path);
+
+    // Bild aus der Datenbank löschen
+    $image->delete();
+
+    $this->dispatch('alert', ['message' => 'Bild erfolgreich gelöscht']);
+    $this->closeEditOverlay();
+    $this->mount(); // Gallerie neu laden
+
+}
+
+
+
+public function saveImageTitle()
+{
+    $image = ModSharedToolsGallery::find($this->editImageId);
+    $image->title = $this->editImageTitle;
+    $image->save();
+
+    $this->dispatchBrowserEvent('alert', ['message' => 'Titel erfolgreich aktualisiert']);
+    $this->closeOverlay();
+}
 
 
     public function showImage($imagePath, $title)
@@ -153,6 +215,13 @@ class GalleryComponent extends Component
     public function showUploadOverlay()
     {
         $this->showUploadOverlay = true;
+    }
+
+    public function closeEditOverlay()
+    {
+        $this->showEditOverlay = false;
+        $this->editImageId = null;
+        $this->editImageTitle = '';
     }
 
     public function closeUploadOverlay()
@@ -234,6 +303,7 @@ class GalleryComponent extends Component
         // Hole die Bilder basierend auf der Abfrage
         $this->images = $query->get()->map(function ($image) {
             return [
+                'id' => $image->id, // Hier die ID hinzufügen
                 'original' => asset('storage/' . $image->image_path),
                 'thumbnail' => asset('storage/' . $image->thumbnail_path),
                 'category_image' => asset('storage/' . $image->category_image_path),

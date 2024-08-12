@@ -64,7 +64,8 @@
     background: #fff;
     position: relative;
     -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, .07);
-    box-shadow: 0 2px 0 rgba(0, 0, 0, .07)
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .07);
+    z-index: 1
 }
 
 .gallery-list>li .image {
@@ -88,7 +89,7 @@
     left: 10px;
     top: 10px;
     right: 10px;
-    z-index: 1020
+    z-index: 1000
 }
 
 .gallery-list>li .info {

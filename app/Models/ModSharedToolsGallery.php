@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ModSharedToolsGallery extends Model
 {
     use HasFactory;
+
+    protected $table = 'mod_shared_tools_galleries';
+
     protected $fillable = [
         'title',
         'image_path',

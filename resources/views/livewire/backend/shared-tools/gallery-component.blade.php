@@ -104,7 +104,8 @@
                 </div>
                 <div class="btn-list">
                     <a href="#" wire:click.prevent="showImage('{{ $image['category_image'] }}', '{{ $image['title'] }}')" class="btn btn-white btn-xs"><i class="fa fa-search-plus"></i></a>
-                    <a href="#" class="btn btn-white btn-xs"><i class="fa fa-cog"></i></a>
+                    <a href="#" wire:click.prevent="openEditModal('{{ $image['id'] }}')" class="btn btn-white btn-xs"><i class="fa fa-cog"></i></a>
+
                 </div>
                 <div class="info">
                     <h5>{{ $image['title'] ?? 'No Title' }}</h5>
@@ -169,6 +170,40 @@
     </div>
 </div>
 
+@if ($showEditOverlay)
+<div class="overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1050; display: flex; justify-content: center; align-items: center;">
+    <div class="overlay-content" style="background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 600px; position: relative; text-align: center;">
+        <button type="button" class="close" wire:click="closeEditOverlay" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 1.5rem; color: #333;">
+            &times;
+        </button>
+
+        <!-- Bild anzeigen -->
+        <div class="overlay-body" style="margin-bottom: 20px;">
+            <img src="{{ $overlayImageUrl }}" alt="Bild" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px;">
+            <!-- Aktueller Titel -->
+            <h5>{{ $editImageTitle }}</h5>
+            <!-- Input für neuen Titel -->
+            <input
+                type="text"
+                wire:model="editImageTitle"
+                class="form-control"
+                placeholder="Titel ändern"
+                style="margin: 15px 0;"
+                wire:keydown.enter="updateImage"
+            >
+        </div>
+
+        <!-- Buttons -->
+        <div class="overlay-footer" style="display: flex; justify-content: space-between;">
+            <button type="button" class="btn btn-danger" wire:click="deleteImage({{ $editImageId }})">Löschen</button>
+            <div>
+                <button type="button" class="btn btn-secondary" wire:click="closeEditOverlay">Abbruch</button>
+                <button type="button" class="btn btn-primary" wire:click="updateImage">Speichern</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 
 
 <!-- Overlay -->

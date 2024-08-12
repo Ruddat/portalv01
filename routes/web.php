@@ -25,6 +25,7 @@ use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
 use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
 use App\Http\Controllers\SystemComponent\CommentVerificationController;
+use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 
 
 /*
@@ -329,7 +330,6 @@ Route::get('/best-ratet-restaurants', [ShopSearchController::class, 'viewAll'])-
 Route::get('/detail-restaurant/{restaurantId}', [ShopCardController::class, 'index'])->name('detail-restaurant.index');
 Route::post('/vote', [ShopCardController::class, 'vote'])->name('vote-restaurant.vote');
 Route::post('/reply', [ShopCardController::class, 'reply'])->name('vote-restaurant.reply');
-
 
 
 // Match my own domain
