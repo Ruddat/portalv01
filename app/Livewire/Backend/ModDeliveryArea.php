@@ -8,34 +8,33 @@ use App\Models\DeliveryArea;
 
 class ModDeliveryArea extends Component
 {
-    public $shopId = 1; // Festen Wert für die shop_id zum Testen
+    public $shopId = 1;
     public $shop;
     public $deliveryAreas;
     public $createFormVisible = false;
-    public $distance_km;
-    public $delivery_cost;
-    public $delivery_charge;
-    public $free_delivery_threshold;
-    public $min_delivery_threshold;
+    public $maxDistanceKm; // Maximaldistanz für Lieferzonen
+    public $distanceSteps = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 16, 17, 18, 19, 20]; // Vordefinierte Entfernungsstufen
+    public $edit_delivery_cost, $edit_free_delivery_threshold, $edit_delivery_charge;
+    public $editFormVisible = false;
+    public $currentDeliveryAreaId;
+    public $selectedAreas = [];
+    public $selectAll = false;
+
 
     protected $rules = [
-        'distance_km' => 'required|numeric',
-        'delivery_cost' => 'required|numeric',
-        'free_delivery_threshold' => 'required|numeric',
-        'delivery_charge' => 'required|numeric',
+        'maxDistanceKm' => 'required|numeric',
     ];
 
     public function mount(ModShop $shop, DeliveryArea $deliveryAreas)
     {
         $this->shopId = session('currentShopId');
-     //   dd($this->shopId); // Hier wird die Shop-ID korrekt ausgegeben
         $this->deliveryAreas = $deliveryAreas;
-        $this->shop = ModShop::find($this->shopId); // Verwende die festgelegte Shop-ID
+        $this->shop = ModShop::find($this->shopId);
     }
 
     public function render()
     {
-        $this->deliveryAreas = DeliveryArea::where('shop_id', $this->shopId)->get(); // Verwende die festgelegte Shop-ID
+        $this->deliveryAreas = DeliveryArea::where('shop_id', $this->shopId)->get();
         return view('livewire.backend.mod-delivery-area');
     }
 
@@ -44,7 +43,7 @@ class ModDeliveryArea extends Component
         $this->createFormVisible = !$this->createFormVisible;
     }
 
-    public function createDeliveryArea()
+    public function createDeliveryAreas()
     {
         $this->validate();
 
@@ -52,102 +51,199 @@ class ModDeliveryArea extends Component
         $shopLatitude = $shop->lat;
         $shopLongitude = $shop->lng;
 
-        $coordinates = $this->calculateNewCoordinates($shopLatitude, $shopLongitude);
-        $radius = $this->distance_km * 1000;
-        $color = $this->calculateColor($this->distance_km);
+        foreach ($this->distanceSteps as $distanceKm) {
+            if ($distanceKm > $this->maxDistanceKm) break;
 
-        DeliveryArea::create([
-            'shop_id' => $this->shop->id,
-            'distance_km' => $this->distance_km,
-            'delivery_cost' => $this->delivery_cost,
-            'free_delivery_threshold' => $this->free_delivery_threshold,
-            'delivery_charge' => $this->delivery_charge,
-            'latitude' => $coordinates['latitude'],
-            'longitude' => $coordinates['longitude'],
-            'radius' => $radius,
-            'color' => $color,
-        ]);
+            $coordinates = $this->calculateNewCoordinates($shopLatitude, $shopLongitude, $distanceKm);
+           // dd($coordinates);
+
+            $radius = $distanceKm * 1000;
+            $color = $this->calculateColor($distanceKm);
+
+            //dd($coordinates, $radius, $color);
+
+            DeliveryArea::create([
+                'shop_id' => $this->shop->id,
+                'distance_km' => $distanceKm,
+                'delivery_cost' => $this->calculateDeliveryCost($distanceKm),
+                'free_delivery_threshold' => $this->calculateFreeDeliveryThreshold($distanceKm),
+                'delivery_charge' => $this->calculateDeliveryCharge($distanceKm),
+                'latitude' => $coordinates['latitude'],
+                'longitude' => $coordinates['longitude'],
+                'radius' => $radius,
+                'color' => $color,
+            ]);
+        }
 
         $this->resetInputFields();
         $this->toggleCreateForm();
-        $this->render(); // Aktualisiere die Anzeige der Tabelle
+        $this->render();
+        $this->js('window.location.reload()');
+
     }
 
     private function resetInputFields()
     {
-        $this->distance_km = '';
-        $this->delivery_cost = '';
-        $this->free_delivery_threshold = '';
-        $this->delivery_charge = '';
+        $this->maxDistanceKm = '';
     }
+
+    private function calculateNewCoordinates($latitude, $longitude, $distanceKm)
+    {
+        if ($latitude === null || $longitude === null || $distanceKm === null) {
+            // Fehlermeldung oder Standardwerte zurückgeben
+            return null;
+        }
+
+        // Radius der Erde in Kilometern
+        $earthRadius = 6371;
+
+        // Umrechnung der Entfernung in Bogenmaß
+        $distanceInRadians = $distanceKm / $earthRadius;
+
+        // Berechnung neuer Koordinaten
+        $newLatitude = rad2deg(asin(sin(deg2rad($latitude)) * cos($distanceInRadians) + cos(deg2rad($latitude)) * sin($distanceInRadians) * cos(0)));
+        $newLongitude = rad2deg(deg2rad($longitude) + atan2(sin(0) * sin($distanceInRadians) * cos(deg2rad($latitude)), cos($distanceInRadians) - sin(deg2rad($latitude)) * sin(deg2rad($newLatitude))));
+
+        return [
+            'latitude' => $newLatitude,
+            'longitude' => $newLongitude,
+        ];
+    }
+
+    private function calculateColor($distance)
+    {
+        if ($distance === null) {
+            return 'grey'; // Standardfarbe falls `null`
+        }
+
+        if ($distance <= 1) {
+            return 'green';
+        } elseif ($distance <= 5) {
+            // Linearer Übergang von Grün (0,255,0) zu Gelb (255,255,0)
+            $progress = ($distance - 1) / (5 - 1);
+            $red = round(255 * $progress);
+            $green = 255;
+            $blue = 0;
+            return "rgb($red, $green, $blue)";
+        } elseif ($distance <= 10) {
+            // Linearer Übergang von Gelb (255,255,0) zu Orange (255,165,0)
+            $progress = ($distance - 5) / (10 - 5);
+            $red = 255;
+            $green = round(255 - $progress * (255 - 165));
+            $blue = 0;
+            return "rgb($red, $green, $blue)";
+        } elseif ($distance <= 15) {
+            // Linearer Übergang von Orange (255,165,0) zu Rot (255,0,0)
+            $progress = ($distance - 10) / (15 - 10);
+            $red = 255;
+            $green = round(165 - $progress * 165);
+            $blue = 0;
+            return "rgb($red, $green, $blue)";
+        } else {
+            // Rot für Entfernungen über 15 km
+            return "rgb(255, 0, 0)";
+        }
+    }
+
+
+    private function calculateDeliveryCost($distanceKm)
+    {
+        // Beispiel: €0,31 pro Kilometer
+        $cost = $distanceKm * 0.31;
+
+        // Runden auf den nächsten 0,10-Schritt
+        return ceil($cost * 10) / 10;
+    }
+
+    private function calculateFreeDeliveryThreshold($distanceKm)
+    {
+        // Beispiel: Mindestbestellwert €10 + €2 pro Kilometer
+        return 10 + ($distanceKm * 2);
+    }
+
+    private function calculateDeliveryCharge($distanceKm)
+    {
+        // Beispiel: Liefergebühr €2 pro Kilometer
+        return $distanceKm * 2.0;
+    }
+
+
+    public function toggleSelectAll()
+    {
+        $this->selectedAreas = $this->selectAll ? $this->deliveryAreas->pluck('id')->toArray() : [];
+    }
+
+    public function deleteSelected()
+    {
+        DeliveryArea::whereIn('id', $this->selectedAreas)->delete();
+        $this->selectedAreas = [];
+        $this->selectAll = false;
+        $this->deliveryAreas = DeliveryArea::all();
+        $this->js('window.location.reload()');
+
+    }
+
 
 
     public function deleteDeliveryArea($id)
-{
-    DeliveryArea::find($id)->delete();
-    $this->render(); // Aktualisiere die Anzeige der Tabelle
-}
+    {
+        DeliveryArea::find($id)->delete();
+        $this->render();
+        $this->js('window.location.reload()');
 
-
-// Hilfsmethode zur Berechnung neuer Koordinaten
-private function calculateNewCoordinates($latitude, $longitude)
-{
-    // Radius der Erde in Kilometern
-    $earthRadius = 6371;
-
-    // Mindestradius (z.B. 100 Meter)
-    $minRadius = 0.1; // In Kilometern
-
-    // Umrechnung der Entfernung in Bogenmaß
-    $distanceInRadians = max($this->distance_km / $earthRadius, $minRadius / $earthRadius);
-
-    // Berechnung neuer Koordinaten
-    $newLatitude = rad2deg(asin(sin(deg2rad($latitude)) * cos($distanceInRadians) + cos(deg2rad($latitude)) * sin($distanceInRadians) * cos(0)));
-    $newLongitude = rad2deg(deg2rad($longitude) + atan2(sin(0) * sin($distanceInRadians) * cos(deg2rad($latitude)), cos($distanceInRadians) - sin(deg2rad($latitude)) * sin(deg2rad($newLatitude))));
-
-    return [
-        'latitude' => $newLatitude,
-        'longitude' => $newLongitude,
-    ];
-}
-
-// Hilfsmethode zur Berechnung der Farbe basierend auf der Entfernung
-private function calculateColor($distance)
-{
-    // Hier könntest du deine eigene Logik für die Farbberechnung implementieren
-    // Beispiel: je weiter die Entfernung, desto "kälter" die Farbe
-    if ($distance <= 1) {
-        return 'green';
-    } elseif ($distance <= 5) {
-        // Linear interpolation between green and yellow
-        $progress = ($distance - 1) / (8 - 1);
-        $red = 255;
-        $green = round(255 - $progress * (255 - 255));
-        $blue = 0;
-
-        return "rgb($red, $green, $blue)";
-    } else {
-        // Linear interpolation between yellow and red
-        $progress = ($distance - 5) / (15 - 1);
-        $red = 255;
-        $green = round(255 - $progress * 255);
-        $blue = 0;
-
-        return "rgb($red, $green, $blue)";
     }
-}
 
-public function refresh()
-{
-    // Hier kannst du Logik hinzufügen, die du vor dem Neuladen ausführen möchtest
+    public function refresh()
+    {
+        $this->shop = ModShop::find($this->shopId);
+        $this->deliveryAreas = DeliveryArea::where('shop_id', $this->shopId)->get();
+        $this->render();
+    }
 
 
-    // Hier kannst du die erforderliche Logik einfügen, um die Daten zu aktualisieren
-    $this->shop = ModShop::find($this->shopId);
-    $this->deliveryAreas = DeliveryArea::where('shop_id', $this->shopId)->get();
+    public function editDeliveryArea($id)
+    {
+        $deliveryArea = DeliveryArea::find($id);
 
-    // Nachdem die Daten aktualisiert wurden, rufe render() auf, um die Ansicht neu zu rendern
-    $this->render();
-}
+        // Felder für das Editieren befüllen
+        $this->edit_delivery_cost = $deliveryArea->delivery_cost;
+        $this->edit_free_delivery_threshold = $deliveryArea->free_delivery_threshold;
+        $this->edit_delivery_charge = $deliveryArea->delivery_charge;
+        $this->currentDeliveryAreaId = $id;
+
+        $this->editFormVisible = true;
+
+    }
+
+
+    public function updateDeliveryArea()
+
+    {
+        $this->validate([
+            'edit_delivery_cost' => 'required|numeric',
+            'edit_free_delivery_threshold' => 'required|numeric',
+            'edit_delivery_charge' => 'required|numeric',
+        ]);
+
+        $deliveryArea = DeliveryArea::find($this->currentDeliveryAreaId);
+
+
+        $deliveryArea->update([
+            'delivery_cost' => $this->edit_delivery_cost,
+            'free_delivery_threshold' => $this->edit_free_delivery_threshold,
+            'delivery_charge' => $this->edit_delivery_charge,
+        ]);
+
+        $this->editFormVisible = false;
+
+        // Trigger page reload using Livewire's built-in method
+        $this->js('window.location.reload()');
+
+    }
+
+    public function reloadPage()
+    {
+        $this->js('window.location.reload()');
+    }
 
 }
