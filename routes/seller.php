@@ -42,6 +42,14 @@ Route::prefix('seller')->name('seller.')->group(function(){
         Route::post('/change-profile-picture', [SellerController::class, 'changeProfilePicture'])->name('change-profile-picture');
     });
 
+
+
+    // Pos System
+    Route::prefix('pos-system')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+        Route::view('/liveorders/{shopId}', 'backend.pages.seller.pos-system.live-orders-connect')->name('liveorders-connect');
+    });
+
+
     // Dashboard routes
     Route::prefix('shop')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
         Route::get('/details', [DashboardController::class, 'sellerDetails'])->name('sellerDetails');

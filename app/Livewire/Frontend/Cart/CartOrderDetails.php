@@ -291,7 +291,7 @@ class CartOrderDetails extends Component
             'shipping_comment' => $validatedData['description_of_way'],
         ]);
 
-        $this->createXml();
+        $this->createXml($orderHash);
         $this->productsSalesCount();
         $this->generateNewPDF($orderHash);
         $this->generateNewClient($validatedData);
@@ -638,13 +638,15 @@ public function generateNewPdf($orderHash)
 
 
 
-public function createXml()
+public function createXml($orderHash)
 {
     $orderIDValue = Session::get('orderHash');
 
     $articles = session()->get('shopping-cart');
 //dd($articles);
-
+    // Kaufdaten aus der Datenbank abrufen
+    $orderForXml = ModOrders::where('hash', $orderHash)->first();
+//dd($orderForXml, $orderForXml->name);
 
     //dd($orderHash);
    // $delivery_option = 'Lieferung'; // Annahme: Die Lieferoption ist in $this->delivery_option gespeichert
@@ -682,11 +684,11 @@ $orderID = $order->addChild('OrderID', $orderIDValue);
         // Füge die Lieferadresse hinzu
         $deliveryAddress = $customer->addChild('DeliveryAddress');
         $deliveryAddress->addChild('Title', ''); // Hier Titel einfügen
-        $deliveryAddress->addChild('LastName', $this->last_name);
+        $deliveryAddress->addChild('LastName', $orderForXml->name);
         $deliveryAddress->addChild('FirstName', $this->first_name);
         $deliveryAddress->addChild('Company', $this->company);
-        $deliveryAddress->addChild('Street', $this->full_address);
-        $deliveryAddress->addChild('HouseNo', '');
+        $deliveryAddress->addChild('Street', $orderForXml->shipping_street);
+        $deliveryAddress->addChild('HouseNo', $orderForXml->shipping_house_no);
         $deliveryAddress->addChild('AddAddress', '');
         $deliveryAddress->addChild('DescriptionOfWay', $this->description_of_way);
         $deliveryAddress->addChild('Zip', $this->postal_code);
@@ -781,7 +783,7 @@ foreach ($article['options'] as $subArticle) {
 
     // Konvertiere das XML-Dokument in eine Zeichenkette und speichere es in der Eigenschaft $xml
     $this->xml = $xml->asXML();
-
+//dd($this->xml);
 
     $newOrderNumber = Session::get('newOrderNumber');
     $shopId = Session::get('shopId');
