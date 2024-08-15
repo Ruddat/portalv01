@@ -142,6 +142,8 @@
         <div class="order-controls">
             <button class="btn btn-outline-success" wire:click="confirmOrder">Bestellung Bestätigen</button>
             <button class="btn btn-outline-secondary" wire:click="skipOrder">Überspringen</button>
+            <button class="btn btn-outline-primary" wire:click="printOrder">Drucken</button>
+
         </div>
     </div>
 </div>

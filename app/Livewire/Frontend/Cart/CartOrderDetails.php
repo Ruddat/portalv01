@@ -159,13 +159,11 @@ class CartOrderDetails extends Component
             $longitude = $existingAddress->longitude;
         } else {
 
-
-
             // Geocode-Service initialisieren
             $geocodeService = new GeocodeService();
             // Adresse nicht gefunden, nutze Nominatim zur Geokodierung
             $data = $geocodeService->searchByAddress($userInput);
-//dd($data);
+            //dd($data);
 
 
             if (!empty($data)) {
@@ -211,9 +209,10 @@ class CartOrderDetails extends Component
 
         $deliveryorpickup = Session::get('delivery_or_pickup_'. $shopId);
 
-
         // Berechne die Preise
         $prices = $this->calculatePrices($order);
+
+  //dd($prices);
 
         // Liefergebühr basierend auf dem Bestellwert festlegen
         $deliveryFee = Session::get("delivery_cost_$shopId", 0);
@@ -245,6 +244,7 @@ class CartOrderDetails extends Component
             if ($cameFromSponsored) {
                 $sponsoredPrice = $cameFromSponsored->current_price;
                 // Hier Preis weiterverarbeiten oder speichern
+              //  dd($cameFromSponsored, $sponsoredPrice);
             }
         }
 
@@ -673,7 +673,7 @@ public function createXml($orderHash)
 
     // Füge die Kundeninformationen hinzu
     $customer = $order->addChild('Customer');
-    $customer->addChild('CustomerNo', 2);
+    $customer->addChild('CustomerNo', $this->phone);
     $customer->addChild('NoMarketing', 'false');
 
 // Setze die OrderID
@@ -690,10 +690,10 @@ $orderID = $order->addChild('OrderID', $orderIDValue);
         $deliveryAddress->addChild('Street', $orderForXml->shipping_street);
         $deliveryAddress->addChild('HouseNo', $orderForXml->shipping_house_no);
         $deliveryAddress->addChild('AddAddress', '');
-        $deliveryAddress->addChild('DescriptionOfWay', $this->description_of_way);
+        $deliveryAddress->addChild('DescriptionOfWay', $orderForXml->shipping_comment);
         $deliveryAddress->addChild('Zip', $this->postal_code);
         $deliveryAddress->addChild('City', $this->city);
-        $deliveryAddress->addChild('Country', 'DE');
+        $deliveryAddress->addChild('Country', $orderForXml->shipping_country_code);
         $deliveryAddress->addChild('Email', $this->email);
         $deliveryAddress->addChild('PayPalEmail', $this->email);
         $deliveryAddress->addChild('PhoneNo', $this->phone);
@@ -726,11 +726,11 @@ $orderID = $order->addChild('OrderID', $orderIDValue);
     $addInfo = $order->addChild('AddInfo');
     $addInfo->addChild('DiscountPercent', '0');
     $addInfo->addChild('CurrencyStr', '€');
-    $addInfo->addChild('DeliverLumpSum', '0');
-    $addInfo->addChild('Comment', 'kjdshfjkldsjfljsdlfkjsdflkjdlkfjlk'); // Leeres Kommentar-Feld
+    $addInfo->addChild('DeliverLumpSum', $orderForXml->price_shipping);
+    $addInfo->addChild('Comment', $orderForXml->order_comment); // Leeres Kommentar-Feld
     $addInfo->addChild('PaymentType', 'Barzahlung'); // Beispiel für Barzahlung
     $addInfo->addChild('PaymentFee', '0');
-    $addInfo->addChild('Tip', '13.50');
+    $addInfo->addChild('Tip', $orderForXml->price_tips);
     $addInfo->addChild('TransactionID', ''); // Leeres TransactionID-Feld
  //   $addInfo->addChild('Total', '3.5'); // Beispielwert für Total
     $addInfo->addChild('MinOrderValue', '0');

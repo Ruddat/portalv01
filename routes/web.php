@@ -39,6 +39,10 @@ use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 |
 */
 
+Route::get('/print', [App\Http\Controllers\TestComponent\PrintController::class, 'printReceipt']);
+
+
+
     // Login Logout Routes
     Route::view('/login', 'frontend.pages.buyer.auth.login')->name('login');
     Route::view('/forgot_password', 'frontend.pages.buyer.auth.forgot-password')->name('forgot-password');

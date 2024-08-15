@@ -27,7 +27,7 @@
 
                     <livewire:backend.seller.pos-system.live-order-connect :shopId="$shopId" />
 
-
+                    <livewire:backend.seller.pos-system.printer-configurator :shopId="$shopId" />
 
                     <div class="container">
                         <div class="row">
