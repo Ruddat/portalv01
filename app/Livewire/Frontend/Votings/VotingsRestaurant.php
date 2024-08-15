@@ -2,11 +2,15 @@
 
 namespace App\Livewire\Frontend\Votings;
 
+use App\Models\Client;
 use App\Models\ModShop;
 use Livewire\Component;
 use App\Models\ModOrders;
 use Illuminate\Http\Request;
+use app\helpers\AvatarApiHelper;
 use App\Models\ModSellerVotings;
+use app\helpers\CoolUsernameHelper;
+use Illuminate\Support\Facades\Auth;
 
 class VotingsRestaurant extends Component
 {
@@ -95,6 +99,34 @@ class VotingsRestaurant extends Component
         $review->agb_accepted = $this->agb_accepted;
         // wenn kein Foto hochgeladen
         $review->published = 1;
+
+
+
+
+        if (Auth::guard('client')->check()) {
+            $review->user_id = Auth::guard('client')->id();
+            $client = Client::find($review->user_id);
+            $review->guest_name = $client->username;
+            $review->guest_avatar = $client->avatar;
+        } else {
+
+
+           // dd($this->order);
+
+            $username = $this->order->name . ' ' . $this->order->surname;
+//dd($username);
+
+            $avatar = AvatarApiHelper::createAvatar($username);
+
+            $username = $this->order->surname;
+            $coolUsername = CoolUsernameHelper::generate($username);
+
+            $review->guest_name =  $coolUsername;
+            $review->guest_avatar = $avatar;
+        //    dd($review->guest_avatar, $review->guest_name);
+        }
+
+
         $review->save();
 
 

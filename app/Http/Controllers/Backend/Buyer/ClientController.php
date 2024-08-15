@@ -114,7 +114,7 @@ class ClientController extends Controller
                         $addressString = "{$correctedAddress['shipping_street']} {$correctedAddress['shipping_house_no']}, {$correctedAddress['postal_code']} {$correctedAddress['city']}";
                         session(['selectedLocation' => $addressString]);
 
-                        return redirect()->route('home');
+                        return redirect()->route('client.dashboard');
                     } else {
                         Auth::guard('client')->logout();
                         return back()->withErrors(['fail' => 'Your email is not verified. Please verify your email to login.']);

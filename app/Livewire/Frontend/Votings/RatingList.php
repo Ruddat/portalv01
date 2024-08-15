@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use App\Models\ModSellerVotes;
 use App\Models\ModSellerReplays;
 use App\Models\ModSellerVotings;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class RatingList extends Component
@@ -32,6 +33,8 @@ class RatingList extends Component
     public $showReplyFormForRatingId;
     public $votingId;
     public $showRatings = false; // Startwert für die Anzeige der Bewertungen
+    public $replyUserId;
+    public $replyAvatar;
 
     public function mount($shopId)
     {
@@ -51,31 +54,40 @@ class RatingList extends Component
 
     public function toggleReplyForm($ratingId)
     {
+        if (Auth::guard('client')->check()) {
+            $this->replyAuthor = Auth::guard('client')->user()->username;
+            $this->replyAvatar = Auth::guard('client')->user()->avatar; // Assuming avatar is stored in the User model
+            $this->replyUserId = Auth::guard('client')->user()->id; // Assuming user_id is stored in the User model
+           // dd($this->replyUserId);
+        } else {
+            session()->flash('error', 'Du musst eingeloggt sein, um eine Antwort zu schreiben.');
+            return;
+        }
+
         $this->votingId = $ratingId;
         $this->showReplyForm = true;
         $this->showReplyFormForRatingId = $ratingId;
-
     }
-
 
     public function addReply()
     {
-      //  dd($this->replyAuthor, $this->replyTitle, $this->replyContent);
-
-
         $this->validate([
             'replyAuthor' => 'required|string|max:255',
             'replyTitle' => 'required|string|max:255',
             'replyContent' => 'required|string',
         ]);
 
-//dd($this->votingId, $this->replyAuthor, $this->replyTitle, $this->replyContent);
-
+        $this->replyUserId = Auth::guard('client')->user()->id; // Assuming user_id is stored in the User model
+        $this->replyUsername = Auth::guard('client')->user()->username;
+        $this->replyAvatar = Auth::guard('client')->user()->avatar; // Assuming avatar is stored in the User model
+        //dd($this->replyUserId);
 
         ModSellerReplays::create([
             'voting_id' => $this->votingId,
-      //      'voting_id' => '1', // Set the voting ID to 0
-       'reply_author' => $this->replyAuthor,
+            'user_id' => $this->replyUserId,
+            'username' =>  $this->replyUsername,
+            'reply_author' => $this->replyAuthor,
+            'avatar' => $this->replyAvatar,
             'reply_title' => $this->replyTitle,
             'reply_content' => $this->replyContent,
         ]);
@@ -84,12 +96,14 @@ class RatingList extends Component
         $this->replyAuthor = '';
         $this->replyTitle = '';
         $this->replyContent = '';
+        $this->replyUserId = null;
+        $this->replyAvatar = '';
 
         // Refresh the replays list
         $this->dispatch('replyAdded');
         $this->showReplyForm = false;
-
     }
+
 
 
     public function calculateOverallRating()
@@ -217,6 +231,10 @@ class RatingList extends Component
             $rating->likes_count = $rating->votes()->where('type', 'like')->count();
             $rating->dislikes_count = $rating->votes()->where('type', 'dislike')->count();
         }
+
+
+        // Lade die zugehörigen Replays und die neuen Felder
+        $rating->replays = ModSellerReplays::where('voting_id', $rating->id)->get(['user_id', 'reply_author', 'avatar', 'reply_title', 'reply_content', 'created_at']);
 
         return view('livewire.frontend.votings.rating-list', [
             'ratings' => $ratings,
