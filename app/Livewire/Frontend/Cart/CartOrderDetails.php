@@ -137,8 +137,8 @@ class CartOrderDetails extends Component
         // Validierung der Benutzereingaben
         $validatedData = $this->validate();
 
-        dd($validatedData);
-        
+    //    dd($validatedData);
+
         //dd($validatedData);
 
         // Adresse für Geokodierung vorbereiten
