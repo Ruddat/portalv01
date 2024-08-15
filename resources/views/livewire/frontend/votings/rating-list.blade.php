@@ -112,9 +112,13 @@
                         <li><a href="#" wire:click.prevent="dislike({{ $rating->id }})"><i class="icon_dislike"></i><span>@autotranslate('Not useful', app()->getLocale()) ({{ $rating->dislikes_count }})</span></a></li>
                         <li><a href="#" wire:click.prevent="toggleReplyForm({{ $rating->id }})"><i class="arrow_back"></i><span>@autotranslate('Reply', app()->getLocale())</span></a></li>
                         @if(session()->has('error'))
-                        <div class="alert alert-warning">
-                            {{ session('error') }}
-                            <a href="{{ route('login') }}" class="btn btn-primary">Zum Login</a>
+                        <div class="alert alert-warning d-flex align-items-center" role="alert" style="background-color: #f8d7da; color: #721c24; border-color: #f5c6cb;">
+                            <div class="flex-grow-1">
+                                <strong>Hinweis:</strong> {{ session('error') }}
+                            </div>
+                            <a href="{{ route('login') }}" class="btn_1 gradient full-width mb_5" style="background-color: #007bff; border-color: #007bff;">
+                                <i class="fas fa-sign-in-alt"></i> Zum Login
+                            </a>
                         </div>
                     @endif
                     </ul>
