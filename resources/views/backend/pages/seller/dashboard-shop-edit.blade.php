@@ -265,13 +265,13 @@
 <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
     <div class="widget-stat card">
         <div class="card-body  p-4">
-            <a href="{{ route('seller.deliveryarea', ['shop' => $shop]) }}">
+            <a href="{{ route('seller.liveorders-connect', ['shopId' => $currentShopId]) }}">
             <div class="media">
                 <span class="me-3 bgl-success text-success">
                     <i class="las la-money-check"></i>
                 </span>
                 <div class="media-body">
-                    <h3 class="mb-1">Zahlungsarten</h3>
+                    <h3 class="mb-1">LiveOrders</h3>
                     <p>Bar / Ec-Karte</p>
                     <div class="progress mb-2 bg-white">
                         <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>

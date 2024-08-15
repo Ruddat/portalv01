@@ -202,6 +202,8 @@ return [
         Jaybizzle\LaravelCrawlerDetect\LaravelCrawlerDetectServiceProvider::class,
         App\Providers\GeocodeServiceProvider::class,
         App\Providers\TopRankServiceProvider::class,
+        App\Providers\PrinterServiceProvider::class,
+
 
     ])->toArray(),
 
