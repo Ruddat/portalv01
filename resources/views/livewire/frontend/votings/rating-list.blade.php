@@ -92,8 +92,13 @@
         <div class="review_card">
             <div class="row">
                 <div class="col-md-2 user_info">
-                    <figure><img src="{{ asset('uploads/images/default/avatar_3.jpg') }}" alt=""></figure>
-                    <h5>{{ $rating->reviewer_name }}</h5>
+                    @php
+                        $client = App\Models\Client::find($rating->user_id);
+                        $reviewerName = $client ? $client->username : $rating->guest_name;
+                        $reviewerAvatar = $client ? $client->avatar : 'uploads/images/default/avatar_3.jpg';
+                    @endphp
+                    <figure><img src="{{ asset($reviewerAvatar) }}" alt=""></figure>
+                    <h5>{{ $reviewerName }}</h5>
                 </div>
                 <div class="col-md-10 review_content">
                     <div class="clearfix add_bottom_15">
@@ -106,6 +111,16 @@
                         <li><a href="#" wire:click.prevent="like({{ $rating->id }})"><i class="icon_like"></i><span>@autotranslate('Useful', app()->getLocale()) ({{ $rating->likes_count }})</span></a></li>
                         <li><a href="#" wire:click.prevent="dislike({{ $rating->id }})"><i class="icon_dislike"></i><span>@autotranslate('Not useful', app()->getLocale()) ({{ $rating->dislikes_count }})</span></a></li>
                         <li><a href="#" wire:click.prevent="toggleReplyForm({{ $rating->id }})"><i class="arrow_back"></i><span>@autotranslate('Reply', app()->getLocale())</span></a></li>
+                        @if(session()->has('error'))
+                        <div class="alert alert-warning d-flex align-items-center" role="alert" style="background-color: #f8d7da; color: #721c24; border-color: #f5c6cb;">
+                            <div class="flex-grow-1">
+                                <strong>Hinweis:</strong> {{ session('error') }}
+                            </div>
+                            <a href="{{ route('login') }}" class="btn_1 gradient full-width mb_5" style="background-color: #007bff; border-color: #007bff;">
+                                <i class="fas fa-sign-in-alt"></i> Zum Login
+                            </a>
+                        </div>
+                    @endif
                     </ul>
                 </div>
             </div>
