@@ -117,6 +117,43 @@
 						</div>
 
 
+						<div class="card h-auto">
+
+							<div class="card-body">
+                                <h6>OrderStream App Aktivieren</h6>
+                                @include('backend.includes.errorflash')
+                                <div class="basic-form">
+
+                                        <div>
+                                            <p><strong>Beschreibung:</strong> Abrufen neuer Bestellungen via OrdersStream App</p>
+                                            <p><strong>Code:</strong> <span id="code"> code anzeigen </span> <button class="btn btn-outline-primary btn-xs" onclick="copyToClipboard()">Kopieren</button></p>
+                                            <input type="checkbox" id="copied" style="vertical-align: middle; margin-left: 5px;" hidden>
+                                            <label for="copied" id="copyLabel" style="vertical-align: middle; display: none;">Aktivationcode wurde in die Zwischenablage kopiert.</label>
+                                        </div>
+
+                                        <div class="col-xl-12 col-lg-12 col-xxl-12 col-sm-8">
+                                            <div class="card text-black text-black">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Einstellungen Kassensystem</span></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Übertragungsart :</span><strong>{{ $shop->transfer }}</strong></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">User Name :</span><strong>{{ $shop->api_username }}</strong></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Password :</span><strong>{{ $shop->api_password }}</strong></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+
+                                        <button type="button" class="btn btn-primary">Aktivation Code Generieren</button>
+
+                                </div>
+
+							</div>
+						</div>
+
+
+
+
+
                         </div>
 
 					</div>

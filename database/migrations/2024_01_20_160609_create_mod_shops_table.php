@@ -41,11 +41,16 @@ return new class extends Migration
             $table->string('note')->default(0);
             $table->string('accessories')->default(0);
             $table->string('password')->default(0);
+
+            // Api Zugangsdaten
             $table->tinyInteger('transfer')->default(0);
             $table->string('soap_username')->default(0);
             $table->string('soap_password')->default(0);
             $table->string('api_username')->default(0);
             $table->string('api_password')->default(0);
+            // End
+
+
             $table->tinyInteger('feedbacks')->default(0);
             $table->tinyInteger('justdeliverlogo')->default(0);
             $table->string('domain')->default(0);
@@ -87,6 +92,9 @@ return new class extends Migration
             $table->decimal('voting_average', 5, 2)->nullable(); // Spalte für den Durchschnitt der Abstimmung
             $table->tinyInteger('show_voting')->default(1); // Spalte für die Anzeige der Bewertung
             // ende
+
+
+
 
             $table->integer('paid_on_top')->default(0);
             $table->tinyInteger('show_logo')->default(1);
