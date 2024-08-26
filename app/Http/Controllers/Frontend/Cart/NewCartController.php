@@ -85,6 +85,7 @@ class NewCartController extends Controller
             $deliveryAreas = DeliveryArea::where('shop_id', $restaurant->id)
                 ->orderBy('distance_km', 'asc')
                 ->get();
+//dd($deliveryAreas);
 
             $foundInDeliveryArea = false;
             foreach ($deliveryAreas as $area) {
@@ -93,13 +94,16 @@ class NewCartController extends Controller
                     if ($oldShopId !== null) {
                         Session::forget('delivery_cost_' . $oldShopId);
                         Session::forget('delivery_charge_' . $oldShopId);
-                        Session::forget('delivery_free_' . $oldShopId);
+                        Session::forget('free_delivery_threshold_' . $oldShopId);
                     }
+
+
 
                     session(['delivery_cost_' . $restaurantId => $area->delivery_cost]);
                     session(['delivery_charge_' . $restaurantId => $area->delivery_charge]);
-                    session(['delivery_free_' . $restaurantId => $area->free_delivery_threshold]);
+                    session(['free_delivery_threshold_' . $restaurantId => $area->free_delivery_threshold]);
                     session(['shopId' => $restaurantId]);
+//dd($area->delivery_cost, $area->delivery_charge, $area->free_delivery_threshold, $restaurantId);
 
                     $foundInDeliveryArea = true;
                     $modalScript = false;
@@ -112,7 +116,7 @@ class NewCartController extends Controller
                 if ($oldShopId !== null) {
                     Session::forget('delivery_cost_' . $oldShopId);
                     Session::forget('delivery_charge_' . $oldShopId);
-                    Session::forget('delivery_free_' . $oldShopId);
+                    Session::forget('free_delivery_threshold_' . $oldShopId);
                 }
                 $modalScript = false;
             }
@@ -122,6 +126,9 @@ class NewCartController extends Controller
             $ogTitle = $restaurant->title;
             $ogDescription = $metaDescription;
             $ogImage = $restaurant->logo_url ?? asset('default-image.jpg');
+
+            $this->setShowButton($oldShopId, true);
+
 
             return view('frontend.pages.detailrestaurant.detail-restaurant-2', [
                 'restaurant' => $restaurant,
@@ -140,6 +147,14 @@ class NewCartController extends Controller
             return redirect()->route('home')->with('error', 'Restaurant nicht gefunden.');
         }
     }
+
+
+    public function setShowButton($shopId, $value)
+    {
+        // Hier wird der Wert für das Anzeigen des Buttons in der Session gespeichert
+        Session::put("show_button_{$shopId}", $value);
+    }
+
 
 /**
  * Methode zur Bestimmung des richtigen Preises für ein Produkt.

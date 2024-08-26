@@ -41,7 +41,7 @@ class TipComponent extends Component
         $this->tipPercentage = $percentage;
         Session::put('tipPercentage', $percentage);
       //  dd(Session::get('tipPercentage'));
-
+      $this->dispatch('tipPercentage');
     }
 
     public function setTipAmount($amount)
@@ -49,6 +49,7 @@ class TipComponent extends Component
         $this->tipAmount = $amount;
         Session::put('tipAmount', $amount);
        // dd(Session::get('tipAmount'));
+       $this->dispatch('tipAmount');
     }
 
     public function resetTip()
@@ -58,10 +59,19 @@ class TipComponent extends Component
         Session::forget('tipPercentage');
         Session::forget('tipAmount');
         Session::put('tipType', 'none');
+        if ($this->tipType !== 'amount') {
+
+          //  $this->dispatch('tipPercentage');
+
+        } elseif ($this->tipType === 'percentage') {
+
+            $this->dispatch('tipPercentage');
+        }
     }
 
     public function render()
     {
+
         return view('livewire.frontend.cart.tip-component');
     }
 }

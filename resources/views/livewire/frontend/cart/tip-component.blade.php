@@ -1,13 +1,15 @@
 <div>
     @if($tipType === 'amount')
-        <div class="tip-amount">
-            <label for="tip_amount">Tip Amount</label>
-            <select id="tip_amount" wire:change="setTipAmount($event.target.value)">
-                @for ($i = 0; $i <= 8; $i += 0.5)
-                    <option value="{{ $i }}">{{ number_format($i, 2) }} €</option>
-                @endfor
-            </select>
-        </div>
+    <div class="tip-amount">
+        <label for="tip_amount">Tip Amount</label>
+        <select id="tip_amount" wire:change="setTipAmount($event.target.value)">
+            @for ($i = 0; $i <= 8; $i += 0.5)
+                <option value="{{ $i }}" {{ $tipAmount == $i ? 'selected' : '' }}>
+                    {{ number_format($i, 2) }} €
+                </option>
+            @endfor
+        </select>
+    </div>
     @elseif($tipType === 'percentage')
         <div class="dropdown tip">
             <a href="#" data-bs-toggle="dropdown">

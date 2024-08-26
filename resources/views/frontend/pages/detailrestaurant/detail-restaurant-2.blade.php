@@ -97,22 +97,9 @@
                             <!-- /head -->
                             <div class="main">
                                 <livewire:frontend.card.cart-component />
-                                <livewire:frontend.cart.timepicker-component :shopId="$restaurant" />
                                 <livewire:frontend.cart.tip-component />
-                                @livewire('frontend.cart.order-button-component', ['restaurantId' => $restaurant->id, 'minimumOrderValue' => $restaurant->minimum_order_value])
-
-                                <div class="btn_1_mobile">
-                                    <a href="{{ route('order', ['restaurantId' => $restaurant->id]) }}"
-                                        class="btn_1 gradient full-width mb_5">{{ app(\App\Services\TranslationService::class)->trans('Order Now', app()->getLocale()) }}</a>
-
-
-
-                                        <div class="text-center">
-                                        <small>@autotranslate('No money charged on this steps', app()->getLocale())</small>
-                                    </div>
-                                </div>
-
-
+                                <livewire:frontend.cart.timepicker-component :shopId="$restaurant" />
+                                <livewire:frontend.cart.order-button-component :restaurantId="$restaurant->id" />
                             </div>
                         </div>
                         <!-- /box_order -->

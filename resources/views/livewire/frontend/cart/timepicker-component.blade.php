@@ -17,7 +17,7 @@
             <span>@autotranslate('Datum:', app()->getLocale())</span>
 
             <span class="date" :class="{ 'active': @js($selectedDate) === 'heute' }">{{ \Carbon\Carbon::parse($selectedDate)->format('d.m.Y') }}</span>
-            <span class="next" wire:click="nextDay">»</span>
+            <span class="next arrow_triangle-right_alt" wire:click="nextDay"></span>
         </div>
         <div>
             @if($openingHours->isNotEmpty())
@@ -199,6 +199,12 @@
 .opening-hours p {
     margin-bottom: 6px;
 }
+
+span.next.arrow_triangle-right_alt {
+    font-size: 24px; /* Macht den Text oder das Icon größer */
+    cursor: pointer;
+}
+
 
     </style>
 </div>

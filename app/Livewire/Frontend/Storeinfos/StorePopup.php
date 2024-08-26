@@ -101,6 +101,7 @@ class StorePopup extends Component
             $this->nextOpenTime = OpeningHoursService::getNextOpenTime($this->shop);
         }
 
+    //    dd($this->shop);
         // Shopstatus überprüfen
         $this->shopStatus = OpeningHoursService::getShopStatus($this->shop);
 
@@ -313,6 +314,8 @@ class StorePopup extends Component
                 session(['delivery_free_' . $this->shopId => $area->free_delivery_threshold]);
                 session(['delivery_free_threshold_' . $this->shopId => $area->free_delivery_threshold]);
                 $foundInDeliveryArea = true;
+
+             //   dd($area->delivery_cost, $area->delivery_charge, $area->free_delivery_threshold, $foundInDeliveryArea);
                 break;
             }
         }

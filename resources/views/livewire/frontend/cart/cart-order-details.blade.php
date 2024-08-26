@@ -385,14 +385,11 @@
                             </ul>
                             <hr>
                             <livewire:frontend.card.cart-component />
-                            <livewire:frontend.cart.timepicker-component :shopId="$this->shopData" />
                             <livewire:frontend.cart.tip-component />
+                            <livewire:frontend.cart.timepicker-component :shopId="$this->shopData" />
+                            <livewire:frontend.cart.order-button-component :restaurantId="$this->shopData->id" />
 
-                            <button wire:loading.class="opacity-50" type="submit"
-                                class="btn_1 gradient full-width mb_5">@autotranslate('Order Now', app()->getLocale())</button>
-                            <div wire:loading>
-                                Bestellung wird uebertragen......
-                            </div>
+
 
 
 

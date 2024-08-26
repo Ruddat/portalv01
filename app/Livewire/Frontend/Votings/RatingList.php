@@ -224,17 +224,17 @@ class RatingList extends Component
     public function render()
     {
         $ratings = ModSellerVotings::where('shop_id', $this->shopId)
-        ->orderBy('created_at', 'desc') // Sortiere nach dem neuesten Datum
-        ->paginate(5);
+            ->orderBy('created_at', 'desc') // Sortiere nach dem neuesten Datum
+            ->paginate(5);
 
         foreach ($ratings as $rating) {
             $rating->likes_count = $rating->votes()->where('type', 'like')->count();
             $rating->dislikes_count = $rating->votes()->where('type', 'dislike')->count();
+
+            // Lade die zugehörigen Replays und die neuen Felder innerhalb der Schleife
+            $rating->replays = ModSellerReplays::where('voting_id', $rating->id)
+                ->get(['user_id', 'reply_author', 'avatar', 'reply_title', 'reply_content', 'created_at']);
         }
-
-
-        // Lade die zugehörigen Replays und die neuen Felder
-        $rating->replays = ModSellerReplays::where('voting_id', $rating->id)->get(['user_id', 'reply_author', 'avatar', 'reply_title', 'reply_content', 'created_at']);
 
         return view('livewire.frontend.votings.rating-list', [
             'ratings' => $ratings,

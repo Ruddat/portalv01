@@ -47,8 +47,8 @@ class Index extends Component
 
     public $options = [];
 
-    protected $cartService;
 
+    protected $cartService;
 
 
     // Modal

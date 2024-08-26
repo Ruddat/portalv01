@@ -12,7 +12,7 @@ class TimepickerComponent extends Component
 {
     public $showDropdown = false;
     public $selectedTime = 'sofort';
-    public $selectedDate; // Init in mount
+    public $selectedDate;
     public $selectedHour;
     public $selectedMinute;
 
@@ -20,9 +20,9 @@ class TimepickerComponent extends Component
     public $openingHours = [];
     public $isOpen;
     public $currentDate;
-    public $availableDates = []; // Deklariere die Variable
+    public $availableDates = [];
 
-    protected $listeners = ['clearTime'];
+    protected $listeners = ['clearTime', 'openTimepicker'];
 
     public function mount($shopId)
     {
@@ -37,11 +37,11 @@ class TimepickerComponent extends Component
             $this->availableDates[] = $today->copy()->addDays($i)->format('Y-m-d');
         }
 
-                // Lade die gespeicherte Vorbestellzeit aus der Session, falls vorhanden
-                $storedTime = Session::get('selectedTime');
-                if ($storedTime) {
-                    $this->selectedTime = $storedTime;
-                }
+        // Lade die gespeicherte Vorbestellzeit aus der Session, falls vorhanden
+        $storedTime = Session::get('selectedTime');
+        if ($storedTime) {
+            $this->selectedTime = $storedTime;
+        }
     }
 
     public function loadOpeningHours()
@@ -50,9 +50,6 @@ class TimepickerComponent extends Component
 
         // Versuche die speziellen Öffnungszeiten für Feiertage zu laden
         $holidayHours = OpeningHoursService::getHolidayHours($shop, $this->selectedDate);
-
-        // Debug-Ausgabe der speziellen Öffnungszeiten für Feiertage
-      //  dd($holidayHours);
 
         // Prüfe, ob spezielle Öffnungszeiten vorhanden sind
         if (!empty($holidayHours)) {
@@ -64,7 +61,6 @@ class TimepickerComponent extends Component
                     'holiday_message' => $holidayHours['holiday_message']
                 ]]);
             } else {
-                // Wenn das Geschäft an diesem Feiertag geschlossen ist, setze eine entsprechende Nachricht
                 $this->openingHours = collect([[
                     'open' => null,
                     'close' => null,
@@ -73,14 +69,10 @@ class TimepickerComponent extends Component
                 ]]);
             }
         } else {
-            // Wenn keine speziellen Öffnungszeiten vorhanden sind, lade die regulären Öffnungszeiten
+            // Lade die regulären Öffnungszeiten
             $this->openingHours = OpeningHoursService::getOpeningHoursForDate($shop, $this->selectedDate);
         }
-
-        // Debug-Ausgabe der Öffnungszeiten
-    //    dd($this->openingHours);
     }
-
 
     public function nextDay()
     {
@@ -94,6 +86,11 @@ class TimepickerComponent extends Component
     public function toggleDropdown()
     {
         $this->showDropdown = !$this->showDropdown;
+    }
+
+    public function openTimepicker()
+    {
+        $this->showDropdown = true; // Öffnet das Dropdown für die Zeitwahl
     }
 
     public function setSelectedDate($date)
@@ -126,13 +123,13 @@ class TimepickerComponent extends Component
                 $this->selectedTime = $date->format('Y-m-d H:i');
                 $this->showDropdown = false;
             } else {
-                // Handle invalid time selection (e.g., show an error message or reset selection)
+                // Ungültige Zeitbehandlung
                 $this->selectedTime = 'sofort';
                 $this->selectedHour = null;
                 $this->selectedMinute = null;
             }
-                        // Speichere die ausgewählte Zeit in der Session
-                        Session::put('selectedTime', $this->selectedTime);
+            // Speichere die ausgewählte Zeit in der Session
+            Session::put('selectedTime', $this->selectedTime);
         }
     }
 

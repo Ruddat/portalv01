@@ -139,6 +139,7 @@ class CartOrderDetails extends Component
 
         //dd($validatedData);
 
+
         // Adresse für Geokodierung vorbereiten
         $street = $validatedData['shipping_street'];
         $housenumber = $validatedData['shipping_house_no'];
@@ -252,7 +253,7 @@ class CartOrderDetails extends Component
         // PayPal-Gebühren berechnen
         $paypalFee = ($prices['price_products'] + $prices['price_bottles']) * ($this->paypal_express_fee_percent / 100) + $this->paypal_express_fee_fixed;
 
-      //  dd($order, $prices);
+       // dd($order, $prices);
         // Neue Bestellung erstellen und in die Datenbank speichern
         $order = ModOrders::create([
             'order_nr' => $newOrderNumber,
@@ -998,6 +999,8 @@ public function generateQrCode()
         // Adressdaten aus der Session abrufen, falls vorhanden
         $addressData = Session::get('address_data', []);
 
+        $this->setShowButton($this->shopData->id, false);
+
       //  dd($addressData);
 
         return view('livewire.frontend.cart.cart-order-details', [
@@ -1006,4 +1009,11 @@ public function generateQrCode()
             'addressData' => $addressData, // Adressdaten an die Ansicht übergeben
         ]);
     }
+
+    public function setShowButton($shopId, $value)
+    {
+        // Hier wird der Wert für das Anzeigen des Buttons in der Session gespeichert
+        Session::put("show_button_{$shopId}", $value);
+    }
+
 }
