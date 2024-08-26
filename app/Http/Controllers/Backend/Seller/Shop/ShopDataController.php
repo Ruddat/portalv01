@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Seller\Shop;
 
 use App\Models\ModShop;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
@@ -112,6 +113,24 @@ class ShopDataController extends Controller
             return response()->json(['status' => 0, 'msg' => 'Please provide all required data.']);
         }
     }
+
+    public function generateActivationCode(Request $request)
+    {
+        $shopId = session('currentShopId');
+        $shop = ModShop::find($shopId);
+
+        if (!$shop) {
+            return response()->json(['status' => 0, 'msg' => 'Shop not found.']);
+        }
+
+        $shop->activation_code = Str::random(8);
+        $shop->activation_code_used = false;
+        $shop->save();
+
+        return response()->json(['status' => 1, 'activation_code' => $shop->activation_code]);
+    }
+
+
 }
 
 // Path: app/Http/Controllers/Backend/Seller/Shop/ShopDataController.php

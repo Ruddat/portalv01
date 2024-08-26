@@ -16,13 +16,18 @@ class CartComponent extends Component
     public $content;
     public $deposit = 0;
     public $deliveryFee;
-    public $deliveryFreeThreshold = 0; // Setzen Sie den Standardwert auf 0
+    public $deliveryFreeThreshold = 0;
     public $discount = 0;
     public $subtotal = 0;
     public $preorderTime;
+    public $tipPercentage = null;
+    public $tipAmount = 0;
+
 
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
+        'tipPercentage' => 'updateTipPercentage',
+        'tipAmount' => 'updateTipAmount',
     ];
 
     public function mount(): void
@@ -31,10 +36,13 @@ class CartComponent extends Component
         $shopId = Session::get('shopId');
         $this->deliveryFee = Session::get("delivery_cost_$shopId", 0);
         $this->deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0);
+        $this->tipPercentage = Session::get('tipPercentage', null);
+        $this->tipAmount = Session::get('tipAmount');
 
         $this->updateCart();
         $this->calculateSubTotal();
         $this->calculateTotal();
+       // $this->setShowButton($shopId, true);
     }
 
     public function render()
@@ -50,6 +58,12 @@ class CartComponent extends Component
         ]);
     }
 
+    public function setShowButton($shopId, $value)
+    {
+        // Hier wird der Wert für das Anzeigen des Buttons in der Session gespeichert
+        Session::put("show_button_{$shopId}", $value);
+    }
+
     public function updateCart()
     {
         $this->cart = Session::get('cart', []);
@@ -57,9 +71,8 @@ class CartComponent extends Component
         $this->content = Cart::content() ?? collect();
 
         $shopId = Session::get('shopId');
-        $this->deliveryFee = Session::get("delivery_cost_$shopId", 0); // Standardwert 0 falls nicht gesetzt
+        $this->deliveryFee = Session::get("delivery_cost_$shopId", 0);
 
-        // Laden Sie den `deliveryFreeThreshold`-Wert aus der Datenbank
         $this->deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0);
 
         $this->calculateTotal();
@@ -72,19 +85,28 @@ class CartComponent extends Component
             $subTotal += $item['price'] * $item['quantity'];
         }
         $this->subtotal = $subTotal;
+
+        // Emit event to notify other components
+        $this->dispatch('subtotalUpdated', $this->subtotal);
     }
 
     protected function calculateTotal()
     {
         $this->total = $this->subtotal;
 
-//dd($this->total, $this->subtotal);
-
-
-        // Wenn der Schwellenwert für kostenlose Lieferung nicht erreicht ist, fügen Sie die Liefergebühr hinzu
         if ($this->subtotal < $this->deliveryFreeThreshold) {
             $this->total += $this->deliveryFee;
         }
+
+        if ($this->tipPercentage > 0) {
+            $this->total += round(($this->subtotal * ($this->tipPercentage / 100)), 2); // Rundet den Gesamtbetrag nach dem Tipp auf zwei Dezimalstellen
+        } elseif ($this->tipAmount > 0) {
+            $this->total += $this->tipAmount;
+        }
+
+        $this->total = round($this->total, 2); // Rundet den Gesamtbetrag auf zwei Dezimalstellen
+
+        $this->dispatch('subtotalUpdated', $this->total);
     }
 
     public function clearCart(): void
@@ -114,5 +136,17 @@ class CartComponent extends Component
 
         // Logik zum Verarbeiten der Vorbestellung
         session()->flash('message', 'Vorbestellung erfolgreich aufgegeben für ' . Carbon::parse($this->preorderTime)->format('d.m.Y H:i'));
+    }
+
+    public function updateTipPercentage()
+    {
+        $this->tipPercentage = Session::get('tipPercentage', 0); // Update tip percentage from session
+        $this->calculateTotal();
+    }
+
+    public function updateTipAmount()
+    {
+        $this->tipAmount = Session::get('tipAmount', 0); // Update tip percentage from session
+        $this->calculateTotal();
     }
 }
