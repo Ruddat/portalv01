@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('general_settings', function (Blueprint $table) {
             //
-            $table->string('key')->unique();
+            $table->string('key')->unique()->nullable()->defaultValue('');
             $table->decimal('minimum_bid', 8, 2)->default(0.50);
             $table->decimal('minimum_bid_factor', 8, 2)->default(0.08);
         });

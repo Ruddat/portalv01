@@ -14,7 +14,7 @@ class OrderButtonComponent extends Component
     public $minimumOrderValue;
     public $currentOrderValue;
     public $isOpen;
-    public $canOrder = false;
+    public $canOrder = true;
     public $message = '';
     public $cart = [];
     public $subTotal = 0;

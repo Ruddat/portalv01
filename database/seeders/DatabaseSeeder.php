@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminPromoBannerSeeder::class);
         $this->call(ModOrderSeeder::class);
         $this->call(BadwordsTableSeeder::class);
-
+        $this->call(ModCuisinesSeeder::class);
+        $this->call(GeneralSettingsSeeder::class);
 
     }
 
