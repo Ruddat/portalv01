@@ -176,7 +176,7 @@
 
                     </div>
                     <div class="d-flex flex-column justify-content-between order-summary">
-                        <a href="{{ route('restaurant.index', ['slug' => $this->shopData->shop_slug ?? $this->shopData->shop_slug]) }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Zurück zum Restaurant', app()->getLocale())</a>
+                        <a href="{{ localized_route('restaurant.index', ['slug' => $this->shopData->shop_slug ?? $this->shopData->shop_slug]) }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Zurück zum Restaurant', app()->getLocale())</a>
                     </div>
                 </div>
             </div>

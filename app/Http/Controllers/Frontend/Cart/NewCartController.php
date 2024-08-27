@@ -22,7 +22,7 @@ class NewCartController extends Controller
      * @param  int  $restaurantId
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $restaurantIdOrSlug)
+    public function index(Request $request, $locale, $restaurantIdOrSlug)
     {
         if ($request->query('source') == 'sponsored') {
             session(['came_from_sponsored' => true]);

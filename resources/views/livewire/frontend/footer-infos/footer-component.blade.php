@@ -18,11 +18,11 @@
                 <div class="collapse dont-collapse-sm links" id="collapse_2">
                     <ul>
                         @foreach($restaurants as $restaurant)
-                            <li>
-                                <a href="{{ url('restaurant/' . ($restaurant->shop_slug ?? $restaurant->id)) }}">
-                                    {{ $restaurant->title }}
-                                </a>
-                            </li>
+                        <li>
+                            <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}">
+                                {{ $restaurant->title }}
+                            </a>
+                        </li>
                         @endforeach
                     </ul>
                 </div>
@@ -35,11 +35,11 @@
         <div class="collapse dont-collapse-sm links" id="collapse_4">
             <ul>
                 @foreach($uniqueCities as $city)
-                    <li>
-                        <a href="{{ url('restaurant/' . $city->shop_slug) }}">
-                            {{ app(\App\Services\AutoTranslationService::class)->trans('Essenslieferung in', app()->getLocale()) }} {{ app(\App\Services\AutoTranslationService::class)->trans($city->city, app()->getLocale()) }}
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ localized_route('restaurant.index', ['slug' => $city->shop_slug]) }}">
+                        {{ app(\App\Services\AutoTranslationService::class)->trans('Essenslieferung in', app()->getLocale()) }} {{ app(\App\Services\AutoTranslationService::class)->trans($city->city, app()->getLocale()) }}
+                    </a>
+                </li>
                 @endforeach
             </ul>
         </div>
@@ -54,7 +54,7 @@
                         <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Restaurant anmelden', app()->getLocale()) }}</a></li>
                         <li><a href="help.html">{{ app(\App\Services\AutoTranslationService::class)->trans('Help', app()->getLocale()) }}</a></li>
                         <li><a href="{{ url('/bugzilla') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Bug-Zilla', app()->getLocale()) }}</a></li>
-                        <li><a href="{{ url('/blog') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ localized_route('blog') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
                         <li><a href="contacts.html">@autotranslate('Contact', app()->getLocale())</a></li>
                     </ul>
                 </div>

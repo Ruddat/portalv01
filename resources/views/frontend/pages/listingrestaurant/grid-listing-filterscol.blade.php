@@ -333,7 +333,7 @@
                                         <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
                                             data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
                                             alt="">
-                                        <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}"
+                                        <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}"
                                             class="strip_info">
 
                                             <small>@autotranslate('Pizza, Burger', app()->getLocale())</small>
@@ -398,7 +398,7 @@
                                             data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
                                             alt="">
 
-                                        <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}"
+                                        <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}"
                                             class="strip_info">
                                             <small>Pizza, Burger</small>
                                             <div style="display: flex; align-items: center;">

@@ -50,7 +50,7 @@
                                         <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
                                             data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
                                             alt="">
-                                        <a href="{{ route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}" class="strip_info">
+                                        <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}" class="strip_info">
                                             <small>Burghers</small>
                                             <div style="display: flex; align-items: center;">
                                                 <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"

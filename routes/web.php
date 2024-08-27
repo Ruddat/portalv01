@@ -75,7 +75,7 @@ Route::get('/print', [App\Http\Controllers\TestComponent\PrintController::class,
 
     // Frontend routes CartController methods
  //   Route::get('/detail-restaurant-2/{restaurantId}', [NewCartController::class, 'index'])->name('detail-restaurant-2.index');
-    Route::get('/restaurant/{slug}', [NewCartController::class, 'index'])->name('restaurant.index');
+   // Route::get('/restaurant/{slug}', [NewCartController::class, 'index'])->name('restaurant.index');
     //Route::get('/detail-restaurant-2/{shop_slug}', [NewCartController::class, 'index'])->name('detail-restaurant-2.index');
 
     Route::post('/vote', [NewCartController::class, 'vote'])->name('vote-restaurant.vote');
@@ -86,8 +86,17 @@ Route::get('/print', [App\Http\Controllers\TestComponent\PrintController::class,
     Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
     Route::view('/help/', 'frontend.pages.otherpages.help')->name('help');
 
+
     // Blog routes start
-    Route::view('/blog/', 'frontend.pages.blog.blog')->name('blog');
+    // Route::view('/blog/', 'frontend.pages.blog.blog')->name('blog');
+    Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}']], function () {
+        Route::view('/blog', 'frontend.pages.blog.blog')->name('blog');
+        Route::get('/restaurant/{slug}', [NewCartController::class, 'index'])->name('restaurant.index');
+
+
+
+    });
+
     Route::get('/blog-post/{identifier}', function ($identifier) {
         $post = ModAdminBlogPost::with(['comments' => function ($query) {
             $query->whereNull('parent_id')

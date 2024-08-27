@@ -178,6 +178,12 @@ if( !function_exists('get_settings')){
         }
     }
 
-
+    if (!function_exists('localized_route')) {
+        function localized_route($name, $parameters = [], $absolute = true)
+        {
+            $locale = app()->getLocale();
+            return route($name, array_merge($parameters, ['locale' => $locale]), $absolute);
+        }
+    }
 
 }

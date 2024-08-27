@@ -20,29 +20,49 @@ class GenerateSitemap extends Command
         parent::__construct();
     }
 
-        public function handle()
-        {
-            $sitemap = Sitemap::create();
+    public function handle()
+    {
+        $sitemap = Sitemap::create();
 
-            // Statische Seiten hinzufügen
-            $sitemap->add(Url::create('/'));
-            $sitemap->add(Url::create('/register'));
-            $sitemap->add(Url::create('/seller/register'));
-            $sitemap->add(Url::create('/media-stats'));
-            $sitemap->add(Url::create('/blog'));
-            $sitemap->add(Url::create('/impressum'));
+        // Verfügbare Sprachen aus der Konfiguration laden
+        $locales = array_values(config('app.available_locales'));
 
-            // Dynamische Seiten aus ModShop hinzufügen (nur 'limited' oder 'on', sortiert nach updated_at)
-            $shops = ModShop::whereIn('status', ['limited', 'on'])
-                            ->orderBy('updated_at', 'desc')
-                            ->get();
+        // Statische Seiten hinzufügen
 
-            foreach ($shops as $shop) {
-                $sitemap->add(Url::create("/shop/{$shop->shop_slug}")
+        foreach ($locales as $locale) {
+     //       $sitemap->add(Url::create("/{$locale}/"));
+     //       $sitemap->add(Url::create("/{$locale}/register"));
+    //      $sitemap->add(Url::create("/{$locale}/seller/register"));
+    //        $sitemap->add(Url::create("/{$locale}/media-stats"));
+            $sitemap->add(Url::create("/{$locale}/blog"));
+    //        $sitemap->add(Url::create("/{$locale}/impressum"));
+        }
+
+
+    $sitemap->add(Url::create("/"));
+    $sitemap->add(Url::create("/register"));
+    $sitemap->add(Url::create("/seller/register"));
+    $sitemap->add(Url::create("/media-stats"));
+    //$sitemap->add(Url::create("/{$locale}/blog"));
+    $sitemap->add(Url::create("/impressum"));
+
+
+        // Dynamische Seiten aus Routen hinzufügen
+        //$routes = Route::getRoutes();
+
+        // Dynamische Seiten aus ModShop hinzufügen (nur 'limited' oder 'on', sortiert nach updated_at)
+        $shops = ModShop::whereIn('status', ['limited', 'on'])
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
+
+        foreach ($shops as $shop) {
+            foreach ($locales as $locale) {
+                $sitemap->add(Url::create("/{$locale}/restaurant/{$shop->shop_slug}")
                     ->setLastModificationDate($shop->updated_at)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                     ->setPriority(0.8));
             }
+        }
 
             // Dynamische Seiten aus ModAdminBlogPost hinzufügen
             $posts = ModAdminBlogPost::orderBy('updated_at', 'desc')->get();
@@ -64,9 +84,9 @@ class GenerateSitemap extends Command
                // }
            // }
 
-            // Sitemap in eine Datei speichern
-            $sitemap->writeToFile(public_path('sitemap.xml'));
+        // Sitemap in eine Datei speichern
+        $sitemap->writeToFile(public_path('sitemap.xml'));
 
-            $this->info('Sitemap erfolgreich generiert!');
-        }
+        $this->info('Sitemap erfolgreich generiert!');
     }
+}

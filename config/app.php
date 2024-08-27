@@ -117,6 +117,8 @@ return [
     'Russian' => 'ru',
     'French' => 'fr',
     'German' => 'de',
+    'Spanish' => 'es',
+    
   ],
 
 
