@@ -1,6 +1,5 @@
 <footer>
-    <a href="{{ localized_route('blog') }}">Blog</a>
-    
+
     <div class="container margin_60_40 fix_mobile">
 
         <livewire:frontend.footer-infos.footer-component/>

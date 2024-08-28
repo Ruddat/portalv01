@@ -11,8 +11,8 @@
                                     </div>
                                     <h3>@autotranslate('Add Your Restaurant', app()->getLocale())</h3>
                                     <p>Willkommen in unserem Netzwerk! Hier haben Sie die Möglichkeit, Ihr Restaurant schnell und einfach hinzuzufügen. Schließen Sie sich uns an und profitieren Sie von zahlreichen Vorteilen.</p>
-                                    <p><a href="{{ route('seller.register') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Tragen Sie Ihr Restaurant ein', app()->getLocale())</a>
-                                        <a href="{{ route('broker.register') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Become a broker', app()->getLocale())</a></p>
+                                    <p><a href="{{ localized_route('seller.register') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Tragen Sie Ihr Restaurant ein', app()->getLocale())</a>
+                                        <a href="{{ localized_route('broker.register') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Become a broker', app()->getLocale())</a></p>
                                 </div>
                             </div>
                             <div class="col-md-6 ">
@@ -22,8 +22,8 @@
                                     </div>
                                     <h3>@autotranslate('Already a partner', app()->getLocale())</h3>
                                     <p>Wenn Sie bereits ein Partner sind, können Sie sich hier einloggen und auf das Partnercenter oder das Broker-Portal zugreifen.</p>
-                                    <p><a href="{{ route('seller.login') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Partnercenter', app()->getLocale())</a>
-                                    <a href="{{ route('broker.login') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate(' Broker Portal ', app()->getLocale())</a></p>
+                                    <p><a href="{{ localized_route('seller.login') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate('Partnercenter', app()->getLocale())</a>
+                                    <a href="{{ localized_route('broker.login') }}" class="btn_1 medium gradient pulse_bt mt-2">@autotranslate(' Broker Portal ', app()->getLocale())</a></p>
                                 </div>
                             </div>
                         </div>

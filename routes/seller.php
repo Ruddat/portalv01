@@ -27,7 +27,7 @@ Route::prefix('seller')->name('seller.')->group(function(){
         Route::post('/send-password-reset-link', [SellerController::class, 'sendPasswordResetLink'])->name('send-password-reset-link');
         Route::get('/password/reset/{token}', [SellerController::class, 'resetPassword'])->name('reset-password');
         Route::post('/reset-password-handler', [SellerController::class, 'resetPasswordHandler'])->name('reset-password-handler');
-        Route::view('/register', 'backend.pages.seller.auth.register')->name('register');
+   //     Route::view('/register', 'backend.pages.seller.auth.register')->name('register');
         Route::post('/register_handler', [SellerController::class, 'registerHandler'])->name('register_handler');
         Route::get('/verify/{token}', [SellerController::class, 'verifyEmail'])->name('verify-email');
         // register last step handler
