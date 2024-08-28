@@ -157,7 +157,7 @@ class VotingsRestaurant extends Component
         // Erfolgsmeldung anzeigen oder Benutzer weiterleiten
         session()->flash('success', 'Your review has been submitted successfully!');
      $shopSlug = ModShop::find($this->restaurant->id);
-     return redirect()->route('restaurant.index', ['slug' => $shopSlug->shop_slug ?? $shopSlug->id]);
+     return redirect()->to(localized_route('restaurant.index', ['slug' => $shopSlug->shop_slug ?? $shopSlug->id]));
     }
 
 
