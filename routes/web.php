@@ -6,6 +6,7 @@ use App\Models\ModAdminBlogCategory;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Frontend\ShopSearchResults;
 use App\Http\Livewire\Frontend\Card\ProductList;
+use App\Http\Controllers\Test\TemplateController;
 use App\Http\Controllers\GoogleTranslateController;
 use App\Http\Controllers\Frontend\ShopCardController;
 use App\Http\Controllers\Frontend\Card\CardController;
@@ -26,6 +27,7 @@ use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
 use App\Http\Controllers\SystemComponent\CommentVerificationController;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
+use App\Http\Controllers\Backend\Seller\WebTemplates\WebTemplatePreviewController;
 
 
 /*
@@ -41,7 +43,8 @@ use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 
 Route::get('/print', [App\Http\Controllers\TestComponent\PrintController::class, 'printReceipt']);
 
-
+Route::get('/template/{templateName}', [TemplateController::class, 'show'])
+    ->name('template.show');
 
     // Login Logout Routes
     Route::view('/login', 'frontend.pages.buyer.auth.login')->name('login');
@@ -83,18 +86,27 @@ Route::get('/print', [App\Http\Controllers\TestComponent\PrintController::class,
 
 
 
-    Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
     Route::view('/help/', 'frontend.pages.otherpages.help')->name('help');
 
 
     // Blog routes start
-    // Route::view('/blog/', 'frontend.pages.blog.blog')->name('blog');
-    Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}']], function () {
+
+
+
+    Route::group(['prefix' => '{locale}', 'where' => ['locale' => '[a-zA-Z]{2}'], 'middleware' => 'prevent-back-history'], function () {
+        Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
         Route::view('/blog', 'frontend.pages.blog.blog')->name('blog');
         Route::get('/restaurant/{slug}', [NewCartController::class, 'index'])->name('restaurant.index');
         // Seller routes
         Route::view('/seller/register', 'backend.pages.seller.auth.register')->name('seller.register');
     });
+
+
+
+    Route::get('seller/web-templates/preview/{shopId}/{templateId}', [WebTemplatePreviewController::class, 'preview'])
+    ->name('seller.web-templates.preview');
+
+
 
     Route::get('/blog-post/{identifier}', function ($identifier) {
         $post = ModAdminBlogPost::with(['comments' => function ($query) {
@@ -218,8 +230,16 @@ Route::get('/geocode', [GeocodeController::class, 'getCoordinates']);
 /// -- sprache wechseln --> google translate
 Route::get('lang/change', [GoogleTranslateController::class, 'change'])->name('change.lang');
 
+
 Route::get('/', [ShopSearchController::class, 'index'])->name('index');
-Route::match(['get', 'post'], '/search', [ShopSearchController::class, 'search'])->name('search.index');
+
+//Route::match(['get', 'post'], '/search', [ShopSearchController::class, 'search'])->name('search.index');
+
+Route::get('/search', [ShopSearchController::class, 'search'])
+    ->middleware('prevent-back-history')
+    ->name('search.index');
+
+
 Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])
     ->name('speichere-standort')
     ->middleware(LogRequests::class);
@@ -301,3 +321,8 @@ Route::middleware([
 //Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::fallback(function () {
+    return redirect()->route('home');
+});
+

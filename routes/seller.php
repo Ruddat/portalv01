@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
 use App\Http\Controllers\Backend\Seller\Products\ProductController;
 use App\Http\Controllers\Backend\Seller\LottoSim\LottoSimController;
 use App\Http\Controllers\Backend\Seller\Worktimes\WorktimesController;
+use App\Livewire\Backend\Seller\WebTemplates\TemplatePreviewComponent;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
 use App\Http\Controllers\Backend\Seller\Ingredients\IngredientsController;
@@ -195,7 +196,16 @@ Route::prefix('manage-rewiews')->middleware(['auth:seller', 'PreventBackHistory'
             Route::get('/worktimes/{shopId}/list', [WorktimesController::class, 'index'])->name('worktimes-list');
         });
 
+// Templates Routes
+Route::prefix('templates')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+    Route::get('/webtemplates/{shopId}', function ($shopId) {
+        return view('backend.pages.seller.WebTemplates.web-template-select', ['shopId' => $shopId]);
+    })->name('webtemplates.list');
 
+    Route::get('/shop/{shopId}/template/{templateId}/preview', TemplatePreviewComponent::class)
+    ->name('template.preview');
+
+});
 
 
 

@@ -35,10 +35,10 @@ class OrderButtonComponent extends Component
 
 //dd($this->deliveryOrPickup);
         // Debugging
-        Log::info("Minimum Order Value: {$this->minimumOrderValue}");
-        Log::info("Delivery Fee: {$this->deliveryFee}");
-        Log::info("Delivery Free: {$this->deliveryFree}");
-        Log::info("Delivery Free Threshold: {$this->deliveryFreeThreshold}");
+     //   Log::info("Minimum Order Value: {$this->minimumOrderValue}");
+     //   Log::info("Delivery Fee: {$this->deliveryFee}");
+     //   Log::info("Delivery Free: {$this->deliveryFree}");
+     //   Log::info("Delivery Free Threshold: {$this->deliveryFreeThreshold}");
 
 
         // Den Zustand aus der Session lesen
