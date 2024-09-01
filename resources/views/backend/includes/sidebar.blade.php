@@ -100,6 +100,7 @@
 
 
                             <li><a href="{{ route('seller.restoData', ['shop' => $shopId]) }}">Shopdaten</a></li>
+                            <li><a href="{{ route('seller.webtemplates.list', ['shopId' => $shopId]) }}">Web Design</a></li>
                             <li><a href="#">Domains</a></li>
                             <li><a href="#">Logo & Design</a></li>
                             <li> <a href="{{ route('seller.deliveryarea', ['shop' => $shopId]) }}">Liefergebiet</a></li>
@@ -200,6 +201,9 @@
                             <li>
                                 <a href="{{ route('admin.badwords-list') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.badwords-list' ? 'active' : '' }}">
                                     @autotranslate('Bad Words', app()->getLocale())
+                                </a>
+                                <a href="{{ route('admin.design-templates-index') }}" class="no-arrow {{ Route::currentRouteName() === 'admin.adminteamplates' ? 'active' : '' }}">
+                                    @autotranslate('Templates', app()->getLocale())
                                 </a>
                             </li>
                           </ul>

@@ -27,7 +27,7 @@
 										<h4 class="fs-20 font-w800 text-black">@autotranslate('Partnerlogin', app()->getLocale())</h4>
 										<span class="dlab-sign-up">@autotranslate('Login', app()->getLocale())</span>
 									</div>
-									<form action="{{ route('seller.login_handler') }}" method="POST" autocomplete="on" id="sellerLoginForm">
+									<form action="{{ localized_route('seller.login_handler') }}" method="POST" autocomplete="on" id="sellerLoginForm">
                                         @csrf
 
                                         @include('backend.includes.errorflash')
@@ -61,7 +61,7 @@
 												</div>
 											</div>
 											<div class="mb-3">
-												<a href="{{ route('seller.forgot-password') }}">@autotranslate('Forgot Password?', app()->getLocale())</a>
+												<a href="{{ localized_route('seller.forgot-password') }}">@autotranslate('Forgot Password?', app()->getLocale())</a>
 											</div>
 										</div>
 										<div class="text-center">
@@ -84,7 +84,7 @@
 										<button class="btn btn-outline-light mt-lg-0 mt-md-1 mt-sm-0 mt-1 linked-btn"><i class="fa-brands fa-linkedin me-2 likedin"></i>linkedin</button>
 									</div>
 									<div class="text-center">
-										<span> @autotranslate('Noch nicht Partner?', app()->getLocale())<a href="{{ route('seller.register') }}" class="text-primary"> @autotranslate('Sign in', app()->getLocale()) </a></span>
+										<span> @autotranslate('Noch nicht Partner?', app()->getLocale())<a href="{{ localized_route('seller.register') }}" class="text-primary"> @autotranslate('Sign in', app()->getLocale()) </a></span>
 									</div>
 
 								</div>

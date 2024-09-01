@@ -1,91 +1,16 @@
 @extends('frontend.layouts.default')
 
-
 @section('content')
     <!-- seitenabhengig css -->
     @push('specific-css')
         <link href="{{ asset('frontend/css/home.css') }}" rel="stylesheet">
-
-        <style>
-            .button-container {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-
-            }
-
-            .btn_1 {
-                /* Stile für den ersten Button (Search) */
-                color: #fff;
-                border: none;
-                cursor: pointer;
-                /* Weitere Stilisierungen nach Bedarf */
-            }
-
-            .btn_2 {
-                /* Stile für den zweiten Button (Standort abrufen) */
-                padding: 10px 20px;
-                background-color: #f3723b;
-                color: #fff;
-                border: none;
-                cursor: pointer;
-                /* Weitere Stilisierungen nach Bedarf */
-            }
-
-            .icon_pin {
-
-                width: 24px;
-                /* Passe die Breite nach Bedarf an */
-                height: 24px;
-                /* Passe die Höhe nach Bedarf an */
-                display: inline-block;
-                vertical-align: middle;
-                /* Zentriere das Icon vertikal im Button */
-                /* Weitere Stilisierungen nach Bedarf */
-            }
-
-            .custom-button {
-                width: 38px;
-                /* Breite des Symbols */
-                height: 38px;
-                /* Höhe des Symbols */
-                border: none;
-                /* Kein Rahmen */
-                cursor: pointer;
-                /* Zeige den Mauszeiger als Zeiger an */
-                padding: 0;
-                /* Kein Innenabstand */
-                transition: transform 0.3s, background-color 0.3s;
-                /* Übergangseffekt für flüssige Größenänderung und Farbwechsel */
-            }
-
-            .custom-button:hover {
-                transform: scale(1.2);
-                /* Skaliere den Button beim Überfahren mit der Maus */
-                background-color: #f0f0f0;
-                /* Ändere die Hintergrundfarbe des Symbols */
-            }
-
-            /* Stil für den Toast-Container */
-        /* Stil für das Toast-Element */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            z-index: 1000;
-        }
-        </style>
+        <link href="{{ asset('frontend/css/custom/index.css') }}" rel="stylesheet">
+        <link href="{{ asset('frontend/css/custom/sozialproof.css') }}" rel="stylesheet">
     @endpush
 
     <body>
 
         @include('frontend.includes.headerblack')
-
 
         <div class="hero_single version_1">
             <div class="opacity-mask">
@@ -95,29 +20,29 @@
                             <h1>@autotranslate('Delivery or Takeaway Food', app()->getLocale())
                             </h1>
                             <p>@autotranslate('The best restaurants at the best price', app()->getLocale())
-                                <span class="element" style="font-weight: 500"></span></p>
+                                <span class="element" style="font-weight: 500"></span>
+                            </p>
 
-                            <form method="post" action="{{ route('search.index') }}" id="searchForm">
+                            <form method="get" action="{{ localized_route('search.index') }}" id="searchForm">
                                 @csrf <!-- CSRF token for Laravel form submission -->
                                 <div class="row g-0 custom-search-input">
                                     <div class="col-lg-9">
                                         <div class="form-group">
                                             <input class="form-control no_border_r" type="text" name="query"
-                                                id="autocomplete"
-                                                placeholder="@autotranslate('Street or location...', app()->getLocale())"
+                                                id="autocomplete" placeholder="@autotranslate('Street or location...', app()->getLocale())"
                                                 value="{{ session('selectedLocation') }}">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 button-container">
-                                        <button class="btn_2 gradient"
-                                            type="submit">@autotranslate('Search', app()->getLocale())</button>
+                                        <button class="btn_2 gradient" type="submit">@autotranslate('Search', app()->getLocale())</button>
                                     </div>
                                 </div>
                                 @error('query')
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                    <strong>Hunger!</strong> {{ $message }}.
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                 </div>
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        <strong>Hunger!</strong> {{ $message }}.
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                    </div>
                                 @enderror
 
                             </form>
@@ -144,7 +69,7 @@
 
 
 
-        <div class="container margin_30_60">
+        <div class="margin_30_60 container">
             <div class="main_title center">
                 <span><em></em></span>
                 <h2>@autotranslate('Popular Categories', app()->getLocale())</h2>
@@ -258,50 +183,45 @@
 
 
 
-                <div class="bg_gray">
-                    <div class="container margin_60_40">
-                        <div class="main_title">
-                            <span><em></em></span>
-                            <h2>@autotranslate('Top Rated Restaurants', app()->getLocale())</h2>
-                            <p>@autotranslate('Discover the best-rated restaurants in your area.', app()->getLocale())</p>
-                            <a href="{{ route('best-ratet-restaurants.viewAll') }}">@autotranslate('View All', app()->getLocale()) &rarr;</a>
+        <div class="bg_gray">
+            <div class="margin_60_40 container">
+                <div class="main_title">
+                    <span><em></em></span>
+                    <h2>@autotranslate('Top Rated Restaurants', app()->getLocale())</h2>
+                    <p>@autotranslate('Discover the best-rated restaurants in your area.', app()->getLocale())</p>
+                    <a href="{{ route('best-ratet-restaurants.viewAll') }}">@autotranslate('View All', app()->getLocale()) &rarr;</a>
+                </div>
+                <div class="row add_bottom_25">
+                    @foreach ($restaurants as $restaurant)
+                        <div class="col-lg-6">
+                            <div class="list_home">
+                                <ul>
+                                    <li>
+                                        <a
+                                            href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}">
+                                            <figure>
+                                                <img src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
+                                                    data-src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
+                                                    alt="{{ $restaurant->title }}" class="lazy" width="350"
+                                                    height="233" style="max-width: 50%; height: auto;">
+                                            </figure>
+                                            <div class="score"><strong>{{ $restaurant->voting_average }}</strong></div>
+                                            <em>{{ $restaurant->categories }}</em>
+                                            <h3>{{ $restaurant->title }}</h3>
+                                            <small>{{ $restaurant->street }} {{ $restaurant->zip }}
+                                                {{ $restaurant->city }}</small>
+                                            <ul>
+                                                <li><span class="ribbon off">{{ $restaurant->charge }}%</span></li>
+                                                <li>@autotranslate('Average price ', app()->getLocale()) ${{ $restaurant->per_order }}</li>
+                                            </ul>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="row add_bottom_25">
-                            @foreach($restaurants as $restaurant)
-                                <div class="col-lg-6">
-                                    <div class="list_home">
-                                        <ul>
-                                            <li>
-                                                <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}">
-                                                    <figure>
-                                                        <img src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
-                                                             data-src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
-                                                             alt="{{ $restaurant->title }}"
-                                                             class="lazy" width="350" height="233" style="max-width: 50%; height: auto;">
-                                                    </figure>
-                                                    <div class="score"><strong>{{ $restaurant->voting_average }}</strong></div>
-                                                    <em>{{ $restaurant->categories }}</em>
-                                                    <h3>{{ $restaurant->title }}</h3>
-                                                    <small>{{ $restaurant->street }} {{ $restaurant->zip }} {{ $restaurant->city }}</small>
-                                                    <ul>
-                                                        <li><span class="ribbon off">{{ $restaurant->charge }}%</span></li>
-                                                        <li>@autotranslate('Average price ', app()->getLocale()) ${{ $restaurant->per_order }}</li>
-                                                    </ul>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <!-- /row -->
-
-
-
-
-
-
-
+                    @endforeach
+                </div>
+                <!-- /row -->
 
                 <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }}">
                     <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
@@ -311,8 +231,7 @@
                             </h3>
                             <p>@autotranslate('Enjoy a tasty food in minutes!', app()->getLocale())
                             </p>
-                            <a href="/get-location"
-                                class="btn_1 gradient">@autotranslate('Start Now!', app()->getLocale())</a>
+                            <a href="/get-location" class="btn_1 gradient">@autotranslate('Start Now!', app()->getLocale())</a>
                         </div>
                     </div>
                     <!-- /wrapper -->
@@ -327,56 +246,11 @@
         @include('frontend.includes.page-snipped.broker-seller')
 
 
-@push('specific-scripts')
+        @push('specific-scripts')
+        @endpush
 
-@endpush
 
 
-<style>
-.social-proof-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 99999;
-    display: none; /* Hidden by default */
-}
-
-.social-proof-container.active {
-    display: block; /* Display when the active class is added */
-}
-
-.popup-container {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 99999;
-}
-
-.popup {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    margin-bottom: 10px;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-    animation: fadeIn 0.3s ease-in-out;
-    z-index: 99999;
-}
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-</style>
 
 
 
@@ -405,9 +279,6 @@
         </script>
 
         @push('specific-scripts')
-
-
-
             <!-- Typeahead.js CSS -->
             <link rel="stylesheet"
                 href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
@@ -440,8 +311,5 @@
                     });
                 });
             </script>
-
-
-
         @endpush
-    @endsection
+        @endsection

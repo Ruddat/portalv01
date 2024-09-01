@@ -16,20 +16,16 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Lade die verfügbaren Sprachen aus der Konfigurationsdatei
-        $availableLocales = array_values(config('app.available_locales'));
+        $locale = $request->segment(1); // Erstes Segment der URL, das die Sprache enthält
+        $availableLocales = config('app.available_locales'); // Die konfigurierten Sprachen
 
-        // Das erste Segment der URL, z.B. 'en' oder 'de'
-        $locale = $request->segment(1);
-
-        // Überprüfen, ob das `locale` in der Konfiguration vorhanden ist
         if (in_array($locale, $availableLocales)) {
-            app()->setLocale($locale);
-            session()->put('locale', $locale); // Das Locale auch in der Session speichern
+            App::setLocale($locale); // Setzt die Sprache der Anwendung
+            session()->put('locale', $locale); // Speichert die Sprache in der Session
         } else {
-            // Fallback auf die Session, falls das Locale nicht in der URL ist
+            // Fallback auf die Session, wenn das locale nicht in der URL vorhanden oder ungültig ist
             $locale = session()->get('locale', config('app.locale'));
-            app()->setLocale($locale);
+            App::setLocale($locale);
         }
 
         return $next($request);

@@ -46,6 +46,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\SetLocale::class,
             ChangeLocale::class,
             \App\Http\Middleware\SellerVariablesMiddleware::class,
+            'prevent-back-history', // Hier hinzufügen
         ],
 
         'api' => [
@@ -76,5 +77,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'PreventBackHistory' => \App\Http\Middleware\PreventBackHistory::class,
+        'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
+
     ];
 }

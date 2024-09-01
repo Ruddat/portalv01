@@ -50,10 +50,10 @@
                 <div class="collapse dont-collapse-sm links" id="collapse_1">
                     <ul>
                         <li><a href="about.html">{{ app(\App\Services\AutoTranslationService::class)->trans('About us', app()->getLocale()) }}</a></li>
-                        <li><a href="{{ route('broker.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Geld verdienen', app()->getLocale()) }}</a></li>
-                        <li><a href="{{ route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Restaurant anmelden', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ localized_route('broker.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Geld verdienen', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ localized_route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Restaurant anmelden', app()->getLocale()) }}</a></li>
                         <li><a href="help.html">{{ app(\App\Services\AutoTranslationService::class)->trans('Help', app()->getLocale()) }}</a></li>
-                        <li><a href="{{ url('/bugzilla') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Bug-Zilla', app()->getLocale()) }}</a></li>
+                        <li><a href="{{ localized_route('bugzilla') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Bug-Zilla', app()->getLocale()) }}</a></li>
                         <li><a href="{{ localized_route('blog') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
                         <li><a href="contacts.html">@autotranslate('Contact', app()->getLocale())</a></li>
                     </ul>

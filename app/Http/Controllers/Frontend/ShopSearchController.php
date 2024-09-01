@@ -287,12 +287,11 @@ public function search(Request $request)
         $userLatitude = $request->session()->get('userLatitude', null);
         $userLongitude = $request->session()->get('userLongitude', null);
 
-        // Wenn der Filterwert für den Umkreis im Request vorhanden ist, speichern wir ihn in der Session
+        // Filterwert für den Umkreis aus der Session abrufen
         if ($request->filled('distance')) {
             $selectedDistance = $request->input('distance');
             $request->session()->put('selectedDistance', $selectedDistance);
         } else {
-            // Wenn der Filterwert nicht im Request vorhanden ist, verwenden wir den Wert aus der Session
             $selectedDistance = Session::get('selectedDistance', 20);
         }
 

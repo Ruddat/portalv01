@@ -8,8 +8,11 @@ use App\Http\Controllers\Backend\Admin\AllergensController;
 use App\Livewire\Backend\Admin\PromoBanner\PromoBannerEdit;
 use App\Livewire\Backend\Admin\PromoBanner\PromoBannerIndex;
 use App\Livewire\Backend\Admin\PromoBanner\PromoBannerCreate;
+use App\Livewire\Backend\Admin\DesignTemplates\CreateTemplate;
 use App\Http\Controllers\Backend\Admin\PromoBanner\PromoBannerController;
+use App\Livewire\Backend\Admin\DesignTemplates\TemplateSectionsController;
 use App\Http\Controllers\Backend\Admin\Controllcenter\LiveOrdersController;
+use App\Http\Controllers\Backend\Admin\DesignTemplates\DesignTemplatesController;
 use App\Http\Controllers\Backend\Admin\BottlesController; // Importiere den BottlesController
 
 Route::prefix('admin')->name('admin.')->group(function(){
@@ -118,6 +121,15 @@ Route::prefix('admin')->name('admin.')->group(function(){
         // Managers
         Route::prefix('gallery')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
             Route::view('/gallery-manager', 'backend.pages.admin.globalgallery.gallery-manager')->name('gallerymananer');
+
+        });
+
+        // Templates
+        Route::prefix('templates')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+            //Route::view('/design-templates', 'backend.pages.admin.templates.admin-templates')->name('adminteamplates');
+            Route::get('/design-templates', [DesignTemplatesController::class, 'index'])->name('design-templates-index');
+            Route::get('/admin/templates/create', CreateTemplate::class)->name('templates.create');
+            Route::get('/edit/{id}/sections', TemplateSectionsController::class)->name('templates.sections.edit');
 
         });
 

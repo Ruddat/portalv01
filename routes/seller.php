@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\Seller\Shop\ShopDataController;
 use App\Http\Controllers\Backend\Seller\Products\ProductController;
 use App\Http\Controllers\Backend\Seller\LottoSim\LottoSimController;
 use App\Http\Controllers\Backend\Seller\Worktimes\WorktimesController;
+use App\Livewire\Backend\Seller\WebTemplates\TemplatePreviewComponent;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
 use App\Http\Controllers\Backend\Shop\Spiders\LieferandoSpiderController;
 use App\Http\Controllers\Backend\Seller\Ingredients\IngredientsController;
@@ -27,7 +28,7 @@ Route::prefix('seller')->name('seller.')->group(function(){
         Route::post('/send-password-reset-link', [SellerController::class, 'sendPasswordResetLink'])->name('send-password-reset-link');
         Route::get('/password/reset/{token}', [SellerController::class, 'resetPassword'])->name('reset-password');
         Route::post('/reset-password-handler', [SellerController::class, 'resetPasswordHandler'])->name('reset-password-handler');
-        Route::view('/register', 'backend.pages.seller.auth.register')->name('register');
+   //     Route::view('/register', 'backend.pages.seller.auth.register')->name('register');
         Route::post('/register_handler', [SellerController::class, 'registerHandler'])->name('register_handler');
         Route::get('/verify/{token}', [SellerController::class, 'verifyEmail'])->name('verify-email');
         // register last step handler
@@ -195,7 +196,16 @@ Route::prefix('manage-rewiews')->middleware(['auth:seller', 'PreventBackHistory'
             Route::get('/worktimes/{shopId}/list', [WorktimesController::class, 'index'])->name('worktimes-list');
         });
 
+// Templates Routes
+Route::prefix('templates')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+    Route::get('/webtemplates/{shopId}', function ($shopId) {
+        return view('backend.pages.seller.WebTemplates.web-template-select', ['shopId' => $shopId]);
+    })->name('webtemplates.list');
 
+    Route::get('/shop/{shopId}/template/{templateId}/preview', TemplatePreviewComponent::class)
+    ->name('template.preview');
+
+});
 
 
 
