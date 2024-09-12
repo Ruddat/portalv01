@@ -57,7 +57,7 @@
                                                             <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">
                                                         </div>
                                                     </div>
-                                                </div>
+                                                  </div>
 
 
 
@@ -91,18 +91,45 @@
                                                         </div>
 
                                                         <div class="col-lg-4">
-                                                            <div class="mb-0">
+                                                            <div class="mb-3">
                                                                 <label class="form-label" for="zip-code">Zip / Postal code</label>
                                                                 <input type="text" class="form-control" id="zip-code" placeholder="Enter Postal code">
                                                             </div>
                                                         </div>
                                                     </div>
+
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="description_of_way">@autotranslate('Wegbeschreibung', app()->getLocale())</label>
+                                                        <textarea wire:model="description_of_way" class="form-control" style="height: 40px;" placeholder="@autotranslate('Wegbeschreibung', app()->getLocale())" id="shipping_comment" name="order_comment"></textarea>
+                                                    </div>
+
+
+
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <textarea wire:model="order_comment" class="form-control" style="height: 80px;" placeholder="@autotranslate('Order Comment', app()->getLocale())"
+                                                                id="order_comment" name="order_comment"></textarea>
+                                                        </div>
+                                                    </div>
+
+
+                                                    
+
+
+
+
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </li>
+
+
+
+
 
                             @if (Auth::guard('client')->check())
                             <li class="checkout-item">
@@ -259,6 +286,11 @@
                     </div> <!-- end col -->
                 </div> <!-- end row-->
             </div>
+
+
+
+
+
 
 
             <div class="col-xl-4">

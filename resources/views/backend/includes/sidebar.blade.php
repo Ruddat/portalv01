@@ -102,6 +102,9 @@
                             <li><a href="{{ route('seller.restoData', ['shop' => $shopId]) }}">Shopdaten</a></li>
                             <li><a href="{{ route('seller.webtemplates.list', ['shopId' => $shopId]) }}">Web Design</a></li>
                             <li><a href="#">Domains</a></li>
+                            <li> <a href="{{ route('seller.web-domains', ['shopId' => $shopId]) }}">Domains</a></li>
+
+
                             <li><a href="#">Logo & Design</a></li>
                             <li> <a href="{{ route('seller.deliveryarea', ['shop' => $shopId]) }}">Liefergebiet</a></li>
                             <li><a href="{{ route('seller.worktimes-list', ['shopId' => $shopId]) }}">Öffnungszeiten</a></li>

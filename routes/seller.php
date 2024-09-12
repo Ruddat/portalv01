@@ -77,6 +77,12 @@ Route::prefix('seller')->name('seller.')->group(function(){
     });
 
 
+        // Web Domains
+        Route::prefix('manage-domains')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
+            Route::view('/shop/{shopId}/domains', 'backend.pages.seller.webdomains.web-domains')->name('web-domains');
+        });
+
+
     Route::prefix('invoicesmanager')->middleware(['auth:seller', 'PreventBackHistory'])->group(function() {
         Route::view('/invoices_all/{shopId}', 'backend.pages.seller.invoices.invoices-index')->name('invoices-all');
    //     Route::view('/storno_manager', 'backend.pages.admin.invoices.storno-manager-index')->name('storno-manager');
