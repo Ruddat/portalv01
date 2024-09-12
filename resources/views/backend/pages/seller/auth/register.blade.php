@@ -89,7 +89,9 @@
                     <div class="box_about">
                         <h3>@autotranslate('Boost your Orders', app()->getLocale())</h3>
                         <p class="lead">@autotranslate('Warum sollten Sie sich für uns entscheiden?', app()->getLocale())</p>
-                        <p>@autotranslate('Willkommen auf unserem Portal! Haben Sie sich jemals gefragt, wie Sie Ihre Bestellungen in die Höhe treiben können? Wir haben die Antwort für Sie. Unsere Plattform ist darauf spezialisiert, Ihnen durch optimierte Listungen mehr Sichtbarkeit und somit mehr Kunden zu verschaffen.', app()->getLocale())</p>
+                        <p>@autotranslate('Willkommen auf unserem Portal! Haben Sie sich jemals gefragt, wie Sie Ihre Bestellungen in die Höhe treiben können? Wir haben die Antwort für Sie.', app()->getLocale())
+                            @autotranslate(' Unsere Plattform ist darauf spezialisiert, Ihnen durch optimierte Listungen mehr Sichtbarkeit und somit mehr Kunden zu verschaffen.', app()->getLocale())
+                        </p>
                         <img src="{{ asset('frontend/img/arrow_about.png') }}" alt="" class="arrow_1">
                     </div>
                 </div>

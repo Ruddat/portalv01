@@ -164,6 +164,9 @@ class SellerController extends Controller
             'country_register.required' => 'Country is required',
         ]);
 
+dd($request->all());
+
+
         if ($request->filled('bot_trap')) {
             return redirect()->back()->withInput()->withErrors(['bot_trap' => 'Das Formular wurde von einem Roboter ausgefüllt.']);
         }

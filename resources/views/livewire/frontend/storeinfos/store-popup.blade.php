@@ -173,7 +173,7 @@
                 <div class="modal-footer">
                     @if($shopStatus == 'closed' || $shopStatus == 'off')
                         <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">@autotranslate('Change store', app()->getLocale())</button>
-                        <button type="button" class="btn btn-infomodal" onclick="window.location.href='{{ route('seller.register') }}'">@autotranslate('Shop betreiber?', app()->getLocale())</button>                    @elseif($shopStatus == 'open')
+                        <button type="button" class="btn btn-infomodal" onclick="window.location.href='{{ localized_route('seller.register') }}'">@autotranslate('Shop betreiber?', app()->getLocale())</button>                    @elseif($shopStatus == 'open')
                         <button type="button" class="btn btn-infomodal" wire:click="wantToBrowse">@autotranslate('I just want to browse.', app()->getLocale())</button>
                     @elseif($shopStatus == 'limited')
                         <button type="button" class="btn btn-infomodal" wire:click="redirectToSearch">@autotranslate('Back to restaurant selection', app()->getLocale())</button>

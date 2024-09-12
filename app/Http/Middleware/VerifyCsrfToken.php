@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'winorder/*',  // Hier fügst du alle winorder-Routen hinzu
+        '/soap-server',
     ];
 }

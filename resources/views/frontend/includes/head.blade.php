@@ -78,6 +78,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
+    @stack('head-script')
     <!-- YOUR CUSTOM CSS -->
     <link href="{{ asset('frontend/css/custom.css') }}" rel="stylesheet">
     <link href="{{ asset('frontend/css/feather.css') }}" rel="stylesheet">

@@ -27,6 +27,11 @@ class LogSideRequest extends FormRequest
         return [];
     }
 
+    public function initializeFromRequest($request)
+    {
+        $this->request = $request;
+    }
+
     public function processRequest()
     {
         if ($this->crawlerDetect->isCrawler()) {

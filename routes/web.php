@@ -6,9 +6,13 @@ use App\Models\ModAdminBlogCategory;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Frontend\ShopSearchResults;
 use App\Http\Livewire\Frontend\Card\ProductList;
+use App\Http\Controllers\Soap\WinOrderController;
 use App\Http\Controllers\Test\TemplateController;
 use App\Http\Controllers\GoogleTranslateController;
+use App\Http\Controllers\Soap\SoapServerController;
+use App\Http\Controllers\Test\StripeTestController;
 use App\Http\Controllers\Frontend\ShopCardController;
+use App\Http\Controllers\Soap\WinOrderSoapController;
 use App\Http\Controllers\Frontend\Card\CardController;
 use App\Http\Controllers\MobileApp\ManifestController;
 use App\Http\Controllers\Frontend\ShopSearchController;
@@ -19,7 +23,6 @@ use App\Http\Controllers\Frontend\Search\GeocodeController;
 use App\Http\Controllers\Backend\GlobalController\BidController;
 use App\Http\Controllers\SystemComponent\BuyerAccountController;
 use App\Http\Controllers\Frontend\MediaData\MediaStatsController;
-use App\Http\Controllers\Soap\WinorderSoap\WinOrderSOAPController;
 use App\Http\Controllers\Backend\Admin\Invoice\CsvExportController;
 use App\Http\Controllers\Backend\Admin\Invoice\InvoicePdfController;
 use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
@@ -40,6 +43,18 @@ use App\Http\Controllers\Backend\Seller\WebTemplates\WebTemplatePreviewControlle
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+// Stripe Test
+//Route::get('/stripe/test', [StripeTestController::class, 'showTestForm']);
+Route::view('/stripe/test', 'templates.stripe-test')->name('stripe-test');
+
+Route::post('/stripe-create-intent', [StripeTestController::class, 'createPaymentIntent']);
+Route::get('/create-checkout-session', [StripeTestController::class, 'createCheckoutSession'])->name('create.checkout.session');
+Route::get('/checkout-success', [StripeTestController::class, 'checkoutSuccess'])->name('checkout.success');
+Route::get('/checkout-cancel', [StripeTestController::class, 'checkoutCancel'])->name('checkout.cancel');
+
+
 
 Route::get('/print', [App\Http\Controllers\TestComponent\PrintController::class, 'printReceipt']);
 
@@ -72,9 +87,26 @@ Route::get('/template/{templateName}', [TemplateController::class, 'show'])
     Route::view('/restaurantvoting/{orderHash}', 'frontend.votingsrestaurant.restaurant-voting')->name('votings-restaurant');
 
     // WinOrder SOAP routes
-    Route::post('/winorder/get-new-orders', [WinOrderSOAPController::class, 'getNewOrders']);
-    Route::post('/winorder/send-tracking-status', [WinOrderSOAPController::class, 'sendTrackingStatus']);
-    Route::post('/winorder/call-soap-service', [WinOrderSOAPController::class, 'callSoapService'])->name('call.soap.service');
+    //Route::post('/winorder/get-new-orders', [WinOrderSOAPController::class, 'getNewOrders']);
+    //Route::post('/winorder/send-tracking-status', [WinOrderSOAPController::class, 'sendTrackingStatus']);
+    //Route::post('/winorder/call-soap-service', [WinOrderSOAPController::class, 'callSoapService'])->name('call.soap.service');
+
+    // Route für GetNewOrders (abrufen neuer Bestellungen)
+    //Route::get('/winorder/get-new-orders', [WinOrderController::class, 'GetNewOrders']);
+    //Route::post('/winorder/get-new-orders', [WinOrderController::class, 'getOrders']);
+   // Route::get('/winorder/get-new-orders', [WinOrderController::class, 'GetNewOrders']);
+
+   // Route für SendTrackingStatus (Tracking-Status senden)
+   // Route::post('/winorder/send-tracking-status', [WinOrderController::class, 'SendTrackingStatus']);
+   Route::any('/soap-server', [SoapServerController::class, 'handle']);
+   Route::get('/winorder', function () {
+    return response()->view('winOrderWsdl')
+    ->header('Content-Type', 'text/xml');
+
+});
+
+   //Route::post('/soap/winorder', [WinOrderSoapController::class, 'handle']);
+
 
     // Frontend routes CartController methods
  //   Route::get('/detail-restaurant-2/{restaurantId}', [NewCartController::class, 'index'])->name('detail-restaurant-2.index');
