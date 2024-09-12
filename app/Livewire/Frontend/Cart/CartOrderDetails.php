@@ -2,11 +2,14 @@
 
 namespace App\Livewire\Frontend\Cart;
 
+use Stripe\Stripe;
 use SimpleXMLElement;
 use App\Models\Client;
 use App\Models\ModShop;
 use Livewire\Component;
+use App\Facades\Cart;
 use App\Models\ModOrders;
+use Stripe\PaymentIntent;
 use App\Models\ModProducts;
 use Illuminate\Support\Str;
 use App\Services\CartService;
@@ -58,6 +61,8 @@ class CartOrderDetails extends Component
     public $paypal_express_fee_fixed;
     public $paypal_express_fee_percent;
 
+    public $cart = [];
+
     protected $rules = [
         'selectedOption' => 'required',
         'company' => 'required_if:selectedOption,firma',
@@ -82,53 +87,74 @@ class CartOrderDetails extends Component
     {
         // Abrufen der Shop-Daten anhand der ID oder eine Fehlermeldung anzeigen, falls nicht gefunden
         $this->shopData = ModShop::findOrFail($restaurantId);
-        //  dd($this->shopData);
-        //   $this->createXml();
+
+        // Abrufen der IP-Adresse des Benutzers
         $this->ipAddress = $_SERVER['REMOTE_ADDR'];
 
         // Lade vorhandene Daten aus der Session, falls verfügbar
         $addressData = Session::get('address_data');
-       // dd($addressData);
 
-        // Überprüfe, ob die Daten vorhanden sind
+        // Überprüfe, ob die Adressdaten in der Session vorhanden sind
         if ($addressData) {
-            // Verwende die Sessiondaten hier weiter
+            // Verwende die Sessiondaten weiter
             $this->userAddress = $addressData;
             $this->selectedOption = $addressData['selectedOption'] ?? '';
             $this->company = $addressData['company'] ?? '';
             $this->department = $addressData['department'] ?? '';
-
             $this->first_name = $addressData['first_name'] ?? '';
             $this->last_name = $addressData['last_name'] ?? '';
-
             $this->email = $addressData['email'] ?? '';
             $this->phone = $addressData['phone'] ?? '';
             $this->shipping_street = $addressData['shipping_street'] ?? '';
             $this->shipping_house_no = $addressData['shipping_house_no'] ?? '';
             $this->city = $addressData['city'] ?? '';
             $this->postal_code = $addressData['postal_code'] ?? '';
-
             $this->payment_method = $addressData['payment_method'] ?? 'cash';
             $this->opt_news_coupons = $addressData['opt_news_coupons'] ?? true;
             $this->opt_save_data = $addressData['opt_save_data'] ?? true;
             $this->order_comment = $addressData['order_comment'] ?? '';
             $this->description_of_way = $addressData['description_of_way'] ?? '';
-
         }
 
+        // Abrufen der PayPal-Einstellungen und Verkaufsprovision aus der Datenbank (z.B. durch eine Settings-Tabelle)
         $this->paypal_express_fee_fixed = get_settings()->paypal_express_fee_fixed;
         $this->paypal_express_fee_percent = get_settings()->paypal_express_fee_percentage;
         $this->sales_commission = get_settings()->sales_commission;
-     //   dd($this->paypal_express_fee_fixed, $this->paypal_express_fee_percent, $this->sales_commission);
 
+        // Abrufen des ShopId aus der Session
+        $shopId = Session::get('shopId');
 
+        // Abrufen des Warenkorbinhalts, spezifisch für den Shop
+        $this->cart = Session::get("cart_$shopId", []);
+
+        // Berechne Zwischensumme und Gesamtbetrag basierend auf dem Warenkorb
+        $this->updateCart();
+     //   $this->calculateSubTotal();
+     //   $this->calculateTotal();
     }
+
+
+    public function updateCart()
+    {
+        $this->cart = Session::get('cart', []);
+        $this->subtotal = Cart::subTotal();
+        $this->content = Cart::content() ?? collect();
+
+        $shopId = Session::get('shopId');
+        $this->deliveryFee = Session::get("delivery_cost_$shopId", 0);
+
+        $this->deliveryFreeThreshold = Session::get("delivery_free_threshold_$shopId", 0);
+
+     //   dd($this->deliveryFee, $this->deliveryFreeThreshold, $this->cart, $this->subtotal, $this->content);
+     //   $this->calculateTotal();
+    }
+
 
     public function orderNowForm(CartService $cartService)
     {
         // Überprüfen, ob der Warenkorb leer ist
         $order = $cartService->content();
-        // dd($order, $cart);
+     //    dd($order, $cart);
         Session::put('shopping-cart', $order);
         if (empty($order)) {
             return redirect()->back()->with('error', 'Der Warenkorb ist leer oder die Sitzung ist abgelaufen.');
@@ -248,10 +274,51 @@ class CartOrderDetails extends Component
               //  dd($cameFromSponsored, $sponsoredPrice);
             }
         }
-
-
         // PayPal-Gebühren berechnen
         $paypalFee = ($prices['price_products'] + $prices['price_bottles']) * ($this->paypal_express_fee_percent / 100) + $this->paypal_express_fee_fixed;
+
+
+// Set Stripe API key
+Stripe::setApiKey(config('services.stripe.secret'));
+
+if ($this->payment_method === 'stripe') {
+    // Erstellen eines PaymentIntent
+    $intent = PaymentIntent::create([
+        'amount' => $this->calculateTotalAmountInCents($prices, $deliveryFee, $paypalFee),
+        'currency' => 'eur',
+        'payment_method_types' => ['card'],
+        'metadata' => [
+            'order_id' => $newOrderNumber, // Erzeuge oder verwende eine Order-ID
+        ],
+    ]);
+
+    // Dispatch Event mit dem clientSecret
+    $this->dispatch('payment-intent-event', [
+        'clientSecret' => $intent->client_secret,
+    ]);
+
+    // Speichere die PaymentIntent ID in der Session
+    Session::put('payment_intent_id', $intent->id);
+
+    // Checke, ob eine zusätzliche Aktion erforderlich ist (z.B. 3D-Secure)
+    if ($intent->status === 'requires_action') {
+        $this->dispatch('requiresAction', ['clientSecret' => $intent->client_secret]);
+    } elseif ($intent->status === 'succeeded') {
+        // Zahlung erfolgreich, Bestellung verarbeiten
+        $this->processOrder($intent);
+    } else {
+        // Zahlung fehlgeschlagen
+        session()->flash('error', 'Payment failed, please try again.');
+    }
+
+    // Gib die View zurück
+    return view('livewire.frontend.cart.cart-order-checkout', ['intent' => $intent]);
+} else {
+    // Andere Zahlungsmethoden (z.B. PayPal) behandeln
+ //   $this->processOrder();
+}
+
+
 
        // dd($order, $prices);
         // Neue Bestellung erstellen und in die Datenbank speichern
@@ -304,7 +371,14 @@ class CartOrderDetails extends Component
     }
 
 
+// Hilfsfunktion zur Berechnung des Totalbetrags in Cents (Stripe benötigt Beträge in Cents)
+private function calculateTotalAmountInCents($prices, $deliveryFee, $paypalFee)
+{
+    $totalAmount = ($prices['price_products'] + $deliveryFee + $prices['price_bottles'] + $paypalFee) * 100;
+ //   dd($totalAmount);
 
+    return (int)round($totalAmount);  // Stripe erwartet den Betrag als Ganzzahl in Cents
+}
 
 
 
@@ -1003,10 +1077,11 @@ public function generateQrCode()
 
       //  dd($addressData);
 
-        return view('livewire.frontend.cart.cart-order-details', [
+        return view('livewire.frontend.cart.cart-order-checkout', [
             'shopData' => $this->shopData,
             'xml' => $this->xml,
             'addressData' => $addressData, // Adressdaten an die Ansicht übergeben
+            'content' => $this->content,
         ]);
     }
 

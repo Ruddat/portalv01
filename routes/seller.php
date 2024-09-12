@@ -99,6 +99,7 @@ Route::prefix('seller')->name('seller.')->group(function(){
             Route::get('/shop/{shop}/shopdata', [ShopDataController::class, 'restoData'])->name('restoData');
             Route::post('/change-logo-pictures', [ShopDataController::class, 'changeLogoPictures'])->name('change-logo-pictures');
             Route::post('/change-shop-restapi', [ShopDataController::class, 'changeShopDataRestApi'])->name('change-shop-restapi');
+            Route::post('/change-shop-soap', [ShopDataController::class, 'changeShopDataSoap'])->name('change-shop-soap');
             Route::post('/generate-activation-code', [ShopDataController::class, 'generateActivationCode'])->name('generate-activation-code');
         });
 

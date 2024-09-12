@@ -111,10 +111,80 @@
                                     </form>
 
 
+
+
+
+
+
+
                                 </div>
 
 							</div>
 						</div>
+
+
+
+						<div class="card h-auto">
+
+							<div class="card-body">
+                                <h6>Übertragung Winorder 4.0 Soap</h6>
+                                @include('backend.includes.errorflash')
+                                <div class="basic-form">
+
+                                        <div>
+                                            <p>Tragen Sie die folgende URL zusammen mit Ihrem Benutzernamen und Passwort in Ihr Kassensystem ein:</p>
+                                            <p><strong>Beschreibung:</strong> Abrufen neuer Bestellungen</p>
+                                            <p><strong>URL:</strong> <span id="url">{{ $urlSoap }}</span> <button class="btn btn-outline-primary btn-xs" onclick="copyToClipboard()">Kopieren</button></p>
+                                            <input type="checkbox" id="copied" style="vertical-align: middle; margin-left: 5px;" hidden>
+                                            <label for="copied" id="copyLabel" style="vertical-align: middle; display: none;">URL wurde in die Zwischenablage kopiert.</label>
+                                        </div>
+
+                                        <div class="col-xl-12 col-lg-12 col-xxl-12 col-sm-8">
+                                            <div class="card text-black text-black">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Einstellungen Kassensystem</span></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Übertragungsart :</span><strong>{{ $shop->transfer }}</strong></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">User Name :</span><strong>{{ $shop->api_username }}</strong></li>
+                                                    <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Password :</span><strong>{{ $shop->api_password }}</strong></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <form action="{{ route('seller.change-shop-soap') }}" method="POST" id="change-shop-soap">
+                                            @csrf
+
+                                            <div class="row">
+                                                <div class="mb-3 col-md-6">
+                                                    <label class="form-label">SOAP User Name</label>
+                                                    <input type="text" class="form-control" name="soap_username" id="soap_username" value="{{ $shop->soap_username ?? '' }}" placeholder="SOAP Username">
+                                                    @error('soap_username')
+                                                        <p style="color: red;">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                                <div class="mb-3 col-md-6">
+                                                    <label class="form-label">SOAP Password</label>
+                                                    <input type="password" class="form-control" name="soap_password" id="soap_password" value="{{ $shop->soap_password ?? '' }}" placeholder="SOAP Password">
+                                                    @error('soap_password')
+                                                        <p style="color: red;">{{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </form>
+
+                                </div>
+
+							</div>
+						</div>
+
+
+
+
+
+
+
 
 
 						<div class="card h-auto">

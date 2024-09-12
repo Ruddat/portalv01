@@ -364,6 +364,29 @@
                                 </label>
                                 <i class="icon_creditcard"></i>
                             </div>
+
+
+                            <div class="payment_select">
+                                <label class="container_radio">
+                                    @autotranslate('Credit Card', app()->getLocale())
+                                    <input wire:model="payment_method" type="radio" value="stripe" name="payment_method">
+                                    <span class="checkmark"></span>
+                                </label>
+
+                                <div>
+                                    <!-- Dein HTML-Formular -->
+                                    <form id="payment-form">
+                                        <div id="card-element" class="form-control" >
+                                            <!-- Stripe Element wird hier eingebunden -->
+                                        </div>
+                                        <div id="card-errors" role="alert"></div>
+                                        <button type="submit">Jetzt bestellen</button>
+                                    </form>
+                                </div>
+
+                                <div id="card-errors" role="alert"></div>
+                            </div>
+                            <!--End row -->
                         </div>
                     </div>
                     <!-- /box_order_form -->
@@ -392,7 +415,8 @@
 
 
 
-
+ <!-- Submit Button -->
+ <button id="submit-button" type="submit">@autotranslate('Place Order', app()->getLocale())</button>
 
                             <div class="text-center"><small>@autotranslate('Or Call Us at', app()->getLocale())
                                     <strong>{{ $shopData->phone }}</strong></small></div>
@@ -408,9 +432,74 @@
     <!-- /container -->
 
 
+    @push('head-script')
+    <script src="https://js.stripe.com/v3/"></script>
+    @endpush
 
+    <script>
+        document.addEventListener('livewire:load', function () {
+            var stripe = Stripe('{{ env('STRIPE_KEY') }}'); // Dein Stripe-Publishable-Key
+            var elements = stripe.elements();
+            var card = elements.create('card');
+            card.mount('#card-element');
 
-</div>
+            // Wenn die Zahlungsmethode Stripe ausgewählt wird
+            document.querySelector('input[name="payment_method"]').addEventListener('change', function(e) {
+                if (e.target.value === 'stripe') {
+                    document.getElementById('card-element').style.display = 'block';
+                    card.mount('#card-element');
+                } else {
+                    document.getElementById('card-element').style.display = 'none';
+                    card.unmount();
+                }
+            });
+
+            // Event Listener für das Livewire-Event 'payment-intent-event'
+            Livewire.on('payment-intent-event', function(event) {
+                const clientSecret = event.clientSecret;
+                console.log('Client Secret:', clientSecret); // Ausgabe zum Debuggen
+
+                var form = document.getElementById('payment-form');
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    stripe.confirmCardPayment(clientSecret, {
+                        payment_method: {
+                            card: card,
+                            billing_details: {
+                                name: 'Jenny Rosen'  // Hier solltest du evtl. dynamisch die Nutzerdaten einsetzen
+                            }
+                        }
+                    }).then(function(result) {
+                        if (result.error) {
+                            // Zeige Fehlernachricht an
+                            console.log(result.error.message);
+                            document.getElementById('card-errors').textContent = result.error.message;
+                        } else {
+                            // Die Zahlung wurde verarbeitet
+                            if (result.paymentIntent.status === 'succeeded') {
+                                console.log('Payment succeeded!');
+                                // Hier kannst du den Nutzer informieren oder die Bestellung abschließen
+                                @this.call('processOrder', result.paymentIntent.id);
+                            }
+                        }
+                    });
+                });
+            });
+
+            // Event Listener für das Livewire-Event 'requiresAction'
+            Livewire.on('requiresAction', async (clientSecret) => {
+                const { error, paymentIntent } = await stripe.handleCardAction(clientSecret);
+
+                if (error) {
+                    document.getElementById('card-errors').textContent = error.message;
+                } else if (paymentIntent.status === 'succeeded') {
+                    @this.set('stripePaymentIntentId', paymentIntent.id);
+                    @this.call('orderNowForm');
+                }
+            });
+        });
+    </script>
 
 
 
@@ -420,5 +509,8 @@
     @endpush
 
     @push('head_scripts')
+    <!-- Include Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+
     @endpush
-@endonce
+    @endonce

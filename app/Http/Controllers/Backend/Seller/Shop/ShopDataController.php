@@ -23,12 +23,14 @@ class ShopDataController extends Controller
         $id = $currentShopId; // Annahme: Falls es eine andere ID gibt
         $shop = ModShop::find($currentShopId);
         $url = URL::to('api/v1/GetNewOrders');
+        $urlSoap = URL::to('winorder');
 
         return view('backend.pages.seller.shopdata.mod-shopdaten', [
             'currentShopId' => $currentShopId,
             'id' => $id,
             'shop' => $shop,
             'url' => $url,
+            'urlSoap' => $urlSoap
             // Weitere Daten hier hinzufügen, falls erforderlich
         ]);
     }
@@ -113,6 +115,37 @@ class ShopDataController extends Controller
             return response()->json(['status' => 0, 'msg' => 'Please provide all required data.']);
         }
     }
+
+    public function changeShopDataSoap(Request $request)
+    {
+        // Validierung der Eingaben
+        $request->validate([
+            'soap_username' => 'required',
+            'soap_password' => 'required',
+        ]);
+
+        // Holen des aktuellen Shop-IDs aus der Session
+        $shopId = session('currentShopId');
+        $shop = ModShop::find($shopId);
+
+        // Überprüfen, ob der Shop existiert
+        if (!$shop) {
+            return response()->json(['status' => 0, 'msg' => 'Shop not found.']);
+        }
+
+        // Update der SOAP-Einstellungen
+        $shop->soap_username = $request->soap_username;
+        $shop->soap_password = $request->soap_password;
+
+        // Speichern der Änderungen
+        $shop->save();
+
+        // Zurück zur vorherigen Seite mit einer Erfolgsmeldung
+        return redirect()->back()->with('success', 'SOAP settings have been successfully updated.');
+    }
+
+
+
 
     public function generateActivationCode(Request $request)
     {

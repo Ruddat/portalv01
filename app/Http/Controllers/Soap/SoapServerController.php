@@ -1,0 +1,314 @@
+<?php
+
+namespace App\Http\Controllers\Soap;
+
+use App\Models\ModShop;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+
+class SoapServerController extends Controller
+{
+    public function handle(Request $request)
+    {
+        $options = [
+            'uri' => 'http://' . $_SERVER['HTTP_HOST'] . '/soap',
+        ];
+
+        // Initialisiere den SOAP-Server
+        $server = new \SoapServer(null, $options);
+
+        // Füge die Klasse mit den SOAP-Methoden hinzu
+        $server->setClass(WinOrderEShopService::class);
+
+        // Bearbeite die SOAP-Anfrage
+        $server->handle();
+
+        return response('', 200)->header('Content-Type', 'text/xml');
+    }
+}
+
+class WinOrderEShopService {
+
+    // Methode GetNewOrders
+    public function GetNewOrders($username, $password)
+    {
+        // Überprüfe die Anmeldeinformationen
+        if (!$this->authenticate($username, $password)) {
+            return $this->generateErrorResponse('401', 'Invalid credentials');
+        }
+
+        // Finde den Shop, um die ShopId zu erhalten
+        $shop = ModShop::where('soap_username', $username)
+                        ->where('soap_password', $password)
+                        ->first();
+
+        if (!$shop) {
+            return $this->generateErrorResponse('401', 'Invalid credentials');
+        }
+
+        // Logge die ShopId
+        // Log::info('Shop ID: ' . $shop->id);
+
+        // Holen Sie die neueste Bestellung für diesen Shop
+        $order = \DB::table('mod_orders')
+                    ->where('parent', $shop->id)
+                    ->where('order_tracking_status', '999999')
+                    ->first();
+
+        if (!$order) {
+            return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <WinOrder>
+              <OrderList>
+                <!-- Keine neuen Bestellungen -->
+              </OrderList>
+            </WinOrder>';
+        }
+
+        // Bestelldaten dekodieren (JSON zu Array)
+        $orderData = json_decode($order->order_json_data, true);
+
+        // Log::info('Order JSON data: ' . print_r($orderData, true));
+
+        // Überprüfe, ob der 'OrderList'- und 'Order'-Schlüssel existiert
+        if (!isset($orderData['OrderList']['Order'])) {
+            Log::error('Order key missing in JSON data');
+            return $this->generateErrorResponse('400', 'Order data is missing or invalid.');
+        }
+
+        $orderDetails = $orderData['OrderList']['Order'];
+
+        // Hilfsfunktion zur Überprüfung, ob der Wert ein String ist
+        function sanitize($value) {
+            return is_string($value) ? htmlspecialchars($value, ENT_XML1, 'UTF-8') : '';
+        }
+
+        // Überprüfe den Versandtyp (Lieferung oder Abholung)
+        $shippingType = $order->shipping_type;
+
+        // Wenn Abholung, spezielle Lieferadresse setzen
+        if ($shippingType === 'pickup') {
+            $deliveryAddress = '
+             <CustomerNo>2</CustomerNo>
+            <DeliveryAddress>
+              <Title></Title>
+              <LastName>! ABHOLERVERKAUF !</LastName>
+              <FirstName>! ABHOLERVERKAUF !</FirstName>
+              <Company></Company>
+              <Street></Street>
+              <HouseNo>2</HouseNo>
+              <AddAddress></AddAddress>
+              <DescriptionOfWay></DescriptionOfWay>
+              <Zip></Zip>
+              <City></City>
+              <Country>49</Country>
+              <Email></Email>
+              <PhoneNo>0111-6100</PhoneNo>
+            </DeliveryAddress>';
+        } else {
+            // Standardlieferadresse
+            $deliveryAddress = '
+            <CustomerNo>' . sanitize($orderDetails['Customer']['CustomerNo'] ?? '') . '</CustomerNo>
+            <DeliveryAddress>
+              <Title>' . sanitize($orderDetails['Customer']['DeliveryAddress']['Title'] ?? '') . '</Title>
+              <LastName>' . sanitize($orderDetails['Customer']['DeliveryAddress']['LastName'] ?? '') . '</LastName>
+              <FirstName>' . sanitize($orderDetails['Customer']['DeliveryAddress']['FirstName'] ?? '') . '</FirstName>
+              <Street>' . sanitize($orderDetails['Customer']['DeliveryAddress']['Street'] ?? '') . '</Street>
+              <HouseNo>' . sanitize($orderDetails['Customer']['DeliveryAddress']['HouseNo'] ?? '') . '</HouseNo>
+              <City>' . sanitize($orderDetails['Customer']['DeliveryAddress']['City'] ?? '') . '</City>
+              <Country>' . sanitize($orderDetails['Customer']['DeliveryAddress']['Country'] ?? '') . '</Country>
+              <Email>' . sanitize($orderDetails['Customer']['DeliveryAddress']['Email'] ?? '') . '</Email>
+              <PhoneNo>' . sanitize($orderDetails['Customer']['DeliveryAddress']['PhoneNo'] ?? '') . '</PhoneNo>
+            </DeliveryAddress>';
+        }
+
+        // Erstellen Sie die XML-Antwort
+        $response = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        <!--Generated by WinOrder 4.0.0.28-->
+        <WinOrder>
+          <OrderList>
+            <Order>
+                   <OrderID>' . htmlspecialchars($order->id, ENT_XML1, 'UTF-8') . '</OrderID> <!-- Dynamisch -->
+              <ServerData>
+                <Agent>' . sanitize($orderDetails['ServerData']['Agent'] ?? '') . '</Agent>
+                <IpAddress>' . sanitize($orderDetails['ServerData']['IpAddress'] ?? '') . '</IpAddress>
+                <CreateDateTime>' . sanitize($orderDetails['ServerData']['CreateDateTime'] ?? '') . '</CreateDateTime>
+                <Referer>' . sanitize($orderDetails['ServerData']['Referer'] ?? '') . '</Referer>
+              </ServerData>
+              <Customer>
+                '. $deliveryAddress . '
+              </Customer>
+              <StoreData>
+                <StoreId>' . sanitize($orderDetails['StoreData']['StoreId'] ?? '') . '</StoreId>
+                <StoreName>' . sanitize($orderDetails['StoreData']['StoreName'] ?? '') . '</StoreName>
+              </StoreData>
+              <AddInfo>
+                <DiscountPercent>' . sanitize($orderDetails['AddInfo']['DiscountPercent'] ?? '0') . '</DiscountPercent>
+                <CurrencyStr>' . sanitize($orderDetails['AddInfo']['CurrencyStr'] ?? '€') . '</CurrencyStr>
+                <DeliverLumpSum>' . sanitize($orderDetails['AddInfo']['DeliverLumpSum'] ?? '0') . '</DeliverLumpSum>
+                <PaymentType>' . sanitize($orderDetails['AddInfo']['PaymentType'] ?? 'Barzahlung') . '</PaymentType>
+                <DateTimeOrder>2024-09-12T13:33:00.000+02:00</DateTimeOrder>
+                <Tip>5</Tip>
+              </AddInfo>
+              <ArticleList>';
+
+        // Füge die Artikel zur Bestellung hinzu
+        if (isset($orderDetails['ArticleList']['Article'])) {
+            foreach ($orderDetails['ArticleList']['Article'] as $article) {
+                $response .= '<Article>
+                                <ArticleNo>' . sanitize($article['ArticleNo'] ?? '') . '</ArticleNo>
+                                <ArticleName>' . sanitize($article['ArticleName'] ?? '') . '</ArticleName>
+                                <ArticleSize>' . sanitize($article['ArticleSize'] ?? '') . '</ArticleSize>
+                                <Count>' . sanitize($article['Count'] ?? '0') . '</Count>
+                                <Price>' . sanitize($article['Price'] ?? '0.0') . '</Price>
+                                <SubArticleList>';
+
+                if (isset($article['SubArticleList']['SubArticle'])) {
+                    if (isset($article['SubArticleList']['SubArticle'][0])) {
+                        foreach ($article['SubArticleList']['SubArticle'] as $subArticle) {
+                            $response .= '<SubArticle>
+                                            <ArticleNo>' . sanitize($subArticle['ArticleNo'] ?? '') . '</ArticleNo>
+                                            <ArticleName>' . sanitize($subArticle['ArticleName'] ?? '') . '</ArticleName>
+                                            <Count>' . sanitize($subArticle['Count'] ?? '0') . '</Count>
+                                            <Price>' . sanitize($subArticle['Price'] ?? '0.0') . '</Price>
+                                          </SubArticle>';
+                        }
+                    } else {
+                        $subArticle = $article['SubArticleList']['SubArticle'];
+                        $response .= '<SubArticle>
+                                        <ArticleNo>' . sanitize($subArticle['ArticleNo'] ?? '') . '</ArticleNo>
+                                        <ArticleName>' . sanitize($subArticle['ArticleName'] ?? '') . '</ArticleName>
+                                        <Count>' . sanitize($subArticle['Count'] ?? '0') . '</Count>
+                                        <Price>' . sanitize($subArticle['Price'] ?? '0.0') . '</Price>
+                                      </SubArticle>';
+                    }
+                }
+
+                $response .= '</SubArticleList>
+                            </Article>';
+            }
+        }
+
+        $response .= '</ArticleList>
+            </Order>
+          </OrderList>
+        </WinOrder>';
+
+        // Setze den Status der Bestellung auf '0', um anzuzeigen, dass sie abgeholt wurde
+       // \DB::table('mod_orders')->where('id', $order->id)->update(['order_tracking_status' => '0']);
+
+        // Log::info('Generated XML: ' . $response);
+
+        return $response;
+    }
+
+
+// Methode SendTrackingStatus
+public function SendTrackingStatus($username, $password, $ordersID, $trackingStatus)
+{
+    // Logge die gesamte eingehende Anfrage
+    Log::info('SendTrackingStatus - Received request', [
+        'username' => $username,
+        'password' => $password,
+        'ordersID' => $ordersID,
+        'trackingStatus' => $trackingStatus
+    ]);
+
+    // Überprüfe die Anmeldeinformationen
+    if (!$this->authenticate($username, $password)) {
+        $errorResponse = $this->generateErrorResponse('401', 'Invalid credentials');
+        Log::error('SendTrackingStatus - Invalid credentials for OrderID ' . $ordersID . ': ' . $errorResponse);
+        return $errorResponse;
+    }
+
+    // Finde die Bestellung in der Datenbank
+    $order = DB::table('mod_orders')->where('id', $ordersID)->first();
+
+    if (!$order) {
+        $errorResponse = $this->generateErrorResponse('404', 'Order not found');
+        Log::error('SendTrackingStatus - Order not found for OrderID ' . $ordersID . ': ' . $errorResponse);
+        return $errorResponse;
+    }
+
+    // Status-Übersetzungstabelle basierend auf der WinOrder-Version
+    switch ($trackingStatus) {
+        case "0":  // Bestellung wurde vom Shop empfangen
+        case "OK": // Bestellung wurde vom Shop empfangen
+            $status = 2;
+            break;
+        case "1":  // Bestellung wird verarbeitet
+            $status = 3;
+            break;
+        case "2":  // Bestellung ist auf dem Weg
+            $status = 4;
+            break;
+        case "3":  // Abgelehnt (canceled)
+            $status = 500;
+            break;
+        default:
+            $status = 1; // Standardstatus
+            break;
+    }
+
+    // Zeitpunkt für die Statusänderung
+    $time = \Carbon\Carbon::now();
+
+    // Aktualisiere die Bestellung in der Datenbank
+    $updateResult = DB::table('mod_orders')->where('id', $ordersID)->update([
+        'order_tracking_status' => $status,
+        // 'transfer_time' => $time  // Stelle sicher, dass dieses Feld existiert
+    ]);
+
+    if ($updateResult) {
+        // Füge den Status in der History hinzu
+        DB::table('mod_order_status_histories')->insert([
+            'order_id' => $ordersID,
+            'status' => $status,
+            'changed_at' => $time
+        ]);
+
+        // Erfolgreiche Aktualisierung
+        $successResponse = '<?xml version="1.0" encoding="UTF-8"?>
+        <SendTrackingStatusResponse xmlns="http://www.winorder.de">
+            <return>true</return>
+        </SendTrackingStatusResponse>';
+        Log::info('SendTrackingStatus - Status successfully updated for OrderID ' . $ordersID . ': ' . $successResponse);
+        return $successResponse;
+    } else {
+        // Fehlgeschlagene Aktualisierung
+        $errorResponse = $this->generateErrorResponse('500', 'Failed to update order status');
+        Log::error('SendTrackingStatus - Failed to update order status for OrderID ' . $ordersID . ': ' . $errorResponse);
+        return $errorResponse;
+    }
+}
+
+
+    // Methode zur Authentifizierung
+    private function authenticate($username, $password)
+    {
+        // Suche den Shop in der Datenbank
+        $shop = ModShop::where('soap_username', $username)
+                        ->where('soap_password', $password)
+                        ->first();
+
+        // Überprüfe, ob die Anmeldeinformationen korrekt sind
+        return $shop !== null;
+    }
+
+    // Methode zur Generierung einer Fehlermeldung im XML-Format
+    private function generateErrorResponse($message)
+    {
+        return '<?xml version="1.0" encoding="UTF-8"?>
+        <GetNewOrders0Response xmlns="http://www.winorder.de">
+            <return></return>
+            <ErrorMessage>' . htmlspecialchars($message, ENT_XML1, 'UTF-8') . '</ErrorMessage>
+        </GetNewOrders0Response>';
+    }
+
+    private function safeHtml($value)
+    {
+        // Stelle sicher, dass der Wert ein String ist
+        return is_array($value) ? '' : htmlspecialchars($value, ENT_XML1, 'UTF-8');
+    }
+}

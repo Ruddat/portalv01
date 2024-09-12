@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('translations', function (Blueprint $table) {
-            $table->id();
-            $table->string('key', 1500);  // Erhöhen der Länge des `key`-Feldes
-            $table->string('locale', 5);  // Standard ISO 639-1 (z.B. 'en', 'de')
+            $table->string('key', 255); // Reduziere die Länge auf 255 Zeichen
+            $table->string('locale', 5);
             $table->text('text');
             $table->timestamps();
             $table->unique(['key', 'locale']);
