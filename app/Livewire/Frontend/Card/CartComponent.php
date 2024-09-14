@@ -39,6 +39,7 @@ class CartComponent extends Component
         $this->tipPercentage = Session::get('tipPercentage', null);
         $this->tipAmount = Session::get('tipAmount');
 
+
         $this->updateCart();
         $this->calculateSubTotal();
         $this->calculateTotal();

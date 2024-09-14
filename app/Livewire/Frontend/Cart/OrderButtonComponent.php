@@ -105,10 +105,9 @@ class OrderButtonComponent extends Component
             // Shop ist geschlossen, aber Vorbestellungen sind möglich
             $this->message = 'Vorbestellung möglich. Bitte wählen Sie eine Lieferzeit aus.';
             $this->canOrder = false; // Button bleibt deaktiviert, bis eine Zeit ausgewählt wird
-
             // Nur öffnen, wenn noch keine Vorbestellzeit gesetzt ist
             if (!$selectedTime) {
-                $this->dispatch('openTimepicker'); // Öffnet den Timepicker
+           //     $this->dispatch('openTimepicker'); // Öffnet den Timepicker
             }
         } else {
             $this->canOrder = false;

@@ -28,8 +28,11 @@ use App\Http\Controllers\Backend\Admin\Invoice\InvoicePdfController;
 use App\Http\Controllers\Frontend\CommingSoon\SubscriptionController;
 use App\Http\Controllers\Frontend\LifeTracking\LifeTrackingController;
 use App\Http\Controllers\Backend\Admin\Invoice\InvoiceExportController;
+use App\Http\Controllers\Backend\Admin\ShopExportImport\DataController;
 use App\Http\Controllers\SystemComponent\CommentVerificationController;
 use App\Http\Controllers\Backend\Seller\Categories\CategoriesController;
+use App\Http\Controllers\Backend\Admin\ShopExportImport\ShopExportController;
+use App\Http\Controllers\Backend\Admin\ShopExportImport\ShopInExDataController;
 use App\Http\Controllers\Backend\Seller\WebTemplates\WebTemplatePreviewController;
 
 
@@ -129,7 +132,6 @@ Route::get('/template/{templateName}', [TemplateController::class, 'show'])
         Route::view('/bugzilla/', 'frontend.pages.otherpages.bugzilla')->name('bugzilla');
         Route::view('/blog', 'frontend.pages.blog.blog')->name('blog');
         Route::get('/restaurant/{slug}', [NewCartController::class, 'index'])->name('restaurant.index');
-        // Seller routes
         Route::view('/seller/register', 'backend.pages.seller.auth.register')->name('seller.register');
     });
 
@@ -358,3 +360,21 @@ Route::fallback(function () {
     return redirect()->route('home');
 });
 
+Route::prefix('admin/shop')->group(function () {
+    // Export-Routen
+    Route::get('export/categories/{shopId}', [DataController::class, 'exportCategories'])->name('shop.export.categories');
+    Route::get('export/products/{shopId}', [DataController::class, 'exportProducts'])->name('shop.export.products');
+    Route::get('export/export-product-sizes/{shopId}', [DataController::class, 'exportProductSizes'])->name('export.product.sizes');
+    Route::get('export/product-sizes-prices/{shopId}', [DataController::class, 'exportProductSizesPrices'])->name('shop.export.product-sizes-prices');
+    Route::get('export-shop/{shopId}', [ShopExportController::class, 'export']);
+
+    Route::get('/shopdata', [ShopInExDataController::class, 'index'])->name('shopdata.index');
+    Route::post('/shopdata/import', [ShopInExDataController::class, 'import'])->name('shopdata.import');
+    Route::get('/shopdata/export/{shop_id}', [ShopInExDataController::class, 'export'])->name('shopdata.export');
+
+    // Import-Routen
+    Route::post('import/categories/{newShopId}', [DataController::class, 'importCategories'])->name('shop.import.categories');
+    Route::post('import/products/{newShopId}', [DataController::class, 'importProducts'])->name('shop.import.products');
+
+    Route::get('admin/shop/export-import', [DataController::class, 'showExportImportView'])->name('shop.export.import.view');
+});
