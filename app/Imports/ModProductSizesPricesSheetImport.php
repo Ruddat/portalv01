@@ -15,22 +15,35 @@ class ModProductSizesPricesSheetImport implements ToCollection, WithHeadingRow
 {
     protected $shopId;
 
+    /**
+     * Konstruktor initialisiert die Klasse mit einer shopId.
+     * Diese ID wird für alle weiteren Operationen verwendet, um die Daten spezifisch für diesen Shop zu verarbeiten.
+     *
+     * @param int $shopId
+     */
     public function __construct($shopId)
     {
         $this->shopId = $shopId;
-        Log::info('Shop ID initialized:', ['shopId' => $this->shopId]);
+        // Log::info('Shop ID initialized:', ['shopId' => $this->shopId]);
     }
 
+    /**
+     * Verarbeitet die eingelesenen Zeilen aus einer Excel-Datei.
+     * Überprüft jede Zeile auf Gültigkeit, aktualisiert die size_id und parent-ID basierend auf den vorhandenen Mappings
+     * und speichert die Daten in der Datenbank.
+     *
+     * @param Collection $rows
+     */
     public function collection(Collection $rows)
     {
         // Alte zu neue parent-IDs Mapping
-      //  $parentIdMapping = [
-      //      37 => 39, // Alte ID => Neue ID
-      //      42 => 43,
-      //  ];
+        // $parentIdMapping = [
+        //     37 => 39, // Alte ID => Neue ID
+        //     42 => 43,
+        // ];
 
         $parentIdMapping = Session::get('productNewIds');
-        Log::info('Product New IDs:', $parentIdMapping);
+        // Log::info('Product New IDs:', $parentIdMapping);
 
         //dd($productNewIds);
 
@@ -38,7 +51,7 @@ class ModProductSizesPricesSheetImport implements ToCollection, WithHeadingRow
         $oldSizeMap = Session::get('sizeMap');
         $newSizeMap = array_flip($oldSizeMap); // Alte IDs als Keys, neue IDs als Values
 
-        Log::info('Flip Size Map:', $newSizeMap);
+        // Log::info('Flip Size Map:', $newSizeMap);
 
         foreach ($rows as $row) {
             try {
@@ -76,14 +89,21 @@ class ModProductSizesPricesSheetImport implements ToCollection, WithHeadingRow
                     // Daten speichern
                     $this->saveRawData($priceData);
                 } else {
-                    Log::warning('No new size_id found for old size_id in row:', ['old_size_id' => $oldSizeId]);
+                    // Log::warning('No new size_id found for old size_id in row:', ['old_size_id' => $oldSizeId]);
                 }
             } catch (ValidationException $e) {
-                Log::error('Validation failed for row:', ['row' => $row->toArray(), 'errors' => $e->errors()]);
+                // Log::error('Validation failed for row:', ['row' => $row->toArray(), 'errors' => $e->errors()]);
             }
         }
     }
 
+    /**
+     * Validiert die Daten einer einzelnen Zeile aus der Excel-Datei.
+     * Überprüft, ob die erforderlichen Felder vorhanden und korrekt sind.
+     *
+     * @param Collection $row
+     * @throws ValidationException
+     */
     protected function validateRow($row)
     {
         // Erstellen eines Validators für die Zeilenvalidierung
@@ -102,9 +122,15 @@ class ModProductSizesPricesSheetImport implements ToCollection, WithHeadingRow
         }
     }
 
+    /**
+     * Speichert die vorbereiteten Preisdaten in der Datenbank.
+     * Verwendet updateOrCreate, um entweder neue Datensätze zu erstellen oder vorhandene zu aktualisieren.
+     *
+     * @param array $priceData
+     */
     protected function saveRawData($priceData)
     {
-        Log::info('Saving raw data:', $priceData);
+        // Log::info('Saving raw data:', $priceData);
 
         // Verwende updateOrCreate, um entweder neue Datensätze zu erstellen oder vorhandene zu aktualisieren
         ModProductSizesPrices::updateOrCreate(

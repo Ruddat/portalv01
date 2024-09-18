@@ -47,6 +47,7 @@ Log::info('Test session value: ' . $testValue);
             'Products' => new ProductsSheetImport($this->shopId, $this->categoryMap, $this->productMap), // Referenz auf productMap
             'ProductSizes' => new ProductSizesSheetImport($this->shopId, $this->productMap, $this->sizeMap),
             'ProductSizesPrices' => new ModProductSizesPricesSheetImport($this->shopId, $this->productMap, $this->sizeMap),
+            'ProductsIngredients' => new ModProductIngredientsSheetImport($this->shopId, $this->productMap, $this->sizeMap),
         ];
     }
 
