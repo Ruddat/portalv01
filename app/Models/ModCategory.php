@@ -29,6 +29,7 @@ class ModCategory extends Model
             'category_slug' => [
                 'source' => ['shop.title', 'category_name'],
                 'separator' => '-',
+                'onUpdate' => false, // Verhindert, dass der Slug bei Updates geändert wird
             ]
         ];
     }

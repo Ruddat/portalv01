@@ -205,9 +205,12 @@ class CartService {
             'size' => $size,
         ];
 
+
         if (!is_null($options)) {
             $cartItem['options'] = $options;
         }
+
+   //     dd($cartItem);
 
         return collect($cartItem);
     }

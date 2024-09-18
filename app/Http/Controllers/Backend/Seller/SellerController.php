@@ -164,7 +164,7 @@ class SellerController extends Controller
             'country_register.required' => 'Country is required',
         ]);
 
-dd($request->all());
+//dd($request->all());
 
 
         if ($request->filled('bot_trap')) {

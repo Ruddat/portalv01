@@ -205,6 +205,7 @@ return [
         App\Providers\GeocodeServiceProvider::class,
         App\Providers\TopRankServiceProvider::class,
         App\Providers\PrinterServiceProvider::class,
+        SawaStacks\Utils\Library\KropifyServiceProvider::class,
 
 
     ])->toArray(),

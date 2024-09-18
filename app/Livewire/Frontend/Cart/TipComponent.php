@@ -54,6 +54,11 @@ class TipComponent extends Component
 
     public function resetTip()
     {
+
+
+        // Setze die Felder auf ihre Standardwerte zurück
+        $this->reset(['tipPercentage', 'tipAmount', 'tipType']); // Setzt auch tipType auf 'none'
+
         $this->tipPercentage = null;
         $this->tipAmount = 0;
         Session::forget('tipPercentage');
@@ -61,12 +66,27 @@ class TipComponent extends Component
         Session::put('tipType', 'none');
         if ($this->tipType !== 'amount') {
 
-          //  $this->dispatch('tipPercentage');
+           $this->dispatch('tipPercentage');
 
         } elseif ($this->tipType === 'percentage') {
 
             $this->dispatch('tipPercentage');
         }
+
+        // Reset all fields
+        $this->reset(['tipPercentage', 'tipAmount', 'tipType']);
+
+        // Set session values to null or defaults
+        Session::forget('tipPercentage');
+        Session::forget('tipAmount');
+        Session::put('tipType', 'none');
+
+        // This makes sure no selection is rendered
+        $this->tipPercentage = null;
+        $this->tipAmount = null;
+
+
+
     }
 
     public function render()

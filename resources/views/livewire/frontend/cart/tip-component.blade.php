@@ -3,6 +3,7 @@
     <div class="tip-amount">
         <label for="tip_amount">Tip Amount</label>
         <select id="tip_amount" wire:change="setTipAmount($event.target.value)">
+            <option value="" {{ is_null($tipAmount) ? 'selected' : '' }}>@autotranslate('Choose an amount', app()->getLocale())</option>
             @for ($i = 0; $i <= 8; $i += 0.5)
                 <option value="{{ $i }}" {{ $tipAmount == $i ? 'selected' : '' }}>
                     {{ number_format($i, 2) }} €
@@ -13,27 +14,31 @@
     @elseif($tipType === 'percentage')
         <div class="dropdown tip">
             <a href="#" data-bs-toggle="dropdown">
-                Tip: <span id="selected_tip">{{ $tipPercentage ? $tipPercentage . '%' : '' }}</span>
+                Tip: <span id="selected_tip">{{ $tipPercentage ? $tipPercentage . '%' : app(\App\Services\AutoTranslationService::class)->trans('Choose a percentage', app()->getLocale()) }}</span>
             </a>
             <div class="dropdown-menu">
                 <div class="dropdown-menu-content">
-                    <h4>Select Tip Percentage</h4>
+                    <h4>@autotranslate('Select Tip Percentage', app()->getLocale())</h4>
                     <div class="radio_select add_bottom_15">
                         <ul>
                             <li>
-                                <input type="radio" id="tip_5" name="tip" value="5" wire:click="setTipPercentage(5)">
+                                <input type="radio" id="tip_5" name="tip" value="5" wire:click="setTipPercentage(5)"
+                                {{ $tipPercentage == 5 ? 'checked' : '' }}>
                                 <label for="tip_5">5%</label>
                             </li>
                             <li>
-                                <input type="radio" id="tip_10" name="tip" value="10" wire:click="setTipPercentage(10)">
+                                <input type="radio" id="tip_10" name="tip" value="10" wire:click="setTipPercentage(10)"
+                                {{ $tipPercentage == 10 ? 'checked' : '' }}>
                                 <label for="tip_10">10%</label>
                             </li>
                             <li>
-                                <input type="radio" id="tip_15" name="tip" value="15" wire:click="setTipPercentage(15)">
+                                <input type="radio" id="tip_15" name="tip" value="15" wire:click="setTipPercentage(15)"
+                                {{ $tipPercentage == 15 ? 'checked' : '' }}>
                                 <label for="tip_15">15%</label>
                             </li>
                             <li>
-                                <input type="radio" id="tip_20" name="tip" value="20" wire:click="setTipPercentage(20)">
+                                <input type="radio" id="tip_20" name="tip" value="20" wire:click="setTipPercentage(20)"
+                                {{ $tipPercentage == 20 ? 'checked' : '' }}>
                                 <label for="tip_20">20%</label>
                             </li>
                         </ul>

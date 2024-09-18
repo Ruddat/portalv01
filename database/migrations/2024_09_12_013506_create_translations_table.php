@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('translations', function (Blueprint $table) {
-            $table->string('key', 255); // Reduziere die Länge auf 255 Zeichen
+            $table->string('key', 512); // Beschränkung auf 1024 Zeichen mit VARCHAR
             $table->string('locale', 5);
             $table->text('text');
             $table->timestamps();

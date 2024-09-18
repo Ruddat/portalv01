@@ -32,12 +32,10 @@ class TimepickerComponent extends Component
         $this->loadOpeningHours();
         $today = Carbon::now();
 
-        // Generiere die verfügbaren Daten für die nächsten 7 Tage
         for ($i = 0; $i < 7; $i++) {
             $this->availableDates[] = $today->copy()->addDays($i)->format('Y-m-d');
         }
 
-        // Lade die gespeicherte Vorbestellzeit aus der Session, falls vorhanden
         $storedTime = Session::get('selectedTime');
         if ($storedTime) {
             $this->selectedTime = $storedTime;

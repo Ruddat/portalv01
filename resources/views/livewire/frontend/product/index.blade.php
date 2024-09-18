@@ -235,7 +235,7 @@
             @php
                 // dd($selectedSizeId)
             @endphp
-            wire:click="addToCartProduct({{ $productId }}, '{{ addslashes($productTitle) }}', {{ $totalPrice }}, {{ $selectedSizeId }}, '{{ $productSize }}', 1)"
+            wire:click="addToCartProduct({{ $productId }}, '{{ addslashes($productTitle) }}', {{ $productPrice }}, {{ $selectedSizeId }}, '{{ $productSize }}', 1)"
             @if($disableAddToCartButton) disabled @endif>
             <span class="btn-icon-start text-primary">
                 <i class="feather-shopping-bag"></i>
