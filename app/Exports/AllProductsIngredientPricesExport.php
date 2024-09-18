@@ -2,11 +2,12 @@
 
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\WithTitle;
 use App\Models\ModProductsIngredientsPrices;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class AllProductsIngredientPricesExport implements FromCollection, WithHeadings
+class AllProductsIngredientPricesExport implements FromCollection, WithHeadings, WithTitle
 {
     protected $shopId;
 
@@ -23,7 +24,19 @@ class AllProductsIngredientPricesExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'ID', 'Parent', 'Size ID', 'Shop ID', 'Price', 'Created At', 'Updated At'
+            'id',
+            'parent',
+            'size_id',
+            'shop_id',
+            'price',
+            'created_at',
+            'updated_at'
         ];
+    }
+
+    // Hier wird der Tabellenblattname angegeben
+    public function title(): string
+    {
+        return 'ProductsIngredientsPrices';  // Hier kannst du den gewünschten Blattnamen angeben
     }
 }

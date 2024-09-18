@@ -2,11 +2,12 @@
 
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\WithTitle;
 use App\Models\ModProductIngredientsNodes;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class AllProductsIngredientNodesExport implements FromCollection, WithHeadings
+class AllProductsIngredientNodesExport implements FromCollection, WithHeadings, WithTitle
 {
     protected $shopId;
 
@@ -23,7 +24,22 @@ class AllProductsIngredientNodesExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'ID', 'Parent', 'Shop ID', 'Ingredients ID', 'Free Ingredients', 'Min Ingredients', 'Max Ingredients', 'Active', 'Created At', 'Updated At'
+            'id',
+            'parent',
+            'shop_id',
+            'ingredients_id',
+            'free_ingredients',
+            'min_ingredients',
+            'max_ingredients',
+            'active',
+            'created_at',
+            'updated_at'
         ];
+    }
+
+    // Hier wird der Tabellenblattname angegeben
+    public function title(): string
+    {
+        return 'ProductIngredientsNodes';  // Hier kannst du den gewünschten Blattnamen angeben
     }
 }

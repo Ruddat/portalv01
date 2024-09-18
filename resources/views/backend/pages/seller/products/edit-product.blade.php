@@ -91,16 +91,16 @@
 
                                             <div class="row">
                                                 <div class="col-md-2">
-                                        <div class="mb-3">
-                                            <div class="form-group">
-                                            <label for="product-basic-price" class="form-label">Basic price</label>
-                                            <input type="text" name="product_basic_price" class="form-control input-default"
-                                            value="{{ old('product_basic_price') }}" placeholder="00.00">
-                                       @error('product_basic_price')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                       @enderror
-                                        </div>
-                                        </div>
+                                                    <div class="mb-3">
+                                                        <div class="form-group">
+                                                            <label for="product-basic-price" class="form-label">Basic price</label>
+                                                            <input type="text" name="product_basic_price" class="form-control input-default"
+                                                                   value="{{ old('product_basic_price', $product->base_price ?? '') }}" placeholder="00.00">
+                                                            @error('product_basic_price')
+                                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </div>
                                     </div>
 
     @foreach($sizes as $size)

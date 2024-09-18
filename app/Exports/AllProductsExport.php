@@ -3,10 +3,11 @@
 namespace App\Exports;
 
 use App\Models\ModProducts;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class AllProductsExport implements FromCollection, WithHeadings
+class AllProductsExport implements FromCollection, WithHeadings, WithTitle
 {
     protected $shopId;
 
@@ -23,7 +24,38 @@ class AllProductsExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'ID', 'Shop ID', 'Category ID', 'Bottles ID', 'Product Code', 'Product Title', 'Product Anonce', 'Product Description', 'Base Price', 'Sales Count', 'Product Amount', 'Product Image', 'Product Image from Gallery', 'Additives IDS', 'Allergens IDS', 'Product Slug', 'Product Date', 'Ordering', 'Show in LIst', 'Published', 'Deleted', 'Featured', 'Parent', 'Created At', 'Updated At'
+            'id',
+            'shop_id',
+            'category_id',
+            'size_id',
+            'bottles_id',
+            'product_code',
+            'product_title',
+            'product_anonce',
+            'product_description',
+            'base_price',
+            'sales_count',
+            'product_amount',
+            'product_image',
+            'product_image_from_gallery',
+            'additives_ids',
+            'allergens_ids',
+            'product_slug',
+            'product_date',
+            'product_ordering',
+            'produckt_show_in_list',
+            'product_published',
+            'deleted',
+            'product_featured',
+            'product_parent',
+            'created_at',
+            'updated_at'
         ];
+    }
+
+    // Hier wird der Tabellenblattname angegeben
+    public function title(): string
+    {
+        return 'Products';  // Hier kannst du den gewünschten Blattnamen angeben
     }
 }

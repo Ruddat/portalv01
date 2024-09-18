@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\ModProducts;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Illuminate\Support\Facades\Session;
 
 class ProductsImport implements ToCollection
 {
@@ -17,17 +18,27 @@ class ProductsImport implements ToCollection
 
     public function collection(Collection $rows)
     {
+        // Initialisiere das productSize Array
+        $productSizeMap = [];
+
         foreach ($rows as $row) {
             if ($row[0] === 'ID') {
-                continue; // Skip the header row
+                continue; // Überspringe die Kopfzeile
             }
 
-            // Set default values for sales_count and product_amount if they are null
+            // Werte für sales_count, product_amount, deleted, product_featured setzen
             $salesCount = $row[9] !== null ? $row[9] : 0;
             $productAmount = $row[10] !== null ? $row[10] : 0;
             $deleted = $row[20] !== null ? $row[20] : 0;
             $productfeatured = $row[21] !== null ? $row[21] : 0;
 
+            // Überprüfen, ob size_id vorhanden ist und nicht 0 oder null ist
+            if (!empty($row[3])) {
+                // Produkt-ID und zugehörige size_id zur Map hinzufügen
+                $productSizeMap[$row[0]] = $row[3];
+            }
+
+            // Produktdaten aktualisieren oder erstellen
             ModProducts::updateOrCreate(
                 ['id' => $row[0]], // Update existing or create new
                 [
@@ -56,5 +67,8 @@ class ProductsImport implements ToCollection
                 ]
             );
         }
+
+        // Speichern der productSizeMap in der Session
+        Session::put('productSizeMap', $productSizeMap);
     }
 }

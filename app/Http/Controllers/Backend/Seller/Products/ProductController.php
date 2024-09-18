@@ -139,25 +139,13 @@ $ingredientCategories = ModProductsIngredients::where('parent', 0) // Annahme: H
 
     public function storeProduct(Request $request)
     {
-
         // Validierung der Formulardaten
         $request->validate([
-            'product_article_no' => [new UniqueArticleNo], // benutzerdefinierte Regel, die 0-Werte zulässt und sicherstellt, dass die Artikelnummer eindeutig ist
+            'product_article_no' => [new UniqueArticleNo],
             'product_title' => 'required',
             'product_description' => 'required',
             'product_short_description' => 'required|min:5',
             'base_price' => 'required|numeric|min:0.00',
-            // Weitere Validierungsregeln hier hinzufügen
-        ], [
-            // fehlermeldungen in deutsch
-            'product_article_no.unique_article_no' => 'The article number is already in use.',
-            'product_article_no.required' => 'The article number is required.',
-            'product_title.required' => 'The product title is required.',
-            'product_description.required' => 'The product description is required.',
-            'product_short_description.required' => 'The product short description is required.',
-            'base_price.required' => 'The base price is required.',
-            'base_price.numeric' => 'The base price must be a number.',
-            'base_price.min' => 'The base price must be at least 0.01.',
         ]);
 
         // Abrufen der Shop-ID und Kategorie-ID aus dem Formular
@@ -169,174 +157,96 @@ $ingredientCategories = ModProductsIngredients::where('parent', 0) // Annahme: H
             return back()->with('error', 'Shop ID or Category ID not provided.');
         }
 
-        // Speichern Sie die Produktinformationen in der Datenbank
+
+        // Größe aus der Kategorie in der Tabelle `mod_categories` abrufen
+        $category = ModCategory::where('id', $categoryId)->first();
+
+        // Setze die Größe basierend auf `sizes_category`, oder setze null, wenn keine Größe vorhanden ist
+        $sizeId = $category->sizes_category ?? null;
+
+        // Speichern der Produktinformationen in der Datenbank
         $product = new ModProducts();
         $product->shop_id = $shopId;
         $product->category_id = $categoryId;
-        //$product->product_title = $request->input('product_title');
-        //$product->product_title = utf8_encode($request->input('product_title'));
+        $product->product_title = trim($request->input('product_title'));
         $product->product_description = $request->input('product_description');
         $product->product_anonce = $request->input('product_short_description');
-        //$product->product_title = utf8_encode(trim($request->input('product_title')));
-        $product->product_title = trim($request->input('product_title'));
-        //$product->product_description = utf8_encode(trim($request->input('product_description')));
-        //$product->product_anonce = utf8_encode(trim($request->input('product_short_description')));
-
         $product->base_price = $request->input('base_price');
         $product->product_code = $request->input('product_article_no');
         $product->bottles_id = $request->input('bottle_id');
         $product->product_published = $request->input('product_published');
+
+        // Setze die ermittelte `sizes_id`
+        $product->size_id = $sizeId;
 
         // Speichern der ausgewählten Allergene als JSON
         $product->allergens_ids = json_encode($request->input('allergens'));
         // Speichern der ausgewählten Zusatzstoffe als JSON
         $product->additives_ids = json_encode($request->input('additives'));
 
-
-
-
-
-        // Hole die Bildinformationen aus der Sitzungsvariable
-    //    $imageInfo = session()->get('temporary_image_info');
-//dd($imageInfo);
-$imageInfo = null;
-        // Überprüfe, ob die Bildinformationen vorhanden sind und das Objekt nicht null ist
+        // Verarbeiten und Speichern des Bildes (falls vorhanden)
+        $imageInfo = session()->get('temporary_image_info');
         if ($imageInfo !== null) {
-            // Verarbeite das Bild weiter, z. B.
-            $imageName = $imageInfo->getName; // Methode aufrufen, um den Dateinamen zu erhalten
-            $imageSize = $imageInfo->getSize; // Methode aufrufen, um die Dateigröße zu erhalten
-            $imageWidth = $imageInfo->getWidth; // Methode aufrufen, um die Breite zu erhalten
-            $imageHeight = $imageInfo->getHeight; // Methode aufrufen, um die Höhe zu erhalten
+            $imageName = $imageInfo->getName;
+            $destinationPath = public_path('uploads/shops/' . $shopId . '/images/products/');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
 
-            // Setze den Pfad zum temporären Bild
-            $tempPath = public_path('uploads/temp/' . $imageName);
+            $newFilename = Str::slug($product->product_title) . '_' . date('YmdHis') . '.' . pathinfo($imageName, PATHINFO_EXTENSION);
+            $resizedImage = Image::make($tempPath)->resize(290, 170);
+            $resizedImage->save($destinationPath . $newFilename);
+            unlink($tempPath);
+            $product->product_image = $newFilename;
+            session()->forget('temporary_image_info');
+        }
 
-    // Definiere den Zielordner für das neue Bild
-    $destinationPath = public_path('uploads/shops/' . $shopId . '/images/products/');
-
-    if (!File::exists($destinationPath)) {
-        File::makeDirectory($destinationPath, 0755, true);
-    }
-
-
-
-    // Neu generierter Dateiname für das Bild
-    $newFilename = Str::slug($product->product_title) . '_' . date('YmdHis') . '.' . pathinfo($imageName, PATHINFO_EXTENSION);
-
-    // Verwende Intervention Image, um das Bild zu rezisen
-    $resizedImage = Image::make($tempPath)->resize(290, 170);
-
-    // Speichere das rezisierte Bild im Zielordner
-    $resizedImage->save($destinationPath . $newFilename);
-
-    // Lösche das temporäre Bild
-    unlink($tempPath);
-
-    // Speichere den Dateinamen des neuen Bildes in der Datenbank
-    $product->product_image = $newFilename; // Produktbild setzen
-
-    // Speichere das Produkt
- //   $product->save();
-
-    // Lösche die Bildinformationen aus der Sitzungsvariable
-    session()->forget('temporary_image_info');
-
-} else {
-    // Fehlerbehandlung, wenn keine Bildinformationen vorhanden sind
-}
-
-
-
-//dd($imageInfo);
-
-
-
-
-
-
-
+        // Speichern des Produkts
         $product->save();
 
         // Produkt-ID des gerade gespeicherten Produkts
         $productId = $product->id;
 
-     //   dd($request->all());
-
-// Durchlaufen der Eingaben und Speichern der Preise in die Datenbank
-foreach ($request->all() as $key => $value) {
-    // Überprüfen, ob das Feld mit 'product_price_' beginnt
-    if (strpos($key, 'product_price_') === 0) {
-        // Extrahieren der Größen-ID aus dem Schlüssel
-        $sizeId = str_replace('product_price_', '', $key);
-
-        // Überprüfen, ob der Preis größer als 0 ist
-        if ($value > 0) {
-            // Speichern des Preises in die Datenbank
-            ModProductSizesPrices::create([
-                'parent' => $productId, // ID des gerade gespeicherten Produkts
-                'size_id' => $sizeId,
-                'shop_id' => $shopId,
-                'price' => $value,
-                // Weitere Felder entsprechend der Tabelle
-            ]);
-        }
-    }
-}
-
-//dd($request->all());
-
-// Durchlaufen der Ingredients-Nodes und Speichern in die Datenbank
-if ($request->has('ingredients')) {
-    foreach ($request->input('ingredients') as $categoryId => $ingredient) {
-        // Standardwerte für Zutaten festlegen
-        $freeIngredients = $ingredient['free_ingredients'] ?? 0;
-        $minIngredients = $ingredient['min_ingredients'] ?? 0;
-        $maxIngredients = $ingredient['max_ingredients'] ?? 0;
-
-        // Überprüfen, ob der Schlüssel 'active' existiert und setze den Wert
-        $ingredientActive = isset($ingredient['active']) ? $ingredient['active'] : 0;
-
-        // Setzen des active-Status basierend auf den Bedingungen
-        $active = false;
-
-        // Überprüfung, ob eine der Zutaten-Einstellungen größer als 0 ist
-        if ($freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) {
-            $active = true;
-        }
-
-        // Wenn die Anfrage eine POST-Anfrage ist, setze active basierend auf den Eingabewerten
-        if ($request->isMethod('post')) {
-            $active = ($ingredientActive == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) ? true : false;
-        } else {
-            // Bei PUT/PATCH-Anfragen, übernehme den active-Status wie oben
-            if ($ingredientActive == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0) {
-                $active = true;
+        // Speichern der Preise basierend auf den Größen
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'product_price_') === 0) {
+                $sizeId = str_replace('product_price_', '', $key);
+                if ($value > 0) {
+                    ModProductSizesPrices::create([
+                        'parent' => $productId,
+                        'size_id' => $sizeId,
+                        'shop_id' => $shopId,
+                        'price' => $value,
+                    ]);
+                }
             }
         }
 
-        // Speichern der Ingredients-Nodes in die Datenbank
-        ModProductIngredientsNodes::create([
-            'parent' => $productId,
-            'shop_id' => $shopId,
-            'ingredients_id' => $categoryId, // Verwenden von $categoryId als die Zutaten-ID
-            'free_ingredients' => $freeIngredients, // Verwenden von Standardwerten, wenn keine Werte vorhanden sind
-            'min_ingredients' => $minIngredients, // Verwenden von Standardwerten, wenn keine Werte vorhanden sind
-            'max_ingredients' => $maxIngredients, // Verwenden von Standardwerten, wenn keine Werte vorhanden sind
-            'active' => $active, // Setzen des active-Status
-        ]);
-    }
-}
+        // Zutaten-Nodes speichern
+        if ($request->has('ingredients')) {
+            foreach ($request->input('ingredients') as $categoryId => $ingredient) {
+                $freeIngredients = $ingredient['free_ingredients'] ?? 0;
+                $minIngredients = $ingredient['min_ingredients'] ?? 0;
+                $maxIngredients = $ingredient['max_ingredients'] ?? 0;
+                $ingredientActive = isset($ingredient['active']) ? $ingredient['active'] : 0;
 
+                $active = ($ingredientActive == 1 || $freeIngredients > 0 || $minIngredients > 0 || $maxIngredients > 0);
 
-
-
-
-
+                ModProductIngredientsNodes::create([
+                    'parent' => $productId,
+                    'shop_id' => $shopId,
+                    'ingredients_id' => $categoryId,
+                    'free_ingredients' => $freeIngredients,
+                    'min_ingredients' => $minIngredients,
+                    'max_ingredients' => $maxIngredients,
+                    'active' => $active,
+                ]);
+            }
+        }
 
         // Weiterleiten oder eine Bestätigungsnachricht anzeigen
         return redirect()->back()->with('success', ucfirst($product->product_title) . ' product created successfully.');
     }
-
 
 
 
@@ -493,6 +403,7 @@ if ($existingNodes->isNotEmpty()) {
 
 
 //dd($ingredientNodes);
+// dd($product);
 
         // Die Bottles, Additives, Preise und Produkt an die View übergeben
         return view('backend.pages.seller.products.edit-product', compact(
@@ -533,7 +444,6 @@ if ($existingNodes->isNotEmpty()) {
             // Weitere Validierungsregeln hier hinzufügen
         ];
 
-
         // Überprüfen, ob sich die Artikelnummer ändert
         if ($request->input('product_code') != $request->old('product_code')) {
             // Artikelnummer hat sich geändert, füge die Validierungsregel hinzu
@@ -558,7 +468,6 @@ if ($existingNodes->isNotEmpty()) {
         // Produktinformationen aktualisieren
         $product->shop_id = $shopId;
         $product->category_id = $categoryId;
-        //$product->product_title = $request->input('product_title');
         $product->product_title = trim($request->input('product_title'));
         $product->product_description = $request->input('product_description');
         $product->product_anonce = $request->input('product_short_description');
@@ -566,30 +475,33 @@ if ($existingNodes->isNotEmpty()) {
         $product->base_price = $request->input('product_basic_price');
         $product->product_published = $request->input('product_published');
         $product->bottles_id = $request->input('bottle_id');
+
         // Speichern der ausgewählten Allergene als Array
         $selectedAllergens = $request->input('allergens'); // Ein Array von ausgewählten Allergenen
         $product->allergens_ids = json_encode($selectedAllergens); // Speichern Sie das Array als JSON
 
-        // Speichern der ausgewählten Allergene als Array
-        $selectedAdditives = $request->input('additives'); // Ein Array von ausgewählten Allergenen
+        // Speichern der ausgewählten Zusätze als Array
+        $selectedAdditives = $request->input('additives'); // Ein Array von ausgewählten Zusätzen
         $product->additives_ids = json_encode($selectedAdditives); // Speichern Sie das Array als JSON
 
-
-        // Durchlaufen der Eingaben und Speichern der Preise in die Datenbank
-        foreach ($request->prices as $sizeId => $price) {
-        // Überprüfen, ob der Preis nicht null ist
-        if ($price !== null) {
-            ModProductSizesPrices::updateOrCreate(
-                ['parent' => $product->id, 'size_id' => $sizeId],
-                ['shop_id' => $request->shop_id, 'price' => $price]
-            );
-        } else {
-            // Preis ist null, Modellobjekt löschen
-        ModProductSizesPrices::where('parent', $product->id)
-            ->where('size_id', $sizeId)
-            ->delete();
-            }
+// Überprüfen, ob Preise angegeben sind und es sich um ein Array handelt
+if (is_array($request->prices)) {
+    // Durchlaufen der Eingaben und Speichern der Preise in die Datenbank
+    foreach ($request->prices as $sizeId => $price) {
+        // Überprüfen, ob der Preis null ist, falls ja, setze ihn auf 0
+        if ($price === null) {
+            $price = 0; // Setze den Preis auf 0, wenn keiner angegeben ist
         }
+
+        // Preis in der Datenbank updaten oder anlegen
+        ModProductSizesPrices::updateOrCreate(
+            ['parent' => $product->id, 'size_id' => $sizeId],
+            ['shop_id' => $request->shop_id, 'price' => $price]
+        );
+    }
+} else {
+    // Preise wurden nicht angegeben, handle das hier falls nötig (z.B. Log-Nachricht)
+}
 
         // Wenn ein neues Bild hochgeladen wurde oder das Bild entfernt werden soll
         if ($request->hasFile('product_image') || $request->has('remove_image')) {
@@ -622,29 +534,26 @@ if ($existingNodes->isNotEmpty()) {
             }
         }
 
-
-
         // Überprüfen, ob bereits Nodes für das Produkt vorhanden sind
         $existingNodes = ModProductIngredientsNodes::where('parent', $productId)
-        ->where('shop_id', $shopId)
-        ->get();
-//dd($existingNodes);
-// Durchlaufen der Eingaben und Aktualisieren der vorhandenen Nodes
-//dd($request->input('ingredients', []));
-foreach ($request->input('ingredients', []) as $nodeId => $nodeData) {
-    // Überprüfen, ob die Node bereits vorhanden ist
-    $existingNode = $existingNodes->firstWhere('ingredients_id', $nodeId);
+            ->where('shop_id', $shopId)
+            ->get();
 
-    if ($existingNode) {
-        // Aktualisieren der vorhandenen Node
-        $existingNode->update([
-            'free_ingredients' => isset($nodeData['free_ingredients']) ? $nodeData['free_ingredients'] : $existingNode->free_ingredients,
-            'min_ingredients' => isset($nodeData['min_ingredients']) ? $nodeData['min_ingredients'] : $existingNode->min_ingredients,
-            'max_ingredients' => isset($nodeData['max_ingredients']) ? $nodeData['max_ingredients'] : $existingNode->max_ingredients,
-            'active' => isset($nodeData['active']) ? $nodeData['active'] : 0,
-        ]);
-    }
-}
+        // Durchlaufen der Eingaben und Aktualisieren der vorhandenen Nodes
+        foreach ($request->input('ingredients', []) as $nodeId => $nodeData) {
+            // Überprüfen, ob die Node bereits vorhanden ist
+            $existingNode = $existingNodes->firstWhere('ingredients_id', $nodeId);
+
+            if ($existingNode) {
+                // Aktualisieren der vorhandenen Node
+                $existingNode->update([
+                    'free_ingredients' => $nodeData['free_ingredients'] ?? $existingNode->free_ingredients,
+                    'min_ingredients' => $nodeData['min_ingredients'] ?? $existingNode->min_ingredients,
+                    'max_ingredients' => $nodeData['max_ingredients'] ?? $existingNode->max_ingredients,
+                    'active' => $nodeData['active'] ?? 0,
+                ]);
+            }
+        }
 
         // Produkt speichern
         if ($product->save()) {
@@ -655,11 +564,9 @@ foreach ($request->input('ingredients', []) as $nodeId => $nodeData) {
             ])->with('success', ucfirst($product->product_title).' product updated successfully.');
         } else {
             // Fehler beim Speichern
-            dd($product->errors());
             return redirect()->back()->with('error', 'Failed to update product.');
         }
     }
-
 
 
 
