@@ -33,7 +33,7 @@ class FooterComponent extends Component
                                       ->distinct('city')             // Sicherstellen, dass Städte einzigartig sind
                                       ->inRandomOrder()              // Zufällige Reihenfolge
                                       ->limit(10)                    // Auf 10 Städte beschränken
-                                      ->get(); 
+                                      ->get();
     }
 
 

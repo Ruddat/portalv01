@@ -170,7 +170,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <input type="text" class="form-control" value="{{ old('name_register') }}"
-                                        placeholder="@autotranslate('Name and Last Name', app()->getLocale())" name="name_register" id="name_register">
+                                        placeholder="@autotranslate('Name and Last Name', app()->getLocale())" name="name_register" id="name_register" autocomplete="name">
                                 </div>
                                 @error('name_register')
                                     <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
@@ -183,7 +183,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <input type="email" class="form-control" value="{{ old('email_register') }}"
-                                        placeholder="@autotranslate('Email Address', app()->getLocale())" name="email_register" id="email_register">
+                                        placeholder="@autotranslate('Email Address', app()->getLocale())" name="email_register" id="email_register" autocomplete="email">
                                 </div>
                                 @error('email_register')
                                     <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
@@ -209,36 +209,43 @@
                         </div>
                         <!-- /row -->
                         <div class="row">
-
-                            <div class="col-lg-12">
+                            <div class="col-lg-8">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" value="{{ old('address_register') }}"
-                                        placeholder="@autotranslate('Street and Number', app()->getLocale())" name="address_register" id="address_register">
+                                    <input type="text" class="form-control" value="{{ old('street_register') }}"
+                                        placeholder="@autotranslate('Street', app()->getLocale())" name="street_register" id="street_register" autocomplete="address-line1">
                                 </div>
-                                @error('address_register')
+                                @error('street_register')
+                                    <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
+                                        {{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" value="{{ old('housenumber_register') }}"
+                                        placeholder="@autotranslate('Housenumber', app()->getLocale())" name="housenumber_register" id="housenumber_register" autocomplete="address-line2">
+                                </div>
+                                @error('housenumber_register')
                                     <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
                                         {{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
                                 @enderror
                             </div>
                         </div>
-
-
+                        <!-- /row -->
                         <div class="row add_bottom_15">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="text" class="form-control" value="{{ old('city_register') }}"
-                                        placeholder="@autotranslate('City', app()->getLocale())" name="city_register" id="city_register">
+                                        placeholder="@autotranslate('City', app()->getLocale())" name="city_register" id="city_register" autocomplete="address-level2">
                                 </div>
-                                @error('name_register')
+                                @error('city_register')
                                     <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
                                         {{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
                                 @enderror
                             </div>
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="text" class="form-control" value="{{ old('zip_register') }}"
-                                        placeholder="Zip" name="zip_register" id="zip_register">
+                                        placeholder="Zip" name="zip_register" id="zip_register" autocomplete="postal-code">
                                 </div>
                                 @error('zip_register')
                                     <div class="d-block text-danger" style="margin-top: -15px; margin-bottom: 15px;">
@@ -246,15 +253,12 @@
                                 @enderror
                             </div>
                         </div>
-
-
-
                         <!-- /row -->
                         <div class="row add_bottom_15">
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <div class="custom_select submit">
-                                        <select name="country_register" id="country_register" class="form-control wide">
+                                        <select name="country_register" id="country_register" class="form-control wide" autocomplete="country">
                                             <option value="">
                                                 {{ app(\App\Services\TranslationService::class)->trans('Country', app()->getLocale()) }}
                                             </option>
@@ -262,7 +266,6 @@
                                                 Europe
                                             </option>
                                             <!-- Hier weitere Länderoptionen einfügen, falls erforderlich -->
-
                                         </select>
                                     </div>
                                     @error('country_register')
@@ -273,14 +276,14 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <!-- /row -->
                         <div class="form-group text-center">
                             <input type="submit" id="registerButton" class="btn_1 medium gradient pulse_bt"
                                 value="{{ app(\App\Services\TranslationService::class)->trans('Restaurant Anmelden', app()->getLocale()) }}">
                         </div>
                     </form>
+
+
                     <!-- /registration_form -->
                     <div id="loadingAnimation">
                         <div class="loadingText">@autotranslate('Data gets sorted, and a shop is set up...', app()->getLocale())</div>

@@ -115,103 +115,98 @@ class Index extends Component
 
     public function addToCartNew($productId, $productName, $selectedPrice, $selectedSize, $selectedSizeId, $selectedQuantity)
     {
-        // Produkt aus der Datenbank abrufen
+        // Produkt abrufen
         $product = ModProducts::find($productId);
 
-        // Überprüfen, ob das Produkt gefunden wurde
+        // Produkt existiert nicht
         if (!$product) {
-            // Fehler behandeln, wenn das Produkt nicht gefunden wurde
-            $this->dispatch('toast', message: 'Das Produkt konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.', notify:'error');
+            $this->dispatch('toast', message: 'Das Produkt konnte nicht gefunden werden. Bitte versuchen Sie es später erneut.', notify: 'error');
             return;
         }
 
-        // Optionen für das Produkt abrufen
+        // Optionen abrufen
         $options = DB::table('mod_product_ingredients_nodes')->where('parent', $productId)->get();
 
-        // Überprüfen, ob das Produkt Optionen hat
-        if ($options->isNotEmpty()) {
-            // Überprüfen, ob mindestens eine Option aktiv ist
-            $hasActiveOptions = $options->contains('active', 1);
-
-            // Wenn mindestens eine Option aktiv ist, bereiten Sie die Produktoptionen vor
-            if ($hasActiveOptions) {
-                $this->prepareProductOptions($productId, $selectedSize, $selectedPrice, $productName, $product);
-                // $this->dispatch('toast', message: 'Dieses Produkt hat Optionen. Bitte wählen Sie eine Option aus.', notify:'success' );
-                return;
-            }
+        // Optionen prüfen und vorbereiten
+        if ($options->isNotEmpty() && $options->contains('active', 1)) {
+            $this->prepareProductOptions($productId, $selectedSize, $selectedPrice, $productName, $product);
+            return;
         }
 
-
-
-
-        // Wenn das Produkt keine Optionen hat, fügen Sie es mit dem Basispreis zum Warenkorb hinzu
+        // Basispreis, wenn keine Optionen vorhanden sind
         $price = $product->base_price;
-        // Hier können weitere Logiken zur Preisberechnung implementiert werden, wenn nötig
 
-        // Fügen Sie das Produkt automatisch dem Warenkorb hinzu
-        $uniqueIdentifier = rand(100000, 999999);
-        $extendedProductId = $productId . '' . $uniqueIdentifier;
-        $sizeTitle = ModProductSizes::where('id', $selectedSize)->first();
-//dd($sizeTitle);
+        // Eindeutige ID für das Produkt im Warenkorb erstellen (UUID könnte besser sein)
+        $extendedProductId = $this->generateUniqueCartId($productId);
 
+        // Größe des Produkts abrufen (verwende Standardgröße falls nicht vorhanden)
+        $sizeTitle = ModProductSizes::find($selectedSize) ?? (object) ['title' => 'Standard'];
 
-// Optionen für das Produkt
-$options = [];
+        // Optionen für das Produkt (Pfand, Größe, etc.)
+        $options = $this->getBottleOptions($product, $selectedPrice);
 
-// Annahme: Standardgröße, wenn keine Größen verfügbar sind
-$size = 'standard';
-
-// Annahme: Standardmenge
-$quantity = '1';
-
-$bottles = $product->bottles_id;
-
-if ($bottles) {
-    $bottlesPrices = ModBottles::where('id', $bottles)->first();
-    if ($bottlesPrices) {
-        // Füge die Produktoptionen zum $options-Array hinzu
-        $options[] = [
-            'productCode' => 'deposit',
-            'productName' => $bottlesPrices->bottles_title,
-            'price' => $bottlesPrices->bottles_value,
-            'size' => $size,
-            'quantity' => $quantity,
-        ];
-        // Erhöhe den Preis um $additionalPrice
-        $selectedPrice += $bottlesPrices->bottles_value;
-    }
-}
-
-
-// 1. Daten aus mod_products abrufen
-$product = DB::table('mod_products')->where('id', $productId)->first();
-
-if ($product) {
-    // 2. Kategorie anhand der category_id finden
-    $category = DB::table('mod_categories')->where('id', $product->category_id)->first();
-
-    if ($category) {
-        // 3. Überprüfe, ob sizes_category null ist
-        if ($category->sizes_category === null) {
-            // Größe ist null, ersetze den Inhalt von $sizeTitle->title durch "Standard"
-            $sizeTitle->title = "Standard";
+        // Kategorie und Größenlogik (wenn keine Kategoriegrößen vorhanden sind, setze Standardgröße)
+        if ($this->isStandardCategory($product->category_id)) {
+            $sizeTitle->title = 'Standard';
         }
-    }
-}
 
-
-    //dd($options);
-   // dd($extendedProductId, $productName, $selectedPrice, $sizeTitle->title, $selectedQuantity, $productId, $options);
-   $productData = ModProducts::where('id', $productId)->first();
-   dd($productData->product_code);
         // Produkt zum Warenkorb hinzufügen
         Cart::add($extendedProductId, $productName, $selectedPrice, $sizeTitle->title, $selectedQuantity, $productId, $options);
 
-        // Erfolgsmeldung anzeigen
-        $this->dispatch('toast', message: 'Das Produkt wurde zum Warenkorb hinzugefügt.', notify:'success');
+        // Erfolgsmeldung
+        $this->dispatch('toast', message: 'Das Produkt wurde zum Warenkorb hinzugefügt.', notify: 'success');
 
-        // Ereignis auslösen, um die Benutzeroberfläche zu aktualisieren
+        // UI aktualisieren
         $this->dispatch('productAddedToCart');
+    }
+
+    /**
+     * Generiert eine eindeutige ID für das Produkt im Warenkorb.
+     *
+     * @param int $productId Die Produkt-ID.
+     * @return string Eine eindeutige Kennung für den Warenkorb.
+     */
+    protected function generateUniqueCartId($productId)
+    {
+        return $productId . uniqid(); // Verwendet uniqid() anstelle von rand() für mehr Eindeutigkeit
+    }
+
+    /**
+     * Holt Flaschenoptionen und fügt sie den Warenkorb-Optionen hinzu.
+     *
+     * @param mixed $product Das Produktobjekt.
+     * @param float $selectedPrice Der aktuelle Preis des Produkts.
+     * @return array Ein Array mit den Optionen (z.B. Pfand).
+     */
+    protected function getBottleOptions($product, &$selectedPrice)
+    {
+        $options = [];
+        if ($product->bottles_id) {
+            $bottlesPrices = ModBottles::find($product->bottles_id);
+            if ($bottlesPrices) {
+                $options[] = [
+                    'productCode' => 'deposit',
+                    'productName' => $bottlesPrices->bottles_title,
+                    'price' => $bottlesPrices->bottles_value,
+                    'size' => 'standard',
+                    'quantity' => 1,
+                ];
+                $selectedPrice += $bottlesPrices->bottles_value;
+            }
+        }
+        return $options;
+    }
+
+    /**
+     * Überprüft, ob die Kategorie eine Standardkategorie ohne Größenlogik ist.
+     *
+     * @param int $categoryId Die ID der Kategorie.
+     * @return bool True, wenn die Kategorie standardmäßig ist.
+     */
+    protected function isStandardCategory($categoryId)
+    {
+        $category = DB::table('mod_categories')->find($categoryId);
+        return is_null($category->sizes_category); // Wenn sizes_category NULL ist, setze Standardgröße
     }
 
 
@@ -359,11 +354,11 @@ protected function prepareIngredients($preparedOptions)
         $parentIngredients = DB::table('mod_products_ingredients')
             ->where('parent', $ingredientId)
             ->where('published', 1)
+            ->select(['id', 'title', 'base_price', 'code_nr']) // Nur benötigte Spalten auswählen
             ->get();
 
         // Option mit Zutaten vorbereiten
-        $optionWithIngredients = $option;
-        $optionWithIngredients['ingredients'] = $parentIngredients->map(function ($ingredient) {
+        $option['ingredients'] = $parentIngredients->map(function ($ingredient) {
             return [
                 'id' => $ingredient->id,
                 'title' => $ingredient->title,
@@ -372,8 +367,8 @@ protected function prepareIngredients($preparedOptions)
             ];
         })->toArray();
 
-        // Option mit Zutaten zum Array der vorbereiteten Optionen mit Zutaten hinzufügen
-        $preparedOptionsWithIngredients[] = $optionWithIngredients;
+        // Option mit Zutaten zum Ergebnis-Array hinzufügen
+        $preparedOptionsWithIngredients[] = $option;
     }
 
     return $preparedOptionsWithIngredients;
@@ -420,78 +415,100 @@ protected function getIngredientPrice($preparedOptionsWithIngredients, $selected
         // Füge das Produkt zum Warenkorb hinzu
         // Zeige eine Benachrichtigung an, dass das Produkt erfolgreich zum Warenkorb hinzugefügt wurde
 
-dd($productId, $selectedSize, $selectedPrice, $productName);
+//dd($productId, $selectedSize, $selectedPrice, $productName);
         // Fügen Sie hier die Logik zum Hinzufügen zum Warenkorb hinzu
 
     }
 
 
-    public function addToCartProduct($productId, $productTitle, $totalPrice, $sizeId, $selectedSize , $selectedQuantity)
-    {
+/**
+ * Fügt ein Produkt mit seinen Optionen und Preisen zum Warenkorb hinzu.
+ *
+ * Diese Methode wird verwendet, um ein ausgewähltes Produkt mit der angegebenen Größe, Menge,
+ * zusätzlichen Optionen wie Flaschenpreisen (falls zutreffend) und einem eindeutigen Produktcode
+ * dem Warenkorb hinzuzufügen. Das Overlay wird danach geschlossen und die Benutzeroberfläche wird aktualisiert.
+ *
+ * @param int $productId Die ID des Produkts, das dem Warenkorb hinzugefügt werden soll.
+ * @param string $productTitle Der Titel des Produkts.
+ * @param float $totalPrice Der Gesamtpreis des Produkts einschließlich aller Optionen.
+ * @param int $sizeId Die ID der Produktgröße.
+ * @param int $selectedSize Die ausgewählte Produktgröße.
+ * @param int $selectedQuantity Die Anzahl der ausgewählten Produkte.
+ *
+ * @return void
+ */
+public function addToCartProduct($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity)
+{
 
-       $options = $this->createOptionsData();
+   // dd($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity);
+    // Erstellen der Optionen-Daten
+    $options = $this->createOptionsData();
 
-  // dd($productId, $productId, $selectedSize, $selectedPrice, $selectedIngredients, $this->getIngredientData, $this->freeIngredients, $this->selectedIngredients);
+    // Generiere eine eindeutige Kennung für das Produkt, um mehrere Instanzen desselben Produkts zu differenzieren
+    $uniqueIdentifier = rand(100000, 999999);
+    $extendedProductId = $productId . '' . $uniqueIdentifier;
 
+    // Abrufen des Produkts und seiner Größe
+    $sizeTitle = ModProductSizes::find($selectedSize);
+    $productData = ModProducts::find($productId);
+    $productCode = $productData->product_code ?? 0;
 
-        // Fügen Sie das Produkt automatisch dem Warenkorb hinzu
-        $uniqueIdentifier = rand(100000, 999999);
-        $extendedProductId = $productId . '' . $uniqueIdentifier;
-        $sizeTitle = ModProductSizes::where('id', $selectedSize)->first();
+    // Überprüfen, ob das Produkt eine Flasche (bottles_id) enthält und den Preis der Flasche hinzufügen
+    if ($productData && $productData->bottles_id) {
+        $bottlesPrices = ModBottles::find($productData->bottles_id);
 
-      //  dd($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity, $extendedProductId);
-      $productData = ModProducts::where('id', $productId)->first();
-      $productCode = $productData->product_code ?? 0;
-        // dd($productCode);
-
-//dd($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productId, $options);
-
-$bottles = $productData->bottles_id;
-
-//dd($bottles);
-
-if ($bottles) {
-    $bottlesPrices = ModBottles::where('id', $bottles)->first();
-
-    $size = 'standard';
-
-    // Annahme: Standardgröße
-    $quantity = '1';
-
-    if ($bottlesPrices) {
-        // Füge die Produktoptionen zum $options-Array hinzu
-        $options[] = [
-            'productCode' => 'deposit',
-            'productName' => $bottlesPrices->bottles_title,
-            'price' => $bottlesPrices->bottles_value,
-            'size' => $size,
-            'quantity' => $quantity,
-        ];
-        // Erhöhe den Preis um $additionalPrice
-        $totalPrice += $bottlesPrices->bottles_value;
+        if ($bottlesPrices) {
+            $options[] = [
+                'productCode' => 'deposit',
+                'productName' => $bottlesPrices->bottles_title,
+                'price' => $bottlesPrices->bottles_value,
+                'size' => 'standard',
+                'quantity' => 1,
+            ];
+            // Preis für die Flasche zum Gesamtpreis hinzufügen
+            $totalPrice += $bottlesPrices->bottles_value;
+        }
     }
+
+    // Produkt zum Warenkorb hinzufügen
+    Cart::add($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productCode, $options);
+
+    // Erfolgsmeldung anzeigen
+    $this->dispatch('toast', message: 'Das Produkt wurde zum Warenkorb hinzugefügt.', notify: 'success');
+
+    // Overlay schließen
+    $this->closeOverlay();
+
+    // Ereignis auslösen, um die Benutzeroberfläche zu aktualisieren
+    $this->dispatch('productAddedToCart');
+}
+
+/**
+ * Schließt das Overlay und setzt ausgewählte Zutaten zurück.
+ *
+ * Diese Methode wird aufgerufen, wenn der Benutzer das Overlay schließt,
+ * das für die Auswahl von Zutaten angezeigt wird. Sie setzt das Attribut $showOverlay auf false,
+ * um das Overlay auszublenden, und setzt das Attribut $selectedIngredients sowie $freeIngredients zurück,
+ * um die gewählten Zutatenoptionen zu entfernen.
+ *
+ * @return void
+ */
+public function closeOverlay()
+{
+    // Das Overlay wird ausgeblendet
+    $this->showOverlay = false;
+
+    // Ausgewählte Zutaten werden zurückgesetzt
+    $this->reset('selectedIngredients');
+
+    // Free Zutaten werden zurückgesetzt
+    $this->reset('freeIngredients');
 }
 
 
-        // Produkt zum Warenkorb hinzufügen
-        Cart::add($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productCode, $options);
-      //  Cart::add($extendedProductId, $productTitle, $totalPrice, $selectedSize, $selectedQuantity, $productId, $options);
-        // Erfolgsmeldung anzeigen
-        $this->dispatch('toast', message: 'Das Produkt wurde zum Warenkorb hinzugefügt.', notify:'success');
-
-        $this->closeOverlay();
-
-        // Ereignis auslösen, um die Benutzeroberfläche zu aktualisieren
-        $this->dispatch('productAddedToCart');
 
 
-        // Hier kannst du die Logik implementieren, um das Produkt mit den ausgewählten Optionen zum Warenkorb hinzuzufügen
-        // Zum Beispiel: $this->addToCartWithOptions($productId, $productName, $selectedPrice, $selectedSize, $selectedQuantity);
 
-//dd('bin hier');
-
-        // Fügen Sie hier die Logik zum Hinzufügen zum Warenkorb hinzu
-    }
 
 
 
@@ -608,14 +625,14 @@ if (!$allergenIds && !$additiveIds) {
             // Überprüfen, ob die Mindestanzahl von Zutaten erreicht ist
             if ($ingredient['min_ingredients'] > 0 && count($selectedIngredients) < $ingredient['min_ingredients']) {
                 $hasRequiredIngredients = true;
-              //  dd($hasRequiredIngredients);
+               // dd($hasRequiredIngredients);
                 break;
             }
 
             // Überprüfen, ob die Maximalanzahl von Zutaten überschritten wird
             if ($ingredient['max_ingredients'] > 0 && count($selectedIngredients) > $ingredient['max_ingredients']) {
                 $hasExceededMaxIngredients = true;
-             //    dd($hasExceededMaxIngredients, $hasRequiredIngredients);
+              //   dd($hasExceededMaxIngredients, $hasRequiredIngredients);
                 break;
             }
         }
@@ -639,44 +656,66 @@ if (!$allergenIds && !$additiveIds) {
 
 public function selectIngredient($ingredientId, $productId)
 {
-    // Durchlaufen Sie jede Option und Zutat
     foreach ($this->getIngredientData as &$ingredient) {
-        // Überprüfen, ob das maximale Limit erreicht ist
-        $isMaxReached = $this->checkMaxIngredientsReached($ingredient);
+        if ($this->checkMaxIngredientsReached($ingredient)) {
+            continue;
+        }
 
         foreach ($ingredient['ingredients'] as &$subIngredient) {
             if ($subIngredient['id'] == $ingredientId) {
-                // Prüfen, ob die Zutat bereits ausgewählt wurde
-                $isAlreadySelected = $this->isIngredientSelected($subIngredient['id']);
+                $selectedCount = $this->countSelectedIngredients($ingredient);
 
-                // Überprüfen, ob noch kostenlose Zutaten verfügbar sind und die Zutat nicht bereits ausgewählt wurde
-                $hasFreeIngredients = $ingredient['free_ingredients'] > 0;
+                // Wenn die Anzahl der kostenlosen Zutaten noch nicht erreicht ist, setze sie als gratis
+                $isFree = $ingredient['free_ingredients'] > 0 && $selectedCount < $ingredient['free_ingredients'];
 
-                if ($hasFreeIngredients && !$isAlreadySelected) {
-                    // Fügen Sie die Zutat zu den kostenlosen Zutaten hinzu
-                    $subIngredient['quantity'] = 1; // Setzen Sie die Anzahl auf 1, da diese Zutat neu hinzugefügt wird
-                    $this->freeIngredients[] = $subIngredient;
-                } else {
-                    // Wenn die Zutat nicht kostenlos ist oder bereits ausgewählt wurde, fügen Sie sie den ausgewählten Zutaten hinzu
-                    $subIngredient['quantity'] = $isAlreadySelected ? $subIngredient['quantity'] + 1 : 1;
-                    $this->selectedIngredients[] = $subIngredient;
-                }
-
-                // Brechen Sie die Schleife ab, da die Zutat gefunden wurde
+                $this->addIngredientToSelection($subIngredient, $isFree);
                 break 2;
             }
         }
     }
 
-    // Überprüfen, ob alle Pflichtzutaten ausgewählt wurden
-    if ($this->areRequiredIngredientsSelected()) {
-        // Wenn alle Pflichtzutaten ausgewählt wurden, aktivieren Sie den Warenkorb-Button
-        $this->disableAddToCartButton = false;
-    }
-
-    // Aktualisieren Sie das Livewire-Overlay, um die ausgewählte Zutat anzuzeigen
+    $this->updateAddToCartButtonState();
     $this->dispatch('ingredientAdded', $subIngredient);
 }
+
+private function addIngredientToSelection($ingredient, $isFree)
+{
+    if (!isset($ingredient['quantity'])) {
+        $ingredient['quantity'] = 0;
+    }
+
+    if ($isFree) {
+        // Überprüfen, ob das Gratis-Limit erreicht ist
+        if ($this->countSelectedFreeIngredients() < 1) {
+            $ingredient['quantity'] = 1;  // Setze auf 1 für Gratis-Zutat
+            $this->freeIngredients[] = $ingredient;
+        } else {
+            // Mehr als eine Zutat wird berechnet
+            $ingredient['quantity']++;
+            $this->selectedIngredients[] = $ingredient;
+        }
+    } else {
+        // Für kostenpflichtige Zutaten
+        $ingredient['quantity'] = $this->isIngredientSelected($ingredient['id']) ? $ingredient['quantity'] + 1 : 1;
+        $this->selectedIngredients[] = $ingredient;
+    }
+}
+
+
+private function countSelectedFreeIngredients()
+{
+    return count($this->freeIngredients);
+}
+
+public function removeFreeIngredient($ingredientId)
+{
+    $this->freeIngredients = array_filter($this->freeIngredients, function($ingredient) use ($ingredientId) {
+        return $ingredient['id'] !== $ingredientId;
+    });
+
+    $this->updateAddToCartButtonState(); // Optional: aktualisiere den Zustand des Buttons
+}
+
 
 
     private function checkMaxIngredientsReached($ingredient)
@@ -698,22 +737,16 @@ public function selectIngredient($ingredientId, $productId)
 
     private function countSelectedIngredients($ingredient = null)
     {
-        // Zählen Sie die Anzahl der ausgewählten Zutaten für die angegebene Option
         $count = 0;
         if ($ingredient) {
-            // Zählen Sie kostenpflichtige Zutaten
             foreach ($this->selectedIngredients as $selectedIngredient) {
                 foreach ($ingredient['ingredients'] as $subIngredient) {
                     if ($selectedIngredient['id'] === $subIngredient['id']) {
                         $count += $selectedIngredient['quantity'];
-                        if ($subIngredient['price'] == 0) {
-                            $count--;
-                        }
                         break;
                     }
                 }
             }
-            // Zählen Sie kostenlose Zutaten
             foreach ($this->freeIngredients as $freeIngredient) {
                 foreach ($ingredient['ingredients'] as $subIngredient) {
                     if ($freeIngredient['id'] === $subIngredient['id']) {
@@ -758,17 +791,6 @@ public function selectIngredient($ingredientId, $productId)
         })->all();
     }
 
-
-
-
-
-
-
-
-
-
-
-
     private function isIngredientSelected($ingredientId)
     {
         // Überprüfen, ob die Zutat bereits ausgewählt wurde
@@ -785,130 +807,131 @@ public function selectIngredient($ingredientId, $productId)
 
 
 
-        //$this->checkRequiredIngredientsSelected($this->getIngredientData, $productId);
+    public function checkRequiredIngredientsSelected()
+    {
+        // Überprüfen, ob alle Nodes min_ingredients auf 0 gesetzt sind
+        $allZeroMinIngredients = collect($this->getIngredientData)->every(function ($option) {
+            return $option['min_ingredients'] === 0;
+        });
 
-        // Aktualisieren Sie das Livewire-Overlay, um die ausgewählte Zutat anzuzeigen
-        //$this->dispatch('ingredientAdded', $selectedIngredient);
-        public function checkRequiredIngredientsSelected()
-        {
-            // Überprüfen, ob alle Nodes min_ingredients 0 haben
-            $allZeroMinIngredients = true;
-            foreach ($this->getIngredientData as $option) {
-                if ($option['min_ingredients'] !== 0) {
-                    $allZeroMinIngredients = false;
-                    break;
-                }
+        // Warenkorb-Button aktivieren, wenn alle min_ingredients auf 0 stehen
+        if ($allZeroMinIngredients) {
+            $this->disableAddToCartButton = false;
+            return;
+        }
+
+        // Schleife durch alle Optionen, um sicherzustellen, dass die Mindestanzahl der Zutaten erreicht wurde
+        foreach ($this->getIngredientData as $option) {
+            if (!isset($option['node_id'])) {
+                continue;
             }
 
-            // Wenn alle Nodes min_ingredients 0 haben, aktivieren Sie den Warenkorb-Button
-            if ($allZeroMinIngredients) {
-                $this->disableAddToCartButton = false;
+            $selectedCount = $this->countSelectedIngredients($option['node_id']);
+            if ($selectedCount < $option['min_ingredients']) {
+                $this->disableAddToCartButton = true;
                 return;
             }
-
-            // Durchlaufen Sie jede Option und überprüfen Sie die ausgewählten Zutaten
-            foreach ($this->getIngredientData as $option) {
-                // Überprüfen, ob die Option einen gültigen Schlüssel "node_id" hat
-                if (!isset($option['node_id'])) {
-                    continue; // Überspringen dieser Option und mit der nächsten fortfahren
-                }
-
-                // Zählen Sie die Anzahl der ausgewählten Zutaten für diese Option
-                $selectedCount = $this->countSelectedIngredients($option['node_id']);
-
-                // Überprüfen, ob die Mindestanzahl an Zutaten erreicht wurde
-                if ($selectedCount < $option['min_ingredients']) {
-                    // Wenn die Mindestanzahl nicht erreicht wurde, deaktivieren Sie den Warenkorb-Button und beenden Sie die Überprüfung
-                    $this->disableAddToCartButton = true;
-                    return;
-                }
-            }
-
-            // Wenn alle Optionen die Anforderungen erfüllen, aktivieren Sie den Warenkorb-Button
-            $this->disableAddToCartButton = false;
         }
+
+        // Warenkorb-Button aktivieren, wenn alle Bedingungen erfüllt sind
+        $this->disableAddToCartButton = false;
+    }
+
 
 
 
 /**
  * Erhöht die Menge der ausgewählten Zutat um eins.
  *
- * Diese Methode wird aufgerufen, wenn der Benutzer die Menge einer ausgewählten Zutat erhöhen möchte.
- * Sie durchläuft das Array der ausgewählten Zutaten und erhöht die Menge der Zutat mit der angegebenen ID um eins.
- * Nachdem die Menge aktualisiert wurde, wird die Methode updateTotalPrice aufgerufen, um den Gesamtpreis zu aktualisieren.
- *
  * @param int $ingredientId Die ID der Zutat, deren Menge erhöht werden soll.
+ * @param int $productId Die ID des Produkts, zu dem die Zutat gehört.
  * @return void
  */
 public function incrementQuantity($ingredientId, $productId)
 {
     foreach ($this->selectedIngredients as &$ingredient) {
-        if ($ingredient['id'] == $ingredientId && isset($ingredient['quantity'])) {
+        if ($ingredient['id'] == $ingredientId && isset($ingredient['quantity']) && is_numeric($ingredient['quantity'])) {
             $ingredient['quantity']++;
-        //    $this->disableAddToCartButton = false;
             break;
         }
-    }
-  //  $this->checkRequiredIngredientsSelected($this->getIngredientData);
 
+    }
+
+    unset($ingredient); // Löscht die Referenz, um Fehler zu vermeiden.
     $this->updateTotalPrice();
+    $this->updateAddToCartButtonState();
 }
 
 /**
  * Verringert die Menge der ausgewählten Zutat um eins oder entfernt sie, wenn die Menge eins ist.
- * Setzt außerdem die passende Node zurück.
- *
- * Diese Methode wird aufgerufen, wenn der Benutzer die Menge einer ausgewählten Zutat verringern möchte.
- * Sie durchläuft das Array der ausgewählten Zutaten und sucht nach der Zutat mit der angegebenen ID.
- * Wenn die Menge größer als eins ist, wird sie um eins verringert.
- * Wenn die Menge eins ist, wird die Zutat aus dem Array der ausgewählten Zutaten entfernt.
- * Nachdem die Menge aktualisiert oder die Zutat entfernt wurde, wird die Methode updateTotalPrice aufgerufen,
- * um den Gesamtpreis zu aktualisieren.
- * Außerdem wird die passende Node zurückgesetzt, indem die entsprechende Aktion aufgerufen wird.
  *
  * @param int $ingredientId Die ID der Zutat, deren Menge verringert werden soll.
+ * @param int $productId Die ID des Produkts, zu dem die Zutat gehört.
  * @return void
  */
 public function decrementQuantity($ingredientId, $productId)
 {
-
-   // dd($ingredientId);
     foreach ($this->selectedIngredients as $key => &$ingredient) {
         if ($ingredient['id'] == $ingredientId) {
-            if (isset($ingredient['quantity']) && $ingredient['quantity'] > 1) {
+            if (isset($ingredient['quantity']) && is_numeric($ingredient['quantity']) && $ingredient['quantity'] > 1) {
                 $ingredient['quantity']--;
             } else {
                 // Zutat entfernen
                 unset($this->selectedIngredients[$key]);
+                // Array neu indizieren
+                $this->selectedIngredients = array_values($this->selectedIngredients);
                 // Passende Node zurücksetzen
                 $this->resetMatchingNode($ingredientId, $productId);
             }
             break;
         }
     }
-  //  $this->checkRequiredIngredientsSelected($this->getIngredientData);
+    unset($ingredient); // Löscht die Referenz, um Fehler zu vermeiden.
 
-    // Gesamtpreis aktualisieren
     $this->updateTotalPrice();
+    $this->updateAddToCartButtonState();
 }
 
-
+/**
+ * Entfernt eine Zutat aus den ausgewählten Zutaten.
+ *
+ * @param int $ingredientId Die ID der Zutat, die entfernt werden soll.
+ * @param int $productId Die ID des Produkts, zu dem die Zutat gehört.
+ * @return void
+ */
 public function removeIngredient($ingredientId, $productId)
 {
     foreach ($this->selectedIngredients as $key => $ingredient) {
         if ($ingredient['id'] == $ingredientId) {
             // Zutat entfernen
             unset($this->selectedIngredients[$key]);
+            // Array neu indizieren
+            $this->selectedIngredients = array_values($this->selectedIngredients);
             // Passende Node zurücksetzen
             $this->resetMatchingNode($ingredientId, $productId);
-         //   $this->disableAddToCartButton = true;
-
             break;
         }
     }
-   // $this->checkRequiredIngredientsSelected($this->selectedIngredients);
+
+    $this->updateTotalPrice();
+    $this->updateAddToCartButtonState();
 }
 
+/**
+ * Aktualisiert den Zustand des "In den Warenkorb" Buttons, basierend auf den ausgewählten Zutaten.
+ *
+ * @return void
+ */
+private function updateAddToCartButtonState()
+{
+    foreach ($this->getIngredientData as $ingredient) {
+        if ($ingredient['min_ingredients'] > 0 && $this->countSelectedIngredients($ingredient) < $ingredient['min_ingredients']) {
+            $this->disableAddToCartButton = true;
+            return;
+        }
+    }
+    $this->disableAddToCartButton = false;
+}
 
 
 /**
@@ -952,26 +975,6 @@ private function resetMatchingNode($ingredientId, $productId)
     $this->updateTotalPrice();
 }
 
-
-
-/**
- * Schließt das Overlay und setzt ausgewählte Zutaten zurück.
- *
- * Diese Methode wird aufgerufen, wenn der Benutzer das Overlay schließt,
- * das für die Auswahl von Zutaten angezeigt wird.
- * Sie setzt das Attribut $showOverlay auf false, um das Overlay auszublenden,
- * und setzt das Attribut $selectedIngredients zurück, um ausgewählte Zutaten zu löschen.
- */
-public function closeOverlay()
-{
-    // Das Overlay wird ausgeblendet
-    $this->showOverlay = false;
-
-    // Ausgewählte Zutaten werden zurückgesetzt
-    $this->reset('selectedIngredients');
-    // Free Zutaten werden zurückgesetzt
-    $this->reset('freeIngredients');
-}
 
 
 

@@ -223,6 +223,7 @@
                             <li><a href="{{ route('admin.promo-banner-index') }}">@autotranslate('WerbeBanner', app()->getLocale())</a></li>
                             <li><a href="{{ route('admin.invoices-all') }}">@autotranslate('Abrechnungen', app()->getLocale())</a></li>
                             <li><a href="{{ route('admin.storno-manager') }}">@autotranslate('StornoManager', app()->getLocale())</a></li>
+                            <li><a href="{{ route('admin.taxratesmanager-index') }}">@autotranslate('Tax Rates', app()->getLocale())</a></li>
                           </ul>
                       </li>
 
