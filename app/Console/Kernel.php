@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('invoices:generate')->weeklyOn(6, '23:59');
         $schedule->command('notify:outbid')->hourly();
         $schedule->command('comments:delete-unverified')->hourly();
-
+        $schedule->command('sellers:delete-unverified')->hourly();
 
     }
 

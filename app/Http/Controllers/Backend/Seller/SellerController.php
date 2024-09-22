@@ -147,25 +147,24 @@ class SellerController extends Controller
             'name_register' => 'required',
             'email_register' => 'required|email|unique:sellers,email',
             'restaurantname_register' => 'required|min:5',
-            'address_register' => 'required',
+            'street_register' => 'required',
+            'housenumber_register' => 'required',
             'city_register' => 'required',
             'zip_register' => 'required',
             'country_register' => 'required',
-        ],[
+        ], [
             'name_register.required' => 'Name is required',
             'email_register.required' => 'Email is required',
             'email_register.email' => 'Email is not valid',
             'email_register.unique' => 'Email is already taken',
             'restaurantname_register.required' => 'Restaurant name is required',
             'restaurantname_register.min' => 'Restaurant name must be at least 5 characters',
-            'address_register.required' => 'Address is required',
+            'street_register.required' => 'Street is required',
+            'housenumber_register.required' => 'Housenumber is required',
             'city_register.required' => 'City is required',
             'zip_register.required' => 'Zip is required',
             'country_register.required' => 'Country is required',
         ]);
-
-//dd($request->all());
-
 
         if ($request->filled('bot_trap')) {
             return redirect()->back()->withInput()->withErrors(['bot_trap' => 'Das Formular wurde von einem Roboter ausgefüllt.']);
@@ -182,10 +181,11 @@ class SellerController extends Controller
         $defaultPhone = '1234567890';
 
         // Extrahiere und baue die vollständige Adresse
-        $address = $request->input('address_register');
+        $address = $request->input('street_register') . ' ' . $request->input('housenumber_register');
+
         $city = $request->input('city_register');
         $zip = $request->input('zip_register');
-        $userInput = "$address $zip $city";
+        $userInput = "$address, $zip $city";
 
         // Geocode-Service initialisieren
         $geocodeService = new GeocodeService();
@@ -198,14 +198,13 @@ class SellerController extends Controller
 
             // Extrahiere die korrigierte Adresse
             $correctedAddress = [
-                'street' => $results[0]['address']['road'] ?? $address,
-                'housenumber' => $results[0]['address']['house_number'] ?? '',
+                'street' => $results[0]['address']['road'] ?? $request->input('street_register'),
+                'housenumber' => $results[0]['address']['house_number'] ?? $request->input('housenumber_register'),
                 'postal_code' => $results[0]['address']['postcode'] ?? $zip,
                 'city' => $results[0]['address']['city'] ?? $results[0]['address']['village'] ?? $city,
                 'city_district' => $results[0]['address']['city_district'] ?? null,
                 'suburb' => $results[0]['address']['suburb'] ?? null,
             ];
-//dd($correctedAddress);
 
             // Speichere die korrigierte Adresse in der Session
             session(['address_data' => $correctedAddress]);
@@ -219,11 +218,10 @@ class SellerController extends Controller
             'email' => $request->email_register,
         ]);
 
-
         $shop = $seller->shops()->create([
             'shop_nr' => $this->newShop['shop_nr'],
             'title' => $request->restaurantname_register,
-            'street' => ucfirst($request->address_register),
+            'street' => ucfirst($correctedAddress['street']) . ' ' . ucfirst($correctedAddress['housenumber']),
             'city' => $correctedAddress['city'],
             'zip' => $correctedAddress['postal_code'],
             'phone' => $defaultPhone,
@@ -236,6 +234,10 @@ class SellerController extends Controller
             'order_email' => $request->email_register,
             'progress' => '0',
             'status' => 'limited',
+            'state' => $results[0]['address']['state'] ?? null,
+            'ISO3166-2-lvl4' => $results[0]['address']['ISO3166-2-lvl4'] ?? null,
+            'country' => $results[0]['address']['country'] ?? null,
+            'country_code' => $results[0]['address']['country_code'] ?? null,
         ]);
 
         $seller->shops()->wherePivot('mod_shop_id', $shop->id)->updateExistingPivot($shop->id, ['is_master' => true]);
@@ -285,7 +287,7 @@ class SellerController extends Controller
             return view('backend.pages.seller.auth.email-verificaton', $data);
         } else {
             session()->flash('fail', 'Something went wrong');
-            return redirect()->route('admin.forgot-password');
+            return redirect()->route('seller.forgot-password');
         }
 
         return redirect()->route('seller.login')->with('success', 'Registration successful. Please verify your email');

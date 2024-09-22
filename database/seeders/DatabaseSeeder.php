@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(BadwordsTableSeeder::class);
         $this->call(ModCuisinesSeeder::class);
         $this->call(GeneralSettingsSeeder::class);
+        $this->call(ModSysTaxRatesSeeder::class);
 
     }
 

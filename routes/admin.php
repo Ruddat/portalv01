@@ -113,6 +113,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
             Route::view('/translations', 'backend.pages.admin.manager.translations-manager')->name('translations');
             Route::view('/shopmanagement', 'backend.pages.admin.manager.shop-manager')->name('shopmanagement');
             Route::view('/badwords-list', 'backend.pages.admin.manager.badwords-index')->name('badwords-list');
+            Route::view('/tax-rates', 'backend.pages.admin.manager.taxratesmanager-index')->name('taxratesmanager-index');
           //  Route::match(['get', 'post'], '/list', [LiveOrdersController::class, 'handleListRequest'])->name('live-orders-list');
 
         });

@@ -1,4 +1,4 @@
-@extends('frontend.layouts.default')
+@extends('frontend.layouts.default-shop-index')
 @section('content')
     {{-- seitenabhengig css --}}
     @push('specific-css')
@@ -96,6 +96,10 @@
                             </div>
                             <!-- /head -->
                             <div class="main">
+
+
+
+
                                 <livewire:frontend.card.cart-component />
                                 <livewire:frontend.cart.tip-component />
                                 <livewire:frontend.cart.timepicker-component :shopId="$restaurant" />
@@ -115,6 +119,13 @@
             <!-- /container -->
         </div>
         <!-- /bg_gray -->
+
+
+
+
+
+
+
 
 
         <div class="container margin_30_20">
@@ -216,6 +227,14 @@
         </div>
 
 <style>
+
+
+
+
+/* new Card */
+
+
+
     /* Desktop */
 .secondary_nav {
     display: flex;

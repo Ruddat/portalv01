@@ -59,7 +59,7 @@
         href="{{ asset('frontend/img/apple-touch-icon-114x114-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144"
         href="{{ asset('frontend/img/apple-touch-icon-144x144-precomposed.png') }}">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- GOOGLE WEB FONT -->

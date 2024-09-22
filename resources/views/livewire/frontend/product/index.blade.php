@@ -61,61 +61,50 @@
                                         <div class="col-md-12 col-sm-12 col-xs-12 price-container">
 
 
-                                            <!-- Preisboxen -->
-                                            @if ($sizesWithPrices->isNotEmpty())
-                                                @php $hasProductPrices = $sizesWithPrices->where('parent', $product->id)->isNotEmpty(); @endphp
-                                                @if ($hasProductPrices)
-                                                    @foreach ($sizesWithPrices as $size)
-                                                        @if ($size->parent === $product->id)
-                                                            <div wire:click="addToCartNew({{ $product->id }}, '{{ addslashes($product->product_title) }}', {{ $size->price }}, {{ $size->size_id }}, '{{ $size->size }}', 1)"
-                                                                role="button"
-                                                                class="price-box add-to-cart animated-box"
-                                                                title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
+<!-- Preisboxen -->
+@if ($sizesWithPrices->isNotEmpty())
+    @php $hasProductPrices = $sizesWithPrices->where('parent', $product->id)->isNotEmpty(); @endphp
+    @if ($hasProductPrices)
+        @foreach ($sizesWithPrices as $size)
+            @if ($size->parent === $product->id && $size->price > 0)  <!-- Check if price is greater than 0 -->
+                <div wire:click="addToCartNew({{ $product->id }}, '{{ addslashes($product->product_title) }}', {{ $size->price }}, {{ $size->size_id }}, '{{ $size->size }}', 1)"
+                    role="button"
+                    class="price-box add-to-cart animated-box"
+                    title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
 
-                                                                @if ($product->bottle)
-                                                                <span class="price-box-title">+Pfand:
-                                                                    {{ $product->bottle->bottles_value }}</span>
-                                                            @endif
-                                                                <span
-                                                                    class="price-box-title">{{ $size->size }}</span>
-                                                                <span
-                                                                    class="price-box-price">{{ $size->price }}&nbsp;€</span>
-                                                            </div>
-                                                        @endif
-                                                    @endforeach
-                                                @else
-                                                    @if ($product->base_price)
-                                                           <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, '{{ $size->size_id }}', '0', 1)"
-                                                            role="button" class="price-box add-to-cart animated-box"
-                                                            title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
+                    @if ($product->bottle)
+                        <span class="price-box-title">+Pfand:
+                            {{ $product->bottle->bottles_value }}</span>
+                    @endif
+                    <span class="price-box-title">{{ $size->size }}</span>
+                    <span class="price-box-price">{{ $size->price }}&nbsp;€</span>
+                </div>
+            @endif
+        @endforeach
+    @else
+        @if ($product->base_price > 0)  <!-- Check if base price is greater than 0 -->
+            <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, '{{ $size->size_id }}', '0', 1)"
+                role="button" class="price-box add-to-cart animated-box"
+                title="{{ $product->product_title }} in den Warenkorb legen und in {{ $restaurant->street }} - {{ $restaurant->city }} bei {{ $restaurant->title }} bestellen">
 
-                                                            @if ($product->bottle)
-                                                                <span class="price-box-title">+Pfand:
-                                                                    {{ $product->bottle->bottles_value }}</span>
-                                                                    @php
-                                                                    //    dd($product->bottle->bottles_value);
-                                                                    //    <div wire:click="addToCartNew({{ $product->id }}, '{{ $product->product_title }}', {{ $product->base_price }}, {{ $size->size_id }}, '{{ $size->size }}', 1)"
-
-                                                                    @endphp
-                                                            @endif
-                                                            <span
-                                                                class="price-box-price">{{ $product->base_price }}&nbsp;€</span>
-                                                        </div>
-                                                    @else
-                                                        <div>
-                                                            <strong>Preis nicht verfügbar</strong>
-                                                        </div>
-                                                    @endif
-                                                @endif
-                                            @else
-                                                <div>
-                                                    <strong>Preis nicht verfügbar</strong>
-                                                </div>
-                                            @endif
-
-
-
-                                            <!-- Preisboxen -->
+                @if ($product->bottle)
+                    <span class="price-box-title">+Pfand:
+                        {{ $product->bottle->bottles_value }}</span>
+                @endif
+                <span class="price-box-price">{{ $product->base_price }}&nbsp;€</span>
+            </div>
+        @else
+            <div>
+                <strong>Preis nicht verfügbar</strong>
+            </div>
+        @endif
+    @endif
+@else
+    <div>
+        <strong>Preis nicht verfügbar</strong>
+    </div>
+@endif
+<!-- Preisboxen -->
 
                                         </div>
                                     </div>
@@ -160,16 +149,18 @@
     <div class="extra-ingredients-box row">
         {{-- Ausgewählte Zutaten --}}
         @php
-            // Gruppieren von Zutaten nach Namen und Berechnen von Gesamtmenge und Gesamtpreis
-            $groupedIngredients = collect($selectedIngredients)->groupBy('title')->map(function ($group) {
-                return [
-                    'title' => $group[0]['title'],
-                    'id' => $group[0]['id'], // ID hinzugefügt
-                    'quantity' => count($group),
-                    'price' => $group[0]['price'] * count($group)
-                ];
-            });
-        @endphp
+        // Gruppieren von Zutaten nach Namen und Berechnen von Gesamtmenge und Gesamtpreis
+        $groupedIngredients = collect($selectedIngredients)->groupBy('title')->map(function ($group) {
+            return [
+                'title' => $group[0]['title'],
+                'id' => $group[0]['id'],
+                // Summe der tatsächlichen Mengen berechnen, anstatt nur die Anzahl der Elemente
+                'quantity' => $group->sum('quantity'), // Statt count($group)
+                'price' => $group[0]['price'] * $group->sum('quantity')
+            ];
+        });
+    @endphp
+
 
         @foreach ($groupedIngredients as $ingredient)
             <div class="col-lg-3 col-md-3 col-sm-3 mb-2">
@@ -191,14 +182,17 @@
         @endforeach
 
         <hr>
-
         {{-- Kostenlose Zutaten --}}
-        @foreach ($freeIngredients as $ingredient)
-            <div class="col-lg-3 col-md-3 col-sm-3 mb-2">
-                <p>{{ $ingredient['title'] }}
-                    {{ $ingredient['price'] > 0 ? 'Gratis' : number_format($ingredient['price'], 2, ',', '.') . '€' }}</p>
-            </div>
-        @endforeach
+{{-- Kostenlose Zutaten --}}
+@foreach ($freeIngredients as $ingredient)
+    <div class="col-lg-3 col-md-3 col-sm-3 mb-2">
+        <p>{{ $ingredient['title'] }}
+            {{ $ingredient['price'] > 0 ? 'Gratis' : number_format($ingredient['price'], 2, ',', '.') . '€' }}
+        </p>
+        <button wire:click="removeFreeIngredient({{ $ingredient['id'] }})" class="btn btn-danger btn-sm">Entfernen</button>
+    </div>
+@endforeach
+
     </div>
 </div>
 
@@ -223,18 +217,17 @@
 
 <div class="cart-select-container d-flex flex-row flex-wrap">
     <div class="cart-button-box flex-grow-1 d-flex justify-content-between align-items-center mb-2" id="cart-button-box">
-        <select wire:model="selectedQuantity" wire:change="updateQuantity" class="addtocart_qty left">
+        <!-- Das select-Feld wird hier ausgeblendet -->
+        <select wire:model="selectedQuantity" wire:change="updateQuantity" class="addtocart_qty left" style="visibility: hidden;">
             @for ($i = 1; $i <= 10; $i++)
                 <option value="{{ $i }}">{{ $i }}</option>
             @endfor
             <option value="10+">10+</option>
         </select>
+
         <input type="number" class="js_addtocart_qty addtocart_qty left" value="1" min="1" maxlength="2" style="display:none">
 
         <button type="button" class="text-end"
-            @php
-                // dd($selectedSizeId)
-            @endphp
             wire:click="addToCartProduct({{ $productId }}, '{{ addslashes($productTitle) }}', {{ $productPrice }}, {{ $selectedSizeId }}, '{{ $productSize }}', 1)"
             @if($disableAddToCartButton) disabled @endif>
             <span class="btn-icon-start text-primary">
@@ -275,7 +268,7 @@
 
                         // Überprüfen, ob ein Limit für die maximale Anzahl von Zutaten pro Kategorie festgelegt ist
                         $isMaxSet = $ingredient['max_ingredients'] > 0;
-
+//dd($isMaxSet);
                         // Zählen Sie die Anzahl der ausgewählten Zutaten pro Kategorie
                         $selectedCount = $this->countSelectedIngredients($ingredient);
 
@@ -296,39 +289,59 @@
                         $requiredQuantity = $remainingRequiredQuantity > 0 ? ' (' . $remainingRequiredQuantity . ' erforderlich)' : '';
                     @endphp
 
-                    @if (!$isCategoryDisabled)
-                        <button class="btn btn-square btn-light text-start @if($isOpen) open @endif" type="button" wire:click="toggleIngredient('{{ $ingredient['ingredient_id'] }}')" data-bs-toggle="collapse" data-bs-target="#collapse{{ $ingredient['ingredient_id'] }}" aria-expanded="true" aria-controls="collapse{{ $ingredient['ingredient_id'] }}">
-                            {{ $ingredient['heading'] }} - {{ $gratis }}
+@if (!$isCategoryDisabled)
+    @php
+// Anzahl der bereits ausgewählten Zutaten in der aktuellen Gruppe
+$selectedCount = $this->countSelectedIngredients($ingredient);
+$remainingFree = max(0, $ingredient['free_ingredients'] - $selectedCount);
 
-                            <span style="color: {{ $this->disableAddToCartButton && $ingredient['min_ingredients'] > 0 ? 'red' : '' }}">{{ $requiredQuantity }}</span>
-                        </button>
+$gratis = '';
+if ($remainingFree > 0) {
+    $gratis = 'Gratis ' . ($remainingFree > 1 ? $remainingFree . 'x' : ''); // Hier kannst du die Anzeige anpassen
+} else {
+    $minPrice = min(array_column($ingredient['ingredients'], 'price'));
+    $gratis = 'Ab ' . number_format($minPrice, 2, ',', '.') . ' €';
+}
+    @endphp
+    <button class="btn btn-square btn-light text-start @if($isOpen) open @endif" type="button" wire:click="toggleIngredient('{{ $ingredient['ingredient_id'] }}')" data-bs-toggle="collapse" data-bs-target="#collapse{{ $ingredient['ingredient_id'] }}" aria-expanded="true" aria-controls="collapse{{ $ingredient['ingredient_id'] }}">
+        {{ $ingredient['heading'] }} - {{ $gratis }}
+        <span style="color: {{ $this->disableAddToCartButton && $ingredient['min_ingredients'] > 0 ? 'red' : '' }}">{{ $requiredQuantity }}</span>
+    </button>
 
-                        <div class="collapse @if($isIngredientSelected) show @endif" aria-labelledby="ingredient-heading{{ $ingredient['ingredient_id'] }}" id="collapse{{ $ingredient['ingredient_id'] }}">
-                            <div class="card card-body row">
-                                @forelse ($ingredient['ingredients'] as $subIngredient)
-                                    <div class="col-lg-4 col-md-4 col-sm-6 mb-2">
-                                        <div class="collapse-body-text" wire:click="selectIngredient('{{ $subIngredient['id'] }}', '{{ $productId }}', '{{ $ingredient['node_id'] }}' )">
-                                            <div class="d-flex align-items-center">
-                                                <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt="">
-                                                <span class="w-space-no">
-                                                    {{ $subIngredient['title'] }} -
-                                                    @if ($ingredient['free_ingredients'])
-                                                        Gratis
-                                                    @else
-                                                        {{ $subIngredient['price'] == 0 ? 'Gratis' : number_format($subIngredient['price'], 2, ',', '€') }}
-                                                    @endif
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <div class="col">
-                                        Keine Optionen verfügbar
-                                    </div>
-                                @endforelse
-                            </div>
+    <div class="collapse @if($isIngredientSelected) show @endif" aria-labelledby="ingredient-heading{{ $ingredient['ingredient_id'] }}" id="collapse{{ $ingredient['ingredient_id'] }}">
+        <div class="card card-body row">
+            @forelse ($ingredient['ingredients'] as $subIngredient)
+                <div class="col-lg-4 col-md-4 col-sm-6 mb-2">
+                    <div class="collapse-body-text" wire:click="selectIngredient('{{ $subIngredient['id'] }}', '{{ $productId }}', '{{ $ingredient['node_id'] }}' )">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ asset('backend/images/avatar/1.jpg') }}" class="rounded-lg me-2" width="24" alt="">
+                            <span class="w-space-no">
+                                {{ $subIngredient['title'] }} -
+                                @php
+                                $selectedCount = $this->countSelectedIngredients($ingredient);
+                                $isFree = $selectedCount < $ingredient['free_ingredients'];
+                            @endphp
+
+                            @if ($isFree)
+                                Gratis
+                            @else
+                                {{ number_format($subIngredient['price'], 2, ',', '.') }} €
+                            @endif
+                            </span>
                         </div>
-                    @endif
+                    </div>
+                </div>
+            @empty
+                <div class="col">
+                    Keine Optionen verfügbar
+                </div>
+            @endforelse
+        </div>
+    </div>
+@endif
+
+
+
                 @endforeach
 
 

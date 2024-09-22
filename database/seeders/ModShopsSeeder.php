@@ -180,6 +180,12 @@ class ModShopsSeeder extends Seeder
                       'street' => $faker->streetAddress(),
                         'zip' => $faker->postcode,
                         'city' => $cityData['city'],
+                        // neu fuer mwst
+                        'state' => $bundesland, // Neue Spalte 'state'
+                        'ISO3166-2-lvl4' => 'DE-' . substr($bundesland, 0, 2), // Neue Spalte 'ISO3166-2-lvl4'
+                        'country' => 'Deutschland', // Neue Spalte 'country'
+                        'country_code' => 'de', // Neue Spalte 'country_code'
+                        // ende
                         'lat' => $lat,
                         'lng' => $lng,
                         'phone' => $faker->phoneNumber,
