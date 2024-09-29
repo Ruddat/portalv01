@@ -466,6 +466,17 @@ public function updateProduct(Request $request)
     $product->bottles_id = $request->input('bottle_id');
     $product->tax_rate_id = $request->input('tax_rate'); // Save tax rate ID
 
+
+
+
+
+
+
+
+
+
+
+
     // Speichern der ausgewählten Allergene als Array
     $selectedAllergens = $request->input('allergens'); // Ein Array von ausgewählten Allergenen
     $product->allergens_ids = json_encode($selectedAllergens); // Speichern Sie das Array als JSON
@@ -583,6 +594,42 @@ public function updateProduct(Request $request)
             ]);
         }
     }
+
+
+
+    // Überprüfung, ob die Änderung auf alle Produkte in der Kategorie angewendet werden soll
+    if ($request->has('apply_to_all_products_in_category') && $request->input('apply_to_all_products_in_category') == 1) {
+        $productsInCategory = ModProducts::where('category_id', $categoryId)->get();
+
+        foreach ($productsInCategory as $productInCategory) {
+            if ($productInCategory->id != $productId) {
+                foreach ($request->input('ingredients') as $nodeId => $nodeData) {
+                    ModProductIngredientsNodes::updateOrCreate(
+                        [
+                            'parent' => $productInCategory->id,
+                            'shop_id' => $shopId,
+                            'ingredients_id' => $nodeId,
+                        ],
+                        [
+                            'free_ingredients' => $nodeData['free_ingredients'] ?? 0,
+                            'min_ingredients' => $nodeData['min_ingredients'] ?? 0,
+                            'max_ingredients' => $nodeData['max_ingredients'] ?? 0,
+                            'active' => $nodeData['active'] ?? 0,
+                        ]
+                    );
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     // Produkt speichern
     if ($product->save()) {

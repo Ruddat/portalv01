@@ -101,6 +101,8 @@ class OrderButtonComponent extends Component
                 $this->message = 'Bitte wählen Sie eine Liefer- oder Abholoption aus.';
                 $this->canOrder = false;
             }
+
+
         } elseif (!$this->isOpen && $this->shopStatus === 'on') {
             // Shop ist geschlossen, aber Vorbestellungen sind möglich
             $this->message = 'Vorbestellung möglich. Bitte wählen Sie eine Lieferzeit aus.';

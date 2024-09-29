@@ -39,82 +39,77 @@ class ShopSearchController extends Controller
     }
 
 
-    /**
-     * Zeigt die normale Indexseite, z.B. das Suchformular.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function index(Request $request)
-    {
-        // Session-Werte abrufen
-        $userLatitude = $request->session()->get('userLatitude', null);
-        $userLongitude = $request->session()->get('userLongitude', null);
+/**
+ * Zeigt die normale Indexseite, z.B. das Suchformular.
+ *
+ * @param  \Illuminate\Http\Request  $request
+ * @return \Illuminate\Contracts\View\View
+ */
+public function index(Request $request)
+{
+    // Session-Werte abrufen
+    $userLatitude = $request->session()->get('userLatitude');
+    $userLongitude = $request->session()->get('userLongitude');
+    $selectedDistance = $request->session()->get('selectedDistance', 20); // Standardwert setzen
+    $selectedLocation = $request->session()->get('selectedLocation');
 
-        // Standardwert für die Entfernung verwenden, wenn nicht gesetzt
-        $selectedDistance = $request->session()->get('selectedDistance', 20);
-        $selectedLocation = $request->session()->get('selectedLocation');
+    // Debugging (falls nötig)
+    // dd($selectedLocation);
 
-       // dd($selectedLocation);
+    $restaurants = collect(); // Leere Sammlung für Restaurants
 
-
-
-
-
-        if ($userLatitude !== null && $userLongitude !== null) {
-            // Wenn Geokoordinaten in der Session vorhanden sind, Restaurants in der Umgebung auswählen
-            $restaurants = ModShop::select('*')
-                ->selectRaw(
-                    '( 6371 * acos( cos( radians(?) ) *
-                    cos( radians( lat ) )
-                    * cos( radians( lng ) - radians(?) )
-                    + sin( radians(?) ) *
-                    sin( radians( lat ) ) ) ) AS distance',
-                    [$userLatitude, $userLongitude, $userLatitude]
-                )
-                ->having('distance', '<', $selectedDistance)
-                ->orderBy('voting_average', 'desc')
-                ->where('published', true)
-                ->where('show_voting', true)
-                ->whereIn('status', ['on', 'limited']) // Add status condition
-                ->take(6)
-                ->get();
-        } else {
-            // Wenn keine Geokoordinaten in der Session vorhanden sind, zufällig die besten Restaurants auswählen
-            $restaurants = ModShop::where('published', 1)
-                ->where('show_voting', 1)
-                ->whereIn('status', ['on', 'limited']) // Add status condition
-                ->orderBy('voting_average', 'desc')
-                ->take(6)
-                ->inRandomOrder()
-                ->get();
-        }
-
-        // Debugging für Koordinaten
-        // dd($userLatitude, $userLongitude);
-
-        $appName = config('app.name', 'Laravel');
-        $defaultDescription = "Finde die besten Restaurants in deiner Nähe. Genieße eine Vielzahl von köstlichen Gerichten.";
-        $defaultKeywords = "Restaurants, Essen, Lieferung, Qualität, Service";
-
-        // Meta-Beschreibung und Keywords aus den Einstellungen abrufen
-        $metaDescription = get_settings()->site_meta_description ?: $defaultDescription;
-        $metaKeywords = get_settings()->site_meta_keywords ?: $defaultKeywords;
-        $ogTitle = "Entdecke die besten Restaurants in deiner Nähe";
-        $ogDescription = $metaDescription;
-        $ogImage = asset('images/default-og-image.jpg');
-        $title = "$appName - Willkommen bei unserem Restaurantführer";
-
-        return view('frontend.pages.index.index', [
-            'restaurants' => $restaurants,
-            'metaDescription' => $metaDescription,
-            'metaKeywords' => $metaKeywords,
-            'ogTitle' => $ogTitle,
-            'ogDescription' => $ogDescription,
-            'ogImage' => $ogImage,
-            'title' => $title
-        ]);
+    // Wenn Geokoordinaten vorhanden sind, Restaurants nach Entfernung filtern
+    if (!is_null($userLatitude) && !is_null($userLongitude)) {
+        $restaurants = ModShop::select('*')
+            ->selectRaw(
+                '(6371 * acos(cos(radians(?)) * cos(radians(lat))
+                * cos(radians(lng) - radians(?))
+                + sin(radians(?)) * sin(radians(lat)))) AS distance',
+                [$userLatitude, $userLongitude, $userLatitude]
+            )
+            ->having('distance', '<', $selectedDistance)
+            ->orderBy('voting_average', 'desc')
+            ->where('published', true)
+            ->where('show_voting', true)
+            ->whereIn('status', ['on', 'limited']) // Status-Filter hinzufügen
+            ->take(6)
+            ->get();
+    } else {
+        // Falls keine Koordinaten vorhanden sind, den Benutzer informieren und zufällige Restaurants auswählen
+        session()->flash('message', 'Keine Standortdaten gefunden. Zufällige Restaurants werden angezeigt.');
+        $restaurants = ModShop::where('published', true)
+            ->where('show_voting', true)
+            ->whereIn('status', ['on', 'limited']) // Status-Filter hinzufügen
+            ->orderBy('voting_average', 'desc')
+            ->take(6)
+            ->inRandomOrder()
+            ->get();
     }
+
+    // Meta-Daten und OpenGraph-Daten abrufen
+    $appName = config('app.name', 'Laravel');
+    $defaultDescription = "Finde die besten Restaurants in deiner Nähe. Genieße eine Vielzahl von köstlichen Gerichten.";
+    $defaultKeywords = "Restaurants, Essen, Lieferung, Qualität, Service";
+
+    // Meta-Beschreibung und Keywords aus den Einstellungen abrufen, falls nicht vorhanden, Standardwerte nutzen
+    $metaDescription = get_settings()->site_meta_description ?: $defaultDescription;
+    $metaKeywords = get_settings()->site_meta_keywords ?: $defaultKeywords;
+    $ogTitle = "Entdecke die besten Restaurants in deiner Nähe";
+    $ogDescription = $metaDescription;
+    $ogImage = asset('images/default-og-image.jpg');
+    $title = "$appName - Willkommen bei unserem Restaurantführer";
+
+    return view('frontend.pages.index.index', [
+        'restaurants' => $restaurants,
+        'metaDescription' => $metaDescription,
+        'metaKeywords' => $metaKeywords,
+        'ogTitle' => $ogTitle,
+        'ogDescription' => $ogDescription,
+        'ogImage' => $ogImage,
+        'title' => $title
+    ]);
+}
+
 
 
     public function viewAll(Request $request)
@@ -198,211 +193,96 @@ class ShopSearchController extends Controller
  */
 public function search(Request $request)
 {
-
     try {
+        // Eingabewerte und Session-Werte abrufen
         $query = $request->input('query', '');
-        $latitude = $request->input('latitude', Session::get('userLatitude'));
-        $longitude = $request->input('longitude', Session::get('userLongitude'));
-
-        $selectedDistance = $request->input('distance', Session::get('selectedDistance', 20)); // Standardwert: 20 Kilometer
+        $latitude = $request->input('latitude', session('userLatitude'));
+        $longitude = $request->input('longitude', session('userLongitude'));
+        $selectedDistance = $request->input('distance', session('selectedDistance', 20));
 
         // Überprüfen, ob eine Suchanfrage oder Standortdaten vorhanden sind
         if (empty($query) && (empty($latitude) || empty($longitude))) {
             return redirect()->back()->withErrors(['query' => 'Bitte geben Sie eine Adresse ein oder nutzen Sie die Standorterkennung.']);
         }
 
+        // Cache-Schlüssel generieren basierend auf den Suchparametern
+        $cacheKey = "search_restaurants_{$query}_{$latitude}_{$longitude}_{$selectedDistance}";
 
-        if (!empty($query)) {
-            // Adresse parsen
-            $parsedAddress = $this->parseAddress($query);
+        // Überprüfen, ob die Daten im Cache vorhanden sind
+        $cachedResults = Cache::remember($cacheKey, 10, function () use ($query, $latitude, $longitude, $selectedDistance) {
+            $results = [];
 
-           // dd($selectedDistance, $parsedAddress);
-
-           if ($parsedAddress) {
-            // Überprüfen, ob die Adresse vollständig ist (Straße, Hausnummer, PLZ und Stadt sind nicht null)
-            if (!is_null($parsedAddress['street']) && !is_null($parsedAddress['housenumber']) && !is_null($parsedAddress['postal_code'])) {
-                // Adresse in der Datenbank suchen und ggf. speichern
-                $addressData = ModVendorAddressData::where('street', $parsedAddress['street'])
-                    ->where('housenumber', $parsedAddress['housenumber'])
-                    ->where('postal_code', $parsedAddress['postal_code'])
-                    ->where('city', $parsedAddress['city'])
-                    ->first();
-
-                if (!$addressData) {
-                    // Geocoding-Service verwenden, um Geokoordinaten zu erhalten
-                    $results = $this->geocodeService->searchByAddress($query);
-
-                    if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
-                        $userLatitude = $results[0]['lat'];
-                        $userLongitude = $results[0]['lon'];
-                        $userCity = $results[0]['name'];
-
-                        // Adresse in der Datenbank speichern
-                        ModVendorAddressData::create([
+            // Adresse parsen, falls eine Suchanfrage existiert
+            if (!empty($query)) {
+                $parsedAddress = $this->parseAddress($query);
+                if ($parsedAddress && $this->isAddressComplete($parsedAddress)) {
+                    $addressData = ModVendorAddressData::firstOrCreate(
+                        [
                             'street' => $parsedAddress['street'],
                             'housenumber' => $parsedAddress['housenumber'],
                             'postal_code' => $parsedAddress['postal_code'],
                             'city' => $parsedAddress['city'],
-                            'latitude' => $userLatitude,
-                            'longitude' => $userLongitude,
-                            'created_at' => now(),
-                            'updated_at' => now()
-                        ]);
+                        ],
+                        ['created_at' => now(), 'updated_at' => now()]
+                    );
 
-                        session(['userLatitude' => $userLatitude]);
-                        session(['userLongitude' => $userLongitude]);
-                        session(['selectedName' => $userCity]);
-                        session(['selectedLocation' => $query]);
-                    }
+                    $geocodeResults = $this->getGeocodeResults($query, $addressData);
+                    $latitude = $geocodeResults['lat'];
+                    $longitude = $geocodeResults['lon'];
+
+                    session([
+                        'userLatitude' => $latitude,
+                        'userLongitude' => $longitude,
+                        'selectedLocation' => $query,
+                        'selectedName' => $geocodeResults['name']
+                    ]);
                 } else {
-                    // Wenn die Adresse bereits existiert, benutze die gespeicherten Koordinaten
-                    $userLatitude = $addressData->latitude;
-                    $userLongitude = $addressData->longitude;
-
-                    session(['userLatitude' => $userLatitude]);
-                    session(['userLongitude' => $userLongitude]);
-                    session(['selectedName' => $addressData->city]);
-                    session(['selectedLocation' => $query]);
-                }
-            } else {
-                // Nur die Stadt wurde eingegeben
-                $results = $this->geocodeService->searchByAddress($query);
-
-                if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
-                    $userLatitude = $results[0]['lat'];
-                    $userLongitude = $results[0]['lon'];
-                    $userCity = $results[0]['name'];
-
-                    session(['userLatitude' => $userLatitude]);
-                    session(['userLongitude' => $userLongitude]);
-                    session(['selectedName' => $userCity]);
-                    session(['selectedLocation' => $query]);
+                    // Nur die Stadt wurde eingegeben
+                    $this->handleCityInput($query);
                 }
             }
-        }
 
-    }
+            // Abrufen der gesponserten Restaurants und Entfernung berechnen
+            $currentDateTime = Carbon::now('Europe/Berlin');
+            $sponsoredRestaurants = $this->getSponsoredRestaurants($latitude, $longitude, $selectedDistance, $currentDateTime);
 
-        // Session-Werte abrufen
-        $userLatitude = $request->session()->get('userLatitude', null);
-        $userLongitude = $request->session()->get('userLongitude', null);
+            // Restaurants basierend auf den Geokoordinaten abrufen
+            $restaurants = $this->getNearbyRestaurants($latitude, $longitude, $selectedDistance, $query);
 
-        // Filterwert für den Umkreis aus der Session abrufen
-        if ($request->filled('distance')) {
-            $selectedDistance = $request->input('distance');
-            $request->session()->put('selectedDistance', $selectedDistance);
-        } else {
-            $selectedDistance = Session::get('selectedDistance', 20);
-        }
+            // Öffnungsstatus der Restaurants bestimmen
+            $restaurantStatus = $this->determineRestaurantStatus($restaurants, $currentDateTime);
 
-        // Abrufen der gesponserten Restaurants
-        $currentDateTime = Carbon::now('Europe/Berlin');
+            $results['restaurants'] = $restaurants;
+            $results['sponsoredRestaurants'] = $sponsoredRestaurants;
+            $results['restaurantStatus'] = $restaurantStatus;
 
-        // Füge Distanzberechnung für gesponserte Restaurants hinzu
-        $sponsoredRestaurants = ModTopRankPrice::join('mod_shops', 'mod_top_rank_prices.shop_id', '=', 'mod_shops.id')
-            ->where('mod_top_rank_prices.start_time', '<=', $currentDateTime)
-            ->where('mod_top_rank_prices.end_time', '>=', $currentDateTime)
-            ->where('mod_shops.published', true)
-            ->select('mod_shops.id', 'mod_shops.title', 'mod_shops.street', 'mod_shops.zip', 'mod_shops.city', 'mod_shops.lat', 'mod_shops.lng', 'mod_shops.logo', 'mod_shops.votes_count', 'mod_shops.voting_average', 'mod_shops.shop_slug')
-            ->selectRaw(
-                '( 6371 * acos( cos( radians(?) ) *
-                cos( radians( mod_shops.lat ) ) *
-                cos( radians( mod_shops.lng ) - radians(?) ) +
-                sin( radians(?) ) *
-                sin( radians( mod_shops.lat ) ) ) ) AS distance',
-                [$userLatitude, $userLongitude, $userLatitude]
-            )
-            ->having('distance', '<', $selectedDistance)
-            ->get();
+            return $results;
+        });
 
-        // Restaurants basierend auf den Geokoordinaten und der Entfernung abrufen
-        if ($userLatitude !== null && $userLongitude !== null) {
-            $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average', 'shop_slug')
-                ->selectRaw(
-                    '( 6371 * acos( cos( radians(?) ) *
-                    cos( radians( lat ) ) *
-                    cos( radians( lng ) - radians(?) ) +
-                    sin( radians(?) ) *
-                    sin( radians( lat ) ) ) ) AS distance',
-                    [$userLatitude, $userLongitude, $userLatitude]
-                )
-                ->having('distance', '<', $selectedDistance)
-                ->where('published', true)
-                ->orderBy('distance')
-                ->paginate($this->perPage);
+        // Session-Werte erneut abrufen, falls sie aktualisiert wurden
+        $latitude = session('userLatitude');
+        $longitude = session('userLongitude');
+        $findCityName = session('selectedName');
 
-            if (!empty($query)) {
-                $request->session()->put('selectedDistance', $selectedDistance);
-            }
-        } else {
-            $restaurants = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'no_abholung', 'no_lieferung', 'logo', 'votes_count', 'voting_average', 'shop_slug')
-                ->paginate($this->perPage);
-        }
-
-        // Ein leeres Array erstellen, um die Meldungen für jedes Restaurant zu speichern
-        $restaurantStatus = [];
-
-        // Durch die Restaurants iterieren
-        foreach ($restaurants as $restaurant) {
-            $openingHours = ModSellerWorktimes::where('shop_id', $restaurant->id)->get();
-            if ($openingHours->isNotEmpty()) {
-                $currentDayOfWeek = strtolower($currentDateTime->format('l'));
-                $currentOpenStatus = [];
-                foreach ($openingHours as $hour) {
-                    if ($hour->day_of_week === $currentDayOfWeek) {
-                        $currentOpenStatus[] = [
-                            'isOpen' => $hour->is_open == 1,
-                            'times' => [
-                                'start' => $hour->open_time ? Carbon::parse($hour->open_time) : null,
-                                'end' => $hour->close_time ? Carbon::parse($hour->close_time) : null,
-                            ],
-                        ];
-                    }
-                }
-                $isOpen = false;
-                foreach ($currentOpenStatus as $status) {
-                    $openingTimes = $status['times'];
-                    if ($openingTimes['start'] && $openingTimes['end']) {
-                        if ($currentDateTime->between($openingTimes['start'], $openingTimes['end'])) {
-                            $isOpen = true;
-                            break;
-                        }
-                    }
-                }
-                $restaurantStatus[$restaurant->id] = $isOpen ? "open" : "closed";
-            } else {
-                $restaurantStatus[$restaurant->id] = "no opening hours available";
-            }
-        }
-
-        $restaurants->appends($request->only(['query', 'distance']));
-        $findCityName = $request->session()->get('selectedName');
-
-        $appName = config('app.name', 'Laravel');
-        $defaultDescription = "Finde die besten Restaurants in $findCityName. Genieße eine Vielzahl von köstlichen Gerichten.";
-        $defaultKeywords = "Restaurants, Essen, Lieferung, Qualität, Service";
-
-        // Meta-Beschreibung und Keywords aus den Einstellungen abrufen
-        $metaDescription = get_settings()->site_meta_description ?: $defaultDescription;
-        $metaKeywords = get_settings()->site_meta_keywords ?: $defaultKeywords;
+        // Meta-Daten abrufen
+        $metaDescription = get_settings()->site_meta_description ?: "Finde die besten Restaurants in $findCityName. Genieße eine Vielzahl von köstlichen Gerichten.";
+        $metaKeywords = get_settings()->site_meta_keywords ?: "Restaurants, Essen, Lieferung, Qualität, Service";
         $ogTitle = "Entdecke die besten Restaurants in $findCityName";
-        $ogDescription = $metaDescription;
         $ogImage = asset('images/default-og-image.jpg');
-        $title = "$appName - Willkommen bei unserem Restaurantführer";
+        $title = config('app.name', 'Laravel') . " - Willkommen bei unserem Restaurantführer";
 
         return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
-            'restaurants' => $restaurants,
-            'userLatitude' => $userLatitude,
-            'userLongitude' => $userLongitude,
+            'restaurants' => $cachedResults['restaurants'],
+            'userLatitude' => $latitude,
+            'userLongitude' => $longitude,
             'selectedDistance' => $selectedDistance,
             'findCityName' => $findCityName,
-            'restaurantStatus' => $restaurantStatus,
-            'sponsoredRestaurants' => $sponsoredRestaurants, // Gesponserte Restaurants hinzufügen
-
+            'restaurantStatus' => $cachedResults['restaurantStatus'],
+            'sponsoredRestaurants' => $cachedResults['sponsoredRestaurants'],
             'metaDescription' => $metaDescription,
             'metaKeywords' => $metaKeywords,
             'ogTitle' => $ogTitle,
-            'ogDescription' => $ogDescription,
+            'ogDescription' => $metaDescription,
             'ogImage' => $ogImage,
             'title' => $title
         ]);
@@ -411,6 +291,127 @@ public function search(Request $request)
         return response()->json(['error' => $e->getMessage()], 500);
     }
 }
+
+
+
+/**
+ * Prüft, ob die Adresse vollständig ist.
+ */
+protected function isAddressComplete($parsedAddress)
+{
+    return !is_null($parsedAddress['street']) && !is_null($parsedAddress['housenumber']) && !is_null($parsedAddress['postal_code']);
+}
+
+/**
+ * Handhabung bei Eingabe nur der Stadt.
+ */
+protected function handleCityInput($query)
+{
+    $results = $this->geocodeService->searchByAddress($query);
+    if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+        session([
+            'userLatitude' => $results[0]['lat'],
+            'userLongitude' => $results[0]['lon'],
+            'selectedLocation' => $query,
+            'selectedName' => $results[0]['name']
+        ]);
+    }
+}
+
+/**
+ * Geocode-Ergebnisse abrufen und speichern.
+ */
+protected function getGeocodeResults($query, $addressData)
+{
+    $results = $this->geocodeService->searchByAddress($query);
+    if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
+        $latitude = $results[0]['lat'];
+        $longitude = $results[0]['lon'];
+        $name = $results[0]['name'];
+
+        if (!$addressData->exists) {
+            $addressData->update(['latitude' => $latitude, 'longitude' => $longitude]);
+        }
+
+        return ['lat' => $latitude, 'lon' => $longitude, 'name' => $name];
+    }
+}
+
+/**
+ * Gesponserte Restaurants abrufen.
+ */
+protected function getSponsoredRestaurants($latitude, $longitude, $selectedDistance, $currentDateTime)
+{
+    return ModTopRankPrice::join('mod_shops', 'mod_top_rank_prices.shop_id', '=', 'mod_shops.id')
+        ->where('mod_top_rank_prices.start_time', '<=', $currentDateTime)
+        ->where('mod_top_rank_prices.end_time', '>=', $currentDateTime)
+        ->where('mod_shops.published', true)
+        ->select('mod_shops.*')
+        ->selectRaw(
+            '( 6371 * acos( cos( radians(?) ) * cos( radians( mod_shops.lat ) ) *
+            cos( radians( mod_shops.lng ) - radians(?) ) + sin( radians(?) ) *
+            sin( radians( mod_shops.lat ) ) ) ) AS distance',
+            [$latitude, $longitude, $latitude]
+        )
+        ->having('distance', '<', $selectedDistance)
+        ->get();
+}
+
+/**
+ * Restaurants in der Nähe abrufen.
+ */
+protected function getNearbyRestaurants($latitude, $longitude, $selectedDistance, $query)
+{
+    $queryBuilder = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'logo', 'votes_count', 'voting_average', 'shop_slug');
+
+    if ($latitude && $longitude) {
+        $queryBuilder->selectRaw(
+            '( 6371 * acos( cos( radians(?) ) * cos( radians( lat ) ) *
+            cos( radians( lng ) - radians(?) ) + sin( radians(?) ) *
+            sin( radians( lat ) ) ) ) AS distance',
+            [$latitude, $longitude, $latitude]
+        )
+        ->having('distance', '<', $selectedDistance)
+        ->orderBy('distance');
+    }
+
+    // Hier wird 'selectedDistance' anstelle von 'distance' verwendet
+    return $queryBuilder->paginate($this->perPage)->appends(compact('query', 'selectedDistance'));
+}
+
+
+/**
+ * Öffnungsstatus der Restaurants ermitteln.
+ */
+protected function determineRestaurantStatus($restaurants, $currentDateTime)
+{
+    $restaurantStatus = [];
+    foreach ($restaurants as $restaurant) {
+        $openingHours = ModSellerWorktimes::where('shop_id', $restaurant->id)->get();
+        $restaurantStatus[$restaurant->id] = $this->getOpeningStatus($openingHours, $currentDateTime);
+    }
+    return $restaurantStatus;
+}
+
+/**
+ * Öffnungsstatus bestimmen.
+ */
+protected function getOpeningStatus($openingHours, $currentDateTime)
+{
+    if ($openingHours->isNotEmpty()) {
+        $currentDayOfWeek = strtolower($currentDateTime->format('l'));
+        foreach ($openingHours as $hour) {
+            if ($hour->day_of_week === $currentDayOfWeek) {
+                if ($hour->is_open == 1 && $currentDateTime->between(Carbon::parse($hour->open_time), Carbon::parse($hour->close_time))) {
+                    return "open";
+                }
+            }
+        }
+        return "closed";
+    }
+    return "no opening hours available";
+}
+
 
 
 

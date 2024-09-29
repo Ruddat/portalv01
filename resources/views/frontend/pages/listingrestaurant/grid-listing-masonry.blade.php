@@ -144,7 +144,8 @@
 	    <!-- /filters -->
 	    <div class="container margin_30_20">
 
-	        <div class="promo mb_30">
+
+            <div class="promo mb_30">
 	            <h3>Free Delivery for your first 14 days!</h3>
 	            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
 	            <i class="icon-food_icon_delivery"></i>

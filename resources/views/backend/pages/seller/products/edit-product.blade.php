@@ -244,6 +244,11 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <input type="checkbox" name="apply_to_all_products_in_category" value="1">
+                                    <label for="apply_to_all_products_in_category">Übernehmen auf alle Produkte in der Kategorie</label>
+                                </div>
+
 
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </form>

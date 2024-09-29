@@ -9,7 +9,9 @@
 
         @include('frontend.includes.header-in-clearfix')
 
-
+@php
+ //   dd($restaurants);
+@endphp
         <div class="page_header element_to_stick">
             <div class="container">
                 <div class="row">

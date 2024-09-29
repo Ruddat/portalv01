@@ -1,6 +1,6 @@
 @extends('backend.layouts.default-dark')
 
-@section('pageTitle', isset($pageTitle) ? app(\App\Services\TranslationService::class)->trans($pageTitle, app()->getLocale()) : app(\App\Services\TranslationService::class)->trans('Page title here....', app()->getLocale()))
+@section('pageTitle', isset($pageTitle) ? app(\App\Services\AutoTranslationService::class)->trans($pageTitle, app()->getLocale()) : app(\App\Services\TranslationService::class)->trans('Page title here....', app()->getLocale()))
 
 @section('content')
 
@@ -22,7 +22,7 @@
                         <div class="pull-right">
                             <a href="{{ route('seller.manage-products.add-product', ['shopId' => $shopId, 'menuId' =>  $menuId, 'categoryId' => $categoryId]) }}" class="btn btn-primary btn-sm" type="button">
                                 <i class="fa fa-plus"></i>
-                                Add Product
+                                @autotranslate('Add Product', app()->getLocale())
                             </a>
                         </div>
                     </div>
@@ -33,8 +33,8 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nr.</th>
-                                        <th>Bild</th>
-                                        <th>Titel</th>
+                                        <th>@autotranslate('Bild', app()->getLocale())</th>
+                                        <th>@autotranslate('Titel', app()->getLocale())</th>
                                         <th>Beschreibung</th>
                                         <th>Preis</th>
                                         <th>Groessen</th>

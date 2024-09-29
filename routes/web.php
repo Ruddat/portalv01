@@ -220,6 +220,7 @@ Route::get('/impressum', function () {
     return view('frontend/pages/otherpages.impressum');
 });
 
+
 // Robots.txt file
 Route::get('/robots.txt', [RobotsController::class, 'index']);
 Route::get('/csv/download/{id}', [CsvExportController::class, 'download'])->name('csv.download');
@@ -286,30 +287,6 @@ Route::post('/vote', [ShopCardController::class, 'vote'])->name('vote-restaurant
 Route::post('/reply', [ShopCardController::class, 'reply'])->name('vote-restaurant.reply');
 
 
-// Match my own domain
-Route::group(['domain' => config('app.domain_url')], function() {
-    Route::any('/', function()
-      {
-          return 'My own domain';
-      });
-  });
-
-  // Match a subdomain of my domain
-  Route::group(['domain' => '{subdomain}.'.config('app.domain_url')], function() {
-    Route::any('/', function()
-      {
-          return 'My own sub domain';
-      });
-  });
-
-  // Match any other domains
-  Route::group(['domain' => '{domain}'], function() {
-    Route::any('/', function()
-      {
-          return 'other domain';
-      });
-  });
-
 
 
 /// -- Backend
@@ -352,6 +329,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
+
 //Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -359,6 +337,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::fallback(function () {
     return redirect()->route('home');
 });
+
 
 Route::prefix('admin/shop')->group(function () {
     // Export-Routen

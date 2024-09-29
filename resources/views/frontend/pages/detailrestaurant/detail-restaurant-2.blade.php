@@ -3,6 +3,9 @@
     {{-- seitenabhengig css --}}
     @push('specific-css')
         <link href="{{ asset('frontend/css/detail-page.css') }}" rel="stylesheet">
+
+        @vite(['resources/css/homepage.css', 'resources/js/homepage.js'])
+
     @endpush
 
     <body data-spy="scroll" data-bs-target="#secondary_nav" data-offset="75">

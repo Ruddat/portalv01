@@ -31,7 +31,6 @@ class TimepickerComponent extends Component
         $this->selectedDate = Carbon::today()->toDateString();
         $this->loadOpeningHours();
         $today = Carbon::now();
-
         for ($i = 0; $i < 7; $i++) {
             $this->availableDates[] = $today->copy()->addDays($i)->format('Y-m-d');
         }
