@@ -47,7 +47,9 @@ class Kernel extends HttpKernel
             ChangeLocale::class,
             \App\Http\Middleware\SellerVariablesMiddleware::class,
             'prevent-back-history', // Hier hinzufügen
-            \App\Http\Middleware\DetectDomain::class,
+          //  \App\Http\Middleware\DetectDomain::class,
+          \App\Http\Middleware\DomainToShopMiddleware::class,
+
         ],
 
         'api' => [
