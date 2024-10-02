@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Seller;
 use App\Models\ModShop;
+use App\Models\ModCategory;
+use App\Models\ModProduct;
 
 class DeleteUnverifiedSellers extends Command
 {
@@ -31,6 +33,15 @@ class DeleteUnverifiedSellers extends Command
         foreach ($unverifiedSellers as $seller) {
             // Lösche die Zuordnungen der Shops in der Pivot-Tabelle
             $seller->shops()->each(function ($shop) {
+                // Lösche zuerst alle referenzierenden Zeilen in mod_categories
+                $shop->categories()->each(function ($category) {
+                    // Lösche zuerst alle referenzierenden Zeilen in mod_products
+                    ModProduct::where('category_id', $category->id)->delete();
+
+                    // Dann lösche die Kategorie
+                    $category->delete();
+                });
+
                 // Wenn das Shop-Modell Soft Deletes verwendet, verwende forceDelete()
                 if ($shop->getDeletedAtColumn() !== null) {
                     $shop->forceDelete();

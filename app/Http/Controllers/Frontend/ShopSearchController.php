@@ -99,7 +99,7 @@ public function index(Request $request)
     $ogImage = asset('images/default-og-image.jpg');
     $title = "$appName - Willkommen bei unserem Restaurantführer";
 
-    return view('frontend.pages.index.index', [
+    return view('frontend.pages.index.index-10', [
         'restaurants' => $restaurants,
         'metaDescription' => $metaDescription,
         'metaKeywords' => $metaKeywords,
@@ -205,31 +205,37 @@ public function search(Request $request)
             return redirect()->back()->withErrors(['query' => 'Bitte geben Sie eine Adresse ein oder nutzen Sie die Standorterkennung.']);
         }
 
-        // Cache-Schlüssel generieren basierend auf den Suchparametern
-        $cacheKey = "search_restaurants_{$query}_{$latitude}_{$longitude}_{$selectedDistance}";
+        // Adresse parsen, falls eine Suchanfrage existiert
+        if (!empty($query)) {
+            $parsedAddress = $this->parseAddress($query);
+            if ($parsedAddress && $this->isAddressComplete($parsedAddress)) {
+                // Erstellt oder holt einen bestehenden Address-Datensatz
+                $addressData = ModVendorAddressData::firstOrCreate(
+                    [
+                        'street' => $parsedAddress['street'],
+                        'housenumber' => $parsedAddress['housenumber'],
+                        'postal_code' => $parsedAddress['postal_code'],
+                        'city' => $parsedAddress['city'],
+                        'latitude' => 0.0, // Setze einen Standardwert
+                        'longitude' => 0.0, // Setze einen Standardwert
+                    ],
+                    ['created_at' => now(), 'updated_at' => now()]
+                );
 
-        // Überprüfen, ob die Daten im Cache vorhanden sind
-        $cachedResults = Cache::remember($cacheKey, 10, function () use ($query, $latitude, $longitude, $selectedDistance) {
-            $results = [];
+                // Hole die Geocodierungsergebnisse
+                $geocodeResults = $this->getGeocodeResults($query, $addressData);
 
-            // Adresse parsen, falls eine Suchanfrage existiert
-            if (!empty($query)) {
-                $parsedAddress = $this->parseAddress($query);
-                if ($parsedAddress && $this->isAddressComplete($parsedAddress)) {
-                    $addressData = ModVendorAddressData::firstOrCreate(
-                        [
-                            'street' => $parsedAddress['street'],
-                            'housenumber' => $parsedAddress['housenumber'],
-                            'postal_code' => $parsedAddress['postal_code'],
-                            'city' => $parsedAddress['city'],
-                        ],
-                        ['created_at' => now(), 'updated_at' => now()]
-                    );
-
-                    $geocodeResults = $this->getGeocodeResults($query, $addressData);
+                // Prüfe, ob die Geocodierung erfolgreich war
+                if (isset($geocodeResults['lat']) && isset($geocodeResults['lon'])) {
                     $latitude = $geocodeResults['lat'];
                     $longitude = $geocodeResults['lon'];
 
+                    // Aktualisiere den Address-Datensatz mit den Koordinaten
+                    $addressData->latitude = $latitude;
+                    $addressData->longitude = $longitude;
+                    $addressData->save();
+
+                    // Setze die Session-Werte
                     session([
                         'userLatitude' => $latitude,
                         'userLongitude' => $longitude,
@@ -237,10 +243,24 @@ public function search(Request $request)
                         'selectedName' => $geocodeResults['name']
                     ]);
                 } else {
-                    // Nur die Stadt wurde eingegeben
-                    $this->handleCityInput($query);
+                    return redirect()->back()->withErrors(['query' => 'Die Adresse konnte nicht gefunden werden. Bitte versuchen Sie es erneut.']);
                 }
+            } else {
+                return redirect()->back()->withErrors(['query' => 'Bitte geben Sie eine vollständige Adresse ein.']);
             }
+        }
+
+        // Überprüfen, ob gültige Koordinaten vorhanden sind
+        if (empty($latitude) || empty($longitude)) {
+            return redirect()->back()->withErrors(['query' => 'Standortinformationen fehlen. Bitte geben Sie eine gültige Adresse ein oder nutzen Sie die Standorterkennung.']);
+        }
+
+        // Cache-Schlüssel generieren basierend auf den Suchparametern
+        $cacheKey = "search_restaurants_{$query}_{$latitude}_{$longitude}_{$selectedDistance}";
+
+        // Überprüfen, ob die Daten im Cache vorhanden sind
+        $cachedResults = Cache::remember($cacheKey, 10, function () use ($query, $latitude, $longitude, $selectedDistance) {
+            $results = [];
 
             // Abrufen der gesponserten Restaurants und Entfernung berechnen
             $currentDateTime = Carbon::now('Europe/Berlin');
@@ -294,6 +314,7 @@ public function search(Request $request)
 
 
 
+
 /**
  * Prüft, ob die Adresse vollständig ist.
  */
@@ -323,6 +344,12 @@ protected function handleCityInput($query)
  */
 protected function getGeocodeResults($query, $addressData)
 {
+
+    // Überprüfen, ob beide Argumente übergeben wurden
+    if (empty($query) || empty($addressData)) {
+        return null;
+    }
+
     $results = $this->geocodeService->searchByAddress($query);
     if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
         $latitude = $results[0]['lat'];
@@ -429,6 +456,7 @@ protected function getOpeningStatus($openingHours, $currentDateTime)
         $latitude = $request->input('latitude');
         $longitude = $request->input('longitude');
 
+dd($latitude, $longitude);
 
         // Fehlerbehandlung für fehlende Koordinaten
         if (!$latitude || !$longitude) {
@@ -576,14 +604,18 @@ return response()->json(['success' => true, 'message' => 'Geokoordinaten erfolgr
 
 
 
-    /**
-     * Parst die Adresse und extrahiert die Komponenten.
-     *
-     * @param string $query
-     * @return array|null
-     */
+/**
+ * Parst die Adresse und extrahiert die Komponenten.
+ *
+ * @param string $query
+ * @return array|null
+ */
 private function parseAddress($query)
 {
+    // Entferne überflüssige Leerzeichen und Kommas
+    $query = trim($query);
+    $query = preg_replace('/\s+/', ' ', $query);
+
     // Prüft auf vollständige Adresse: Straße Hausnummer, PLZ Stadt
     $patternFullAddress = '/^(.+?)\s+(\d+),\s+(\d{5})\s+(.+)$/';
     if (preg_match($patternFullAddress, $query, $matches)) {
@@ -603,6 +635,17 @@ private function parseAddress($query)
             'housenumber' => null,
             'postal_code' => $matches[2],
             'city' => $matches[3]
+        ];
+    }
+
+    // Prüft auf Adresse mit Kommas: Straße, Hausnummer, PLZ, Stadt
+    $patternCommaSeparated = '/^(.+?),\s*(\d+),\s*(\d{5}),\s*(.+)$/';
+    if (preg_match($patternCommaSeparated, $query, $matches)) {
+        return [
+            'street' => $matches[1],
+            'housenumber' => $matches[2],
+            'postal_code' => $matches[3],
+            'city' => $matches[4]
         ];
     }
 

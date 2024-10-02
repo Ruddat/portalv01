@@ -18,8 +18,8 @@ class DomainToShopMiddleware
 
         if ($shopDomain) {
             $shopId = $shopDomain->shop_id;
-            // Setze den Shop in die Session oder in den Request, um später darauf zuzugreifen
             $request->attributes->set('shopId', $shopId);
+            session(['shopId' => $shopId]); // Optional: speichert den Shop in der Session
         }
 
         return $next($request);

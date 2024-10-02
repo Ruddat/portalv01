@@ -275,9 +275,11 @@ Route::get('/search', [ShopSearchController::class, 'search'])
     ->name('search.index');
 
 
-Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])
-    ->name('speichere-standort')
-    ->middleware(LogRequests::class);
+//Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])
+//    ->name('speichere-standort')
+//    ->middleware(LogRequests::class);
+
+
 Route::get('/best-ratet-restaurants', [ShopSearchController::class, 'viewAll'])->name('best-ratet-restaurants.viewAll');
 
 

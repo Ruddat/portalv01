@@ -3,6 +3,8 @@
     <!-- seitenabhengig css -->
     @push('specific-css')
         <link href="{{ asset('frontend/css/home.css') }}" rel="stylesheet">
+        <link href="{{ asset('frontend/css/custom/index.css') }}" rel="stylesheet">
+        <link href="{{ asset('frontend/css/custom/sozialproof.css') }}" rel="stylesheet">
     @endpush
 
     <body>
@@ -17,22 +19,35 @@
                     <div class="container">
                         <div class="row justify-content-center text-center">
                             <div class="col-xl-7 col-lg-8 col-md-8">
-                                <h1>Delivery or Takeaway Food</h1>
-                                <p>The best restaurants at the best price</p>
-                                <form method="post" action="grid-listing-filterscol.html">
-                                <div class="row g-0 custom-search-input">
-                                    <div class="col-lg-10">
-                                        <div class="form-group">
-                                            <input class="form-control no_border_r" type="text" id="autocomplete" placeholder="Address, neighborhood...">
+                                <h1>@autotranslate('Delivery or Takeaway Food', app()->getLocale())</h1>
+                                <p>@autotranslate('The best restaurants at the best price', app()->getLocale())
+                                    <span class="element" style="font-weight: 500"></span>
+                                </p>
+                                <form method="get" action="{{ localized_route('search.index') }}" id="searchForm">
+                                    @csrf <!-- CSRF token for Laravel form submission -->
+                                    <div class="row g-0 custom-search-input">
+                                        <div class="col-lg-9">
+                                            <div class="form-group">
+                                                <input class="form-control no_border_r" type="text" name="query"
+                                                    id="autocomplete" placeholder="@autotranslate('Street or location...', app()->getLocale())"
+                                                    value="{{ session('selectedLocation') }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 button-container">
+                                            <button class="btn_1 gradient" type="submit">@autotranslate('Search', app()->getLocale())</button>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2">
-                                        <button class="btn_1 gradient" type="submit">Search</button>
-                                    </div>
-                                </div>
+                                    @error('query')
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                            <strong>Hunger!</strong> {{ $message }}.
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
+                                        </div>
+                                    @enderror
+                                </form>
                                 <!-- /row -->
                                 <div class="search_trends">
-                                    <h5>Trending:</h5>
+                                    <h5>@autotranslate('Trending', app()->getLocale())</h5>
                                     <ul>
                                         <li><a href="#0">Sushi</a></li>
                                         <li><a href="#0">Burgher</a></li>
@@ -40,7 +55,7 @@
                                         <li><a href="#0">Pizza</a></li>
                                     </ul>
                                 </div>
-                            </form>
+                                @livewire('frontend.search-shops.search-location')
                             </div>
                         </div>
                     </div>
@@ -51,224 +66,57 @@
         </div>
         <!-- /header-video -->
 
-        <div class="container margin_30_60">
-            <div class="main_title center">
-                <span><em></em></span>
-                <h2>Popular Categories</h2>
-                <p>Cum doctus civibus efficiantur in imperdiet deterruisset</p>
-            </div>
-            <!-- /main_title -->
-
-            <div class="owl-carousel owl-theme categories_carousel">
-                <div class="item_version_2">
-                    <a href="grid-listing-filterscol.html">
-                        <figure>
-                            <span>98</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_pizza.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
-                            <div class="info">
-                                <h3>Pizza</h3>
-                                <small>Avg price $40</small>
-                            </div>
-                        </figure>
-                    </a>
-                </div>
-                <div class="item_version_2">
-                    <a href="grid-listing-filterscol.html">
-                        <figure>
-                            <span>87</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_sushi.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
-                            <div class="info">
-                                <h3>Japanese</h3>
-                                <small>Avg price $50</small>
-                            </div>
-                        </figure>
-                    </a>
-                </div>
-                <div class="item_version_2">
-                    <a href="grid-listing-filterscol.html">
-                        <figure>
-                            <span>55</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_hamburgher.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
-                            <div class="info">
-                                <h3>Burghers</h3>
-                                <small>Avg price $55</small>
-                            </div>
-                        </figure>
-                    </a>
-                </div>
-                <div class="item_version_2">
-                    <a href="grid-listing-filterscol.html">
-                        <figure>
-                            <span>55</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_vegetarian.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
-                            <div class="info">
-                                <h3>Vegetarian</h3>
-                                <small>Avg price $40</small>
-                            </div>
-                        </figure>
-                    </a>
-                </div>
-                <div class="item_version_2">
-                    <a href="grid-listing-filterscol.html">
-                        <figure>
-                            <span>65</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_bakery.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
-                            <div class="info">
-                                <h3>Bakery</h3>
-                                <small>Avg price $60</small>
-                            </div>
-                        </figure>
-                    </a>
-                </div>
-                <div class="item_version_2">
-                    <a href="grid-listing-filterscol.html">
-                        <figure>
-                            <span>25</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_chinesse.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
-                            <div class="info">
-                                <h3>Chinese</h3>
-                                <small>Avg price $40</small>
-                            </div>
-                        </figure>
-                    </a>
-                </div>
-                <div class="item_version_2">
-                    <a href="grid-listing-filterscol.html">
-                        <figure>
-                            <span>35</span>
-                            <img src="{{ asset('frontend/img/home_cat_placeholder.jpg') }}" data-src="{{ asset('frontend/img/home_cat_mexican.jpg') }}" alt="" class="owl-lazy" width="350" height="450">
-                            <div class="info">
-                                <h3>Mexican</h3>
-                                <small>Avg price $35</small>
-                            </div>
-                        </figure>
-                    </a>
-                </div>
-            </div>
-            <!-- /carousel -->
-        </div>
         <!-- /container -->
 
         <div class="bg_gray">
             <div class="container margin_60_40">
                 <div class="main_title">
                     <span><em></em></span>
-                    <h2>Top Rated Restaurants</h2>
-                    <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
-                    <a href="#0">View All &rarr;</a>
+                    <h2>@autotranslate('Top Rated Restaurants', app()->getLocale())</h2>
+                    <p>@autotranslate('Discover the best-rated restaurants in your area.', app()->getLocale())</p>
+                    <a href="{{ route('best-ratet-restaurants.viewAll') }}">@autotranslate('View All', app()->getLocale()) &rarr;</a>
                 </div>
                 <div class="row add_bottom_25">
-                    <div class="col-lg-6">
-                        <div class="list_home">
-                            <ul>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_1.jpg') }}" alt="" class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>9.5</strong></div>
-                                        <em>Italian</em>
-                                        <h3>La Monnalisa</h3>
-                                        <small>8 Patriot Square E2 9NF</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-30%</span></li>
-                                            <li>Average price $35</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_2.jpg') }}" alt="" class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>8.0</strong></div>
-                                        <em>Mexican</em>
-                                        <h3>Alliance</h3>
-                                        <small>27 Old Gloucester St, 4563</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-40%</span></li>
-                                            <li>Average price $30</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_3.jpg') }}" alt="" class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>9.0</strong></div>
-                                        <em>Sushi - Japanese</em>
-                                        <h3>Sushi Gold</h3>
-                                        <small>Old Shire Ln EN9 3RX</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-25%</span></li>
-                                            <li>Average price $20</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                            </ul>
+                    @foreach ($restaurants as $restaurant)
+                        <div class="col-lg-6">
+                            <div class="list_home">
+                                <ul>
+                                    <li>
+                                        <a
+                                            href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}">
+                                            <figure>
+                                                <img src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
+                                                    data-src="{{ $restaurant->logo_url ? $restaurant->logo_url : asset('frontend/img/location_list_placeholder.png') }}"
+                                                    alt="{{ $restaurant->title }}" class="lazy" width="350"
+                                                    height="233" style="max-width: 50%; height: auto;">
+                                            </figure>
+                                            <div class="score"><strong>{{ $restaurant->voting_average }}</strong></div>
+                                            <em>{{ $restaurant->categories }}</em>
+                                            <h3>{{ $restaurant->title }}</h3>
+                                            <small>{{ $restaurant->street }} {{ $restaurant->zip }}
+                                                {{ $restaurant->city }}</small>
+                                            <ul>
+                                                <li><span class="ribbon off">{{ $restaurant->charge }}%</span></li>
+                                                <li>@autotranslate('Average price ', app()->getLocale()) ${{ $restaurant->per_order }}</li>
+                                            </ul>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="list_home">
-                            <ul>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_4.jpg') }}" alt="" class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>9.5</strong></div>
-                                        <em>Vegetarian</em>
-                                        <h3>Mr. Pepper</h3>
-                                        <small>27 Old Gloucester St, 4563</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-30%</span></li>
-                                            <li>Average price $20</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_5.jpg') }}" alt="" class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>8.0</strong></div>
-                                        <em>Chinese</em>
-                                        <h3>Dragon Tower</h3>
-                                        <small>22 Hertsmere Rd E14 4ED</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-50%</span></li>
-                                            <li>Average price $35</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="detail-restaurant.html">
-                                        <figure>
-                                            <img src="{{ asset('frontend/img/location_list_placeholder.png') }}" data-src="{{ asset('frontend/img/location_list_6.jpg') }}" alt="" class="lazy" width="350" height="233">
-                                        </figure>
-                                        <div class="score"><strong>8.5</strong></div>
-                                        <em>Pizza - Italian</em>
-                                        <h3>Bella Napoli</h3>
-                                        <small>135 Newtownards Road BT4</small>
-                                        <ul>
-                                            <li><span class="ribbon off">-45%</span></li>
-                                            <li>Average price $25</li>
-                                        </ul>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <!-- /row -->
-                <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }})">
+                <!-- /row -->
+                <div class="banner lazy" data-bg="url({{ asset('frontend/img/banner_bg_desktop.jpg') }}">
                     <div class="wrapper d-flex align-items-center opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.3)">
                         <div>
-                            <small>FooYes Delivery</small>
-                            <h3>We Deliver to your Office</h3>
-                            <p>Enjoy a tasty food in minutes!</p>
-                            <a href="grid-listing-filterscol.html" class="btn_1 gradient">Start Now!</a>
+                            <small>@autotranslate('MamasExpress', app()->getLocale())</small>
+                            <h3>@autotranslate('We Deliver to your Office', app()->getLocale())
+                            </h3>
+                            <p>@autotranslate('Enjoy a tasty food in minutes!', app()->getLocale())
+                            </p>
+                            <a href="/get-location" class="btn_1 gradient">@autotranslate('Start Now!', app()->getLocale())</a>
                         </div>
                     </div>
                     <!-- /wrapper -->
@@ -321,6 +169,8 @@
         </div>
         <!-- /shape_element_2 -->
 
+        @include('frontend.includes.page-snipped.broker-seller')
+
 
         @push('specific-scripts')
 <!-- Video header -->
@@ -335,6 +185,33 @@
         autoPlayVideo: true
     });
 </script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Event-Listener für Klickereignis auf Schaltfläche
+        document.getElementById("btn1").addEventListener("click", function() {
+            showToast("@autotranslate('The radius search has been initiated. Please wait a moment while we gather the results for you.', app()->getLocale())");
+        });
+
+        function showToast(message) {
+            // Erstellen des Toast-Elements
+            var toast = document.createElement("div");
+            toast.classList.add("toast-container");
+            toast.textContent = message;
+            // Hinzufügen des Toast-Elements zum body
+            document.body.appendChild(toast);
+            // Timeout zum Ausblenden des Toasts nach 3 Sekunden
+            setTimeout(function() {
+                toast.style.display = "none";
+                document.body.removeChild(toast);
+            }, 3000);
+        }
+    });
+</script>
+
+
 
 <!-- Autocomplete -->
 <script>
