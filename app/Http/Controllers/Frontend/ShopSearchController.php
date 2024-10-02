@@ -193,6 +193,9 @@ public function index(Request $request)
  */
 public function search(Request $request)
 {
+
+//dd($request);
+
     try {
         // Eingabewerte und Session-Werte abrufen
         $query = $request->input('query', '');
@@ -210,17 +213,18 @@ public function search(Request $request)
             $parsedAddress = $this->parseAddress($query);
             if ($parsedAddress && $this->isAddressComplete($parsedAddress)) {
                 // Erstellt oder holt einen bestehenden Address-Datensatz
-                $addressData = ModVendorAddressData::firstOrCreate(
+                $addressData = ModVendorAddressData::firstOrNew(
                     [
                         'street' => $parsedAddress['street'],
                         'housenumber' => $parsedAddress['housenumber'],
                         'postal_code' => $parsedAddress['postal_code'],
                         'city' => $parsedAddress['city'],
-                        'latitude' => 0.0, // Setze einen Standardwert
-                        'longitude' => 0.0, // Setze einen Standardwert
+           //             'latitude' => 0.0, // Setze einen Standardwert
+           //             'longitude' => 0.0, // Setze einen Standardwert
                     ],
                     ['created_at' => now(), 'updated_at' => now()]
                 );
+//dd($addressData);
 
                 // Hole die Geocodierungsergebnisse
                 $geocodeResults = $this->getGeocodeResults($query, $addressData);
@@ -246,7 +250,7 @@ public function search(Request $request)
                     return redirect()->back()->withErrors(['query' => 'Die Adresse konnte nicht gefunden werden. Bitte versuchen Sie es erneut.']);
                 }
             } else {
-                return redirect()->back()->withErrors(['query' => 'Bitte geben Sie eine vollständige Adresse ein.']);
+             //   return redirect()->back()->withErrors(['query' => 'Bitte geben Sie eine vollständige Adresse ein.']);
             }
         }
 

@@ -10,9 +10,9 @@
 
         @include('frontend.includes.header-clearfix-element-to-stick')
 
-        <div class="hero_single jarallax" data-jarallax-video="mp4:./video/intro.mp4,webm:./video/intro.webm,ogv:./video/intro.ogv">
+        <div class="hero_single jarallax" data-jarallax-video="mp4:./video/intro-handy.mp4,webm:./video/intro.webm,ogv:./video/intro.ogv">
             <div class="placeholder-image" style="background-image: url('path/to/placeholder-image.jpg');"></div>
-            <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.6)">
+            <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
                 <div class="container">
                     <div class="row justify-content-lg-start justify-content-md-center">
                         <div class="col-xl-7 col-lg-8">
@@ -28,6 +28,8 @@
                                             <input class="form-control no_border_r" type="text" name="query"
                                                 id="autocomplete" placeholder="@autotranslate('Street or location...', app()->getLocale())"
                                                 value="{{ session('selectedLocation') }}">
+                                            <input type="hidden" name="latitude" id="latitude">
+                                            <input type="hidden" name="longitude" id="longitude">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 button-container">
@@ -162,41 +164,86 @@
 <script src="{{ asset('frontend/js/jarallax.min.js') }}"></script>
 <script src="{{ asset('frontend/js/jarallax-video.min.js') }}"></script>
 
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Event-Listener für Klickereignis auf Schaltfläche
+        document.getElementById("btn1").addEventListener("click", function() {
+            showToast("@autotranslate('The radius search has been initiated. Please wait a moment while we gather the results for you.', app()->getLocale())");
+        });
+
+        function showToast(message) {
+            // Erstellen des Toast-Elements
+            var toast = document.createElement("div");
+            toast.classList.add("toast-container");
+            toast.textContent = message;
+            // Hinzufügen des Toast-Elements zum body
+            document.body.appendChild(toast);
+            // Timeout zum Ausblenden des Toasts nach 3 Sekunden
+            setTimeout(function() {
+                toast.style.display = "none";
+                document.body.removeChild(toast);
+            }, 3000);
+        }
+    });
+</script>
+
+
+
+
 <!-- Autocomplete -->
 
 
-            <!-- Typeahead.js CSS -->
-            <link rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
+<!-- Typeahead.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css" />
 
-            <!-- Typeahead.js JavaScript -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+<!-- Typeahead.js JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 
-
-            <script>
-                // Initialisiere Typeahead.js für das Autocomplete-Input
-                $(document).ready(function() {
-                    $('#autocomplete').typeahead({
-                        minLength: 3, // Minimale Länge für die Sucheingabe
-                        highlight: false,
-                        hint: true,
-                    }, {
-                        name: 'places',
-                        source: function(query, syncResults, asyncResults) {
-                            // OpenStreetMap Nominatim API für Autocomplete
-                            $.get('https://nominatim.openstreetmap.org/search', {
-                                q: query,
-                                format: 'json'
-                            }, function(data) {
-                                asyncResults(data.map(function(place) {
-                                    return place.display_name;
-                                }));
-                            });
-                        },
-                        limit: 10, // Anzahl der angezeigten Ergebnisse
-                    });
+<script>
+    // Initialisiere Typeahead.js für das Autocomplete-Input
+    $(document).ready(function() {
+        $('#autocomplete').typeahead({
+            minLength: 3, // Minimale Länge für die Sucheingabe
+            highlight: true,
+            hint: true,
+        }, {
+            name: 'places',
+            source: function(query, syncResults, asyncResults) {
+                // OpenStreetMap Nominatim API für Autocomplete
+                $.get('https://nominatim.openstreetmap.org/search', {
+                    q: query,
+                    format: 'json'
+                }, function(data) {
+                    asyncResults(data.map(function(place) {
+                        return {
+                            value: place.display_name,
+                            lat: place.lat,
+                            lon: place.lon
+                        };
+                    }));
                 });
-            </script>
+            },
+            limit: 10, // Anzahl der angezeigten Ergebnisse
+            display: function(item) {
+                return item.value;
+            },
+            templates: {
+                suggestion: function(item) {
+                    return '<div>' + item.value + '</div>';
+                }
+            }
+        });
+
+        // Event-Handler für die Auswahl eines Autocomplete-Ergebnisses
+        $('#autocomplete').on('typeahead:select', function(e, suggestion) {
+            // Setze die Koordinaten in versteckte Input-Felder
+            $('#latitude').val(suggestion.lat);
+            $('#longitude').val(suggestion.lon);
+        });
+    });
+</script>
 
 
 
