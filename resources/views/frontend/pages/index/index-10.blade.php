@@ -4,9 +4,9 @@
     @push('specific-css')
         <link href="{{ asset('frontend/css/home.css') }}" rel="stylesheet">
         <link href="{{ asset('frontend/css/custom/index.css') }}" rel="stylesheet">
+        <link href="{{ asset('frontend/css/custom/sozialproof.css') }}" rel="stylesheet">
     @endpush
 
-    <body>
 
         @include('frontend.includes.header-clearfix-element-to-stick')
 
@@ -142,7 +142,11 @@
                 background-position: center;
                 z-index: 1;
             }
-        </style>
+            .dropdown-menu-content {
+                background-color: black;
+            }
+
+</style>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
