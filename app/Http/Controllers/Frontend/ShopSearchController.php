@@ -228,6 +228,7 @@ public function search(Request $request)
 
                 // Hole die Geocodierungsergebnisse
                 $geocodeResults = $this->getGeocodeResults($query, $addressData);
+//dd($geocodeResults);
 
                 // Prüfe, ob die Geocodierung erfolgreich war
                 if (isset($geocodeResults['lat']) && isset($geocodeResults['lon'])) {
@@ -295,7 +296,8 @@ public function search(Request $request)
         $ogImage = asset('images/default-og-image.jpg');
         $title = config('app.name', 'Laravel') . " - Willkommen bei unserem Restaurantführer";
 
-        return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
+        // return view('frontend.pages.listingrestaurant.grid-listing-filterscol', [
+        return view('frontend.pages.listingrestaurantopenstreet.grid-listing-masonry-openstreetmap', [
             'restaurants' => $cachedResults['restaurants'],
             'userLatitude' => $latitude,
             'userLongitude' => $longitude,
@@ -355,10 +357,17 @@ protected function getGeocodeResults($query, $addressData)
     }
 
     $results = $this->geocodeService->searchByAddress($query);
+ //   dd($results);
     if (!empty($results) && isset($results[0]['lat']) && isset($results[0]['lon'])) {
         $latitude = $results[0]['lat'];
         $longitude = $results[0]['lon'];
-        $name = $results[0]['name'];
+
+        // Überprüfe, ob der Name leer oder null ist
+        if (empty($results[0]['name'])) {
+            $name = $results[0]['address']['village'];
+        } else {
+            $name = $results[0]['name'];
+        }
 
         if (!$addressData->exists) {
             $addressData->update(['latitude' => $latitude, 'longitude' => $longitude]);
