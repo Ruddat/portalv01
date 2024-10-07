@@ -13,7 +13,7 @@
                 <tr>
                     <th class="d-none d-md-table-cell">@autotranslate('Email', app()->getLocale())</th>
                     <th>@autotranslate('Shop', app()->getLocale())</th>
-                    <th class="d-none d-md-table-cell">@autotranslate('Discount Percentage', app()->getLocale())</th> <!-- Ausblenden auf kleineren Bildschirmen -->
+                    <th class="d-none d-md-table-cell">@autotranslate('Discount Percentage ', app()->getLocale())</th> <!-- Ausblenden auf kleineren Bildschirmen -->
                     <th class="d-none d-md-table-cell">@autotranslate('Voucher Code', app()->getLocale())</th> <!-- Ausblenden auf kleineren Bildschirmen -->
                     <th>@autotranslate('Valid Until', app()->getLocale())</th>
                     <th>@autotranslate('Used', app()->getLocale())</th>

@@ -183,8 +183,6 @@
                     @if (Auth::guard('admin')->check())
                     {{-- Aktives Menu wenn Admin eingeloggt --}}
 
-
-
                     <li>
                         <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                             <i class="bi bi-balloon-heart"></i>
