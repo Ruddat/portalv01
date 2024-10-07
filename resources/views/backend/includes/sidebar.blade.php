@@ -182,7 +182,20 @@
                     @if (Auth::guard('admin')->check())
                     {{-- Aktives Menu wenn Admin eingeloggt --}}
 
+
+
                     <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="bi bi-balloon-heart"></i>
+                            <span class="nav-text">@autotranslate('Marketing', app()->getLocale())</span>
+                        </a>
+                         <ul aria-expanded="false">
+                            <li><a href="{{ route('admin.marketing-settings') }}">@autotranslate('Email Marketing', app()->getLocale())</a></li>
+                          </ul>
+                      </li>
+
+                    <li>
+
                         <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                             <i class="bi bi-info-circle"></i>
                             <span class="nav-text">@autotranslate('Apps', app()->getLocale())</span>
@@ -210,7 +223,7 @@
                                 </a>
                             </li>
                           </ul>
-                      </li>
+                    </li>
 
                       <li>
                         <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">

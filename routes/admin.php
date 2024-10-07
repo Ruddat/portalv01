@@ -134,7 +134,11 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
         });
 
+        // Marketing section
+        Route::prefix('marketing')->middleware(['auth:admin', 'PreventBackHistory'])->group(function() {
+            Route::view('/marketing-settings', 'backend.pages.admin.marketings.email-marketing')->name('marketing-settings');
 
+        });
 
 });
 
