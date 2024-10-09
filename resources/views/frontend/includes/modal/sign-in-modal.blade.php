@@ -11,7 +11,7 @@
                     <div class="divider"><span>Or</span></div>
                     <div class="form-group">
                         <label>@autotranslate('Email or Username', app()->getLocale())</label>
-                        <input type="text" class="form-control @error('login_id') is-invalid @enderror" name="login_id" id="login_id" value="{{ old('login_id') }}" required>
+                        <input type="text" class="form-control @error('login_id') is-invalid @enderror" name="login_id" id="login_id" value="{{ old('login_id') }}" required autocomplete="username">
                         <i class="icon_mail_alt"></i>
                         @error('login_id')
                             <div class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="form-group">
                         <label>@autotranslate('Password', app()->getLocale())</label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" required>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" required autocomplete="current-password">
                         <i class="icon_lock_alt"></i>
                         @error('password')
                             <div class="invalid-feedback">{{ app(\App\Services\AutoTranslationService::class)->trans($message, app()->getLocale()) }}</div>

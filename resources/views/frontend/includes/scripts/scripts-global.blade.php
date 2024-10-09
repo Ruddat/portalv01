@@ -12,6 +12,11 @@
     $(".change_lang").change(function() {
         window.location.href = url + "?lang=" + $(this).val();
     });
+
+    // Füge einen passiven Event-Listener für touchstart hinzu
+    document.addEventListener('touchstart', function(event) {
+        // Dein Code hier, wenn nötig
+    }, { passive: true });
 </script>
 
 

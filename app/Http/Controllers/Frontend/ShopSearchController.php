@@ -270,9 +270,10 @@ public function search(Request $request)
             // Abrufen der gesponserten Restaurants und Entfernung berechnen
             $currentDateTime = Carbon::now('Europe/Berlin');
             $sponsoredRestaurants = $this->getSponsoredRestaurants($latitude, $longitude, $selectedDistance, $currentDateTime);
-
+//dd($sponsoredRestaurants);
             // Restaurants basierend auf den Geokoordinaten abrufen
             $restaurants = $this->getNearbyRestaurants($latitude, $longitude, $selectedDistance, $query);
+//dd($restaurants);
 
             // Öffnungsstatus der Restaurants bestimmen
             $restaurantStatus = $this->determineRestaurantStatus($restaurants, $currentDateTime);
@@ -402,7 +403,10 @@ protected function getSponsoredRestaurants($latitude, $longitude, $selectedDista
  */
 protected function getNearbyRestaurants($latitude, $longitude, $selectedDistance, $query)
 {
-    $queryBuilder = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'logo', 'votes_count', 'voting_average', 'shop_slug');
+    $queryBuilder = ModShop::select('title', 'street', 'zip', 'city', 'id', 'lat as latitude', 'lng as longitude', 'logo', 'votes_count', 'voting_average', 'shop_slug', 'no_abholung', 'no_lieferung')
+        ->where('published', true)
+        ->where('show_voting', true)
+        ->whereIn('status', ['on', 'limited']);
 
     if ($latitude && $longitude) {
         $queryBuilder->selectRaw(

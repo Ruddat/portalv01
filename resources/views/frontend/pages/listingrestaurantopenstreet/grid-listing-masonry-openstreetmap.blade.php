@@ -1,6 +1,6 @@
 @extends('frontend.layouts.default')
 @section('content')
-    <!-- seitenabhengig css -->
+    <!-- seitenabhängig CSS -->
     @push('specific-css')
         <link href="{{ asset('frontend/css/listing.css') }}" rel="stylesheet">
         <link href="{{ asset('frontend/css/leaflet.css') }}" rel="stylesheet">
@@ -21,7 +21,6 @@
                                 $firstTwoWords = implode(' ', array_slice($words, 0, 2)); // Die ersten beiden Wörter wieder zusammenfügen
                             @endphp
 
-
                             @if ($findCityName)
                                 {{ rtrim($firstTwoWords, ',') }} <!-- rtrim-Funktion entfernt das Komma -->
                                 @autotranslate('found!', app()->getLocale())
@@ -31,7 +30,6 @@
                         </h1>
                         <a href="/">@autotranslate('Change address', app()->getLocale())</a>
                         <!-- Im Header des Templates, wo die Stadt und der Ortsname angezeigt werden sollen -->
-
                     </div>
                     <div class="col-xl-4 col-lg-5 col-md-5">
                         <div class="search_bar_list">
@@ -50,19 +48,19 @@
                 <div class="type_delivery">
                     <ul class="clearfix">
                         <li>
-                            <label class="container_radio">All
+                            <label class="container_radio">@autotranslate('All', app()->getLocale())
                                 <input type="radio" name="type_d" value="all" id="all" checked data-filter="*" class="selected">
                                 <span class="checkmark"></span>
                             </label>
                         </li>
                         <li>
-                            <label class="container_radio">Delivery
+                            <label class="container_radio">@autotranslate('Delivery', app()->getLocale())
                                 <input type="radio" name="type_d" value="delivery" id="delivery" data-filter=".delivery">
                                 <span class="checkmark"></span>
                             </label>
                         </li>
                         <li>
-                            <label class="container_radio">Takeaway
+                            <label class="container_radio">@autotranslate('Abholen', app()->getLocale())
                                 <input type="radio" name="type_d" value="takeway" id="takeaway" data-filter=".takeaway">
                                 <span class="checkmark"></span>
                             </label>
@@ -70,8 +68,10 @@
                     </ul>
                 </div>
                 <!-- /type_delivery -->
-                <a class="btn_map mobile btn_filters" data-bs-toggle="collapse" href="#collapseMap"><i class="icon_pin_alt"></i></a>
-                <a href="#collapseFilters" data-bs-toggle="collapse" class="btn_filters"><i class="icon_adjust-vert"></i><span>Filters</span></a>
+                <a class="btn_map mobile btn_filters d-none" data-bs-toggle="collapse" href="#collapseMap">
+                    <i class="icon_pin_alt"></i>
+                </a>
+                <a href="#collapseFilters" data-bs-toggle="collapse" class="btn_filters"><i class="icon_adjust-vert"></i><span>@autotranslate('Filters', app()->getLocale())</span></a>
             </div>
         </div>
         <!-- /filters_full -->
@@ -82,418 +82,343 @@
 
         <div class="collapse filters_2" id="collapseFilters">
             <div class="container margin_30_20">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="filter_type">
-                            <h6>Categories</h6>
-                            <ul>
-                                <li>
-                                    <label class="container_check">Pizza - Italian <small>12</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Japanese - Sushi <small>24</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Burghers <small>23</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Vegetarian <small>11</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                            </ul>
+                <form action="{{ route('search.index') }}" method="get">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="filter_type">
+                                <h6>@autotranslate('Categories', app()->getLocale())</h6>
+                                <ul>
+                                    <li>
+                                        <label class="container_check">Pizza - Italian <small>12</small>
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="container_check">Japanese - Sushi <small>24</small>
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="container_check">Burghers <small>23</small>
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="container_check">Vegetarian <small>11</small>
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="filter_type">
+                                <h6>@autotranslate('Rating', app()->getLocale())</h6>
+                                <ul>
+                                    <li>
+                                        <label class="container_check">Superb 9+ <small>06</small>
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="container_check">Very Good 8+ <small>12</small>
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="container_check">Good 7+ <small>17</small>
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="container_check">Pleasant 6+ <small>43</small>
+                                            <input type="checkbox">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="filter_type">
+                                <h6>@autotranslate('Distance', app()->getLocale())</h6>
+                                <div class="distance">
+                                    @autotranslate('Radius around selected destination', app()->getLocale())
+                                    <span id="distanceValue">{{ $selectedDistance }}</span> km
+                                </div>
+                                <div class="mb-3">
+                                    <input type="range" name="distance" id="distance" min="5" max="50" step="5"
+                                           value="{{ $selectedDistance }}" data-orientation="horizontal" oninput="updateDistanceValue()">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="filter_type">
-                            <h6>Rating</h6>
-                            <ul>
-                                <li>
-                                    <label class="container_check">Superb 9+ <small>06</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Very Good 8+ <small>12</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Good 7+ <small>17</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="container_check">Pleasant 6+ <small>43</small>
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="filter_type">
-                            <h6>Distance</h6>
-                            <div class="distance"> Radius around selected destination <span></span> km</div>
-                            <div class="mb-3"><input type="range" min="10" max="100" step="10" value="30" data-orientation="horizontal"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /row -->
+                    <!-- /row -->
+                    <p>
+                        <button class="btn_1 outline full-width" type="submit">@autotranslate('Apply filter', app()->getLocale())</button>
+                    </p>
+                </form>
             </div>
         </div>
         <!-- /filters -->
         <div class="container margin_30_20">
-
-
             <hr>
             <div class="row isotope-wrapper">
-            <!-- gesponsert start -->
-            @if ($sponsoredRestaurants->count())
-                @foreach ($sponsoredRestaurants as $restaurant)
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item delivery">
-                    <div class="strip">
-                            <figure>
-                                <span class="ribbon off">15% off</span>
-                                <span class="ribbon_sponsored on">Sponsored</span>
-                                <span class="ribbon_stampcard on">StampCard</span>
-                                <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
-                                    data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
-                                    alt="">
-                                <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}"
-                                    class="strip_info">
-
-                                    <small>@autotranslate('Pizza, Burger', app()->getLocale())</small>
-                                    <div style="display: flex; align-items: center;">
-                                        <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
-                                            style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
-                                        <div class="item_title">
-                                            <h3>{{ $restaurant->title }}</h3>
-                                            <small>{{ $restaurant->street }}</small>
+                <!-- gesponsert start -->
+                @if ($sponsoredRestaurants->count())
+                    @foreach ($sponsoredRestaurants as $restaurant)
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item
+                            {{ $restaurant->no_lieferung == 0 ? 'delivery' : '' }}
+                            {{ $restaurant->no_abholung == 0 ? 'takeaway' : '' }}">
+                            <div class="strip">
+                                <figure>
+                                    <span class="ribbon off">15% off</span>
+                                    <span class="ribbon_sponsored on">Sponsored</span>
+                                    <span class="ribbon_stampcard on">StampCard</span>
+                                    <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
+                                        data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
+                                        alt="">
+                                    <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}"
+                                        class="strip_info">
+                                        <small>@autotranslate('Pizza, Burger', app()->getLocale())</small>
+                                        <div style="display: flex; align-items: center;">
+                                            <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
+                                                style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
+                                            <div class="item_title">
+                                                <h3>{{ $restaurant->title }}</h3>
+                                                <small>{{ $restaurant->street }}</small>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </figure>
-                            <ul>
-                                <li>
-                                    <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}"
-                                        title="Takeaway">@autotranslate('Pick up', app()->getLocale())</span>
-                                    <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}"
-                                        title="Delivery">@autotranslate('Delivery', app()->getLocale())</span>
-                                    <strong class="icon-food_icon_shop fs2">
-                                        {{ number_format($restaurant->distance, 2) }} km
-                                    </strong>
-                                </li>
-                                <li>
-                                    @if ($restaurant->voting_average !== null)
-                                        <div class="score" title="Bewertung durchschnitt">
-                                            <strong>{{ number_format($restaurant->voting_average, 1) }}</strong>
-                                        </div>
-                                    @endif
-                                </li>
-                            </ul>
+                                    </a>
+                                </figure>
+                                <ul>
+                                    <li>
+                                        <span class="take {{ $restaurant->no_abholung ? 'yes' : 'no' }}"
+                                            title="Takeaway">@autotranslate('Pick up', app()->getLocale())</span>
+                                        <span class="deliv {{ $restaurant->no_lieferung ? 'yes' : 'no' }}"
+                                            title="Delivery">@autotranslate('Delivery', app()->getLocale())</span>
+                                        <strong class="icon-food_icon_shop fs2">
+                                            {{ number_format($restaurant->distance, 2) }} km
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        @if ($restaurant->voting_average !== null)
+                                            <div class="score" title="Bewertung durchschnitt">
+                                                <strong>{{ number_format($restaurant->voting_average, 1) }}</strong>
+                                            </div>
+                                        @endif
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
-            @else
-                <p>@autotranslate('No sponsored restaurants found.', app()->getLocale())</p>
-            @endif
-        </div>
-
-        <!-- gesponsert end -->
-
-
-
-
-
+                    @endforeach
+                @else
+                    <p>@autotranslate('No sponsored restaurants found.', app()->getLocale())</p>
+                @endif
+                <!-- gesponsert end -->
+            </div>
 
             {{-- Admin PromoBanner --}}
             @livewire('backend.admin.promo-banner.promo-banner-list')
             {{-- /promo --}}
 
-
             <div class="row isotope-wrapper">
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item delivery">
-                    <div class="strip">
-                        <figure>
-                            <span class="ribbon off">15% off</span>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_1.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Pizza</small>
-                                <div class="item_title">
-                                    <h3>Da Alfredo</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take yes">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>8.9</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item delivery">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_2.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Burghers</small>
-                                <div class="item_title">
-                                    <h3>Best Burghers</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>9.5</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item takeaway">
-                    <div class="strip">
-                        <figure>
-                            <span class="ribbon off">15% off</span>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_3.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Vegetarian</small>
-                                <div class="item_title">
-                                    <h3>Vego Life</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take yes">Takeaway</span> <span class="deliv no">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>7.5</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item takeaway">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_4.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Japanese</small>
-                                <div class="item_title">
-                                    <h3>Sushi Temple</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take">Takeaway</span> <span class="deliv no">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>9.5</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item takeaway">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_5.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Pizza</small>
-                                <div class="item_title">
-                                    <h3>Auto Pizza</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take yes">Takeaway</span> <span class="deliv no">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>7.0</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item delivery">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_6.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Burghers</small>
-                                <div class="item_title">
-                                    <h3>Alliance</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>8.9</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item delivery">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_7.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Chinese</small>
-                                <div class="item_title">
-                                    <h3>Alliance</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>8.9</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item takeaway">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_8.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Sushi</small>
-                                <div class="item_title">
-                                    <h3>Dragon Tower</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take yes">Takeaway</span> <span class="deliv no">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>8.9</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item takeaway delivery">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_9.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Mexican</small>
-                                <div class="item_title">
-                                    <h3>El Paso Tacos</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take yes">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>8.9</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item latest">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_10.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Bakery</small>
-                                <div class="item_title">
-                                    <h3>Monnalisa</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take yes">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>8.9</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item delivery">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_12.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Chinese</small>
-                                <div class="item_title">
-                                    <h3>Pechino Express</h3>
-                                    <small>27 Old Gloucester St</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take no">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>8.9</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item delivery takeaway">
-                    <div class="strip">
-                        <figure>
-                            <img src="img/lazy-placeholder.png" data-src="img/location_11.jpg" class="img-fluid lazy" alt="">
-                            <a href="detail-restaurant.html" class="strip_info">
-                                <small>Mexican</small>
-                                <div class="item_title">
-                                    <h3>Guachamole</h3>
-                                    <small>135 Newtownards Road</small>
-                                </div>
-                            </a>
-                        </figure>
-                        <ul>
-                            <li><span class="take yes">Takeaway</span> <span class="deliv yes">Delivery</span></li>
-                            <li>
-                                <div class="score"><strong>8.9</strong></div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /strip grid -->
+                @if (count($restaurants) > 0)
+                    @foreach ($restaurants as $restaurant)
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 isotope-item
+                            {{ $restaurant->no_lieferung == 0 ? 'delivery' : '' }}
+                            {{ $restaurant->no_abholung == 0 ? 'takeaway' : '' }}">
+                            <div class="strip">
+                                <figure>
+                                    <span class="ribbon off">15% off</span>
+                                    <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
+                                        data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
+                                        alt="">
+                                    <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}"
+                                        class="strip_info">
+                                        <small>Pizza, Burger</small>
+                                        <div style="display: flex; align-items: center;">
+                                            <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
+                                                style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
+                                            <div class="item_title">
+                                                <h3>{{ $restaurant->title }}</h3>
+                                                <small>{{ $restaurant->street }}</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </figure>
+                                <p>{{ $restaurantStatus[$restaurant->id] }}</p>
+                                <ul>
+                                    <li>
+                                        <span class="take {{ $restaurant->no_abholung == 1 ? 'no' : 'yes' }}"
+                                            title="Takeaway">@autotranslate('Pick up', app()->getLocale())</span>
+                                        <span class="deliv {{ $restaurant->no_lieferung == 1 ? 'no' : 'yes' }}"
+                                            title="Delivery">@autotranslate('Delivery', app()->getLocale())</span>
+                                        <strong class="icon-food_icon_shop fs2">
+                                            {{ number_format($restaurant->distance, 2) }} km</strong>
+                                    </li>
+                                    <li>
+                                        @if ($restaurant->voting_average !== null)
+                                            <div class="score" title="Bewertung durchschnitt">
+                                                <strong>{{ number_format($restaurant->voting_average, 1) }}</strong>
+                                            </div>
+                                        @endif
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    @endforeach
+                    <!-- /strip grid -->
+                @else
+                    <p>Keine Restaurants gefunden.</p>
+                @endif
             </div>
             <!-- /strip row -->
             <div class="pagination_fg">
-                <a href="#">&laquo;</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">&raquo;</a>
+                {{ $restaurants->links('pagination::bootstrap-5') }}
             </div>
         </div>
         <!-- /container -->
+
+        <style>
+            /* Stil für das Produkt */
+            .product {
+                position: relative;
+                width: 300px;
+                /* Passen Sie die Breite nach Bedarf an */
+                height: 300px;
+                /* Passen Sie die Höhe nach Bedarf an */
+                border: 1px solid #ccc;
+                padding: 10px;
+                overflow: hidden;
+            }
+
+            /* Stil für den neuen Text */
+            .new-badge {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: #ff0000;
+                /* Hintergrundfarbe des Textes */
+                color: #fff;
+                /* Textfarbe */
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-weight: bold;
+                animation: fadeIn 1s ease-in-out;
+                /* Animationsstil */
+            }
+
+            /* CSS-Animation für das Einblenden des neuen Textes */
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    /* Start mit einer undurchsichtigen Opazität */
+                }
+
+                to {
+                    opacity: 1;
+                    /* Enden mit einer vollständigen Opazität */
+                }
+            }
+
+            .ribbon_sponsored {
+                color: #fff;
+                display: inline-block;
+                position: absolute;
+                top: 40px;
+                right: 15px;
+                font-weight: 500;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                -ms-border-radius: 3px;
+                border-radius: 3px;
+                padding: 2px 2px 2px 2px;
+                line-height: 1;
+                font-size: 12px;
+                font-size: 0.75rem;
+                z-index: 9;
+            }
+
+
+
+            .ribbon_sponsored.on {
+                background-color: #D63920;
+            }
+
+
+            .ribbon_stampcard {
+                color: #fff;
+                display: inline-block;
+                position: absolute;
+                top: 60px;
+                right: 15px;
+                font-weight: 500;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                -ms-border-radius: 3px;
+                border-radius: 3px;
+                padding: 2px 2px 2px 2px;
+                line-height: 1;
+                font-size: 12px;
+                font-size: 0.85rem;
+                z-index: 9;
+            }
+
+
+
+            .ribbon_stampcard.on {
+                background-color: #f1b40b;
+            }
+
+
+            .promo {
+                background: #47e5b6 url(../frontend/img/pattern.svg) center center repeat;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -ms-border-radius: 5px;
+                border-radius: 5px;
+                margin-bottom: 25px;
+                padding: 20px 25px;
+                color: #fff;
+                position: relative;
+            }
+
+            .promo i {
+                position: absolute;
+                left: -100%;
+                /* Startposition auf der linken Seite, außerhalb des Bildschirms */
+                animation: moveIcon 6s linear forwards;
+                /* Animation mit linearem Timing */
+                animation-delay: 0.5s
+                    /* Verzögerung von 1 Sekunde */
+            }
+
+            @keyframes moveIcon {
+                0% {
+                    left: -100%;
+                    /* Startposition, außerhalb des Bildschirms */
+                    top: 50%;
+                    /* Startposition in der Mitte des Containers */
+                }
+
+                100% {
+                    left: 90%;
+                    /* Endposition, rechts außerhalb des Bildschirms */
+                    top: calc(50% + 50px * sin(2 * pi * (1 - ((time - delay) / duration))));
+                    /* Berechnung der Sinus-Bewegung */
+                }
+            }
+        </style>
+
+
 
         @push('specific-scripts')
             <!-- SPECIFIC SCRIPTS -->
@@ -512,12 +437,18 @@
                 });
             </script>
 
+            <script>
+                function updateDistanceValue() {
+                    var distanceInput = document.getElementById("distance");
+                    var distanceValue = document.getElementById("distanceValue");
+                    distanceValue.textContent = distanceInput.value;
+                }
+            </script>
+
             <!-- Map LeafLet + Mapbox-->
             <script src="{{ asset('frontend/js/leaflet_map/leaflet.min.js') }}"></script>
             <script src="{{ asset('frontend/js/leaflet_map/leaflet_markercluster.min.js') }}"></script>
             <script src="{{ asset('frontend/js/leaflet_map/leaflet_markers.js') }}"></script>
             <script src="{{ asset('frontend/js/leaflet_map/leaflet_func.js') }}"></script>
-
-
         @endpush
     @endsection
