@@ -33,8 +33,10 @@
                     </div>
                     <div class="col-xl-4 col-lg-5 col-md-5">
                         <div class="search_bar_list">
-                            <input type="text" class="form-control" placeholder="@autotranslate('Dishes, restaurants or cuisines', app()->getLocale())">
-                            <button type="submit"><i class="icon_search"></i></button>
+                            <form action="{{ route('search.restaurants') }}" method="GET">
+                                <input type="text" class="form-control" name="query" placeholder="@autotranslate('Dishes, restaurants or cuisines', app()->getLocale())" required>
+                                <button type="submit"><i class="icon_search"></i></button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -444,6 +446,30 @@
                     distanceValue.textContent = distanceInput.value;
                 }
             </script>
+
+<script>
+    $(document).ready(function() {
+    $('.search_bar_list form').on('submit', function(e) {
+        e.preventDefault(); // Verhindert das normale Absenden des Formulars
+
+        var query = $('input[name="query"]').val();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: 'GET',
+            data: { query: query },
+            success: function(response) {
+                // Hier kannst du die Ergebnisse dynamisch auf der Seite anzeigen
+                $('#restaurant-list').html(response);
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseText);
+            }
+        });
+    });
+});
+</script>
+
 
             <!-- Map LeafLet + Mapbox-->
             <script src="{{ asset('frontend/js/leaflet_map/leaflet.min.js') }}"></script>

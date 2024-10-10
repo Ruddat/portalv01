@@ -28,7 +28,8 @@ class TranslationManager extends Component
 
     public function initializeTranslations()
     {
-        $translations = Translation::when($this->search, function ($query) {
+        $translations = Translation::select('id', 'key', 'locale', 'text') // explizit ID abfragen
+        ->when($this->search, function ($query) {
             $query->where('text', 'like', '%' . $this->search . '%');
         })
         ->when($this->locale, function ($query) {
@@ -55,7 +56,8 @@ class TranslationManager extends Component
 
     public function render()
     {
-        $translations = Translation::when($this->search, function ($query) {
+        $translations = Translation::select('id', 'key', 'locale', 'text') // explizit ID abfragen
+        ->when($this->search, function ($query) {
             $query->where('text', 'like', '%' . $this->search . '%');
         })
         ->when($this->locale, function ($query) {

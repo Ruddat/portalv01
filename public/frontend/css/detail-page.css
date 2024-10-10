@@ -3,7 +3,7 @@
 /*============================================================================================*/
 /*-------- Page head --------*/
 .detail_page_head .title {
-  float: left;
+  display: inline-block;
 }
 @media (max-width: 767px) {
   .detail_page_head .title {
@@ -530,7 +530,7 @@ a.menu_item:hover h3 {
   height: 60px;
   overflow: hidden;
   display: inline-block;
-  float: left;
+  display: inline-block;
   margin: 0;
   margin-right: 15px;
   border: 1px solid #fff;
@@ -1104,8 +1104,7 @@ a.menu_item:hover h3 {
 }
 
 
-
-
+/*-------- Preorder section Timepicker --------*/
 .preorder-section {
     margin-top: 20px;
 }
@@ -1232,14 +1231,7 @@ font-size: 24px; /* Macht den Text oder das Icon größer */
 cursor: pointer;
 }
 
-
-
-
-
-
-
-
-
+/*-------- Ingredients Overlay --------*/
 .overlay {
     /* Stile für das Overlay */
     position: fixed;

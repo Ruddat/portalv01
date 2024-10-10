@@ -275,6 +275,10 @@ Route::get('/search', [ShopSearchController::class, 'search'])
     ->name('search.index');
 
 
+Route::get('/search/restaurants', [ShopSearchController::class, 'search'])->name('search.restaurants');
+
+
+
 //Route::post('/speichere-standort', [ShopSearchController::class, 'speichereStandort'])
 //    ->name('speichere-standort')
 //    ->middleware(LogRequests::class);

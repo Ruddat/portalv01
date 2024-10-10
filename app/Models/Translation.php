@@ -9,6 +9,6 @@ class Translation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['key', 'locale', 'text'];
+    protected $fillable = ['id', 'key', 'locale', 'text'];
 
 }

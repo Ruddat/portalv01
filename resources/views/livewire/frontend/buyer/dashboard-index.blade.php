@@ -47,9 +47,8 @@
                             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
                                 <div class="strip">
                                     <figure>
-                                        <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
-                                            data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
-                                            alt="">
+                                        <img src="{{ asset('frontend/img/location_1.jpg') }}"
+                                            alt="{{ $restaurant->title }} - {{ $restaurant->street }}">
                                         <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}" class="strip_info">
                                             <small>Burghers</small>
                                             <div style="display: flex; align-items: center;">
@@ -111,6 +110,8 @@
     </main>
 
 
+
+
 <script>
     document.addEventListener('livewire:load', function () {
         Livewire.hook('element.updated', (el, component) => {
@@ -122,7 +123,11 @@
             }
         });
     });
+
+
+
 </script>
+
 
 
 </div>
