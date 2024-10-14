@@ -28,14 +28,15 @@
                                 Stadt oder Ortsname nicht verfügbar.
                             @endif
                         </h1>
-                        <a href="/">@autotranslate('Change address', app()->getLocale())</a>
+                        <a href="/" aria-label="@autotranslate('Change address', app()->getLocale())">@autotranslate('Change address', app()->getLocale())</a>
                         <!-- Im Header des Templates, wo die Stadt und der Ortsname angezeigt werden sollen -->
                     </div>
                     <div class="col-xl-4 col-lg-5 col-md-5">
                         <div class="search_bar_list">
                             <form action="{{ route('search.restaurants') }}" method="GET">
-                                <input type="text" class="form-control" name="query" placeholder="@autotranslate('Dishes, restaurants or cuisines', app()->getLocale())" required>
-                                <button type="submit"><i class="icon_search"></i></button>
+                                <label for="search-input" class="visually-hidden">@autotranslate('Search for dishes, restaurants or cuisines', app()->getLocale())</label>
+                                <input type="text" class="form-control" id="search-input" name="query" placeholder="@autotranslate('Dishes, restaurants or cuisines', app()->getLocale())" required>
+                                <button type="submit" aria-label="@autotranslate('Search', app()->getLocale())"><i class="icon_search"></i></button>
                             </form>
                         </div>
                     </div>
@@ -50,19 +51,19 @@
                 <div class="type_delivery">
                     <ul class="clearfix">
                         <li>
-                            <label class="container_radio">@autotranslate('All', app()->getLocale())
+                            <label class="container_radio" for="all">@autotranslate('All', app()->getLocale())
                                 <input type="radio" name="type_d" value="all" id="all" checked data-filter="*" class="selected">
                                 <span class="checkmark"></span>
                             </label>
                         </li>
                         <li>
-                            <label class="container_radio">@autotranslate('Delivery', app()->getLocale())
+                            <label class="container_radio" for="delivery">@autotranslate('Delivery', app()->getLocale())
                                 <input type="radio" name="type_d" value="delivery" id="delivery" data-filter=".delivery">
                                 <span class="checkmark"></span>
                             </label>
                         </li>
                         <li>
-                            <label class="container_radio">@autotranslate('Abholen', app()->getLocale())
+                            <label class="container_radio" for="takeaway">@autotranslate('Abholen', app()->getLocale())
                                 <input type="radio" name="type_d" value="takeway" id="takeaway" data-filter=".takeaway">
                                 <span class="checkmark"></span>
                             </label>
@@ -70,15 +71,15 @@
                     </ul>
                 </div>
                 <!-- /type_delivery -->
-                <a class="btn_map mobile btn_filters d-none" data-bs-toggle="collapse" href="#collapseMap">
+                <a class="btn_map mobile btn_filters d-none" data-bs-toggle="collapse" href="#collapseMap" aria-label="@autotranslate('Show map', app()->getLocale())">
                     <i class="icon_pin_alt"></i>
                 </a>
-                <a href="#collapseFilters" data-bs-toggle="collapse" class="btn_filters"><i class="icon_adjust-vert"></i><span>@autotranslate('Filters', app()->getLocale())</span></a>
+                <a href="#collapseFilters" data-bs-toggle="collapse" class="btn_filters" aria-label="@autotranslate('Show filters', app()->getLocale())"><i class="icon_adjust-vert"></i><span>@autotranslate('Filters', app()->getLocale())</span></a>
             </div>
         </div>
         <!-- /filters_full -->
         <div class="collapse" id="collapseMap">
-            <div id="map" class="map"></div>
+            <div id="map" class="map" role="region" aria-label="@autotranslate('Map of restaurants', app()->getLocale())"></div>
         </div>
         <!-- /Map -->
 
@@ -91,26 +92,26 @@
                                 <h6>@autotranslate('Categories', app()->getLocale())</h6>
                                 <ul>
                                     <li>
-                                        <label class="container_check">Pizza - Italian <small>12</small>
-                                            <input type="checkbox">
+                                        <label class="container_check" for="category-pizza">Pizza - Italian <small>12</small>
+                                            <input type="checkbox" id="category-pizza">
                                             <span class="checkmark"></span>
                                         </label>
                                     </li>
                                     <li>
-                                        <label class="container_check">Japanese - Sushi <small>24</small>
-                                            <input type="checkbox">
+                                        <label class="container_check" for="category-sushi">Japanese - Sushi <small>24</small>
+                                            <input type="checkbox" id="category-sushi">
                                             <span class="checkmark"></span>
                                         </label>
                                     </li>
                                     <li>
-                                        <label class="container_check">Burghers <small>23</small>
-                                            <input type="checkbox">
+                                        <label class="container_check" for="category-burghers">Burghers <small>23</small>
+                                            <input type="checkbox" id="category-burghers">
                                             <span class="checkmark"></span>
                                         </label>
                                     </li>
                                     <li>
-                                        <label class="container_check">Vegetarian <small>11</small>
-                                            <input type="checkbox">
+                                        <label class="container_check" for="category-vegetarian">Vegetarian <small>11</small>
+                                            <input type="checkbox" id="category-vegetarian">
                                             <span class="checkmark"></span>
                                         </label>
                                     </li>
@@ -122,26 +123,26 @@
                                 <h6>@autotranslate('Rating', app()->getLocale())</h6>
                                 <ul>
                                     <li>
-                                        <label class="container_check">Superb 9+ <small>06</small>
-                                            <input type="checkbox">
+                                        <label class="container_check" for="rating-superb">Superb 9+ <small>06</small>
+                                            <input type="checkbox" id="rating-superb">
                                             <span class="checkmark"></span>
                                         </label>
                                     </li>
                                     <li>
-                                        <label class="container_check">Very Good 8+ <small>12</small>
-                                            <input type="checkbox">
+                                        <label class="container_check" for="rating-very-good">Very Good 8+ <small>12</small>
+                                            <input type="checkbox" id="rating-very-good">
                                             <span class="checkmark"></span>
                                         </label>
                                     </li>
                                     <li>
-                                        <label class="container_check">Good 7+ <small>17</small>
-                                            <input type="checkbox">
+                                        <label class="container_check" for="rating-good">Good 7+ <small>17</small>
+                                            <input type="checkbox" id="rating-good">
                                             <span class="checkmark"></span>
                                         </label>
                                     </li>
                                     <li>
-                                        <label class="container_check">Pleasant 6+ <small>43</small>
-                                            <input type="checkbox">
+                                        <label class="container_check" for="rating-pleasant">Pleasant 6+ <small>43</small>
+                                            <input type="checkbox" id="rating-pleasant">
                                             <span class="checkmark"></span>
                                         </label>
                                     </li>
@@ -156,6 +157,7 @@
                                     <span id="distanceValue">{{ $selectedDistance }}</span> km
                                 </div>
                                 <div class="mb-3">
+                                    <label for="distance" class="visually-hidden">@autotranslate('Distance range', app()->getLocale())</label>
                                     <input type="range" name="distance" id="distance" min="5" max="50" step="5"
                                            value="{{ $selectedDistance }}" data-orientation="horizontal" oninput="updateDistanceValue()">
                                 </div>
@@ -164,7 +166,7 @@
                     </div>
                     <!-- /row -->
                     <p>
-                        <button class="btn_1 outline full-width" type="submit">@autotranslate('Apply filter', app()->getLocale())</button>
+                        <button class="btn_1 outline full-width" type="submit" aria-label="@autotranslate('Apply filter', app()->getLocale())">@autotranslate('Apply filter', app()->getLocale())</button>
                     </p>
                 </form>
             </div>
@@ -186,12 +188,12 @@
                                     <span class="ribbon_stampcard on">StampCard</span>
                                     <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
                                         data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
-                                        alt="">
+                                        alt="{{ $restaurant->title }} - Restaurant Logo">
                                     <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id, 'source' => 'sponsored']) }}"
-                                        class="strip_info">
+                                        class="strip_info" aria-label="@autotranslate('View details of', app()->getLocale()) {{ $restaurant->title }}">
                                         <small>@autotranslate('Pizza, Burger', app()->getLocale())</small>
                                         <div style="display: flex; align-items: center;">
-                                            <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
+                                            <img src="{{ $restaurant->logo_url }}" alt="{{ $restaurant->title }} - Restaurant Logo"
                                                 style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
                                             <div class="item_title">
                                                 <h3>{{ $restaurant->title }}</h3>
@@ -242,12 +244,12 @@
                                     <span class="ribbon off">15% off</span>
                                     <img src="{{ asset('frontend/img/lazy-placeholder.png') }}"
                                         data-src="{{ asset('frontend/img/location_1.jpg') }}" class="img-fluid lazy"
-                                        alt="">
+                                        alt="{{ $restaurant->title }} - Restaurant Logo">
                                     <a href="{{ localized_route('restaurant.index', ['slug' => $restaurant->shop_slug ?? $restaurant->id]) }}"
-                                        class="strip_info">
+                                        class="strip_info" aria-label="@autotranslate('View details of', app()->getLocale()) {{ $restaurant->title }}">
                                         <small>Pizza, Burger</small>
                                         <div style="display: flex; align-items: center;">
-                                            <img src="{{ $restaurant->logo_url }}" alt="Restaurant Logo"
+                                            <img src="{{ $restaurant->logo_url }}" alt="{{ $restaurant->title }} - Restaurant Logo"
                                                 style="max-width: 89px; max-height: 89px; margin-right: 10px; border-radius: 10px;">
                                             <div class="item_title">
                                                 <h3>{{ $restaurant->title }}</h3>

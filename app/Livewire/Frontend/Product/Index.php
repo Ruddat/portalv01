@@ -440,7 +440,7 @@ protected function getIngredientPrice($preparedOptionsWithIngredients, $selected
 public function addToCartProduct($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity)
 {
 
-   // dd($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity);
+   //dd($productId, $productTitle, $totalPrice, $sizeId, $selectedSize, $selectedQuantity);
     // Erstellen der Optionen-Daten
     $options = $this->createOptionsData();
 
@@ -452,6 +452,9 @@ public function addToCartProduct($productId, $productTitle, $totalPrice, $sizeId
     $sizeTitle = ModProductSizes::find($selectedSize);
     $productData = ModProducts::find($productId);
     $productCode = $productData->product_code ?? 0;
+    $productTaxRate = $productData->tax_rate_id ?? 7;
+
+//dd($productData, $productCode, $productTaxRate);
 
     // Überprüfen, ob das Produkt eine Flasche (bottles_id) enthält und den Preis der Flasche hinzufügen
     if ($productData && $productData->bottles_id) {

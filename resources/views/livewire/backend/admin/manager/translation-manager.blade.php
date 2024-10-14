@@ -58,4 +58,24 @@
         </div>
         <button type="submit" class="btn btn-success btn-sm mt-3">@autotranslate('Save Changes', app()->getLocale())</button>
     </form>
+
+
+    <style>
+        @media (max-width: 768px) {
+    .form-control-sm {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    textarea.form-control {
+        height: auto;
+        rows: 5;
+    }
+
+    .d-flex {
+        flex-direction: column;
+    }
+}
+
+    </style>
 </div>

@@ -597,8 +597,16 @@ public function updateProduct(Request $request)
 
 
 
-    // Überprüfung, ob die Änderung auf alle Produkte in der Kategorie angewendet werden soll
     if ($request->has('apply_to_all_products_in_category') && $request->input('apply_to_all_products_in_category') == 1) {
+        $taxRateId = $request->input('tax_rate');
+
+        if ($taxRateId) {
+            // Bulk update: Apply the same tax rate to all products in the category except the current one
+            ModProducts::where('category_id', $categoryId)
+                ->where('id', '!=', $productId)
+                ->update(['tax_rate_id' => $taxRateId]);
+        }
+
         $productsInCategory = ModProducts::where('category_id', $categoryId)->get();
 
         foreach ($productsInCategory as $productInCategory) {
@@ -621,7 +629,6 @@ public function updateProduct(Request $request)
             }
         }
     }
-
 
 
 

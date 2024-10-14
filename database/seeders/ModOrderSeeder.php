@@ -16,8 +16,8 @@ class ModOrderSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $start = '2024-07-01 00:00:00';
-        $end = '2024-07-31 23:59:59';
+        $start = '2024-10-01 00:00:00';
+        $end = '2024-10-31 23:59:59';
 
         for ($i = 0; $i < 5000; $i++) {
             $restaurantId = $faker->numberBetween(1, 400);
@@ -100,7 +100,7 @@ class ModOrderSeeder extends Seeder
      */
     private function getValidDate($date)
     {
-        return $date ? $date->format('Y-m-d H:i:s') : '2024-07-01 00:00:00';
+        return $date ? $date->format('Y-m-d H:i:s') : '2024-10-01 00:00:00';
     }
 
 
