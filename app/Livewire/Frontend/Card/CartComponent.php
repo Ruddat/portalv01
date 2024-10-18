@@ -68,7 +68,9 @@ class CartComponent extends Component
     public function updateCart()
     {
         $this->cart = Session::get('cart', []);
+      //  dd($this->cart);
         $this->subtotal = Cart::subTotal();
+
         $this->content = Cart::content() ?? collect();
 
         $shopId = Session::get('shopId');

@@ -151,21 +151,32 @@ class CartService {
         return number_format($total, 2);
     }
 
-    /**
-     * Returns total price of the items in the cart.
-     *
-     * @return string
-     */
-    public function subTotal(): string
-    {
-        $content = $this->getContent();
+/**
+ * Returns total price of the items in the cart.
+ *
+ * @return string
+ */
+public function subTotal(): string
+{
+    $content = $this->getContent();
 
-        $total = $content->reduce(function ($total, $item) {
-            return $total += $item->get('price') * $item->get('quantity');
-        }, 0);
+    $total = $content->reduce(function ($total, $item) {
+        // Grundpreis des Artikels
+        $itemTotal = $item->get('price') * $item->get('quantity');
 
-        return number_format($total, 2);
-    }
+        // Berechne den Preis für Toppings, falls vorhanden
+        if (!empty($item->get('options'))) {
+            foreach ($item->get('options') as $option) {
+                $itemTotal += $option['price'] * $option['quantity'];
+            }
+        }
+
+        return $total += $itemTotal;
+    }, 0);
+
+    return number_format($total, 2);
+}
+
 
     /**
      * Returns the content of the cart.

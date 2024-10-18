@@ -100,9 +100,35 @@ class SendMarketingEmails extends Command
                     $shop = ModShop::find($customer->shop_id);
                     if ($shop) {
                         $shopSlugOrId = $shop->shop_slug ?? $shop->id;
-                        $shopUrl = "https://portal-v01.test/de/restaurant/{$shopSlugOrId}?voucher_code={$voucherCode}";
+                        //$shopUrl = "https://portal-v01.test/de/restaurant/{$shopSlugOrId}?voucher_code={$voucherCode}";
+                        //$shopUrl = "{$shop->domain}/de/restaurant/{$shopSlugOrId}?voucher_code={$existingDiscount->voucher_code}";
+                      if ($existingDiscount) {
+                        $voucherCode = $existingDiscount->voucher_code;
+                    } else {
+                        // Falls kein existierender Rabattgutschein gefunden wurde, einen neuen generieren
+                        $voucherCode = Str::upper(Str::random(10));
+                    }
 
-                        // Send email to the customer
+                    // Versuche, die Domain aus der mod_seller_domains-Tabelle zu holen
+                    $shopDomain = \DB::table('mod_seller_domains')
+                    ->where('shop_id', $shop->id)
+                    ->value('domain');
+
+                    // Falls keine Domain gefunden wurde, verwende die Standard-URL aus der Konfiguration
+                    $shopDomain = $shopDomain ?? config('app.url');
+
+                    // Überprüfen, ob das Protokoll vorhanden ist, und falls nicht, füge "https://" hinzu
+                    if (!preg_match("~^(?:f|ht)tps?://~i", $shopDomain)) {
+                        $shopDomain = "https://" . $shopDomain;
+                    }
+
+                    // Gutscheincode setzen
+                    $voucherCode = $existingDiscount->voucher_code ?? Str::upper(Str::random(10));
+
+                    // Erzeuge die Shop-URL mit dem Gutscheincode
+                    $shopUrl = "{$shopDomain}/de/restaurant/{$shopSlugOrId}?voucher_code={$voucherCode}";
+
+                    // Send email to the customer
                         $emailSent = $mailerService->sendEmail(
                             $customer->email,
                             'We Miss You! Here\'s a Special Discount',
