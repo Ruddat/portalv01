@@ -28,7 +28,7 @@ class GoogleTranslateController extends Controller
     public function change(Request $request)
     {
         session()->put('locale', $request->lang);
-  //      dd(session('locale'));
+ //       dd(session('locale'));
         return back();
         //return redirect('/');
     }

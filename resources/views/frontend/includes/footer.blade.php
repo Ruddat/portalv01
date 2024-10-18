@@ -10,36 +10,11 @@
                     <li>
                         <div class="styled-select lang-selector">
                             <select class="change_lang">
-                                <option value="de"
-                                        {{ session('locale') == 'de' ? 'selected' : '' }}>Deutsch</option>
-                                <option value="en"
-                                        {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
-                                <option value="nl"
-                                        {{ session('locale') == 'nl' ? 'selected' : '' }}>Niederländisch
-                                </option>
-                                <option value="fr"
-                                        {{ session('locale') == 'fr' ? 'selected' : '' }}>French</option>
-                                <option value="es"
-                                        {{ session('locale') == 'es' ? 'selected' : '' }}>Spanish
-                                </option>
-                                <option value="ru"
-                                        {{ session('locale') == 'ru' ? 'selected' : '' }}>Russian
-                                </option>
-                                <option value="ar"
-                                        {{ session('locale') == 'ar' ? 'selected' : '' }}>Arabisch
-                                </option>
-                                <option value="fa"
-                                        {{ session('locale') == 'fa' ? 'selected' : '' }}>Persisch
-                                </option>
-                                <option value="pl"
-                                        {{ session('locale') == 'pl' ? 'selected' : '' }}>Polnisch
-                                </option>
-                                <option value="tr"
-                                        {{ session('locale') == 'tr' ? 'selected' : '' }}>Türkisch
-                                </option>
-                                <option value="uk"
-                                        {{ session('locale') == 'uk' ? 'selected' : '' }}>Ukrainisch
-                                </option>
+                                @foreach(config('app.available_locales') as $language => $locale)
+                                    <option value="{{ $locale }}" {{ session('locale') == $locale ? 'selected' : '' }}>
+                                        {{ $language }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </li>

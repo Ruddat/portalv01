@@ -20,7 +20,7 @@ return [
 
     'domain_url' => preg_replace('#^https?://#', '', rtrim(env('APP_URL', 'http://localhost'),'/')),
 
-    'version' => '1.1.5',
+    'version' => '1.1.8',
 
     /*
     |--------------------------------------------------------------------------
@@ -113,13 +113,20 @@ return [
 |
 */
 'available_locales' => [
+    'Deutsch' => 'de',
     'English' => 'en',
-    'Russian' => 'ru',
-    'French' => 'fr',
-    'German' => 'de',
-    'Spanish' => 'es',
-
-  ],
+    'Français' => 'fr',
+    'Español' => 'es',
+    'Italiano' => 'it',
+    'Nederlands' => 'nl',
+    'Português' => 'pt',
+    'Polski' => 'pl',
+    'Українська' => 'uk',
+    'Русский' => 'ru',
+    'العربية' => 'ar',
+    'فارسی' => 'fa',
+    'Türkçe' => 'tr',
+],
 
 
     /*

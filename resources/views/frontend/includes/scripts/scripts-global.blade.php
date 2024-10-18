@@ -8,16 +8,33 @@
 
 
 <script type="text/javascript">
-    var url = "{{ route('change.lang') }}";
     $(".change_lang").change(function() {
-        window.location.href = url + "?lang=" + $(this).val();
-    });
+        var newLang = $(this).val();
+        var currentUrl = window.location.pathname;
 
-    // Füge einen passiven Event-Listener für touchstart hinzu
-    document.addEventListener('touchstart', function(event) {
-        // Dein Code hier, wenn nötig
-    }, { passive: true });
+        // Überprüfe, ob die URL einen Sprachpräfix enthält
+        var languageRegex = /^\/(de|en|fr|es|it|nl|pt|pl|uk|ru|ar|fa|tr)\//;
+        var newUrl;
+
+        if (languageRegex.test(currentUrl)) {
+            // Ersetze den vorhandenen Sprachcode durch den neuen
+            newUrl = currentUrl.replace(languageRegex, '/' + newLang + '/');
+        } else {
+            // Wenn kein Sprachpräfix vorhanden ist, füge den neuen Sprachcode hinzu
+            if (currentUrl === '/') {
+                newUrl = '/' + newLang;
+            } else {
+                newUrl = '/' + newLang + currentUrl;
+            }
+        }
+
+        // Weiterleiten zur neuen URL
+        window.location.href = window.location.origin + newUrl;
+    });
 </script>
+
+
+
 
 
 

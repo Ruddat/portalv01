@@ -17,7 +17,7 @@
 						<div class="row  mt-5">
 							<div class="col-xl-8 col-md-6 sign text-center">
 								<div>
-									<img src="{{ asset('backend/images/login-img/pic-5.jpg') }}" class="food-img" alt="">
+									<img src="{{ asset('backend/images/login-img/seller_login.jpeg') }}" class="food-img" alt="">
 								</div>
 							</div>
 							<div class="col-xl-4 col-md-6 pe-0">
