@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend\Cart;
 
 use App\Models\ModShop;
+use App\Models\ModOrders;
 use App\Models\ModCategory;
 use App\Models\ModProducts;
 use App\Models\DeliveryArea;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\ModProductSizesPrices;
 use Illuminate\Support\Facades\Session;
+use App\Models\MarketingCampaignParticipants;
 
 class NewCartController extends Controller
 {
@@ -24,11 +26,52 @@ class NewCartController extends Controller
      */
     public function index(Request $request, $locale, $restaurantIdOrSlug = null)
     {
+//dd($request->all());
+
         if ($request->query('source') == 'sponsored') {
             session(['came_from_sponsored' => true]);
         }
 
+
+    // Überprüfung des 'voucher_code' Parameters
+    if ($request->has('voucher_code')) {
+        $voucherCode = $request->query('voucher_code');
+        session(['came_from_marketing_email' => true]);
+
+        // Hole den Eintrag in der Tabelle 'marketing_campaign_participants'
+        $participant = MarketingCampaignParticipants::where('voucher_code', $voucherCode)->first();
+
+        if ($participant) {
+            // Hole die shop_id aus dem Eintrag
+            $shopId = $participant->shop_id;
+
+            // Finde die passenden Koordinaten aus der Tabelle 'ModShop'
+            $shop = ModShop::find($shopId);
+
+            if ($shop && $shop->lat && $shop->lng) {
+                // Setze die Koordinaten in der Session
+                session([
+                    'userLatitude' => $shop->lat,
+                    'userLongitude' => $shop->lng
+                ]);
+
+                // Optional: Gib eine Erfolgsnachricht aus
+                // return response()->json(['message' => 'Koordinaten erfolgreich gesetzt']);
+            } else {
+                // Optional: Fehlerbehandlung, wenn keine gültigen Koordinaten gefunden wurden
+                // return response()->json(['error' => 'Keine gültigen Koordinaten gefunden'], 404);
+            }
+        } else {
+            // Optional: Fehlerbehandlung, wenn kein Teilnehmer gefunden wurde
+            // return response()->json(['error' => 'Kein Teilnehmer für diesen Gutscheincode gefunden'], 404);
+        }
+    }
+
+
         $restaurant = ModShop::with('categories')->where('shop_slug', $restaurantIdOrSlug)->first();
+
+//dd($restaurant);
+
 
         if (!$restaurant) {
             $restaurant = ModShop::with('categories')->find($restaurantIdOrSlug);
@@ -40,7 +83,11 @@ class NewCartController extends Controller
             abort(404); // Seite nicht gefunden
         }
 
+
+
+
         if (!session()->has('userLatitude') || !session()->has('userLongitude')) {
+
             return redirect()->route('home')->with('error', 'Die Standortdaten sind nicht verfügbar. Bitte erlauben Sie den Zugriff auf Ihren Standort.');
         }
 
@@ -154,6 +201,51 @@ class NewCartController extends Controller
         // Hier wird der Wert für das Anzeigen des Buttons in der Session gespeichert
         Session::put("show_button_{$shopId}", $value);
     }
+
+
+
+    public function handleVoucherCode(Request $request)
+    {
+        // Prüfen, ob der Gutschein-Code 'sponsored' ist
+        if ($request->query('voucher_code') == 'sponsored') {
+            // Setze die Marketing-Session Variable
+            session(['came_from_marketing_email' => true]);
+
+            // Hole den Eintrag in der Tabelle 'marketing_campaign_participants'
+            $voucherCode = $request->query('voucher_code');
+            $participant = MarketingCampaignParticipants::where('voucher_code', $voucherCode)->first();
+
+            if ($participant) {
+                // Hole die Order-ID aus dem Eintrag
+                $orderId = $participant->order_id;
+
+                // Finde die passenden Koordinaten aus der Tabelle 'ModOrders'
+                $order = ModOrders::find($orderId);
+
+                if ($order && $order->shipping_lat && $order->shipping_lng) {
+                    // Setze die Koordinaten in der Session
+                    session([
+                        'userLatitude' => $order->shipping_lat,
+                        'userLongitude' => $order->shipping_lng
+                    ]);
+
+                    // Optional: Gib eine Erfolgsnachricht aus
+                    return response()->json([
+                        'message' => 'Koordinaten erfolgreich gesetzt',
+                        'latitude' => $order->shipping_lat,
+                        'longitude' => $order->shipping_lng
+                    ]);
+                } else {
+                    return response()->json(['error' => 'Keine gültigen Koordinaten gefunden'], 404);
+                }
+            } else {
+                return response()->json(['error' => 'Kein Teilnehmer für diesen Gutscheincode gefunden'], 404);
+            }
+        }
+
+        return response()->json(['message' => 'Kein gültiger Gutscheincode'], 400);
+    }
+
 
 
 /**

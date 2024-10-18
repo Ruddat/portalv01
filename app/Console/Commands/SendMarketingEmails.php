@@ -38,11 +38,11 @@ class SendMarketingEmails extends Command
             $usageLimit = $setting->usage_limit; // Wie oft der Gutschein verwendet werden kann
 
             // Get customers who have not ordered for the specified duration and subscribed to newsletters
-            $customers = ModOrders::select('email', 'parent as shop_id')
-                ->where('created_at', '<', Carbon::now()->subDays($durationInDays))
-                ->where('subscribe_news', 1) // Nur Kunden, die Marketing-E-Mails erhalten möchten
-                ->groupBy('email', 'shop_id')
-                ->get();
+            $customers = ModOrders::select('email', 'parent as shop_id', 'id as order_id') // id als order_id
+            ->where('created_at', '<', Carbon::now()->subDays($durationInDays))
+            ->where('subscribe_news', 1) // Nur Kunden, die Marketing-E-Mails erhalten möchten
+            ->groupBy('email', 'shop_id', 'order_id')
+            ->get();
 
             foreach ($customers as $customer) {
                 // Set the validUntil variable to calculate the expiration date
@@ -151,6 +151,7 @@ class SendMarketingEmails extends Command
                                 'valid_until' => $validUntil,
                                 'discount_percentage' => $discountPercentage,
                                 'used' => false,
+                                'order_id' => $customer->order_id, // Hier die order_id speichern
                             ]);
 
                             $this->info("Email sent to: {$customer->email}");

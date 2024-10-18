@@ -86,6 +86,8 @@ class Index extends Component
         $this->cartService = $cartService;
         $this->selectedSize = null;
 
+//dd($this->restaurant, $this->categories, $this->productsByCategory);
+
         // Annahme: $allIngredientIds enthält alle Zutaten-IDs aus deiner Datenquelle
         $allIngredientIds = [/* Hier kommen deine Zutaten-IDs */];
 
