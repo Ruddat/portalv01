@@ -39,10 +39,10 @@ class SendMarketingEmails extends Command
 
             // Get customers who have not ordered for the specified duration and subscribed to newsletters
             $customers = ModOrders::select('email', 'parent as shop_id', 'id as order_id') // id als order_id
-            ->where('created_at', '<', Carbon::now()->subDays($durationInDays))
-            ->where('subscribe_news', 1) // Nur Kunden, die Marketing-E-Mails erhalten möchten
-            ->groupBy('email', 'shop_id', 'order_id')
-            ->get();
+                ->where('created_at', '<', Carbon::now()->subDays($durationInDays))
+                ->where('subscribe_news', 1) // Nur Kunden, die Marketing-E-Mails erhalten möchten
+                ->groupBy('email', 'shop_id', 'order_id')
+                ->get();
 
             foreach ($customers as $customer) {
                 // Set the validUntil variable to calculate the expiration date
@@ -55,6 +55,9 @@ class SendMarketingEmails extends Command
                     ->where('valid_until', '>', Carbon::now()) // Noch gültiger Gutschein
                     ->first();
 
+                // Gutscheincode setzen
+                $voucherCode = $existingDiscount ? $existingDiscount->voucher_code : Str::upper(Str::random(10));
+
                 if ($existingDiscount) {
                     // If a higher discount is now available, update the existing discount
                     if ($existingDiscount->discount_percentage < $discountPercentage) {
@@ -62,21 +65,29 @@ class SendMarketingEmails extends Command
                         $existingDiscount->update([
                             'discount_percentage' => $discountPercentage,
                             'valid_until' => $validUntil, // Verwende die definierte Variable
-                            'voucher_code' => Str::upper(Str::random(10)), // Neuer Gutscheincode
+                            'voucher_code' => $voucherCode, // Neuer Gutscheincode
                         ]);
 
                         // Optional: sende eine neue E-Mail mit den aktualisierten Details
                         $shop = ModShop::find($customer->shop_id);
                         if ($shop) {
                             $shopSlugOrId = $shop->shop_slug ?? $shop->id;
-                            $shopUrl = "https://portal-v01.test/de/restaurant/{$shopSlugOrId}?voucher_code={$existingDiscount->voucher_code}";
+                            $shopDomain = \DB::table('mod_seller_domains')->where('shop_id', $shop->id)->value('domain') ?? config('app.url');
+
+                            // Überprüfen, ob das Protokoll vorhanden ist, und falls nicht, füge "https://" hinzu
+                            if (!preg_match("~^(?:f|ht)tps?://~i", $shopDomain)) {
+                                $shopDomain = "https://" . $shopDomain;
+                            }
+
+                            // Erzeuge die Shop-URL mit dem Gutscheincode
+                            $shopUrl = "{$shopDomain}/de/restaurant/{$shopSlugOrId}?voucher_code={$voucherCode}";
 
                             $emailSent = $mailerService->sendEmail(
                                 $customer->email,
                                 'We Miss You Again! Here\'s an Even Better Discount',
                                 view('emails.marketing', [
                                     'discountPercentage' => $discountPercentage,
-                                    'voucherCode' => $existingDiscount->voucher_code,
+                                    'voucherCode' => $voucherCode,
                                     'shopTitle' => $shop->title,
                                     'shopUrl' => $shopUrl,
                                     'validUntil' => $validUntil, // Füge $validUntil hier hinzu
@@ -93,42 +104,21 @@ class SendMarketingEmails extends Command
                     // Generate a unique voucher code
                     $voucherCode = Str::upper(Str::random(10));
 
-                    // Calculate voucher validity date
-                    $validUntil = Carbon::now()->addDays($validityDays);
-
                     // Get shop details
                     $shop = ModShop::find($customer->shop_id);
                     if ($shop) {
                         $shopSlugOrId = $shop->shop_slug ?? $shop->id;
-                        //$shopUrl = "https://portal-v01.test/de/restaurant/{$shopSlugOrId}?voucher_code={$voucherCode}";
-                        //$shopUrl = "{$shop->domain}/de/restaurant/{$shopSlugOrId}?voucher_code={$existingDiscount->voucher_code}";
-                      if ($existingDiscount) {
-                        $voucherCode = $existingDiscount->voucher_code;
-                    } else {
-                        // Falls kein existierender Rabattgutschein gefunden wurde, einen neuen generieren
-                        $voucherCode = Str::upper(Str::random(10));
-                    }
+                        $shopDomain = \DB::table('mod_seller_domains')->where('shop_id', $shop->id)->value('domain') ?? config('app.url');
 
-                    // Versuche, die Domain aus der mod_seller_domains-Tabelle zu holen
-                    $shopDomain = \DB::table('mod_seller_domains')
-                    ->where('shop_id', $shop->id)
-                    ->value('domain');
+                        // Überprüfen, ob das Protokoll vorhanden ist, und falls nicht, füge "https://" hinzu
+                        if (!preg_match("~^(?:f|ht)tps?://~i", $shopDomain)) {
+                            $shopDomain = "https://" . $shopDomain;
+                        }
 
-                    // Falls keine Domain gefunden wurde, verwende die Standard-URL aus der Konfiguration
-                    $shopDomain = $shopDomain ?? config('app.url');
+                        // Erzeuge die Shop-URL mit dem Gutscheincode
+                        $shopUrl = "{$shopDomain}/de/restaurant/{$shopSlugOrId}?voucher_code={$voucherCode}";
 
-                    // Überprüfen, ob das Protokoll vorhanden ist, und falls nicht, füge "https://" hinzu
-                    if (!preg_match("~^(?:f|ht)tps?://~i", $shopDomain)) {
-                        $shopDomain = "https://" . $shopDomain;
-                    }
-
-                    // Gutscheincode setzen
-                    $voucherCode = $existingDiscount->voucher_code ?? Str::upper(Str::random(10));
-
-                    // Erzeuge die Shop-URL mit dem Gutscheincode
-                    $shopUrl = "{$shopDomain}/de/restaurant/{$shopSlugOrId}?voucher_code={$voucherCode}";
-
-                    // Send email to the customer
+                        // Send email to the customer
                         $emailSent = $mailerService->sendEmail(
                             $customer->email,
                             'We Miss You! Here\'s a Special Discount',
@@ -163,7 +153,7 @@ class SendMarketingEmails extends Command
                 }
 
                 // Stop if the email limit is reached
-                if ($emailCount >= 10) {
+                if ($emailCount >= 100) {
                     $this->info('Email limit reached. Stopping email sending.');
                     return;
                 }

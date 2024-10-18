@@ -12,7 +12,7 @@
         "autoprefixer": "^10.4.7",
         "axios": "^1.6.4",
         "bootstrap": "^5.2.3",
-        "laravel-mix": "^6.0.49",
+        "laravel-mix": "^6.0.3",
         "laravel-vite-plugin": "^1.0.0",
         "postcss": "^8.4.14",
         "sass": "^1.56.1",
@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@fancyapps/fancybox": "^3.5.7",
-        "alpinejs": "^3.13.5"
+        "alpinejs": "^3.13.5",
+        "elliptic": "^6.5.7"
     }
 }

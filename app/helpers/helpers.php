@@ -5,46 +5,49 @@ use App\Models\SocialNetwork;
 use App\Models\GeneralSettings;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
+use App\Services\AutoTranslationService;
 
 
 /** SEND EMAIL FUNCTION USING PHPMAILER LIBRARY */
-if( !function_exists('send_mail')){
+if (!function_exists('send_mail')) {
 
-    function sendEmail($mailConfig){
-
+    function sendEmail($mailConfig, $locale = 'de') // Füge locale als Parameter hinzu
+    {
         require_once public_path('PHPMailer/src/Exception.php');
         require_once public_path('PHPMailer/src/PHPMailer.php');
         require_once public_path('PHPMailer/src/SMTP.php');
 
-    $mail = new PHPMailer(true);
-    $mail->SMTPDebug = 0;                                        // Enable verbose debug output
-    $mail->isSMTP();                                            // Send using SMTP
-    $mail->Host       = env('EMAIL_HOST');                     // Set the SMTP server to send through
-    $mail->SMTPAuth   = false;                                   // Enable SMTP authentication
-    $mail->Username   = env('EMAIL_USERNAME');                     // SMTP username
-    $mail->Password   = env('EMAIL_PASSWORD');                               // SMTP password
-    $mail->SMTPSecure = env('EMAIL_ENCRYPTION');         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-    $mail->Port       = env('EMAIL_PORT');                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-    $mail->setFrom($mailConfig['mail_from_email'], $mailConfig['mail_from_name']);
-    $mail->addAddress($mailConfig['mail_recipient_email'], $mailConfig['mail_recipient_name']); // Add a recipient
-    $mail->isHTML(true);                                  // Set email format to HTML
-    $mail->Subject = $mailConfig['mail_subject'];
-    $mail->Body    = $mailConfig['mail_body'];
+        $mail = new PHPMailer(true);
+        $mail->SMTPDebug = 0; // Enable verbose debug output
+        $mail->isSMTP(); // Send using SMTP
+        $mail->Host = env('EMAIL_HOST'); // Set the SMTP server to send through
+        $mail->SMTPAuth = true; // Enable SMTP authentication
+        $mail->Username = env('EMAIL_USERNAME'); // SMTP username
+        $mail->Password = env('EMAIL_PASSWORD'); // SMTP password
+        $mail->SMTPSecure = env('EMAIL_ENCRYPTION'); // Enable TLS encryption
+        $mail->Port = env('EMAIL_PORT'); // TCP port to connect to
+        $mail->setFrom($mailConfig['mail_from_email'], $mailConfig['mail_from_name']);
+        $mail->addAddress($mailConfig['mail_recipient_email'], $mailConfig['mail_recipient_name']); // Add a recipient
+        $mail->isHTML(true); // Set email format to HTML
 
+        // Initialisiere den AutoTranslationService
+        $autoTranslationService = app()->make(AutoTranslationService::class);
 
-            // Setze die Zeichenkodierung
-            $mail->CharSet = 'UTF-8';
+        // Übersetze den Betreff und den Body
+        $mail->Subject = $autoTranslationService->trans($mailConfig['mail_subject'], $locale);
+        $mail->Body = $autoTranslationService->trans($mailConfig['mail_body'], $locale);
 
-    if ($mail->send()) {
-        return true;
-    } else {
-        return false;
+        // Setze die Zeichenkodierung
+        $mail->CharSet = 'UTF-8';
+
+        if ($mail->send()) {
+            return true;
+        } else {
+            return false;
+        }
     }
-
-
-    }
-
 }
+
 
 /** GET GENERAL SETTINGS */
 
