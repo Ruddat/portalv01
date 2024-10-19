@@ -2,18 +2,17 @@
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
-
                 @foreach($posts as $post)
                 <div class="col-md-6">
                     <article class="blog">
                         <figure>
-                            <a href="{{ url('/blog-post', $post->slug ?? $post->id) }}"><img src="{{ asset($post->image_medium) }}" alt="">
+                            <a href="{{ url('/' . app()->getLocale() . '/blog-post', $post->slug ?? $post->id) }}"><img src="{{ asset($post->image_medium) }}" alt="">
                                 <div class="preview"><span>@autotranslate('Read more', app()->getLocale())</span></div>
                             </a>
                         </figure>
                         <div class="post_info">
                             <small>{{ $post->category->name ?? 'No Category' }} - {{ $post->created_at->format('d M. Y H:m:s') }}</small>
-                            <h2><a href="{{ url('/blog-post', $post->slug ?? $post->id) }}">{{ $post->title }}</a></h2>
+                            <h2><a href="{{ url('/' . app()->getLocale() . '/blog-post', $post->slug ?? $post->id) }}">{{ $post->title }}</a></h2>
                             <p>{{ Str::limit(strip_tags($post->content), 100) }}</p>
                             <ul>
                                 <li>
@@ -27,8 +26,6 @@
                 </div>
                 <!-- /col -->
                 @endforeach
-
-
             </div>
             <!-- /row -->
 

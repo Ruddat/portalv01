@@ -73,7 +73,9 @@
                     <span><em></em></span>
                     <h2>@autotranslate('Top Rated Restaurants', app()->getLocale())</h2>
                     <p>@autotranslate('Discover the best-rated restaurants in your area.', app()->getLocale())</p>
-                    <a href="{{ route('best-ratet-restaurants.viewAll') }}">@autotranslate('View All', app()->getLocale()) &rarr;</a>
+                    <a href="{{ route('best-ratet-restaurants.viewAll', ['locale' => app()->getLocale()]) }}">
+                        @autotranslate('View All', app()->getLocale()) &rarr;
+                    </a>
                 </div>
                 <div class="row add_bottom_25">
                     @foreach ($restaurants as $restaurant)

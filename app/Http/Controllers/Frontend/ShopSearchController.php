@@ -112,57 +112,58 @@ public function index(Request $request)
 
 
 
-    public function viewAll(Request $request)
-    {
-        // Get user's latitude and longitude from session
-        $userLatitude = $request->session()->get('userLatitude', null);
-        $userLongitude = $request->session()->get('userLongitude', null);
+public function viewAll(Request $request, $locale)
+{
+    // Setze die App-Sprache auf den übergebenen Locale
+    app()->setLocale($locale);
 
-        // Use default distance if not set
-        $selectedDistance = $request->session()->get('selectedDistance', 20);
+    // Hole die Benutzerlatitude und -longitude aus der Session
+    $userLatitude = $request->session()->get('userLatitude', null);
+    $userLongitude = $request->session()->get('userLongitude', null);
 
-        $restaurants = []; // Initialize $restaurants as an empty array
+    // Standarddistanz verwenden, wenn nicht gesetzt
+    $selectedDistance = $request->session()->get('selectedDistance', 20);
 
-        if ($userLatitude !== null && $userLongitude !== null) {
-            // If user's location is available, select restaurants within specified distance
-            $restaurants = ModShop::select('*')
-                ->selectRaw(
-                    '( 6371 * acos( cos( radians(?) ) *
-                    cos( radians( lat ) )
-                    * cos( radians( lng ) - radians(?) )
-                    + sin( radians(?) ) *
-                    sin( radians( lat ) ) ) ) AS distance',
-                    [$userLatitude, $userLongitude, $userLatitude]
-                )
-                ->having('distance', '<', $selectedDistance)
-                ->orderBy('voting_average', 'desc')
-                ->where('published', 1)
-                ->where('show_voting', 1)
-                ->whereIn('status', ['on', 'limited'])
-                ->take(30) // Limit to 30 restaurants
-                ->get(); // Retrieve results as a collection
-        } else {
-            // If user's location is not available, select top restaurants regardless of location
-            $restaurants = ModShop::where('published', 1)
-                ->where('show_voting', 1)
-                ->whereIn('status', ['on', 'limited'])
-                ->orderBy('voting_average', 'desc')
-                ->take(30) // Limit to 30 restaurants
-                ->get(); // Retrieve results as a collection
-        }
+    $restaurants = []; // Initialisiere $restaurants als leeres Array
 
-        // Paginate the results with 10 restaurants per page
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 9;
-        $currentPageItems = collect($restaurants)->slice(($currentPage - 1) * $perPage, $perPage)->all();
-        $paginatedRestaurants = new LengthAwarePaginator($currentPageItems, count($restaurants), $perPage, $currentPage, [
-            'path' => LengthAwarePaginator::resolveCurrentPath()
-        ]);
+    if ($userLatitude !== null && $userLongitude !== null) {
+        // Wenn der Standort des Benutzers verfügbar ist, wähle Restaurants innerhalb der angegebenen Distanz aus
+        $restaurants = ModShop::select('*')
+            ->selectRaw(
+                '( 6371 * acos( cos( radians(?) ) *
+                cos( radians( lat ) )
+                * cos( radians( lng ) - radians(?) )
+                + sin( radians(?) ) *
+                sin( radians( lat ) ) ) ) AS distance',
+                [$userLatitude, $userLongitude, $userLatitude]
+            )
+            ->having('distance', '<', $selectedDistance)
+            ->orderBy('voting_average', 'desc')
+            ->where('published', 1)
+            ->where('show_voting', 1)
+            ->whereIn('status', ['on', 'limited'])
+            ->take(30) // Limit auf 30 Restaurants
+            ->get(); // Ergebnisse als Collection abrufen
+    } else {
+        // Wenn der Standort des Benutzers nicht verfügbar ist, wähle die besten Restaurants unabhängig vom Standort aus
+        $restaurants = ModShop::where('published', 1)
+            ->where('show_voting', 1)
+            ->whereIn('status', ['on', 'limited'])
+            ->orderBy('voting_average', 'desc')
+            ->take(30) // Limit auf 30 Restaurants
+            ->get(); // Ergebnisse als Collection abrufen
+    }
 
-        return view('frontend.pages.index.index-2', compact('paginatedRestaurants'));
+    // Ergebnisse mit 10 Restaurants pro Seite paginieren
+    $currentPage = LengthAwarePaginator::resolveCurrentPage();
+    $perPage = 9;
+    $currentPageItems = collect($restaurants)->slice(($currentPage - 1) * $perPage, $perPage)->all();
+    $paginatedRestaurants = new LengthAwarePaginator($currentPageItems, count($restaurants), $perPage, $currentPage, [
+        'path' => LengthAwarePaginator::resolveCurrentPath()
+    ]);
 
-            // SEO-Daten definieren
-    $metaDescription = "Finde //die besten Restaurants in deiner Nähe. Genieße eine Vielzahl von köstlichen Gerichten.";
+    // SEO-Daten definieren
+    $metaDescription = "Finde die besten Restaurants in deiner Nähe. Genieße eine Vielzahl von köstlichen Gerichten.";
     $metaKeywords = "Restaurants, Essen, Lieferung, Qualität, Service";
 
     $ogTitle = "Entdecke die besten Restaurants in deiner Nähe";
@@ -170,17 +171,9 @@ public function index(Request $request)
     $ogImage = asset('images/default-og-image.jpg');
     $title = "Willkommen bei unserem Restaurantführer";
 
-    return view('frontend.pages.index.index', compact(
-        'restaurants',
-        'metaDescription',
-        'metaKeywords',
-        'ogTitle',
-        'ogDescription',
-        'ogImage',
-        'title'
-    ));
+    return view('frontend.pages.index.index-2', compact('paginatedRestaurants', 'metaDescription', 'metaKeywords', 'ogTitle', 'ogDescription', 'ogImage', 'title'));
+}
 
-    }
 
 
 

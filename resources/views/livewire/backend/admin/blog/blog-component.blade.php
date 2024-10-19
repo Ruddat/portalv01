@@ -70,28 +70,28 @@
         <div class="col-xl-3 col-lg-3">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Categories & Tags</h4>
+                    <h4 class="card-title">@autotranslate('Categories & Tags', app()->getLocale())</h4>
                 </div>
                 <div class="card-body">
                     <div class="basic-form">
                         <div class="row">
                             <form wire:submit.prevent="saveCategory">
                                 <div class="mb-3 col-md-12">
-                                    <label class="form-label">New Category</label>
+                                    <label class="form-label">@autotranslate('New Category', app()->getLocale())</label>
                                     <input type="text" class="form-control" id="newCategoryName" wire:model="newCategoryName">
                                     @error('newCategoryName') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
-                                <button type="submit" class="btn btn-primary">Add Category</button>
+                                <button type="submit" class="btn btn-primary">@autotranslate('Add Category', app()->getLocale())</button>
                             </form>
                             <div class="mb-3 col-md-12"></div>
 
                             <form wire:submit.prevent="saveTag">
                                 <div class="mb-3 col-md-12">
-                                    <label class="form-label">New Tag</label>
+                                    <label class="form-label">@autotranslate('New Tag', app()->getLocale())</label>
                                     <input type="text" class="form-control" id="newTagName" wire:model="newTagName">
                                     @error('newTagName') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
-                                <button type="submit" class="btn btn-primary">Add Tag</button>
+                                <button type="submit" class="btn btn-primary">@autotranslate('Add Tag', app()->getLocale())</button>
                             </form>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Latest Posts</h4>
+                <h4 class="card-title">@autotranslate('Latest Posts', app()->getLocale())</h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

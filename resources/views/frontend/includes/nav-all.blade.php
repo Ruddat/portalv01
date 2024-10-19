@@ -6,6 +6,7 @@
         <a href="{{ url('/') }}"><img src="{{ asset('frontend/img/logo.svg') }}" width="162" height="35" alt=""></a>
     </div>
     <ul>
+        <li><a href="{{ localized_route('blog') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Blog', app()->getLocale()) }}</a></li>
         <li><a href="{{ localized_route('broker.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Job?', app()->getLocale()) }}</a></li>
         <li><a href="{{ localized_route('seller.register') }}">{{ app(\App\Services\AutoTranslationService::class)->trans('Restaurant anmelden', app()->getLocale()) }}</a></li>
     </ul>

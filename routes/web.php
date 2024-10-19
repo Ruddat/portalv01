@@ -133,70 +133,67 @@ Route::get('/template/{templateName}', [TemplateController::class, 'show'])
         Route::view('/blog', 'frontend.pages.blog.blog')->name('blog');
         Route::get('/restaurant/{slug}', [NewCartController::class, 'index'])->name('restaurant.index');
         Route::view('/seller/register', 'backend.pages.seller.auth.register')->name('seller.register');
+
+        Route::get('/blog-post/{identifier}', function ($locale, $identifier) {
+            $post = ModAdminBlogPost::with(['comments' => function ($query) {
+                $query->whereNull('parent_id')
+                      ->where('approved', true)
+                      ->with(['replies' => function ($query) {
+                          $query->where('approved', true);
+                      }]);
+            }])
+            ->where('slug', $identifier)
+            ->orWhere('id', $identifier)
+            ->firstOrFail();
+
+            $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+            $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+                $query->where('start_date', '<=', now());
+            }])->get();
+            $allTags = ModAdminBlogTag::all();
+
+            $breadcrumbs = [
+                ['label' => 'Home', 'url' => url('/' . $locale)],
+                ['label' => 'Blog', 'url' => url('/' . $locale . '/blog')],
+                ['label' => $post->category->name ?? 'No Category', 'url' => url('/' . $locale . '/category', $post->category->id ?? '')],
+                ['label' => $post->title]
+            ];
+
+            return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags', 'breadcrumbs'));
+        })->name('blog-post');
+
+        Route::get('/category/{categoryId}', function ($locale, $categoryId) {
+            $category = ModAdminBlogCategory::findOrFail($categoryId);
+            $posts = ModAdminBlogPost::where('category_id', $categoryId)->latest()->paginate(6);
+            $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+            $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+                $query->where('start_date', '<=', now());
+            }])->get();
+            $allTags = ModAdminBlogTag::all();
+
+            return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'category'));
+        })->name('category');
+
+        Route::get('/tag/{tagId}', function ($locale, $tagId) {
+            $tag = ModAdminBlogTag::findOrFail($tagId);
+            $posts = ModAdminBlogPost::whereHas('tags', function ($query) use ($tagId) {
+                $query->where('tag_id', $tagId);
+            })->latest()->paginate(6);
+            $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
+            $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
+                $query->where('start_date', '<=', now());
+            }])->get();
+            $allTags = ModAdminBlogTag::all();
+
+            return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'tag'));
+        })->name('tag');
+
+        Route::get('/verify-comment/{token}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
     });
 
-
-
+    // Routen, die das Locale nicht benötigen, können außerhalb der Gruppe bleiben
     Route::get('seller/web-templates/preview/{shopId}/{templateId}', [WebTemplatePreviewController::class, 'preview'])
-    ->name('seller.web-templates.preview');
-
-
-
-    Route::get('/blog-post/{identifier}', function ($identifier) {
-        $post = ModAdminBlogPost::with(['comments' => function ($query) {
-            $query->whereNull('parent_id')
-                  ->where('approved', true)
-                  ->with(['replies' => function ($query) {
-                      $query->where('approved', true);
-                  }]);
-        }])
-        ->where('slug', $identifier)
-        ->orWhere('id', $identifier)
-        ->firstOrFail();
-
-        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
-        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
-            $query->where('start_date', '<=', now());
-        }])->get();
-        $allTags = ModAdminBlogTag::all();
-
-        $breadcrumbs = [
-            ['label' => 'Home', 'url' => url('/')],
-            ['label' => 'Blog', 'url' => url('/blog')],
-            ['label' => $post->category->name ?? 'No Category', 'url' => url('/category', $post->category->id ?? '')],
-            ['label' => $post->title]
-        ];
-
-        return view('frontend.pages.blog.blog-post', compact('post', 'latestPosts', 'categories', 'allTags', 'breadcrumbs'));
-    })->name('blog-post');
-
-    Route::get('/category/{categoryId}', function ($categoryId) {
-        $category = ModAdminBlogCategory::findOrFail($categoryId);
-        $posts = ModAdminBlogPost::where('category_id', $categoryId)->latest()->paginate(6);
-        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
-        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
-            $query->where('start_date', '<=', now());
-        }])->get();
-        $allTags = ModAdminBlogTag::all();
-
-        return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'category'));
-    });
-
-    Route::get('/tag/{tagId}', function ($tagId) {
-        $tag = ModAdminBlogTag::findOrFail($tagId);
-        $posts = ModAdminBlogPost::whereHas('tags', function ($query) use ($tagId) {
-            $query->where('tag_id', $tagId);
-        })->latest()->paginate(6);
-        $latestPosts = ModAdminBlogPost::latest()->take(3)->get();
-        $categories = ModAdminBlogCategory::withCount(['posts' => function ($query) {
-            $query->where('start_date', '<=', now());
-        }])->get();
-        $allTags = ModAdminBlogTag::all();
-
-        return view('frontend.pages.blog.blog', compact('posts', 'latestPosts', 'categories', 'allTags', 'tag'));
-    });
-    //Route::get('/verify-comment/{token}/{email}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
-    Route::get('/verify-comment/{token}', [CommentVerificationController::class, 'verify'])->name('comment-verify-email');
+        ->name('seller.web-templates.preview');
 
     // Blog routes end
 
@@ -284,7 +281,14 @@ Route::get('/search/restaurants', [ShopSearchController::class, 'search'])->name
 //    ->middleware(LogRequests::class);
 
 
-Route::get('/best-ratet-restaurants', [ShopSearchController::class, 'viewAll'])->name('best-ratet-restaurants.viewAll');
+// Route::get('/best-ratet-restaurants', [ShopSearchController::class, 'viewAll'])->name('best-ratet-restaurants.viewAll');
+
+$locales = implode('|', array_values(config('app.available_locales')));
+
+Route::get('{locale}/best-rated-restaurants', [ShopSearchController::class, 'viewAll'])
+    ->name('best-ratet-restaurants.viewAll')
+    ->where('locale', $locales);
+
 
 
 
