@@ -132,6 +132,9 @@ class BlogComponent extends Component
         $this->newCategoryName = '';
 
         session()->flash('message', 'Category successfully created.');
+
+        // Seite neu laden
+        return redirect()->route('admin.blog-all');
     }
 
     public function saveTag()
@@ -148,6 +151,9 @@ class BlogComponent extends Component
         $this->newTagName = '';
 
         session()->flash('message', 'Tag successfully created.');
+
+        // Seite neu laden
+        return redirect()->route('admin.blog-all');
     }
 
     public function confirmDelete($id)
@@ -205,7 +211,9 @@ class BlogComponent extends Component
         $this->category_id = '';
         $this->tags = [];
         $this->start_date = Carbon::now()->toDateString();
-        $this->dispatch('resetForm'); // Trigger the reset event in JavaScript
+
+        // Trigger JS-Ereignis
+        $this->dispatch('resetForm');
     }
 
     public function render()
@@ -217,4 +225,20 @@ class BlogComponent extends Component
             'tagsAll' => $this->allTags,
         ]);
     }
+
+    public function uploadImage($base64Image)
+{
+    $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+    $fileName = 'blog-images/' . uniqid() . '.png';
+    Storage::disk('public')->put($fileName, $imageData);
+
+    $this->emit('blogimageUploaded', [asset('storage/' . $fileName)]);
+}
+
+public function deleteImage($imagePath)
+{
+    $fileName = str_replace(asset('storage/'), '', $imagePath);
+    Storage::disk('public')->delete($fileName);
+}
+
 }

@@ -163,6 +163,8 @@
         </div>
     </div>
 
+
+
     <!-- Delete Confirmation Overlay -->
     <div x-data="{ show: @entangle('showDeleteOverlay') }" x-show="show" class="fixed inset-0 flex items-center justify-center z-50">
         <div class="fixed inset-0 bg-gray-600 bg-opacity-75 backdrop-blur-sm"></div>
@@ -216,7 +218,7 @@
         }
 
         // Reset Livewire state
-        Livewire.emit('resetForm');
+        Livewire.dispatch('resetForm');
     }
 
     document.addEventListener('livewire:load', function () {
@@ -228,4 +230,6 @@
         });
     });
 </script>
+
+
 @endpush

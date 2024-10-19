@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @php
-    $locales = ['de', 'en', 'fr', 'es', 'ru']; // Verfügbare Sprachen
+    $locales = array_values(config('app.available_locales')); // Verfügbare Sprachen als Array
     $defaultLocale = 'de'; // Standardsprache
 
     // Aktuelle URL ohne Query-Parameter
@@ -22,22 +22,23 @@
     }
 
     // Entferne den aktuellen Sprachcode aus der URL
-    $baseUrl = preg_replace('/^\/'.preg_quote($currentLocale, '/').'/', '', parse_url($currentUrl, PHP_URL_PATH));
+    $baseUrl = preg_replace('/^\/' . preg_quote($currentLocale, '/') . '/', '', parse_url($currentUrl, PHP_URL_PATH));
 
     // Erzeuge die Basis-URL für den x-default-Eintrag mit der Standardsprachpräfix
     $defaultUrl = url('/' . $defaultLocale . '/' . ltrim($baseUrl, '/'));
-@endphp
-
-@foreach($locales as $locale)
-    @php
-        // Erstelle die URL für jede Sprache
-        $newUrl = url('/' . $locale . '/' . ltrim($baseUrl, '/'));
     @endphp
-    <link rel="alternate" href="{{ $newUrl }}" hreflang="{{ $locale }}" />
-@endforeach
 
-<!-- Optionaler Default-Eintrag -->
-<link rel="alternate" href="{{ $defaultUrl }}" hreflang="x-default" />
+    @foreach($locales as $locale)
+        @php
+            // Erstelle die URL für jede Sprache
+            $newUrl = url('/' . $locale . '/' . ltrim($baseUrl, '/'));
+        @endphp
+        <link rel="alternate" href="{{ $newUrl }}" hreflang="{{ $locale }}" />
+    @endforeach
+
+    <!-- Optionaler Default-Eintrag -->
+    <link rel="alternate" href="{{ $defaultUrl }}" hreflang="x-default" />
+
 
 
 

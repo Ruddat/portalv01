@@ -5,6 +5,8 @@
 
 @push('specific-css')
 
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
 @endpush
 
 
@@ -29,8 +31,9 @@
                     <livewire:backend.admin.blog.blog-component />
 
 
-
                 </div>
+
+
             </div>
 
 
@@ -49,8 +52,10 @@
 
 
         @push('specific-scripts')
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
-    @endpush
+
+@endpush
 
 
 
