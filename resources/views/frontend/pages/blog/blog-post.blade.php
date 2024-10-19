@@ -83,13 +83,13 @@
                             @foreach($latestPosts as $latestPost)
                             <li>
                                 <div class="alignleft">
-                                    <a href="{{ url('/blog-post', $latestPost->slug ?? $latestPost->id) }}">
+                                    <a href="{{ url('/' . app()->getLocale() . '/blog-post', $latestPost->slug ?? $latestPost->id) }}">
                                         <img src="{{ asset($latestPost->image_thumbnail) }}" alt="">
                                     </a>
                                 </div>
                                 <small>{{ $latestPost->category->name ?? 'No Category' }} - {{ $latestPost->created_at->format('d/m/Y') }}</small>
                                 <h3>
-                                    <a href="{{ url('/blog-post', $latestPost->slug ?? $latestPost->id) }}" title="">
+                                    <a href="{{ url('/' . app()->getLocale() . '/blog-post', $latestPost->slug ?? $latestPost->id) }}" title="">
                                         {{ Str::limit($latestPost->title, 30) }}
                                     </a>
                                 </h3>
