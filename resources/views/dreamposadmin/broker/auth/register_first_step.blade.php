@@ -1,5 +1,5 @@
 <?php $page = 'register'; ?>
-@extends('layout.mainlayout')
+@extends('dreamposadmin.layout.mainlayout')
 @section('content')
     <div class="account-content">
         <div class="login-wrapper register-wrap bg-img">
@@ -14,11 +14,11 @@
                             <img src="{{ URL::asset('/build/img/logo-white.png') }}" alt="">
                         </a>
                         <div class="login-userheading">
-                            <h3>{{ app(\App\Services\TranslationService::class)->trans('Register', app()->getLocale()) }}</h3>
-                            <h4>{{ app(\App\Services\TranslationService::class)->trans('Create New Dreamspos Account', app()->getLocale()) }}</h4>
+                            <h3>@autotranslate('Register', app()->getLocale())</h3>
+                            <h4>@autotranslate('Create New Dreamspos Account', app()->getLocale())</h4>
                         </div>
                         <div class="form-login">
-                            <label>Name</label>
+                            <label>@autotranslate('Name', app()->getLocale())</label>
                             <div class="form-addons">
                                 <input type="text" class="form-control" id="name" name="name">
                                 <img src="{{ URL::asset('/build/img/icons/user-icon.svg') }}" alt="img">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="form-login">
-                            <label>Email Address</label>
+                            <label>@autotranslate('Email Address', app()->getLocale())</label>
                             <div class="form-addons">
                                 <input type="text" class="form-control" id="email" name="email">
                                 <img src="{{ URL::asset('/build/img/icons/mail.svg') }}" alt="img">
@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <div class="form-login">
-                            <label>Password</label>
+                            <label>@autotranslate('Password', app()->getLocale())</label>
                             <div class="pass-group">
                                 <input type="password" class="pass-input" id="password" name="password">
                                 <span class="fas toggle-password fa-eye-slash"></span>
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="form-login">
-                            <label>Confirm Passworrd</label>
+                            <label>@autotranslate('Confirm Password', app()->getLocale())</label>
                             <div class="pass-group">
                                 <input type="password" class="pass-inputs" id="confirmpassword" name="confirmpassword">
                                 <span class="fas toggle-passwords fa-eye-slash"></span>
@@ -72,8 +72,8 @@
                                         <div class="custom-control custom-checkbox">
                                             <label class="checkboxs ps-4 mb-0 pb-0 line-height-1">
                                                 <input type="checkbox">
-                                                <span class="checkmarks"></span>I agree to the <a href="#"
-                                                    class="hover-a">Terms & Privacy</a>
+                                                <span class="checkmarks"></span>@autotranslate('I agree to the', app()->getLocale()) <a href="#"
+                                                    class="hover-a">@autotranslate('Terms & Privacy', app()->getLocale())</a>
                                             </label>
                                         </div>
                                     </div>
@@ -81,14 +81,14 @@
                             </div>
                         </div>
                         <div class="form-login">
-                            <button type="submit" class="btn btn-login">Sign Up</button>
+                            <button type="submit" class="btn btn-login">@autotranslate('Sign Up', app()->getLocale())</button>
                         </div>
                         <div class="signinform">
-                            <h4>Already have an account ? <a href="{{ url('signin') }}" class="hover-a">Sign In Instead</a>
+                            <h4>@autotranslate('Already have an account ?', app()->getLocale()) <a href="{{ url('signin') }}" class="hover-a">@autotranslate('Sign In Instead', app()->getLocale())</a>
                             </h4>
                         </div>
                         <div class="form-setlogin or-text">
-                            <h4>OR</h4>
+                            <h4>@autotranslate('OR', app()->getLocale())</h4>
                         </div>
                         <div class="form-sociallink">
                             <ul class="d-flex">
@@ -111,7 +111,7 @@
                             </ul>
                         </div>
                         <div class="my-4 d-flex justify-content-center align-items-center copyright-text">
-                            <p>Copyright &copy; 2023 DreamsPOS. All rights reserved</p>
+                            <p>@autotranslate('Copyright &copy; 2023 DreamsPOS. All rights reserved', app()->getLocale())</p>
                         </div>
                     </div>
                 </form>
@@ -121,4 +121,4 @@
 
     @livewire('backend.broker.broker-registration')
 
-    @endsection
+@endsection
