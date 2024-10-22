@@ -25,7 +25,7 @@ Route::prefix('broker')->name('broker.')->group(function(){
 
         //Route::view('/email_send', 'backend.pages.broker.auth.email-verificaton')->name('email_send');
         Route::view('/email_send', 'dreamposadmin.broker.auth.email-verification')->name('email_send');
-
+        Route::post('/resend-verification-email', [BrokerController::class, 'resendVerificationEmail'])->name('resend-verification-email');
 
         Route::get('/verify/{token}', [BrokerController::class, 'verifyEmail'])->name('verify-email');
         Route::post('/register_last_step_handler', [BrokerController::class, 'registerLastStepHandler'])->name('register_last_step_handler');

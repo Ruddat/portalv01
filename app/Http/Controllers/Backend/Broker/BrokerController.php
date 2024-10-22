@@ -36,7 +36,7 @@ class BrokerController extends Controller
                 Session::forget('currentShopId');
                 Session::forget('currentShopId');
                 Session::forget('currentShopTitle');
-                return view('backend.pages.broker.dashboard');
+                return view('dreamposadmin.broker.broker-dashboard');
                 return view('backend.pages.broker.dashboard', $data);
             }
         }
@@ -120,8 +120,6 @@ $token = DB::table('password_reset_tokens')
 
 
 }
-
-
 
 
     public function sendPasswordResetLink(Request $request)
@@ -248,7 +246,7 @@ $token = DB::table('password_reset_tokens')
                 $broker->status = 'inReview';
                 $broker->save();
 
-                return view('backend.pages.broker.auth.complette-register')->with(['token' => $token]);
+                return view('dreamposadmin.broker.auth.complette-register')->with(['token' => $token]);
             }
         } else {
             session()->flash('fail', 'Registered Link is invalid');
@@ -288,43 +286,46 @@ $token = DB::table('password_reset_tokens')
 
     public function registerLastStepHandler(Request $request)
     {
-    // Get the Broker using the token from the password_reset_tokens table
-    $brokerToken = DB::table('password_reset_tokens')->where('token', $request->token)->first();
-
-    // Check if the token exists and is associated with a Broker
-    if ($brokerToken) {
-        // Get the Broker using the email associated with the token
-        $broker = Broker::where('email', $brokerToken->email)->first();
-
-        // Validate the request data after retrieving the Broker
-        $request->validate([
-            'username' => ['required', 'min:5', 'max:50', new UniqueUsername(optional($broker)->id)],
-            'new_password' => 'required|confirmed',
-            'new_password_confirmation' => 'required',
-            'token' => 'required', // Sicherstellen, dass der Token im Request enthalten ist
-        ], [
-            'username.required' => 'Username is required',
-            'username.min' => 'Username must be at least 5 characters',
-            'username.max' => 'Username must not be more than 50 characters',
-            'username.unique' => 'Username is already taken',
-            'new_password.required' => 'Password is required',
-            'new_password.confirmed' => 'Password does not match',
-            'new_password_confirmation.required' => 'Password confirmation is required',
-            'token.required' => 'Token is required', // Fehlermeldung hinzufügen, wenn der Token nicht im Request enthalten ist
-        ]);
-
-    } else {
-        // Token not found
-        return redirect()->route('broker.register')->with('fail', 'Invalid token.');
-    }
+        // Überprüfen Sie den Token im Request
+      //  dd($request);
 
         // Get the Broker using the token from the password_reset_tokens table
         $brokerToken = DB::table('password_reset_tokens')->where('token', $request->token)->first();
+     //   dd($brokerToken);
 
         // Check if the token exists and is associated with a Broker
         if ($brokerToken) {
             // Get the Broker using the email associated with the token
             $broker = Broker::where('email', $brokerToken->email)->first();
+       //     dd($broker);
+
+            // Validate the request data after retrieving the Broker
+            $request->validate([
+                'username' => ['required', 'min:5', 'max:50', new UniqueUsername(optional($broker)->id)],
+                'first_name' => 'required|string|max:191',
+                'last_name' => 'required|string|max:191',
+                'street' => 'required|string|max:191',
+                'house_number' => 'required|string|max:191',
+                'zip_code' => 'required|string|max:191',
+                'city' => 'required|string|max:191',
+                'phone' => 'required|string|max:191',
+                'token' => 'required', // Sicherstellen, dass der Token im Request enthalten ist
+            ], [
+                'username.required' => 'Username is required',
+                'username.min' => 'Username must be at least 5 characters',
+                'username.max' => 'Username must not be more than 50 characters',
+                'username.unique' => 'Username is already taken',
+                'first_name.required' => 'First name is required',
+                'last_name.required' => 'Last name is required',
+                'street.required' => 'Street is required',
+                'house_number.required' => 'House number is required',
+                'zip_code.required' => 'ZIP code is required',
+                'city.required' => 'City is required',
+                'phone.required' => 'Phone number is required',
+                'token.required' => 'Token is required', // Fehlermeldung hinzufügen, wenn der Token nicht im Request enthalten ist
+            ]);
+
+//dd($request);
 
             // Check if the Broker exists
             if ($broker) {
@@ -332,21 +333,23 @@ $token = DB::table('password_reset_tokens')
                 $broker->update([
                     'username' => $request->username,
                     'password' => bcrypt($request->new_password),
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'address' => $request->street . ' ' . $request->house_number,
+                    'zip_code' => $request->zip_code,
+                    'city' => $request->city,
+                    'phone' => $request->phone,
                 ]);
 
                 // Delete the token from the password_reset_tokens table
                 DB::table('password_reset_tokens')->where('token', $request->token)->delete();
 
-
-
                 // Überprüfen Sie, ob der Verkäufer gefunden wurde
                 if ($broker) {
-
                     // login url erzeugen fuer den verkaeufer
                     $loginUrl = route('broker.dashboard');
 
                     // Daten für die E-Mail-Vorlage zusammenstellen
-
                     $data = [
                         'broker' => $broker,
                         'verificationUrl' => $loginUrl
@@ -355,51 +358,39 @@ $token = DB::table('password_reset_tokens')
                     // E-Mail-Vorlage rendern
                     $email_body = view('email-templates.broker.registration-confirmation', $data)->render();
 
-   // dd($email_body, $data, $broker, $loginUrl);
+                    // E-Mail-Konfiguration zusammenstellen
+                    $mailConfig = [
+                        'mail_from_email' => custom_env('MAIL_FROM_ADDRESS'),
+                        'mail_from_name' => custom_env('MAIL_FROM_NAME'),
+                        'mail_recipient_email' => $broker->email,
+                        'mail_recipient_name' => $broker->name,
+                        'mail_subject' => 'Email Verification',
+                        'mail_body' => $email_body,
+                    ];
 
+                    // E-Mail senden
+                    if (sendEmail($mailConfig)) {
+                        session()->flash('success', 'Password reset link sent on your email');
+                    } else {
+                        session()->flash('fail', 'Something went wrong');
+                    }
 
-    // E-Mail-Konfiguration zusammenstellen
-    $mailConfig = [
-        'mail_from_email' => custom_env('MAIL_FROM_ADDRESS'),
-        'mail_from_name' => custom_env('MAIL_FROM_NAME'),
-        'mail_recipient_email' => $broker->email,
-        'mail_recipient_name' => $broker->name,
-        'mail_subject' => 'Email Verification',
-        'mail_body' => $email_body,
-    ];
-
-    // E-Mail senden
-    if(sendEmail($mailConfig)){
-        session()->flash('success', 'Password reset link sent on your email');
-    //  return redirect()->route('admin.forgot-password');
-
-    }else{
-    session()->flash('fail', 'Something went wrong');
-   // return redirect()->route('admin.forgot-password');
-    }
-
-
-
-    // Jetzt können Sie die E-Mail senden oder andere Aktionen ausführen
-    } else {
-    // Wenn der Verkäufer nicht gefunden wurde, können Sie entsprechend reagieren
-    return "Broker not found.";
-    }
-
-    // Anmelden des Verkäufers/Brokers nach der Registrierung
-
-    Auth::guard('broker')->login($broker, true, ['username' => $broker->username]);
-    // Optional: Perform any additional actions here, such as redirecting or displaying a success message
-     return redirect()->route('broker.dashboard')->with('success', 'Registration completed successfully.');
+                    // Anmelden des Verkäufers/Brokers nach der Registrierung
+                    Auth::guard('broker')->login($broker, true, ['username' => $broker->username]);
+                    return redirect()->route('broker.dashboard')->with('success', 'Registration completed successfully.');
+                } else {
+                    // Broker not found
+                    return redirect()->route('broker.register')->with('fail', 'Broker not found.');
+                }
             } else {
-                // Broker not found
-                return redirect()->route('broker.register')->with('fail', 'Broker not found.');
+                // Token not found
+                return redirect()->route('broker.register')->with('fail', 'Invalid token.');
             }
-        } else {
-            // Token not found
-            return redirect()->route('broker.register')->with('fail', 'Invalid token.');
         }
     }
+
+
+
     public function loginHandler(Request $request )
     {
         $fieldType = filter_var($request->login_id, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
@@ -469,5 +460,65 @@ $token = DB::table('password_reset_tokens')
         session()->flash('fail', 'You are logged out!');
         return redirect()->route('broker.login');
     }
+
+
+    public function resendVerificationEmail(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+    ]);
+
+    $broker = Broker::where('email', $request->email)->first();
+
+    if ($broker) {
+        $token = Str::random(40);
+        $encodedToken = base64_encode($token);
+
+        $oldToken = DB::table('password_reset_tokens')
+            ->where(['email' => $request->email, 'guard' => 'broker'])
+            ->first();
+
+        if ($oldToken) {
+            DB::table('password_reset_tokens')
+                ->where(['email' => $request->email, 'guard' => 'broker'])
+                ->update([
+                    'token' => $token,
+                    'created_at' => now(),
+                ]);
+        } else {
+            DB::table('password_reset_tokens')->insert([
+                'email' => $request->email,
+                'guard' => 'broker',
+                'token' => $token,
+                'created_at' => now(),
+            ]);
+        }
+
+        $verificationUrl = route('broker.verify-email', ['token' => $token, 'email' => $request->email]);
+        $data = [
+            'broker' => $broker,
+            'verificationUrl' => $verificationUrl
+        ];
+
+        $email_body = view('email-templates.broker.broker-verification-email-template', $data)->render();
+
+        $mailConfig = [
+            'mail_from_email' => env('MAIL_FROM_ADDRESS'),
+            'mail_from_name' => env('MAIL_FROM_NAME'),
+            'mail_recipient_email' => $request->email,
+            'mail_recipient_name' => $broker->name,
+            'mail_subject' => 'Email Verification',
+            'mail_body' => $email_body
+        ];
+
+        if (sendEmail($mailConfig)) {
+            return response()->json(['message' => 'Verification email has been resent.']);
+        } else {
+            return response()->json(['message' => 'Something went wrong'], 500);
+        }
+    } else {
+        return response()->json(['message' => 'Broker not found'], 404);
+    }
+}
 
 }
