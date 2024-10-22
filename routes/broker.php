@@ -23,7 +23,10 @@ Route::prefix('broker')->name('broker.')->group(function(){
         Route::view('/register', 'backend.pages.broker.auth.register')->name('register');
         Route::view('/register_first_step', 'dreamposadmin.broker.auth.register_first_step')->name('register_first_step');
 
-        Route::view('/email_send', 'backend.pages.broker.auth.email-verificaton')->name('email_send');
+        //Route::view('/email_send', 'backend.pages.broker.auth.email-verificaton')->name('email_send');
+        Route::view('/email_send', 'dreamposadmin.broker.auth.email-verification')->name('email_send');
+
+
         Route::get('/verify/{token}', [BrokerController::class, 'verifyEmail'])->name('verify-email');
         Route::post('/register_last_step_handler', [BrokerController::class, 'registerLastStepHandler'])->name('register_last_step_handler');
         Route::view('/forgot_password', 'backend.pages.broker.auth.forgot-password')->name('forgot-password');
